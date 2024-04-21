@@ -5,12 +5,13 @@ use kartik\date\DatePicker;
 $display_date = date('d-m-Y');
 $display_to_date = date('d-m-Y');
 $find_date = date('Y-m-d');
+$find_to_date = date('Y-m-d');
 if ($search_date != null) {
     $find_date = date('Y-m-d', strtotime($search_date));
     $display_date = date('d-m-Y', strtotime($search_date));
 }
 if ($search_to_date != null) {
-   // $find_date = date('Y-m-d', strtotime($search_to_date));
+    $find_to_date = date('Y-m-d', strtotime($search_to_date));
     $display_to_date = date('d-m-Y', strtotime($search_to_date));
 }
 $model = null;
@@ -23,11 +24,22 @@ if ($search_car_type != null) {
         foreach ($model_car as $value) {
             array_push($car_list, $value->id);
         }
-        $model = \backend\models\Workqueue::find()->where(['date(work_queue_date)' => $find_date, 'car_id' => $car_list])->all();
+        //$model = \backend\models\Workqueue::find()->where(['date(work_queue_date)' => $find_date, 'car_id' => $car_list])->all();
+        if($search_company_id != null){
+            $model = \backend\models\Workqueue::find()->where(['car_id' => $car_list,'company_id'=>$search_company_id])->andFilterWhere(['>=','date(work_queue_date)',$find_date])->andFilterWhere(['<=','date(work_queue_date)',$find_to_date])->all();
+        }else{
+            $model = \backend\models\Workqueue::find()->where(['car_id' => $car_list])->andFilterWhere(['>=','date(work_queue_date)',$find_date])->andFilterWhere(['<=','date(work_queue_date)',$find_to_date])->all();
+        }
+
     }
 
 } else {
-    $model = \backend\models\Workqueue::find()->where(['date(work_queue_date)' => $find_date])->all();
+    if($search_company_id!=null){
+        $model = \backend\models\Workqueue::find()->where(['company_id' => $search_company_id,])->andFilterWhere(['>=','date(work_queue_date)',$find_date])->andFilterWhere(['<=','date(work_queue_date)',$find_to_date])->all();
+    }else{
+        $model = \backend\models\Workqueue::find()->where(['company_id' => $search_company_id])->andFilterWhere(['>=','date(work_queue_date)',$find_date])->andFilterWhere(['<=','date(work_queue_date)',$find_to_date])->all();
+    }
+
 }
 
 ?>
@@ -85,13 +97,14 @@ if ($search_car_type != null) {
             </div>
         </div>
     </form>
+    <br />
     <div id="print-area">
         <table style="width: 100%;">
             <tr>
                 <td style="text-align: center;"><h3><b>รายงานประจำวัน</b></h3></td>
             </tr>
             <tr>
-                <td style="text-align: center;"><b>วันที่ <?= date('d/m/Y', strtotime($find_date)); ?></b></td>
+                <td style="text-align: center;"><b>ตั้งแต่วันที่ <?= date('d/m/Y', strtotime($find_date)); ?> ถึง <?= date('d/m/Y', strtotime($find_to_date)); ?></b></td>
             </tr>
         </table>
         <br>
