@@ -421,4 +421,15 @@ class WorkqueueController extends Controller
         }
         return $this->redirect(['workqueue/update', 'id' => $workqueue_id]);
     }
+
+    public function actionCalupdatecompay()
+    {
+        $model = \backend\models\Workqueue::find()->all();
+        foreach ($model as $value) {
+           $model_car = \backend\models\Car::find()->where(['id'=>$value->car_id])->one();
+           if($model_car){
+               \backend\models\Workqueue::updateAll(['company_id'=>$model_car->company_id],['id'=>$value->id]);
+           }
+        }
+    }
 }
