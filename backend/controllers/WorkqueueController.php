@@ -424,7 +424,7 @@ class WorkqueueController extends Controller
 
     public function actionCalupdatecompay()
     {
-        $model = \backend\models\Workqueue::find()->all();
+        $model = \backend\models\Workqueue::find()->where(['company_id'=>0])->all();
         foreach ($model as $value) {
            $model_car = \backend\models\Car::find()->where(['id'=>$value->car_id])->one();
            if($model_car){
