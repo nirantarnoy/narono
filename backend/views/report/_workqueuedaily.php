@@ -3,10 +3,15 @@
 use kartik\date\DatePicker;
 
 $display_date = date('d-m-Y');
+$display_to_date = date('d-m-Y');
 $find_date = date('Y-m-d');
 if ($search_date != null) {
     $find_date = date('Y-m-d', strtotime($search_date));
     $display_date = date('d-m-Y', strtotime($search_date));
+}
+if ($search_to_date != null) {
+   // $find_date = date('Y-m-d', strtotime($search_to_date));
+    $display_to_date = date('d-m-Y', strtotime($search_to_date));
 }
 $model = null;
 
@@ -28,7 +33,7 @@ if ($search_car_type != null) {
 ?>
     <form action="<?= \yii\helpers\Url::to(['report/workqueuedaily'], true) ?>" method="post">
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-12">
                 <label class="form-label">เลือกวันที่</label>
                 <div class="input-group">
                     <?php
@@ -41,6 +46,15 @@ if ($search_car_type != null) {
                             'format' => 'dd-mm-yyyy'
                         ]
                     ]);
+                    echo DatePicker::widget([
+                        'name' => 'search_to_date',
+                        'type' => DatePicker::TYPE_INPUT,
+                        'value' => $display_to_date,
+                        'pluginOptions' => [
+                            'autoclose' => true,
+                            'format' => 'dd-mm-yyyy'
+                        ]
+                    ]);
                     ?>
                     <?php
                     echo \kartik\select2\Select2::widget([
@@ -48,7 +62,18 @@ if ($search_car_type != null) {
                         'data' => \yii\helpers\ArrayHelper::map(\backend\models\CarType::find()->all(), 'id', 'name'),
                         'value' => $search_car_type,
                         'options' => [
-                          'placeholder'=>'---เลือกประเภทรถ---'
+                            'placeholder'=>'---เลือกประเภทรถ---'
+                        ],
+                        'pluginOptions' => [
+                            'allowClear' => true,
+                        ]
+                    ]);
+                    echo \kartik\select2\Select2::widget([
+                        'name' => 'search_company_id',
+                        'data' => \yii\helpers\ArrayHelper::map(\backend\models\Company::find()->all(), 'id', 'name'),
+                        'value' => $search_company_id,
+                        'options' => [
+                            'placeholder'=>'---เลือกบริษัท---'
                         ],
                         'pluginOptions' => [
                             'allowClear' => true,
