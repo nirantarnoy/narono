@@ -34,12 +34,20 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <?php //if (\Yii::$app->user->can('company/index')): ?>
-                            <li class="nav-item">
-                                <a href="index.php?r=company/index" class="nav-link company">
-                                    <i class="far fa-circlez nav-icon"></i>
-                                    <p>บริษัท</p>
-                                </a>
-                            </li>
+                        <li class="nav-item">
+                            <a href="index.php?r=company/index" class="nav-link company">
+                                <i class="far fa-circlez nav-icon"></i>
+                                <p>บริษัท</p>
+                            </a>
+                        </li>
+                        <?php //endif; ?>
+                        <?php //if (\Yii::$app->user->can('company/index')): ?>
+                        <li class="nav-item">
+                            <a href="index.php?r=location/index" class="nav-link location">
+                                <i class="far fa-circlez nav-icon"></i>
+                                <p>สำนักงาน</p>
+                            </a>
+                        </li>
                         <?php //endif; ?>
                     </ul>
                 </li>
