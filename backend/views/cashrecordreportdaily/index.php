@@ -21,9 +21,9 @@ $model = \common\models\StockTrans::find()->where(['activity_type_id' => [5, 6]]
                         echo DatePicker::widget([
                             'name' => 'search_from_date',
                             'type' => DatePicker::TYPE_INPUT,
-                            'value' => $from_date,
+                            'value' => date('d-m-Y',strtotime($from_date)),
                             'pluginOptions' => [
-                                'autoclose' => true,
+                                'autoClose' => true,
                                 'format' => 'dd-mm-yyyy'
                             ]
                         ]);
@@ -37,9 +37,9 @@ $model = \common\models\StockTrans::find()->where(['activity_type_id' => [5, 6]]
                         echo DatePicker::widget([
                             'name' => 'search_to_date',
                             'type' => DatePicker::TYPE_INPUT,
-                            'value' => $to_date,
+                            'value' => date('d-m-Y',strtotime($to_date)),
                             'pluginOptions' => [
-                                'autoclose' => true,
+                                'autoClose' => true,
                                 'format' => 'dd-mm-yyyy'
                             ]
                         ]);
