@@ -578,6 +578,18 @@ $(function(){
         getRouteplan();
     }
     
+    $(".oil-daily-price").change(function(){
+        var oil_price = parseFloat($(this).val()).toFixed(2);
+        var oil_total = parseFloat($(".total-lite").val()).toFixed(2);
+        var total_amount = oil_price * oil_total;
+        $(".total-amount").val(parseFloat(total_amount).toFixed(2));
+    });
+    $(".total-lite").change(function(){
+        var oil_total = parseFloat($(this).val()).toFixed(2);
+        var oil_price = parseFloat($(".oil-daily-price").val()).toFixed(2);
+        var total_amount = oil_price * oil_total;
+        $(".total-amount").val(parseFloat(total_amount).toFixed(2));
+    });
 });
 
 

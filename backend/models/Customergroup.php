@@ -17,7 +17,7 @@ use Yii;
  * @property int|null $updated_at
  * @property int|null $updated_by
  */
-class Customergroup extends \common\models\Customergroup
+class Customergroup extends \common\models\CustomerGroup
 {
     /**
      * {@inheritdoc}
