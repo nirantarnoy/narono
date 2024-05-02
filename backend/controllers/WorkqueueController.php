@@ -93,6 +93,14 @@ class WorkqueueController extends Controller
                 $item_id = \Yii::$app->request->post('line_work_queue_item_id');
                 $description = \Yii::$app->request->post('line_work_queue_description');
 
+
+                $oil_daily_price = \Yii::$app->request->post('oil_daily_price');
+                $oil_out_price = \Yii::$app->request->post('oil_out_price');
+                $total_distance = \Yii::$app->request->post('total_distance');
+                $total_lite = \Yii::$app->request->post('total_lite');
+                $total_amount = \Yii::$app->request->post('total_amount');
+                $total_amount2 = \Yii::$app->request->post('total_amount2');
+
                 $dropoff_id = \Yii::$app->request->post('dropoff_id');
                 $dropoff_no = \Yii::$app->request->post('dropoff_no');
                 $qty = \Yii::$app->request->post('qty');
@@ -100,6 +108,12 @@ class WorkqueueController extends Controller
 
                 //   print_r($weight); return ;
                 $model->is_invoice = 0;
+                $model->oil_daily_price = $oil_daily_price;
+                $model->oil_out_price = $oil_out_price;
+                $model->total_distance = $total_distance;
+                $model->total_lite = $total_lite;
+                $model->total_amount = $total_amount;
+                $model->total_amount2 = $total_amount2;
                 if ($model->save(false)) {
 
 //                    echo '123'; return ;
@@ -206,6 +220,7 @@ class WorkqueueController extends Controller
             $total_distance = \Yii::$app->request->post('total_distance');
             $total_lite = \Yii::$app->request->post('total_lite');
             $total_amount = \Yii::$app->request->post('total_amount');
+            $total_amount2 = \Yii::$app->request->post('total_amount2');
 
             $removelist2 = \Yii::$app->request->post('remove_list2');
 
@@ -217,6 +232,7 @@ class WorkqueueController extends Controller
             $model->total_distance = $total_distance;
             $model->total_lite = $total_lite;
             $model->total_amount = $total_amount;
+            $model->total_amount2 = $total_amount2;
             if ($model->save(false)) {
                 if ($line_id != null) {
                     // echo count($uploaded);return;

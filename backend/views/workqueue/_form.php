@@ -228,17 +228,21 @@ $dropoff_data = \common\models\DropoffPlace::find()->all();
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <label for="">ระยะทางไป-กลับ</label>
             <input type="text" class="form-control total-distance" name="total_distance" value="<?=$model->total_distance?>" >
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <label for="">รวมจำนวน(ลิตร)</label>
             <input type="text" class="form-control total-lite" name="total_lite" value="<?=$model->total_lite?>">
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <label for="">รวมจำนวน(บาท)</label>
-            <input type="text" class="form-control total-amount" name="total_amount" value="<?=$model->total_amount?>">
+            <input type="text" class="form-control total-amount" name="total_amount" value="<?=$model->total_amount?>" readonly>
+        </div>
+        <div class="col-lg-3">
+            <label for="">รวมปั๊มนอก(บาท)</label>
+            <input type="text" class="form-control total-amount-2" name="total_amount2" value="<?=$model->total_amount2?>" readonly>
         </div>
     </div>
     <div style="height: 10px;"></div>
@@ -281,6 +285,7 @@ $dropoff_data = \common\models\DropoffPlace::find()->all();
     </div>
     <div class="row">
         <div class="col-lg-4"><?= $form->field($model, 'work_double_price')->textinput(['maxlength' => true, 'id' => 'work-double-price',]) ?></div>
+        <div class="col-lg-4"><?= $form->field($model, 'towing_price')->textinput(['maxlength' => true, 'id' => 'work-towing-price',]) ?></div>
     </div>
 
     <br/>
@@ -583,6 +588,13 @@ $(function(){
         var oil_total = parseFloat($(".total-lite").val()).toFixed(2);
         var total_amount = oil_price * oil_total;
         $(".total-amount").val(parseFloat(total_amount).toFixed(2));
+    });
+    
+    $(".oil-out-price").change(function(){
+        var oil_price = parseFloat($(this).val()).toFixed(2);
+        var oil_total = parseFloat($(".total-lite").val()).toFixed(2);
+        var total_amount = oil_price * oil_total;
+        $(".total-amount-2").val(parseFloat(total_amount).toFixed(2));
     });
     $(".total-lite").change(function(){
         var oil_total = parseFloat($(this).val()).toFixed(2);
