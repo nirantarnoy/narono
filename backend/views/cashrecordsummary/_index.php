@@ -11,6 +11,7 @@ $total_for_gharp = [];
 $sql = "SELECT year(trans_date) as year  from cash_record";
 $sql .= " GROUP BY year(trans_date)";
 $sql .= " ORDER BY year(trans_date) asc";
+$sql .= " LIMIT 2";
 $query = \Yii::$app->db->createCommand($sql);
 $model = $query->queryAll();
 if ($model) {
