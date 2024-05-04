@@ -537,6 +537,12 @@
                                 <p> รายงานเงินสดย่อย </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="index.php?r=cashrecordsummary/index" class="nav-link cashrecordsummary">
+                                <i class="far fa-circlez nav-icon"></i>
+                                <p> กราฟสรุปเงินสดย่อย </p>
+                            </a>
+                        </li>
                         <?php //endif;?>
 
                     </ul>
