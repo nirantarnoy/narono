@@ -92,7 +92,7 @@ $data_series= $total_for_gharp;
             <?php
             echo Highcharts::widget([
                 'options' => [
-                    'title' => ['text' => 'กราฟแสดงจำนวนเที่ยว'],
+                    'title' => ['text' => 'กราฟแสดงจำนวนเงินเปรียบเทียบตามปีเดือน'],
                     'xAxis' => [
                         'categories' => $m_data_gharp
                     ],
