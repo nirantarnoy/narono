@@ -20,21 +20,21 @@ if ($model) {
     }
 }
 
-for($k=0;$k<=count($m_data)-1;$k++){
-    array_push($m_data_gharp,$m_data[$k]['name']);
+for ($k = 0; $k <= count($m_data) - 1; $k++) {
+    array_push($m_data_gharp, $m_data[$k]['name']);
 }
-for ($xx = 0; $xx <= count($y_data) - 1; $xx++){
-    $m1 =[];
+for ($xx = 0; $xx <= count($y_data) - 1; $xx++) {
+    $m1 = [];
 
-    for ($ix = 0; $ix <= count($m_data) - 1; $ix++){
-        $line_x = getAmount($y_data[$xx], $m_data[$ix]['id']);
+    for ($ix = 0; $ix <= count($m_data) - 1; $ix++) {
+        $line_x = getAmount($y_data[$xx], $m_data[$ix]['id'],$search_company_id,$search_office_id);
         //echo $line_x;return;
-        array_push($m1,(float)$line_x);
+        array_push($m1, (float)$line_x);
     }
 //    print_r($m1);
-    array_push($total_for_gharp,['name'=>$y_data[$xx],'data'=>$m1]);
+    array_push($total_for_gharp, ['name' => $y_data[$xx], 'data' => $m1]);
 }
-$data_series= $total_for_gharp;
+$data_series = $total_for_gharp;
 //$data_series = [
 //    ['name' => '2023', 'data' => [10, 5, 4,5,9,5,8,9]],
 //    ['name' => '2024', 'data' => [5, 7, 3,6,5,8,7,9]],
@@ -42,7 +42,52 @@ $data_series= $total_for_gharp;
 ?>
     <div class="row">
         <div class="col-lg-12">
-            <h5>รายงานสรุปยอดเงินสดย่อย</h5>
+            <form action="<?= \yii\helpers\Url::to(['cashrecordsummary/index'], true) ?>" method="post">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <label class="form-label">บริษัท</label>
+                        <?php
+                        echo \kartik\select2\Select2::widget([
+                            'name' => 'search_company_id',
+                            'data' => \yii\helpers\ArrayHelper::map(\common\models\Company::find()->where(['status' => 1])->all(), 'id', 'name'),
+                            'value' => $search_company_id,
+                            'options' => [
+                                'placeholder' => '---เลือกบริษัท---'
+                            ],
+                            'pluginOptions' => [
+                                'allowClear' => true,
+                            ]
+                        ]);
+                        ?>
+                    </div>
+                    <div class="col-lg-2">
+                        <label class="form-label">สำนักงาน</label>
+                        <?php
+                        echo \kartik\select2\Select2::widget([
+                            'name' => 'search_office_id',
+                            'data' => \yii\helpers\ArrayHelper::map(\backend\helpers\OfficeType::asArrayObject(), 'id', 'name'),
+                            'value' => $search_office_id,
+                            'options' => [
+                                'placeholder' => '---เลือกสำนักงาน---'
+                            ],
+                            'pluginOptions' => [
+                                'allowClear' => true,
+                            ]
+                        ]);
+                        ?>
+                    </div>
+                    <div class="col-lg-3">
+                        <div style="height: 35px;"></div>
+                        <button class="btn btn-sm btn-primary">ค้นหา</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-lg-12" style="text-align: center;">
+            <h4>รายงานสรุปยอดเงินสดย่อย</h4>
         </div>
     </div>
     <br/>
@@ -61,7 +106,7 @@ $data_series= $total_for_gharp;
                         <td style="border: 1px solid grey;"><?= $m_data[$i]['name'] ?></td>
                         <?php for ($x = 0; $x <= count($y_data) - 1; $x++): ?>
                             <?php
-                            $line_amount = getAmount($y_data[$x], $m_data[$i]['id']);
+                            $line_amount = getAmount($y_data[$x], $m_data[$i]['id'],$search_company_id,$search_office_id);
                             array_push($total, ['year' => $y_data[$x], 'amount' => $line_amount]);
                             ?>
                             <td style="border: 1px solid grey;text-align: center;"><?php echo number_format($line_amount, 2) ?></td>
@@ -87,7 +132,7 @@ $data_series= $total_for_gharp;
             </table>
         </div>
     </div>
-    <br />
+    <br/>
     <div class="row">
         <div class="col-lg-12">
             <?php
@@ -108,12 +153,20 @@ $data_series= $total_for_gharp;
     </div>
 
 <?php
-function getAmount($year, $month)
+function getAmount($year, $month,$search_company_id,$search_office_id)
 {
     $amount = 0;
     $sql = "SELECT sum(t2.amount) as amount from cash_record as t1 inner join cash_record_line as t2 on t2.car_record_id = t1.id";
     $sql .= " WHERE year(t1.trans_date)=" . $year;
     $sql .= " AND month(t1.trans_date)=" . $month;
+
+    if($search_company_id != null){
+        $sql .= " AND company_id=" . $search_company_id;
+    }
+    if($search_office_id != null){
+        $sql .= " AND office_id =" . $search_office_id;
+    }
+
     $sql .= " GROUP BY year(trans_date), month(trans_date)";
     $query = \Yii::$app->db->createCommand($sql);
     $model = $query->queryAll();

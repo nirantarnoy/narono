@@ -34,6 +34,11 @@ class CashrecordsummaryController extends Controller
         );
     }
     public function actionIndex(){
-        return $this->render('_index');
+        $search_company_id = \Yii::$app->request->post('search_company_id');
+        $search_office_id = \Yii::$app->request->post('search_office_id');
+        return $this->render('_index',[
+            'search_company_id'=>$search_company_id,
+            'search_office_id' => $search_office_id,
+        ]);
     }
 }
