@@ -219,18 +219,15 @@ $dropoff_data = \common\models\DropoffPlace::find()->all();
             <input type="text" class="form-control tail-back-plate-no" value="<?= $t_back_plate ?>" readonly>
         </div>
         <div class="col-lg-3">
-            <label for="">ราคาน้ำมัน</label>
-            <input type="text" class="form-control oil-daily-price" name="oil_daily_price" value="<?=$model->oil_daily_price?>" >
+            <label for="">ระยะทางไป-กลับ</label>
+            <input type="text" class="form-control total-distance" name="total_distance" value="<?=$model->total_distance?>" >
         </div>
-        <div class="col-lg-3">
-            <label for="">ราคาน้ำมันปั๊มนอก</label>
-            <input type="text" class="form-control oil-out-price" name="oil_out_price" value="<?=$model->oil_out_price?>" >
-        </div>
+
     </div>
     <div class="row">
         <div class="col-lg-3">
-            <label for="">ระยะทางไป-กลับ</label>
-            <input type="text" class="form-control total-distance" name="total_distance" value="<?=$model->total_distance?>" >
+            <label for="">ราคาน้ำมัน</label>
+            <input type="text" class="form-control oil-daily-price" name="oil_daily_price" value="<?=$model->oil_daily_price?>" >
         </div>
         <div class="col-lg-3">
             <label for="">รวมจำนวน(ลิตร)</label>
@@ -239,6 +236,17 @@ $dropoff_data = \common\models\DropoffPlace::find()->all();
         <div class="col-lg-3">
             <label for="">รวมจำนวน(บาท)</label>
             <input type="text" class="form-control total-amount" name="total_amount" value="<?=$model->total_amount?>" readonly>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-lg-3">
+            <label for="">ราคาน้ำมันปั๊มนอก</label>
+            <input type="text" class="form-control oil-out-price" name="oil_out_price" value="<?=$model->oil_out_price?>" >
+        </div>
+        <div class="col-lg-3">
+            <label for="">รวมจำนวนปั๊มนอก(ลิตร)</label>
+            <input type="text" class="form-control total-out-lite" name="total_out_lite" value="<?=$model->total_out_lite?>" >
         </div>
         <div class="col-lg-3">
             <label for="">รวมปั๊มนอก(บาท)</label>
@@ -592,7 +600,7 @@ $(function(){
     
     $(".oil-out-price").change(function(){
         var oil_price = parseFloat($(this).val()).toFixed(2);
-        var oil_total = parseFloat($(".total-lite").val()).toFixed(2);
+        var oil_total = parseFloat($(".total-out-lite").val()).toFixed(2);
         var total_amount = oil_price * oil_total;
         $(".total-amount-2").val(parseFloat(total_amount).toFixed(2));
     });
@@ -601,6 +609,12 @@ $(function(){
         var oil_price = parseFloat($(".oil-daily-price").val()).toFixed(2);
         var total_amount = oil_price * oil_total;
         $(".total-amount").val(parseFloat(total_amount).toFixed(2));
+    });
+    $(".total-out-lite").change(function(){
+        var oil_total = parseFloat($(this).val()).toFixed(2);
+        var oil_price = parseFloat($(".oil-out-price").val()).toFixed(2);
+        var total_amount = oil_price * oil_total;
+        $(".total-amount-2").val(parseFloat(total_amount).toFixed(2));
     });
 });
 

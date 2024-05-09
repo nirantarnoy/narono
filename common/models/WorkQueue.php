@@ -40,7 +40,7 @@ class WorkQueue extends \yii\db\ActiveRecord
             [['work_queue_no','go_deduct_reason','back_reason','dp_no'], 'string', 'max' => 255],
             [['weight_on_go','weight_on_back','weight_go_deduct','back_deduct','labour_price','express_road_price','other_price','test_price','damaged_price','total_lite','total_distance','total_amount'], 'double'],
             [['cover_sheet_price','overnight_price','warehouse_plus_price','deduct_other_price','work_double_price','total_amount2','towing_price'], 'double'],
-            [['oil_daily_price','oil_out_price'],'safe'],
+            [['oil_daily_price','oil_out_price','total_out_lite'],'safe'],
             [['item_back_id'],'safe'],
         ];
     }
@@ -87,6 +87,7 @@ class WorkQueue extends \yii\db\ActiveRecord
             'work_double_price'=>'ค่าเบิ้ลงาน',
             'total_amount2'=>'ราคาปั๊มนอก(บาท)',
             'towing_price'=>'ค่าลาก/ค่าแบก',
+            'total_out_lite' => 'รวมจำนวนปั๊มนอก(ลิตร)',
             'create_at' => 'Create At',
             'created_by' => 'Created By',
             'updated_at' => 'Updated At',
