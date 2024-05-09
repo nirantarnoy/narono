@@ -98,6 +98,7 @@ class WorkqueueController extends Controller
                 $oil_out_price = \Yii::$app->request->post('oil_out_price');
                 $total_distance = \Yii::$app->request->post('total_distance');
                 $total_lite = \Yii::$app->request->post('total_lite');
+                $total_out_lite = \Yii::$app->request->post('total_out_lite');
                 $total_amount = \Yii::$app->request->post('total_amount');
                 $total_amount2 = \Yii::$app->request->post('total_amount2');
 
@@ -112,6 +113,7 @@ class WorkqueueController extends Controller
                 $model->oil_out_price = $oil_out_price;
                 $model->total_distance = $total_distance;
                 $model->total_lite = $total_lite;
+                $model->total_out_lite = $total_out_lite;
                 $model->total_amount = $total_amount;
                 $model->total_amount2 = $total_amount2;
                 if ($model->save(false)) {
@@ -219,6 +221,7 @@ class WorkqueueController extends Controller
             $oil_out_price = \Yii::$app->request->post('oil_out_price');
             $total_distance = \Yii::$app->request->post('total_distance');
             $total_lite = \Yii::$app->request->post('total_lite');
+            $total_out_lite = \Yii::$app->request->post('total_out_lite');
             $total_amount = \Yii::$app->request->post('total_amount');
             $total_amount2 = \Yii::$app->request->post('total_amount2');
 
@@ -231,6 +234,7 @@ class WorkqueueController extends Controller
             $model->oil_out_price = $oil_out_price;
             $model->total_distance = $total_distance;
             $model->total_lite = $total_lite;
+            $model->total_out_lite = $total_out_lite;
             $model->total_amount = $total_amount;
             $model->total_amount2 = $total_amount2;
             if ($model->save(false)) {
