@@ -239,6 +239,7 @@ $dropoff_data = \common\models\DropoffPlace::find()->all();
         </div>
 
     </div>
+    <div style="height: 10px;"></div>
     <div class="row">
         <div class="col-lg-3">
             <label for="">ราคาน้ำมันปั๊มนอก</label>
@@ -264,6 +265,7 @@ $dropoff_data = \common\models\DropoffPlace::find()->all();
         <div class="col-lg-3"> <?php echo $form->field($model, 'is_express_road')->widget(\toxor88\switchery\Switchery::className(), ['options' => ['label' => '', 'class' => 'form-control', 'onchange' => 'enableExpressroad($(this))']])->label() ?></div>
         <div class="col-lg-3"> <?php echo $form->field($model, 'is_other')->widget(\toxor88\switchery\Switchery::className(), ['options' => ['label' => '', 'class' => 'form-control', 'onchange' => 'enableOther($(this))']])->label() ?></div>
     </div>
+    <div style="height: 10px;"></div>
     <div class="row">
         <div class="col-lg-4">
             <?= $form->field($model, 'labour_price')->textinput(['maxlength' => true, 'id' => 'labour-price',]) ?>
@@ -275,6 +277,7 @@ $dropoff_data = \common\models\DropoffPlace::find()->all();
             <?= $form->field($model, 'other_price')->textInput(['maxlength' => true, 'id' => 'other-price',]) ?>
         </div>
     </div>
+    <div style="height: 10px;"></div>
     <div class="row">
         <div class="col-lg-4">
             <?= $form->field($model, 'cover_sheet_price')->textinput(['maxlength' => true, 'id' => 'cover-sheet-price',]) ?>
@@ -286,11 +289,13 @@ $dropoff_data = \common\models\DropoffPlace::find()->all();
             <?= $form->field($model, 'warehouse_plus_price')->textInput(['maxlength' => true, 'id' => 'warehouse-plus-price',]) ?>
         </div>
     </div>
+    <div style="height: 10px;"></div>
     <div class="row">
         <div class="col-lg-4"><?= $form->field($model, 'test_price')->textinput(['maxlength' => true, 'id' => 'test-price',]) ?></div>
         <div class="col-lg-4"><?= $form->field($model, 'damaged_price')->textinput(['maxlength' => true, 'id' => 'damaged-price',]) ?></div>
         <div class="col-lg-4"><?= $form->field($model, 'deduct_other_price')->textinput(['maxlength' => true, 'id' => 'deduct-other-price',]) ?></div>
     </div>
+    <div style="height: 10px;"></div>
     <div class="row">
         <div class="col-lg-4"><?= $form->field($model, 'work_double_price')->textinput(['maxlength' => true, 'id' => 'work-double-price',]) ?></div>
         <div class="col-lg-4"><?= $form->field($model, 'towing_price')->textinput(['maxlength' => true, 'id' => 'work-towing-price',]) ?></div>
