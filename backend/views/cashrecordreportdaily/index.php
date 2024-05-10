@@ -8,9 +8,9 @@ $model = null;
 $model = \common\models\StockTrans::find()->where(['activity_type_id' => [5, 6]])
     ->andFilterWhere(['>=','date(trans_date)',date('Y-m-d',strtotime($from_date))])
     ->andFilterWhere(['<=','date(trans_date)',date('Y-m-d',strtotime($to_date))]);
-if($search_company_id != null){
-    $model = $model->andWhere(['company_id' => $search_company_id]);
-}
+//if($search_company_id != null){
+//    $model = $model->andWhere(['company_id' => $search_company_id]);
+//}
 //if($search_office_id != null){
 //    $model = $model->andWhere(['office_id' => $search_office_id]);
 //}
