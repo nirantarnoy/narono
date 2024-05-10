@@ -122,9 +122,11 @@ $cost_title_data = \common\models\FixcostTitle::find()->where(['type_id' => 1])-
             <div class="col-lg-3">
                 <?= $form->field($model, 'office_id')->Widget(\kartik\select2\Select2::className(), [
                     'data' => \yii\helpers\ArrayHelper::map(\backend\models\Location::find()->where(['company_id'=>$model->company_id])->all(), 'id', 'name'),
+                    'value' => $model->office_id,
                     'options' => [
                         'class' => 'office-select2',
                         'placeholder' => '--เลือก--',
+
                     ]
                 ]) ?>
             </div>
