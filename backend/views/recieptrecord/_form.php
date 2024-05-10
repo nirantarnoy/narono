@@ -75,7 +75,7 @@ if($model->company_id > 0){
             </div>
             <div class="col-lg-3">
                 <?= $form->field($model, 'office_id')->Widget(\kartik\select2\Select2::className(), [
-                    $model->company_id > 0 ? \yii\helpers\ArrayHelper::map($model_office, 'id', 'name'):null,
+                    'data'=> $model->company_id > 0 ? \yii\helpers\ArrayHelper::map($model_office, 'id', 'name'):null,
                     'options' => [
                         'class' => 'office-select2',
                         'placeholder' => '--เลือก--',
