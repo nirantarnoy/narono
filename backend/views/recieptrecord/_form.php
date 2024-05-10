@@ -59,6 +59,24 @@ $cost_title_data = \common\models\FixcostTitle::find()->where(['type_id' => 2])-
             </div>
 
         </div>
+        <div class="row">
+            <div class="col-lg-3">
+                <?= $form->field($model, 'company_id')->Widget(\kartik\select2\Select2::className(), [
+                    'data' => \yii\helpers\ArrayHelper::map(\backend\models\Company::find()->all(), 'id', 'name'),
+                    'options' => [
+                        'placeholder' => '--เลือก--',
+                    ]
+                ]) ?>
+            </div>
+            <div class="col-lg-3">
+                <?= $form->field($model, 'office_id')->Widget(\kartik\select2\Select2::className(), [
+                    'data' => \yii\helpers\ArrayHelper::map(\backend\models\Location::find()->all(), 'id', 'name'),
+                    'options' => [
+                        'placeholder' => '--เลือก--',
+                    ]
+                ]) ?>
+            </div>
+        </div>
 
         <br/>
         <h5>รายการรับ</h5>
