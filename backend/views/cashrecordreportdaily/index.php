@@ -11,9 +11,9 @@ $model = \common\models\StockTrans::find()->where(['activity_type_id' => [5, 6]]
 if($search_company_id != null){
     $model = $model->andWhere(['company_id' => $search_company_id]);
 }
-if($search_office_id != null){
-    $model = $model->andWhere(['office_id' => $search_office_id]);
-}
+//if($search_office_id != null){
+//    $model = $model->andWhere(['office_id' => $search_office_id]);
+//}
 
 $model = $model->all();
 //}
