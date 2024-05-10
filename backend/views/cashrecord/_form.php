@@ -8,6 +8,10 @@ use yii\widgets\ActiveForm;
 /** @var yii\widgets\ActiveForm $form */
 
 $cost_title_data = \common\models\FixcostTitle::find()->where(['type_id' => 1])->all();
+$model_office = null;
+if($model->company_id > 0){
+    $model_office = \common\models\Location::find()->where(['company_id' => $model->company_id])->all();
+}
 
 ?>
 
@@ -121,7 +125,7 @@ $cost_title_data = \common\models\FixcostTitle::find()->where(['type_id' => 1])-
             </div>
             <div class="col-lg-3">
                 <?= $form->field($model, 'office_id')->Widget(\kartik\select2\Select2::className(), [
-                    'data' => \yii\helpers\ArrayHelper::map(\backend\models\Location::find()->all(), 'id', 'name'),
+                    'data' => \yii\helpers\ArrayHelper::map($model_office, 'id', 'name'),
                     'options' => [
                         'class' => 'office-select2',
                         'placeholder' => '--เลือก--',
