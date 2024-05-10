@@ -5,8 +5,11 @@ use kartik\date\DatePicker;
 $model = null;
 
 //if ($from_date!=null && $to_date != null) {
-$model = \common\models\StockTrans::find()->where(['activity_type_id' => [5, 6]])->andFilterWhere(['>=','date(trans_date)',date('Y-m-d',strtotime($from_date))])->andFilterWhere(['<=','date(trans_date)',date('Y-m-d',strtotime($to_date))])->all();
+$model = \common\models\StockTrans::find()->where(['activity_type_id' => [5, 6]])
+    ->andFilterWhere(['>=','date(trans_date)',date('Y-m-d',strtotime($from_date))])
+    ->andFilterWhere(['<=','date(trans_date)',date('Y-m-d',strtotime($to_date))]);
 
+$model = $model->all();
 //}
 
 ?>
