@@ -65,6 +65,7 @@ $cost_title_data = \common\models\FixcostTitle::find()->where(['type_id' => 2])-
                     'data' => \yii\helpers\ArrayHelper::map(\backend\models\Company::find()->all(), 'id', 'name'),
                     'options' => [
                         'placeholder' => '--เลือก--',
+                        'onchange' => 'getOffice($(this))',
                     ]
                 ]) ?>
             </div>
@@ -72,6 +73,7 @@ $cost_title_data = \common\models\FixcostTitle::find()->where(['type_id' => 2])-
                 <?= $form->field($model, 'office_id')->Widget(\kartik\select2\Select2::className(), [
                     'data' => \yii\helpers\ArrayHelper::map(\backend\models\Location::find()->all(), 'id', 'name'),
                     'options' => [
+                        'class' => 'office-select2',
                         'placeholder' => '--เลือก--',
                     ]
                 ]) ?>
@@ -241,7 +243,7 @@ $cost_title_data = \common\models\FixcostTitle::find()->where(['type_id' => 2])-
 
 <?php
 $url_to_Dropoffdata = \yii\helpers\Url::to(['dropoffplace/getdropoffdata'], true);
-
+$url_to_get_office = \yii\helpers\Url::to(['recieptrecord/getoffice'], true);
 $js = <<<JS
 var removelist = [];
 var removelist2 = [];
@@ -297,7 +299,21 @@ function addline(e){
         }
     }
 
-
+function getOffice(e){
+    var office_id = e.val();
+    $.ajax({
+        url: "$url_to_get_office",
+        type: "POST",
+        dataType: "html",
+        data: {
+            'company_id': office_id
+        },
+        success: function (data) {
+            $(".office-select2").html(data);
+        }
+        
+    })
+}
 JS;
 
 $this->registerJs($js, static::POS_END);

@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 date_default_timezone_set('Asia/Bangkok');
+
 use backend\models\Recieptrecord;
 use backend\models\RecieptrecordSearch;
 use yii\web\Controller;
@@ -98,7 +99,7 @@ class RecieptrecordController extends Controller
                     $trans_date = $x[2] . '/' . $x[1] . '/' . $x[0];
                 }
 
-                $model->trans_date =date('Y-m-d',strtotime($trans_date));
+                $model->trans_date = date('Y-m-d', strtotime($trans_date));
 
                 $model->status = 1;
                 if ($model->save(false)) {
@@ -171,7 +172,7 @@ class RecieptrecordController extends Controller
                 $trans_date = $x[2] . '/' . $x[1] . '/' . $x[0];
             }
 
-            $model->trans_date =date('Y-m-d',strtotime($trans_date));
+            $model->trans_date = date('Y-m-d', strtotime($trans_date));
 
             if ($model->save(false)) {
 
@@ -246,12 +247,29 @@ class RecieptrecordController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
-    function actionPrint($id){
-        $model = \backend\models\Recieptrecord::find()->where(['id'=>$id])->one();
-        $model_line = \common\models\RecieptRecordLine::find()->where(['reciept_record_id'=>$id])->all();
+    function actionPrint($id)
+    {
+        $model = \backend\models\Recieptrecord::find()->where(['id' => $id])->one();
+        $model_line = \common\models\RecieptRecordLine::find()->where(['reciept_record_id' => $id])->all();
         return $this->render('_print', [
             'model' => $model,
             'model_line' => $model_line,
         ]);
+    }
+
+    public function actionGetoffice()
+    {
+        $html = '';
+        $company_id = \Yii::$app->request->post('company_id');
+        if($company_id){
+            $model = \common\models\Location::find()->where(['company_id' => $company_id])->all();
+            if($model){
+                foreach ($model as $key => $value) {
+                    $html .= '<option value="'.$value->id.'">'.$value->name.'</option>';
+                }
+
+            }
+        }
+        echo $html;
     }
 }
