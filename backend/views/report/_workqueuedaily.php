@@ -108,7 +108,7 @@ if ($search_car_type != null) {
             </tr>
         </table>
         <br>
-        <table class="table table-bordered">
+        <table class="table table-bordered" id="table-data">
             <thead>
             <tr>
                 <th style="width: 8%;text-align: center;">ลำดับที่</th>
@@ -158,10 +158,18 @@ if ($search_car_type != null) {
     <div class="row">
         <div class="col-lg-4">
             <div class="btn btn-warning btn-print" onclick="printContent('print-area')">พิมพ์</div>
+            <div class="btn btn-info" id="btn-export-excel">Export Excel</div>
         </div>
     </div>
 <?php
 $js = <<<JS
+$("#btn-export-excel").click(function(){
+  $("#table-data").table2excel({
+    // exclude CSS class
+    exclude: ".noExl",
+    name: "Excel Document Name"
+  });
+});
 function printContent(el)
       {
          var restorepage = document.body.innerHTML;

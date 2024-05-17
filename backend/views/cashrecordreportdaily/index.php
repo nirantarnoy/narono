@@ -5,15 +5,14 @@ use kartik\date\DatePicker;
 $model = null;
 
 //if ($from_date!=null && $to_date != null) {
-$model = \common\models\StockTrans::find()->where(['activity_type_id' => [5, 6]])
-    ->andFilterWhere(['>=','date(trans_date)',date('Y-m-d',strtotime($from_date))])
+$model = \common\models\QueryCashCompareReceipt::find()->where(['>=','date(trans_date)',date('Y-m-d',strtotime($from_date))])
     ->andFilterWhere(['<=','date(trans_date)',date('Y-m-d',strtotime($to_date))]);
-//if($search_company_id != null){
-//    $model = $model->andWhere(['company_id' => $search_company_id]);
-//}
-//if($search_office_id != null){
-//    $model = $model->andWhere(['office_id' => $search_office_id]);
-//}
+if($search_company_id != null){
+    $model = $model->andfilterWhere(['company_id' => $search_company_id])->andFilterWhere(['company_id_2' => $search_company_id]);
+}
+if($search_office_id != null){
+    $model = $model->andWhere(['office_id' => $search_office_id])->andFilterWhere(['office_id_2' => $search_office_id]);
+}
 
 $model = $model->all();
 //}
