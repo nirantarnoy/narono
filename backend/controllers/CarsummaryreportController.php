@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\controllers;
 
 use backend\models\RoutePlan;
@@ -13,72 +14,87 @@ use yii\filters\VerbFilter;
 class CarsummaryreportController extends Controller
 {
     public $enableCsrfValidation = false;
-    public function actionIndex(){
+
+    public function actionIndex()
+    {
         $from_date = \Yii::$app->request->post('search_from_date');
         $to_date = \Yii::$app->request->post('search_to_date');
         $search_car_id = \Yii::$app->request->post('search_car_id');
         $social_per = \Yii::$app->request->post('social_per');
 
-        $x1 = explode('-',$from_date);
-        $x2 = explode('-',$to_date);
+        $x1 = explode('-', $from_date);
+        $x2 = explode('-', $to_date);
 
         $from_date_new = date("Y-m-d");
         $to_date_new = date("Y-m-d");
 
-        if($x1!=null && count($x1)>1){
+        if ($x1 != null && count($x1) > 1) {
             //echo count($x1);
-            $from_date_new = $x1[2].'-'.$x1[1].'-'.$x1[0];
+            $from_date_new = $x1[2] . '-' . $x1[1] . '-' . $x1[0];
         }
-        if($x2!=null && count($x2)>1){
-            $to_date_new = $x2[2].'-'.$x2[1].'-'.$x2[0];
+        if ($x2 != null && count($x2) > 1) {
+            $to_date_new = $x2[2] . '-' . $x2[1] . '-' . $x2[0];
         }
         //echo $from_date_new;
-        return $this->render('_index',[
-            'from_date'=>$from_date_new,
-            'to_date'=>$to_date_new,
+        return $this->render('_index', [
+            'from_date' => $from_date_new,
+            'to_date' => $to_date_new,
             'search_car_id' => $search_car_id,
             'social_per' => $social_per,
         ]);
     }
 
-    public function actionIndexnew(){
+    public function actionIndexnew()
+    {
         $from_date = \Yii::$app->request->post('search_from_date');
         $to_date = \Yii::$app->request->post('search_to_date');
         $search_car_id = \Yii::$app->request->post('search_car_id');
 
-        $x1 = explode('-',$from_date);
-        $x2 = explode('-',$to_date);
+        $x1 = explode('-', $from_date);
+        $x2 = explode('-', $to_date);
 
         $from_date_new = date("Y-m-d");
         $to_date_new = date("Y-m-d");
 
-        if($x1!=null && count($x1)>1){
+        if ($x1 != null && count($x1) > 1) {
             //echo count($x1);
-            $from_date_new = $x1[2].'-'.$x1[1].'-'.$x1[0];
+            $from_date_new = $x1[2] . '-' . $x1[1] . '-' . $x1[0];
         }
-        if($x2!=null && count($x2)>1){
-            $to_date_new = $x2[2].'-'.$x2[1].'-'.$x2[0];
+        if ($x2 != null && count($x2) > 1) {
+            $to_date_new = $x2[2] . '-' . $x2[1] . '-' . $x2[0];
         }
         //echo $from_date_new;
 
 //        $this->layout='main_login';
 
-        return $this->render('_index1',[
-            'from_date'=>$from_date_new,
-            'to_date'=>$to_date_new,
+        return $this->render('_index1', [
+            'from_date' => $from_date_new,
+            'to_date' => $to_date_new,
             'search_car_id' => $search_car_id,
         ]);
     }
 
-    public function actionReport2(){
+    public function actionReport2()
+    {
         return $this->render('_report2');
     }
-    public function actionWorkqueuedaily(){
+
+    public function actionWorkqueuedaily()
+    {
         $search_date = \Yii::$app->request->post('search_date');
         $search_car_type = \Yii::$app->request->post('search_car_type');
-        return $this->render('_workqueuedaily',[
+        return $this->render('_workqueuedaily', [
             'search_date' => $search_date,
             'search_car_type' => $search_car_type,
         ]);
+    }
+
+    public function actionExportindex()
+    {
+       return $this->render('_exportindex',[
+           'from_date'=>null,
+           'to_date'=> null,
+           'search_car_id'=>null,
+       ]);
     }
 }
