@@ -107,6 +107,8 @@ class WorkqueueController extends Controller
                 $qty = \Yii::$app->request->post('qty');
                 $weight = \Yii::$app->request->post('weight');
 
+                $company_id = \backend\models\CUstomer::findCompanyByCustomer($model->customer_id);
+
                 //   print_r($weight); return ;
                 $model->is_invoice = 0;
                 $model->oil_daily_price = $oil_daily_price;
@@ -116,6 +118,7 @@ class WorkqueueController extends Controller
                 $model->total_out_lite = $total_out_lite;
                 $model->total_amount = $total_amount;
                 $model->total_amount2 = $total_amount2;
+                $model->company_id = $company_id;
                 if ($model->save(false)) {
 
 //                    echo '123'; return ;
@@ -227,7 +230,7 @@ class WorkqueueController extends Controller
 
             $removelist2 = \Yii::$app->request->post('remove_list2');
 
-            $company_id = \backend\models\CUstomer::findCompanyByCustomer($model->customer_id);
+
 
 
 //            print_r($dropoff_id);
@@ -239,7 +242,7 @@ class WorkqueueController extends Controller
             $model->total_out_lite = $total_out_lite;
             $model->total_amount = $total_amount;
             $model->total_amount2 = $total_amount2;
-            $model->company_id = $company_id;
+
             if ($model->save(false)) {
                 if ($line_id != null) {
                     // echo count($uploaded);return;
