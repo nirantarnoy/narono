@@ -239,6 +239,7 @@ class WorkqueueController extends Controller
             $model->total_out_lite = $total_out_lite;
             $model->total_amount = $total_amount;
             $model->total_amount2 = $total_amount2;
+            $model->company_id = $company_id;
             if ($model->save(false)) {
                 if ($line_id != null) {
                     // echo count($uploaded);return;
