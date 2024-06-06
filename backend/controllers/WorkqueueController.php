@@ -107,7 +107,7 @@ class WorkqueueController extends Controller
                 $qty = \Yii::$app->request->post('qty');
                 $weight = \Yii::$app->request->post('weight');
 
-                $company_id = \backend\models\CUstomer::findCompanyByCustomer($model->customer_id);
+                $company_id = \backend\models\Customer::findCompanyByCustomer($model->customer_id);
 
                 //   print_r($weight); return ;
                 $model->is_invoice = 0;
