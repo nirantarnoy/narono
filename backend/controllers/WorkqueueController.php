@@ -227,6 +227,8 @@ class WorkqueueController extends Controller
 
             $removelist2 = \Yii::$app->request->post('remove_list2');
 
+            $company_id = \backend\models\CUstomer::findCompanyByCustomer($model->customer_id);
+
 
 //            print_r($dropoff_id);
 //            print_r($weight);return;

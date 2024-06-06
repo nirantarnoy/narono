@@ -83,6 +83,11 @@ class Customer extends \common\models\Customer
         $model = AddressInfo::find()->where(['party_id' => $id,'party_type'=>2])->one();
         return $model != null ? $model->province_id : 0;
     }
+    public static function findCompanyByCustomer($id)
+    {
+        $model = Customer::find()->where(['id' => $id])->one();
+        return $model != null ? $model->company_id : 0;
+    }
     public static function findTaxId($id)
     {
         $model = Customer::find()->where(['id' => $id])->one();
