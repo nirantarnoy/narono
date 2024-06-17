@@ -161,11 +161,11 @@ function getLineData($customer_id, $find_year, $car_type_id)
             for ($i = 0; $i <= count($model) - 1; $i++) {
                 if ($m + 1 == $model[$i]['month']) {
                     $data[$m] = $model[$i]['cnt'];
-                } else {
-                    $data[$m] = 0;
                 }
             }
-
+            if ($data[$m] == null) {
+                $data[$m] = 0;
+            }
         }
 
     }
