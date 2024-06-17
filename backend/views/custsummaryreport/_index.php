@@ -108,7 +108,7 @@ if ($model) {
                 <?php if ($customer_data != null): ?>
                     <?php for ($k = 0; $k <= count($customer_data) - 1; $k++): ?>
                         <?php if ($customer_data[$k] == null) continue; ?>
-                        <?php $line_count_data = getLineData($customer_data[$k], 2023, 6); ?>
+                        <?php $line_count_data = getLineData($customer_data[$k], $find_year, $car_type_id); ?>
                         <?php // print_r($line_count_data);?>
                         <tr>
                             <td style="text-align: left;width: 20%;"><?= \backend\models\Customer::findCusName($customer_data[$k]) ?></td>
