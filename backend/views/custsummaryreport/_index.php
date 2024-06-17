@@ -153,18 +153,23 @@ function getLineData($customer_id, $find_year, $car_type_id)
     }
 
     $sql .= " GROUP BY t1.customer_id, month(t1.work_queue_date)";
+    $sql .= " ORDER BY month(t1.work_queue_date) asc";
 
     $query = \Yii::$app->db->createCommand($sql);
     $model = $query->queryAll();
     if ($model) {
         for ($m = 0; $m <= 11; $m++) {
+            $has_data = false;
             for ($i = 0; $i <= count($model) - 1; $i++) {
-                if ($m + 1 == $model[$i]['month']) {
+                if ($m + 1 == (int)$model[$i]['month']) {
                     $data[$m] = $model[$i]['cnt'];
-                    continue 2;
+                    $has_data = true;
                 }
             }
 
+            if (!$has_data) {
+                $data[$m] = 0;
+            }
         }
 
     }
