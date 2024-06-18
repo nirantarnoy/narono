@@ -208,7 +208,7 @@ function getAmount($m,$find_customer_id,$find_year,$car_type_id)
     $cnt = 0;
     $sql = "SELECT count(t1.customer_id) as cnt";
     $sql .= " FROM work_queue as t1 inner join car as t2 on t1.car_id = t2.id";
-    $sql .= " WHERE id > 0" ;
+    $sql .= " WHERE t1.id > 0" ;
     if ($find_customer_id != null) {
         $sql .= " AND t1.customer_id =" . $find_customer_id;
     }
