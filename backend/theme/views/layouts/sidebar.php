@@ -543,6 +543,18 @@
                                 <p> กราฟสรุปเงินสดย่อย </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="index.php?r=custsummaryreport/index" class="nav-link custsummaryreport">
+                                <i class="far fa-circlez nav-icon"></i>
+                                <p> เที่ยววิ่งแยกลูกค้า </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="index.php?r=custdetailreport/index" class="nav-link custdetailreport">
+                                <i class="far fa-circlez nav-icon"></i>
+                                <p> เที่ยววิ่งระบุลูกค้า </p>
+                            </a>
+                        </li>
                         <?php //endif;?>
 
                     </ul>

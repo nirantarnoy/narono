@@ -6,39 +6,52 @@ for ($i = 2022; $i <= date('Y'); $i++) {
 }
 
 $car_type_data = \backend\models\CarType::find()->where(['status' => 1])->all();
+$model_customer = \backend\models\Customer::find()->where(['status' => 1])->all();
 
 $customer_data = [];
+$model = null;
 
-$sql = "SELECT t1.customer_id";
-$sql .= " FROM work_queue as t1 inner join car as t2 on t1.car_id = t2.id";
-$sql .= " WHERE t1.id > 0";
-if ($find_year != null) {
-    $sql .= " AND year(t1.work_queue_date)=" . $find_year;
-}
-if ($car_type_id != null) {
-    $sql .= " AND t2.car_type_id=" . $car_type_id;
-}
+if($find_customer_id != null){
+    $sql = "SELECT t1.customer_id";
+    $sql .= " FROM work_queue as t1 inner join car as t2 on t1.car_id = t2.id";
+    $sql .= " WHERE t1.id > 0";
+    if ($find_year != null) {
+        $sql .= " AND year(t1.work_queue_date)=" . $find_year;
+    }
+    if ($car_type_id != null) {
+        $sql .= " AND t2.car_type_id=" . $car_type_id;
+    }
 
-$sql .= " GROUP BY t1.customer_id";
+    $sql .= " GROUP BY t1.customer_id";
 
-$query = \Yii::$app->db->createCommand($sql);
-$model = $query->queryAll();
-if ($model) {
-    for ($i = 0; $i <= count($model) - 1; $i++) {
-        array_push($customer_data, $model[$i]['customer_id']);
+    $query = \Yii::$app->db->createCommand($sql);
+    $model = $query->queryAll();
+    if ($model) {
+        for ($i = 0; $i <= count($model) - 1; $i++) {
+            array_push($customer_data, $model[$i]['customer_id']);
+        }
     }
 }
+
 
 ?>
 
 <div class="row">
     <div class="col-lg-12" style="text-align: center;">
-        <h3>รายงานเที่ยววิ่งลูกค้า</h3>
+        <h3>รายงานเที่ยววิ่งระบุลูกค้า</h3>
     </div>
 </div>
 <br/>
-<form action="index.php?r=custsummaryreport" method="post">
+<form action="index.php?r=custdetailreport" method="post">
     <div class="row">
+        <div class="col-lg-3">
+            <label for="">ลูกค้า</label>
+            <select class="form-control" id="find_customer_id" name="find_customer_id">
+                <?php foreach ($model_customer as $y): ?>
+                    <option value="<?= $y->id ?>" <?= ($y->id == $find_customer_id) ? 'selected' : '' ?>><?= $y->name ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
         <div class="col-lg-3">
             <label for="">ประจำปี</label>
             <select class="form-control" id="find_year" name="find_year">
@@ -69,19 +82,11 @@ if ($model) {
             <table class="table table-bordered">
                 <thead>
                 <tr>
-                    <th style="text-align: center;width: 20%;">ลูกค้า</th>
-                    <th style="text-align: center;">ม.ค.</th>
-                    <th style="text-align: center;">ก.พ.</th>
-                    <th style="text-align: center;">มี.ค.</th>
-                    <th style="text-align: center;">เม.ย.</th>
-                    <th style="text-align: center;">พ.ค.</th>
-                    <th style="text-align: center;">มิ.ย.</th>
-                    <th style="text-align: center;">ก.ค.</th>
-                    <th style="text-align: center;">ส.ค.</th>
-                    <th style="text-align: center;">ก.ย.</th>
-                    <th style="text-align: center;">ต.ค.</th>
-                    <th style="text-align: center;">พ.ค.</th>
-                    <th style="text-align: center;">ธ.ค.</th>
+                    <th style="text-align: center;width: 20%;">สถานที่</th>
+                    <th style="text-align: center;">วันที่</th>
+                    <th style="text-align: center;">ทะเบียน</th>
+                    <th style="text-align: center;">ลูกค้า</th>
+
                 </tr>
                 </thead>
                 <tbody>
@@ -95,15 +100,6 @@ if ($model) {
                             <td style="text-align: center;"><?= number_format($line_count_data != null ? $line_count_data[0] : 0) ?></td>
                             <td style="text-align: center;"><?= number_format($line_count_data != null ? $line_count_data[1] : 0) ?></td>
                             <td style="text-align: center;"><?= number_format($line_count_data != null ? $line_count_data[2] : 0) ?></td>
-                            <td style="text-align: center;"><?= number_format($line_count_data != null ? $line_count_data[3] : 0) ?></td>
-                            <td style="text-align: center;"><?= number_format($line_count_data != null ? $line_count_data[4] : 0) ?></td>
-                            <td style="text-align: center;"><?= number_format($line_count_data != null ? $line_count_data[5] : 0) ?></td>
-                            <td style="text-align: center;"><?= number_format($line_count_data != null ? $line_count_data[6] : 0) ?></td>
-                            <td style="text-align: center;"><?= number_format($line_count_data != null ? $line_count_data[7] : 0) ?></td>
-                            <td style="text-align: center;"><?= number_format($line_count_data != null ? $line_count_data[8] : 0) ?></td>
-                            <td style="text-align: center;"><?= number_format($line_count_data != null ? $line_count_data[9] : 0) ?></td>
-                            <td style="text-align: center;"><?= number_format($line_count_data != null ? $line_count_data[10] : 0) ?></td>
-                            <td style="text-align: center;"><?= number_format($line_count_data != null ? $line_count_data[11] : 0) ?></td>
                         </tr>
                     <?php endfor; ?>
                 <?php endif; ?>
