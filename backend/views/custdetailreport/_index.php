@@ -1,4 +1,7 @@
 <?php
+
+use miloschuman\highcharts\Highcharts;
+
 $year = [];
 
 for ($i = 2022; $i <= date('Y'); $i++) {
@@ -8,13 +11,13 @@ for ($i = 2022; $i <= date('Y'); $i++) {
 $car_type_data = \backend\models\CarType::find()->where(['status' => 1])->all();
 $model_customer = \backend\models\Customer::find()->where(['status' => 1])->all();
 
-$customer_data = [];
+$table_data = [];
 $model = null;
 
 if($find_customer_id != null){
-    $sql = "SELECT t1.customer_id";
-    $sql .= " FROM work_queue as t1 inner join car as t2 on t1.car_id = t2.id";
-    $sql .= " WHERE t1.id > 0";
+    $sql = "SELECT t1.work_queue_no,t1.customer_id,t4.name as dropoff_name,t1.work_queue_date,t2.plate_no,t5.name as customer_name";
+    $sql .= " FROM work_queue as t1 inner join car as t2 on t1.car_id = t2.id inner join work_queue_dropoff as t3 on t1.id = t3.work_queue_id inner join dropoff_place as t4 on t3.dropoff_id = t4.id inner join customer as t5 on t1.customer_id = t5.id";
+    $sql .= " WHERE t1.customer_id =" . $find_customer_id;
     if ($find_year != null) {
         $sql .= " AND year(t1.work_queue_date)=" . $find_year;
     }
@@ -22,16 +25,45 @@ if($find_customer_id != null){
         $sql .= " AND t2.car_type_id=" . $car_type_id;
     }
 
-    $sql .= " GROUP BY t1.customer_id";
+    $sql .= " GROUP BY t1.customer_id,t1.work_queue_no";
 
     $query = \Yii::$app->db->createCommand($sql);
     $model = $query->queryAll();
     if ($model) {
         for ($i = 0; $i <= count($model) - 1; $i++) {
-            array_push($customer_data, $model[$i]['customer_id']);
+            array_push($table_data, [
+                'work_queue_no' => $model[$i]['work_queue_no'],
+                'customer_id' => $model[$i]['customer_id'],
+                'dropoff_name' => $model[$i]['dropoff_name'],
+                'plate_no' => $model[$i]['plate_no'],
+                'customer_name' => $model[$i]['customer_name'],
+                'trans_date' => date('d-m-Y',strtotime($model[$i]['work_queue_date']))]);
         }
     }
 }
+
+$m_data_gharp = [];
+$m_data = [['id' => 1, 'name' => 'มกราคม'], ['id' => 2, 'name' => 'กุมภาพันธ์'], ['id' => 3, 'name' => 'มีนาคม'], ['id' => 4, 'name' => 'เมษายน'], ['id' => 5, 'name' => 'พฤษภาคม'], ['id' => 6, 'name' => 'มิถุนายน'], ['id' => 7, 'name' => 'กรกฎาคม'], ['id' => 8, 'name' => 'สิงหาคม'], ['id' => 9, 'name' => 'กันยายน'], ['id' => 10, 'name' => 'ตุลาคม'], ['id' => 11, 'name' => 'พฤศจิกายน'], ['id' => 12, 'name' => 'ธันวาคม']];
+$y_data = [];
+$total = [];
+$total_for_gharp = [];
+
+
+
+for ($k = 0; $k <= count($m_data) - 1; $k++) {
+    array_push($m_data_gharp, $m_data[$k]['name']);
+}
+$m1 = [];
+
+for ($ix = 0; $ix <= count($m_data) - 1; $ix++) {
+    $line_x = getAmount($m_data[$ix]['id'], $find_customer_id, $find_year,$car_type_id);
+    //echo $line_x;return;
+    array_push($m1, (float)$line_x);
+}
+//    print_r($m1);
+    array_push($total_for_gharp, ['name' => $find_year, 'data' => $m1]);
+
+$data_series = $total_for_gharp;
 
 
 ?>
@@ -83,6 +115,7 @@ if($find_customer_id != null){
                 <thead>
                 <tr>
                     <th style="text-align: center;width: 20%;">สถานที่</th>
+                    <th style="text-align: center;">เลขที่</th>
                     <th style="text-align: center;">วันที่</th>
                     <th style="text-align: center;">ทะเบียน</th>
                     <th style="text-align: center;">ลูกค้า</th>
@@ -90,22 +123,40 @@ if($find_customer_id != null){
                 </tr>
                 </thead>
                 <tbody>
-                <?php if ($customer_data != null): ?>
-                    <?php for ($k = 0; $k <= count($customer_data) - 1; $k++): ?>
-                        <?php if ($customer_data[$k] == null) continue; ?>
-                        <?php $line_count_data = getLineData($customer_data[$k], $find_year, $car_type_id); ?>
-                        <?php // print_r($line_count_data);?>
+                <?php if ($table_data != null): ?>
+                    <?php for ($k = 0; $k <= count($table_data) - 1; $k++): ?>
                         <tr>
-                            <td style="text-align: left;width: 20%;"><?= \backend\models\Customer::findCusName($customer_data[$k]) ?></td>
-                            <td style="text-align: center;"><?= number_format($line_count_data != null ? $line_count_data[0] : 0) ?></td>
-                            <td style="text-align: center;"><?= number_format($line_count_data != null ? $line_count_data[1] : 0) ?></td>
-                            <td style="text-align: center;"><?= number_format($line_count_data != null ? $line_count_data[2] : 0) ?></td>
+                            <td style="text-align: left;width: 20%;"><?= $table_data[$k]['dropoff_name'] ?></td>
+                            <td style="text-align: center;"><?= $table_data[$k]['work_queue_no'] ?></td>
+                            <td style="text-align: center;"><?= $table_data[$k]['trans_date'] ?></td>
+                            <td style="text-align: center;"><?= $table_data[$k]['plate_no'] ?></td>
+                            <td style="text-align: left;"><?= $table_data[$k]['customer_name'] ?></td>
                         </tr>
                     <?php endfor; ?>
                 <?php endif; ?>
                 </tbody>
             </table>
         </div>
+    </div>
+</div>
+
+<br/>
+<div class="row">
+    <div class="col-lg-12">
+        <?php
+        echo Highcharts::widget([
+            'options' => [
+                'title' => ['text' => 'กราฟ'],
+                'xAxis' => [
+                    'categories' => $m_data_gharp
+                ],
+                'yAxis' => [
+                    'title' => ['text' => 'เที่ยว']
+                ],
+                'series' => $data_series
+            ]
+        ]);
+        ?>
     </div>
 </div>
 <br/>
@@ -152,7 +203,34 @@ function getLineData($customer_id, $find_year, $car_type_id)
 
     return $data;
 }
+function getAmount($m,$find_customer_id,$find_year,$car_type_id)
+{
+    $cnt = 0;
+    $sql = "SELECT count(t1.customer_id) as cnt";
+    $sql .= " FROM work_queue as t1 inner join car as t2 on t1.car_id = t2.id";
+    $sql .= " WHERE t1.customer_id =" . $find_customer_id;
+    if ($find_year != null) {
+        $sql .= " AND year(t1.work_queue_date)=" . $find_year;
+    }
+    if ($m != null) {
+        $sql .= " AND month(t1.work_queue_date)=" . $m;
+    }
+    if ($car_type_id != null) {
+        $sql .= " AND t2.car_type_id=" . $car_type_id;
+    }
 
+    $sql .= " GROUP BY t1.customer_id, month(t1.work_queue_date)";
+    $sql .= " ORDER BY month(t1.work_queue_date) asc";
+
+    $query = \Yii::$app->db->createCommand($sql);
+    $model = $query->queryAll();
+    if ($model) {
+       for($i = 0; $i <= count($model) - 1; $i++){
+           $cnt = $model[$i]['cnt'];
+       }
+    }
+    return $cnt;
+}
 ?>
 
 <?php
