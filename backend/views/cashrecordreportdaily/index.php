@@ -8,10 +8,10 @@ $model = null;
 $model = \common\models\QueryCashCompareReceipt::find()->where(['>=','date(trans_date)',date('Y-m-d',strtotime($from_date))])
     ->andFilterWhere(['<=','date(trans_date)',date('Y-m-d',strtotime($to_date))]);
 if($search_company_id != null){
-    $model = $model->andfilterWhere(['company_id' => $search_company_id])->orFilterWhere(['company_id_2' => $search_company_id]);
+    $model = $model->andfilterWhere(['or','company_id' => $search_company_id,'company_id_2' => $search_company_id]);
 }
 if($search_office_id != null){
-    $model = $model->andWhere(['office_id' => $search_office_id])->orFilterWhere(['office_id_2' => $search_office_id]);
+    $model = $model->andWhere([['or'],'office_id' => $search_office_id,'office_id_2' => $search_office_id]);
 }
 
 $model = $model->all();
