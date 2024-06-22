@@ -96,6 +96,15 @@ class PurchorderController extends Controller
                 $line_price =\Yii::$app->request->post('line_price');
                 $line_total =\Yii::$app->request->post('line_total');
 
+                $p_date =date('Y-m-d');
+                $xdate = explode('-', $model->trans_date);
+                if($xdate !=null){
+                    if(count($xdate)>1){
+                        $p_date = $xdate[2].'-'.$xdate[1].'-'.$xdate[0];
+                    }
+                }
+
+                $model->trans_date = date('Y-m-d',strtotime($p_date));
                 $model->status = 1;
                 $model->purch_no = Purchorder::getLastNo();
                 if($model->save(false)){
