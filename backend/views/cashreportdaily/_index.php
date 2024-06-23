@@ -213,14 +213,14 @@ function printContent(el)
 function getOfficeList(el){
     var company_id = $(el).val();
     if(company_id > 0){
-        alert(company_id);
+      //  alert(company_id);
          $.ajax({
         url: '$url_to_get_office',
         type: 'POST',
         dataType: 'html',
         data: {'company_id': company_id},
         success: function (data) {
-            alert(data);
+         //   alert(data);
         
             $('#office-list').html(data);
         }
