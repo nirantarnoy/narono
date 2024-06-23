@@ -221,6 +221,7 @@ function getOfficeList(el){
             alert(data);
         
             $('#office-list').html(data);
+        }
         });
 }     
 JS;
