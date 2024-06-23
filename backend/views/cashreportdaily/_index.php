@@ -80,7 +80,7 @@ if ($search_cost_type != null) {
                 'value' => $search_company_id,
                 'options' => [
                     'placeholder' => '---เลือกบริษัท---',
-                    'onchange' => 'getOfficeList($(this).val());'
+                    'onchange' => 'getOfficeList(this);'
                 ],
                 'pluginOptions' => [
                     'allowClear' => true,
