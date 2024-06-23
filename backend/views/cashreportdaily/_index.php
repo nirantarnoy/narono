@@ -20,7 +20,7 @@ $model = null;
 if ($search_cost_type != null) {
     $model = \common\models\QueryCashRecord::find()->where(['cost_title_id' => $search_cost_type, 'company_id' => $search_company_id, 'office_id' => $search_office_id])->andFilterWhere(['>=', 'date(trans_date)', $find_date])->andFilterWhere(['<=', 'date(trans_date)', $find_to_date])->all();
 } else {
-    $model = \common\models\QueryCashRecord::find()->where(['company_idx' => $search_company_id, 'office_id' => $search_office_id])->andFilterWhere(['>=', 'date(trans_date)', $find_date])->andFilterWhere(['<=', 'date(trans_date)', $find_to_date])->all();
+    $model = \common\models\QueryCashRecord::find()->where(['company_id' => $search_company_id, 'office_id' => $search_office_id])->andFilterWhere(['>=', 'date(trans_date)', $find_date])->andFilterWhere(['<=', 'date(trans_date)', $find_to_date])->all();
 }
 
 ?>
@@ -79,7 +79,8 @@ if ($search_cost_type != null) {
                 'data' => \yii\helpers\ArrayHelper::map(\common\models\Company::find()->where(['status' => 1])->all(), 'id', 'name'),
                 'value' => $search_company_id,
                 'options' => [
-                    'placeholder' => '---เลือกบริษัท---'
+                    'placeholder' => '---เลือกบริษัท---',
+                    'onchange' => 'getOfficeList(this.value);'
                 ],
                 'pluginOptions' => [
                     'allowClear' => true,
@@ -94,6 +95,7 @@ if ($search_cost_type != null) {
                 'name' => 'search_office_id',
                 'data' => \yii\helpers\ArrayHelper::map(\backend\helpers\OfficeType::asArrayObject(), 'id', 'name'),
                 'value' => $search_office_id,
+                'id' => 'office-list',
                 'options' => [
                     'placeholder' => '---เลือกสำนักงาน---'
                 ],
@@ -190,6 +192,7 @@ if ($search_cost_type != null) {
 </div>
 <?php
 $this->registerJsFile(\Yii::$app->request->baseUrl . '/js/jquery.table2excel.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
+$url_to_get_office = \yii\helpers\Url::to(['cashrecord/getoffice'], true);
 $js = <<<JS
 $("#btn-export-excel").click(function(){
   $("#table-data").table2excel({
@@ -206,6 +209,20 @@ function printContent(el)
          window.print();
          document.body.innerHTML = restorepage;
      }
+     
+function getOfficeList(el){
+    var company_id = $(el).val();
+    $.ajax({
+        url: '$url_to_get_office',
+        type: 'POST',
+        dataType: 'html',
+        data: {'company_id': company_id},
+        success: function (data) {
+            alert(data);
+        
+            $('#office-list').html(data);
+        }
+}     
 JS;
 $this->registerJs($js, static::POS_END);
 ?>
