@@ -80,7 +80,7 @@ if ($search_cost_type != null) {
                 'value' => $search_company_id,
                 'options' => [
                     'placeholder' => '---เลือกบริษัท---',
-                    'onchange' => 'getOfficeList(this.value);'
+                    'onchange' => 'getOfficeList($(this).val());'
                 ],
                 'pluginOptions' => [
                     'allowClear' => true,
@@ -192,7 +192,7 @@ if ($search_cost_type != null) {
 </div>
 <?php
 $this->registerJsFile(\Yii::$app->request->baseUrl . '/js/jquery.table2excel.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
-$url_to_get_office = \yii\helpers\Url::to(['cashrecord/getoffice'], true);
+$url_to_get_office = \yii\helpers\Url::to(['cashreportdaily/getoffice'], true);
 $js = <<<JS
 $("#btn-export-excel").click(function(){
   $("#table-data").table2excel({
@@ -221,7 +221,7 @@ function getOfficeList(el){
             alert(data);
         
             $('#office-list').html(data);
-        }
+        });
 }     
 JS;
 $this->registerJs($js, static::POS_END);
