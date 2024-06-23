@@ -212,7 +212,9 @@ function printContent(el)
      
 function getOfficeList(el){
     var company_id = $(el).val();
-    $.ajax({
+    if(company_id > 0){
+        alert(company_id);
+         $.ajax({
         url: '$url_to_get_office',
         type: 'POST',
         dataType: 'html',
@@ -222,7 +224,9 @@ function getOfficeList(el){
         
             $('#office-list').html(data);
         }
-        });
+    });
+    }
+   
 }     
 JS;
 $this->registerJs($js, static::POS_END);
