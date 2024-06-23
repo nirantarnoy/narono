@@ -20,7 +20,7 @@ $model = null;
 if ($search_cost_type != null) {
     $model = \common\models\QueryCashRecord::find()->where(['cost_title_id' => $search_cost_type, 'company_id' => $search_company_id, 'office_id' => $search_office_id])->andFilterWhere(['>=', 'date(trans_date)', $find_date])->andFilterWhere(['<=', 'date(trans_date)', $find_to_date])->all();
 } else {
-    $model = \common\models\QueryCashRecord::find()->where(['company_id' => $search_company_id, 'office_id' => $search_office_id])->andFilterWhere(['>=', 'date(trans_date)', $find_date])->andFilterWhere(['<=', 'date(trans_date)', $find_to_date])->all();
+    $model = \common\models\QueryCashRecord::find()->where(['company_idx' => $search_company_id, 'office_id' => $search_office_id])->andFilterWhere(['>=', 'date(trans_date)', $find_date])->andFilterWhere(['<=', 'date(trans_date)', $find_to_date])->all();
 }
 
 ?>
