@@ -23,6 +23,8 @@ if ($search_cost_type != null) {
     $model = \common\models\QueryCashRecord::find()->where(['company_id' => $search_company_id, 'office_id' => $search_office_id])->andFilterWhere(['>=', 'date(trans_date)', $find_date])->andFilterWhere(['<=', 'date(trans_date)', $find_to_date])->all();
 }
 
+$location_data = \common\models\Location::find()->where(['company_id' => $search_company_id])->all();
+
 ?>
 <form action="<?= \yii\helpers\Url::to(['cashreportdaily/index'], true) ?>" method="post">
     <div class="row">
@@ -90,19 +92,30 @@ if ($search_cost_type != null) {
         </div>
         <div class="col-lg-2">
             <label class="form-label">สำนักงาน</label>
+            <select name="search_office_id" id="office-list" class="form-control">
+                <?php
+                for($a=0;$a <=count($location_data)-1;$a++){
+                    $selected = '';
+                    if($location_data[$a]->id == $search_office_id){
+                        $selected = 'selected';
+                    }
+                    echo '<option value="'.$location_data[$a]->id.'" '.$selected.'>'.$location_data[$a]->name.'</option>';
+                }
+                ?>
+            </select>
             <?php
-            echo \kartik\select2\Select2::widget([
-                'name' => 'search_office_id',
-                'data' => \yii\helpers\ArrayHelper::map(\backend\helpers\OfficeType::asArrayObject(), 'id', 'name'),
-                'value' => $search_office_id,
-                'id' => 'office-list',
-                'options' => [
-                    'placeholder' => '---เลือกสำนักงาน---'
-                ],
-                'pluginOptions' => [
-                    'allowClear' => true,
-                ]
-            ]);
+//            echo \kartik\select2\Select2::widget([
+//                'name' => 'search_office_id',
+//                'data' => \yii\helpers\ArrayHelper::map(\backend\helpers\OfficeType::asArrayObject(), 'id', 'name'),
+//                'value' => $search_office_id,
+//                'id' => 'office-list',
+//                'options' => [
+//                    'placeholder' => '---เลือกสำนักงาน---'
+//                ],
+//                'pluginOptions' => [
+//                    'allowClear' => true,
+//                ]
+//            ]);
             ?>
         </div>
         <div class="col-lg-2">
