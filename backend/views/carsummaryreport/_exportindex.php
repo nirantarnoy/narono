@@ -15,9 +15,9 @@ if ($from_date != '' && $to_date != '') {
     $date_year = date('Y', strtotime($to_date)) + 543;
 
     if ($search_car_id != null) {
-        $model_line = \common\models\QueryCarWorkSummary::find()->where(['car_id' => $search_car_id])->andFilterWhere(['>=', 'date(work_queue_date)', $from_date])->andFilterWhere(['<=', 'date(work_queue_date)', $to_date])->orderBy(['work_queue_date' => SORT_ASC])->all();
+        $model_line = \common\models\QueryCarWorkSummary::find()->where(['car_id' => $search_car_id])->andFilterWhere(['>=', 'date(work_queue_date)', date('Y-m-d',strtotime($from_date))])->andFilterWhere(['<=', 'date(work_queue_date)', date('Y-m-d',strtotime($to_date))])->orderBy(['work_queue_date' => SORT_ASC])->all();
     }else{
-        $model_line = \common\models\QueryCarWorkSummary::find()->where(['>=', 'date(work_queue_date)', $from_date])->andFilterWhere(['<=', 'date(work_queue_date)', $to_date])->orderBy(['work_queue_date' => SORT_ASC])->all();
+        $model_line = \common\models\QueryCarWorkSummary::find()->where(['>=', 'date(work_queue_date)', date('Y-m-d',strtotime($from_date))])->andFilterWhere(['<=', 'date(work_queue_date)', date('Y-m-d',strtotime($to_date))])->orderBy(['work_queue_date' => SORT_ASC])->all();
     }
 
     $from_date = date('d-m-Y', strtotime($from_date));
