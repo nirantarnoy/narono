@@ -134,9 +134,9 @@ $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
                         echo DatePicker::widget([
                             'name' => 'search_from_date',
                             'type' => DatePicker::TYPE_INPUT,
-                            'value' => date('Y-m-d',strtotime($from_date)),
+                            'value' => date('d-m-Y',strtotime($from_date)),
                             'pluginOptions' => [
-                                'autoclose' => true,
+                                'autoClose' => true,
                                 'format' => 'dd-mm-yyyy',
                                 'todayHighlight' => true,
                                 'todayBtn' => true,
@@ -152,9 +152,9 @@ $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
                         echo DatePicker::widget([
                             'name' => 'search_to_date',
                             'type' => DatePicker::TYPE_INPUT,
-                            'value' => date('Y-m-d',strtotime($to_date)),
+                            'value' => date('d-m-Y',strtotime($to_date)),
                             'pluginOptions' => [
-                                'autoclose' => true,
+                                 'autoClose' => true,
                                 'format' => 'dd-mm-yyyy',
                                 'todayHighlight' => true,
                                 'todayBtn' => true,
@@ -191,21 +191,21 @@ $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
     </div>
     <div style="height: 20px;"></div>
     <div id="print-area">
-        <table style="width: 100%">
-            <tr>
-                <td style="text-align: right;width: 33%"></td>
-                <td style="text-align: center;width: 33%"><h4>
-                        <b><?= \backend\models\Company::findCompanyName($emp_company_id) ?></b></h4></td>
-                <td style="text-align: right;width: 33%"></td>
-            </tr>
-            <tr>
-                <td style="text-align: right;width: 33%"></td>
-                <td style="text-align: center;width: 33%">
-                    <h6><?= \backend\models\Company::findAddress($emp_company_id) ?></h6></td>
-                <td style="text-align: right;width: 33%"></td>
-            </tr>
-        </table>
-        <br>
+<!--        <table style="width: 100%">-->
+<!--            <tr>-->
+<!--                <td style="text-align: right;width: 33%"></td>-->
+<!--                <td style="text-align: center;width: 33%"><h4>-->
+<!--                        <b>--><?php //= \backend\models\Company::findCompanyName($emp_company_id) ?><!--</b></h4></td>-->
+<!--                <td style="text-align: right;width: 33%"></td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--                <td style="text-align: right;width: 33%"></td>-->
+<!--                <td style="text-align: center;width: 33%">-->
+<!--                    <h6>--><?php //= \backend\models\Company::findAddress($emp_company_id) ?><!--</h6></td>-->
+<!--                <td style="text-align: right;width: 33%"></td>-->
+<!--            </tr>-->
+<!--        </table>-->
+<!--        <br>-->
         <table style="width: 100%">
             <tr>
                 <td style="padding: 5px;width: 33%"></td>
