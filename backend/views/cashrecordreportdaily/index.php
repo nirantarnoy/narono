@@ -11,7 +11,7 @@ if($search_company_id != null){
     $model = $model->andfilterWhere(['or','company_id' => $search_company_id,'company_id_2' => $search_company_id]);
 }
 if($search_office_id != null){
-    $model = $model->andWhere(['or','office_id' => $search_office_id,'office_id_2' => $search_office_id]);
+    $model = $model->andFilterWhere(['or','office_id' => $search_office_id,'office_id_2' => $search_office_id]);
 }
 
 $model = $model->all();
