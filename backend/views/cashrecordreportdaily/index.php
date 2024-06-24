@@ -15,6 +15,7 @@ if($search_office_id != null){
 }
 
 $model = $model->all();
+$location_data = \common\models\Location::find()->where(['company_id' => $search_company_id])->all();
 //}
 
 ?>
@@ -61,7 +62,8 @@ $model = $model->all();
                             'data' => \yii\helpers\ArrayHelper::map(\common\models\Company::find()->where(['status' => 1])->all(), 'id', 'name'),
                             'value' => $search_company_id,
                             'options' => [
-                                'placeholder' => '---เลือกบริษัท---'
+                                'placeholder' => '---เลือกบริษัท---',
+                                'onchange' => 'getOfficeList(this);'
                             ],
                             'pluginOptions' => [
                                 'allowClear' => true,
@@ -71,18 +73,30 @@ $model = $model->all();
                     </div>
                     <div class="col-lg-2">
                         <label class="form-label">สำนักงาน</label>
+                        <select name="search_office_id" id="office-list" class="form-control">
+                            <?php
+                            for($a=0;$a <=count($location_data)-1;$a++){
+                                $selected = '';
+                                if($location_data[$a]->id == $search_office_id){
+                                    $selected = 'selected';
+                                }
+                                echo '<option value="'.$location_data[$a]->id.'" '.$selected.'>'.$location_data[$a]->name.'</option>';
+                            }
+                            ?>
+                        </select>
+<!--                        <label class="form-label">สำนักงาน</label>-->
                         <?php
-                        echo \kartik\select2\Select2::widget([
-                            'name' => 'search_office_id',
-                            'data' => \yii\helpers\ArrayHelper::map(\backend\helpers\OfficeType::asArrayObject(), 'id', 'name'),
-                            'value' => $search_office_id,
-                            'options' => [
-                                'placeholder' => '---เลือกสำนักงาน---'
-                            ],
-                            'pluginOptions' => [
-                                'allowClear' => true,
-                            ]
-                        ]);
+//                        echo \kartik\select2\Select2::widget([
+//                            'name' => 'search_office_id',
+//                            'data' => \yii\helpers\ArrayHelper::map(\backend\helpers\OfficeType::asArrayObject(), 'id', 'name'),
+//                            'value' => $search_office_id,
+//                            'options' => [
+//                                'placeholder' => '---เลือกสำนักงาน---'
+//                            ],
+//                            'pluginOptions' => [
+//                                'allowClear' => true,
+//                            ]
+//                        ]);
                         ?>
                     </div>
                     <div class="col-lg-3">
@@ -260,6 +274,7 @@ function getMonthbalance($year,$month)
 
 ?>
 <?php
+$url_to_get_office = \yii\helpers\Url::to(['cashreportdaily/getoffice'], true);
 $js = <<<JS
 function printContent(el)
       {
@@ -269,6 +284,24 @@ function printContent(el)
          window.print();
          document.body.innerHTML = restorepage;
      }
+function getOfficeList(el){
+    var company_id = $(el).val();
+    if(company_id > 0){
+      //  alert(company_id);
+         $.ajax({
+        url: '$url_to_get_office',
+        type: 'POST',
+        dataType: 'html',
+        data: {'company_id': company_id},
+        success: function (data) {
+         //   alert(data);
+        
+            $('#office-list').html(data);
+        }
+    });
+    }
+   
+}      
 JS;
 $this->registerJs($js, static::POS_END);
 ?>
