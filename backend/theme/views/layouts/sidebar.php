@@ -349,6 +349,12 @@
                                 <p>รายการค่าใช้จ่าย</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="index.php?r=carsummaryexport/index" class="nav-link carsummaryexport">
+                                <i class="far fa-circlez nav-icon"></i>
+                                <p>Export ค่าเที่ยว</p>
+                            </a>
+                        </li>
 
                         <?php //endif; ?>
 
