@@ -239,8 +239,9 @@ $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
             </thead>
             <tbody>
             <?php
+            $total_amount = 0; $total_other_amount = 0;
             if ($model_line != null):?>
-                <?php $i = 1; $total_amount = 0; $total_other_amount = 0; ?>
+                <?php $i = 1; ?>
                 <?php foreach ($model_line as $value): ?>
                     <?php
                     $line_amount = $value->work_labour_price;
