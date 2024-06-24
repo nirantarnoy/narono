@@ -134,10 +134,12 @@ $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
                         echo DatePicker::widget([
                             'name' => 'search_from_date',
                             'type' => DatePicker::TYPE_INPUT,
-                            'value' => $from_date,
+                            'value' => date('Y-m-d',strtotime($from_date)),
                             'pluginOptions' => [
                                 'autoclose' => true,
-                                'format' => 'dd-mm-yyyy'
+                                'format' => 'dd-mm-yyyy',
+                                'todayHighlight' => true,
+                                'todayBtn' => true,
                             ]
                         ]);
                         ?>
@@ -150,10 +152,12 @@ $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
                         echo DatePicker::widget([
                             'name' => 'search_to_date',
                             'type' => DatePicker::TYPE_INPUT,
-                            'value' => $to_date,
+                            'value' => date('Y-m-d',strtotime($to_date)),
                             'pluginOptions' => [
                                 'autoclose' => true,
-                                'format' => 'dd-mm-yyyy'
+                                'format' => 'dd-mm-yyyy',
+                                'todayHighlight' => true,
+                                'todayBtn' => true,
                             ]
                         ]);
                         ?>
