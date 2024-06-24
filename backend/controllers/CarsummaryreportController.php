@@ -91,10 +91,13 @@ class CarsummaryreportController extends Controller
 
     public function actionExportindex()
     {
+        $from_date = \Yii::$app->request->post('from_date');
+        $to_date = \Yii::$app->request->post('to_date');
+        $search_car_id = \Yii::$app->request->post('search_car_id');
        return $this->render('_exportindex',[
-           'from_date'=>null,
-           'to_date'=> null,
-           'search_car_id'=>null,
+           'from_date'=> $from_date,
+           'to_date'=> $to_date,
+           'search_car_id'=> $search_car_id,
        ]);
     }
 }
