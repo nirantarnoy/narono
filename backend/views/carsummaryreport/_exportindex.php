@@ -15,9 +15,9 @@ if ($from_date != '' && $to_date != '') {
     $date_year = date('Y', strtotime($to_date)) + 543;
 
     if ($search_car_id != null) {
-        $model_line = \common\models\QueryCarWorkSummary::find()->where(['car_id' => $search_car_id])->andFilterWhere(['>=', 'date(work_queue_date)', date('Y-m-d',strtotime($from_date))])->andFilterWhere(['<=', 'date(work_queue_date)', date('Y-m-d',strtotime($to_date))])->orderBy(['work_queue_date' => SORT_ASC])->all();
-    }else{
-        $model_line = \common\models\QueryCarWorkSummary::find()->where(['>=', 'date(work_queue_date)', date('Y-m-d',strtotime($from_date))])->andFilterWhere(['<=', 'date(work_queue_date)', date('Y-m-d',strtotime($to_date))])->orderBy(['work_queue_date' => SORT_ASC])->all();
+        $model_line = \common\models\QueryCarWorkSummary::find()->where(['car_id' => $search_car_id])->andFilterWhere(['>=', 'date(work_queue_date)', date('Y-m-d', strtotime($from_date))])->andFilterWhere(['<=', 'date(work_queue_date)', date('Y-m-d', strtotime($to_date))])->orderBy(['work_queue_date' => SORT_ASC])->all();
+    } else {
+        $model_line = \common\models\QueryCarWorkSummary::find()->where(['>=', 'date(work_queue_date)', date('Y-m-d', strtotime($from_date))])->andFilterWhere(['<=', 'date(work_queue_date)', date('Y-m-d', strtotime($to_date))])->orderBy(['work_queue_date' => SORT_ASC])->all();
     }
 
     $from_date = date('d-m-Y', strtotime($from_date));
@@ -136,7 +136,7 @@ $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
                         echo DatePicker::widget([
                             'name' => 'search_from_date',
                             'type' => DatePicker::TYPE_INPUT,
-                            'value' => date('d-m-Y',strtotime($from_date)),
+                            'value' => date('d-m-Y', strtotime($from_date)),
                             'pluginOptions' => [
                                 'autoClose' => true,
                                 'format' => 'dd-mm-yyyy',
@@ -154,9 +154,9 @@ $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
                         echo DatePicker::widget([
                             'name' => 'search_to_date',
                             'type' => DatePicker::TYPE_INPUT,
-                            'value' => date('d-m-Y',strtotime($to_date)),
+                            'value' => date('d-m-Y', strtotime($to_date)),
                             'pluginOptions' => [
-                                 'autoClose' => true,
+                                'autoClose' => true,
                                 'format' => 'dd-mm-yyyy',
                                 'todayHighlight' => true,
                                 'todayBtn' => true,
@@ -193,21 +193,23 @@ $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
     </div>
     <div style="height: 20px;"></div>
     <div id="print-area">
-<!--        <table style="width: 100%">-->
-<!--            <tr>-->
-<!--                <td style="text-align: right;width: 33%"></td>-->
-<!--                <td style="text-align: center;width: 33%"><h4>-->
-<!--                        <b>--><?php //= \backend\models\Company::findCompanyName($emp_company_id) ?><!--</b></h4></td>-->
-<!--                <td style="text-align: right;width: 33%"></td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--                <td style="text-align: right;width: 33%"></td>-->
-<!--                <td style="text-align: center;width: 33%">-->
-<!--                    <h6>--><?php //= \backend\models\Company::findAddress($emp_company_id) ?><!--</h6></td>-->
-<!--                <td style="text-align: right;width: 33%"></td>-->
-<!--            </tr>-->
-<!--        </table>-->
-<!--        <br>-->
+        <!--        <table style="width: 100%">-->
+        <!--            <tr>-->
+        <!--                <td style="text-align: right;width: 33%"></td>-->
+        <!--                <td style="text-align: center;width: 33%"><h4>-->
+        <!--                        <b>-->
+        <?php //= \backend\models\Company::findCompanyName($emp_company_id) ?><!--</b></h4></td>-->
+        <!--                <td style="text-align: right;width: 33%"></td>-->
+        <!--            </tr>-->
+        <!--            <tr>-->
+        <!--                <td style="text-align: right;width: 33%"></td>-->
+        <!--                <td style="text-align: center;width: 33%">-->
+        <!--                    <h6>-->
+        <?php //= \backend\models\Company::findAddress($emp_company_id) ?><!--</h6></td>-->
+        <!--                <td style="text-align: right;width: 33%"></td>-->
+        <!--            </tr>-->
+        <!--        </table>-->
+        <!--        <br>-->
         <table style="width: 100%">
             <tr>
                 <td style="padding: 5px;width: 33%"></td>
@@ -230,7 +232,7 @@ $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
                 <th style="text-align: center;padding: 10px;border: 1px solid grey;width: 10%"><b>ลำดับที่</b></th>
                 <th style="text-align: center;padding: 10px;border: 1px solid grey;"><b>ชื่อพนักงาน</b></th>
                 <th style="text-align: center;padding: 10px;border: 1px solid grey;"><b>วันที่</b></th>
-                <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ลูกค้า</b></th>
+                <th style="text-align: center;padding: 10px;border: 1px solid grey;"><b>ลูกค้า</b></th>
                 <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าเที่ยว</b></th>
                 <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>รวมค่าอื่นๆ</b></th>
             </tr>
@@ -238,24 +240,34 @@ $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
             <tbody>
             <?php
             if ($model_line != null):?>
-            <?php $i = 1; ?>
+                <?php $i = 1; $total_amount = 0; $total_other_amount = 0; ?>
                 <?php foreach ($model_line as $value): ?>
-                <?php
+                    <?php
                     $line_amount = $value->work_labour_price;
-                    $other_amount = $value->trail_labour_price + $value->cover_sheet_price + $value->overnight_price + $value->warehouse_plus_price + $value->work_double_price + $value->towing_price;
+                    $other_amount = $line_amount + $value->trail_labour_price + $value->cover_sheet_price + $value->overnight_price + $value->warehouse_plus_price + $value->work_double_price + $value->towing_price;
+
+                    $total_amount = $total_amount + $line_amount;
+                    $total_other_amount = $total_other_amount + $other_amount;
                     ?>
-                   <tr>
-                       <td style="text-align: center;border: 1px solid grey;padding: 3px;"><?=$i?></td>
-                       <td style="text-align: left;border: 1px solid grey;"><?=\backend\models\Employee::findFullName($value->emp_assign)?></td>
-                       <td style="text-align: center;border: 1px solid grey;"><?=date('d-m-Y', strtotime($value->work_queue_date))?></td>
-                       <td style="text-align: left;border: 1px solid grey"><?=\backend\models\Customer::findCusName($value->customer_id)?></td>
-                       <td style="text-align: right;border: 1px solid grey"><?=number_format($line_amount,2)?></td>
-                       <td style="text-align: right;border: 1px solid grey"><?=number_format($other_amount,2)?></td>
-                   </tr>
+                    <tr>
+                        <td style="text-align: center;border: 1px solid grey;padding: 3px;"><?= $i ?></td>
+                        <td style="text-align: left;border: 1px solid grey;padding: 3px;"><?= \backend\models\Employee::findFullName($value->emp_assign) ?></td>
+                        <td style="text-align: center;border: 1px solid grey;padding: 3px;"><?= date('d-m-Y', strtotime($value->work_queue_date)) ?></td>
+                        <td style="text-align: left;border: 1px solid grey;padding: 3px;"><?= \backend\models\Customer::findCusName($value->customer_id) ?></td>
+                        <td style="text-align: right;border: 1px solid grey;padding: 3px;"><?= number_format($line_amount, 2) ?></td>
+                        <td style="text-align: right;border: 1px solid grey;padding: 3px;"><?= number_format($other_amount, 2) ?></td>
+                    </tr>
                     <?php $i += 1; ?>
                 <?php endforeach; ?>
             <?php endif; ?>
             </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="4" style="text-align: right;padding: 3px;"><b>รวม</b></td>
+                <td style="text-align: right;padding: 3px;"><?=number_format($total_amount,2)?></td>
+                <td style="text-align: right;padding: 3px;"><?=number_format($total_other_amount,2)?></td>
+            </tr>
+            </tfoot>
 
         </table>
         <br>
