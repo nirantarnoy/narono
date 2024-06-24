@@ -263,9 +263,9 @@ $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
             </tbody>
             <tfoot>
             <tr>
-                <td colspan="4" style="text-align: right;padding: 3px;"><b>รวม</b></td>
-                <td style="text-align: right;padding: 3px;"><?=number_format($total_amount,2)?></td>
-                <td style="text-align: right;padding: 3px;"><?=number_format($total_other_amount,2)?></td>
+                <td colspan="4" style="text-align: right;padding: 3px;border: 1px solid grey;"><b>รวม</b></td>
+                <td style="text-align: right;padding: 3px;border: 1px solid grey;"><?=number_format($total_amount,2)?></td>
+                <td style="text-align: right;padding: 3px;border: 1px solid grey;"><?=number_format($total_other_amount,2)?></td>
             </tr>
             </tfoot>
 
