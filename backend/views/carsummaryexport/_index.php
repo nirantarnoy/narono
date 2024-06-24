@@ -234,21 +234,24 @@ $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
                 <th style="text-align: center;padding: 10px;border: 1px solid grey;"><b>วันที่</b></th>
                 <th style="text-align: center;padding: 10px;border: 1px solid grey;"><b>ลูกค้า</b></th>
                 <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าเที่ยว</b></th>
+                <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าอื่นๆ</b></th>
                 <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>รวมค่าอื่นๆ</b></th>
             </tr>
             </thead>
             <tbody>
             <?php
-            $total_amount = 0; $total_other_amount = 0;
+            $total_amount = 0; $total_other_amount = 0;$total_line_all = 0;
             if ($model_line != null):?>
                 <?php $i = 1; ?>
                 <?php foreach ($model_line as $value): ?>
                     <?php
                     $line_amount = $value->work_labour_price;
-                    $other_amount = $line_amount + $value->trail_labour_price + $value->cover_sheet_price + $value->overnight_price + $value->warehouse_plus_price + $value->work_double_price + $value->towing_price;
+                    $other_amount = $value->trail_labour_price + $value->cover_sheet_price + $value->overnight_price + $value->warehouse_plus_price + $value->work_double_price + $value->towing_price;
+                    $line_total_amount = $line_amount + $other_amount;
 
                     $total_amount = $total_amount + $line_amount;
-                    $total_other_amount = $total_other_amount + $other_amount;
+                    $total_other_amount = $total_other_amount + $total_other_amount;
+                    $total_line_all = $total_line_all + $line_total_amount;
                     ?>
                     <tr>
                         <td style="text-align: center;border: 1px solid grey;padding: 3px;"><?= $i ?></td>
@@ -257,6 +260,7 @@ $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
                         <td style="text-align: left;border: 1px solid grey;padding: 3px;"><?= \backend\models\Customer::findCusName($value->customer_id) ?></td>
                         <td style="text-align: right;border: 1px solid grey;padding: 3px;"><?= number_format($line_amount, 2) ?></td>
                         <td style="text-align: right;border: 1px solid grey;padding: 3px;"><?= number_format($other_amount, 2) ?></td>
+                        <td style="text-align: right;border: 1px solid grey;padding: 3px;"><?= number_format($line_total_amount, 2) ?></td>
                     </tr>
                     <?php $i += 1; ?>
                 <?php endforeach; ?>
@@ -267,6 +271,7 @@ $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
                 <td colspan="4" style="text-align: right;padding: 3px;border: 1px solid grey;"><b>รวม</b></td>
                 <td style="text-align: right;padding: 3px;border: 1px solid grey;"><b><?=number_format($total_amount,2)?></b></td>
                 <td style="text-align: right;padding: 3px;border: 1px solid grey;"><b><?=number_format($total_other_amount,2)?></b></td>
+                <td style="text-align: right;padding: 3px;border: 1px solid grey;"><b><?=number_format($total_line_all,2)?></b></td>
             </tr>
             </tfoot>
 
