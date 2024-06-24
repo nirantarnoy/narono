@@ -245,12 +245,12 @@ $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
                     $other_amount = $value->trail_labour_price + $value->cover_sheet_price + $value->overnight_price + $value->warehouse_plus_price + $value->work_double_price + $value->towing_price;
                     ?>
                    <tr>
-                       <td style="text-align: center;border: 1px solid grey;"><?=$i?></td>
+                       <td style="text-align: center;border: 1px solid grey;padding: 3px;"><?=$i?></td>
                        <td style="text-align: left;border: 1px solid grey;"><?=\backend\models\Employee::findFullName($value->emp_assign)?></td>
                        <td style="text-align: center;border: 1px solid grey;"><?=date('d-m-Y', strtotime($value->work_queue_date))?></td>
                        <td style="text-align: left;border: 1px solid grey"><?=\backend\models\Customer::findCusName($value->customer_id)?></td>
                        <td style="text-align: right;border: 1px solid grey"><?=number_format($line_amount,2)?></td>
-                       <td style="text-align: right;border-right: 1px solid grey"><?=number_format($other_amount,2)?></td>
+                       <td style="text-align: right;border: 1px solid grey"><?=number_format($other_amount,2)?></td>
                    </tr>
                     <?php $i += 1; ?>
                 <?php endforeach; ?>
