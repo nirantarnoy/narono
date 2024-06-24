@@ -22,6 +22,8 @@ if ($from_date != '' && $to_date != '') {
 
     $from_date = date('d-m-Y', strtotime($from_date));
     $to_date = date('d-m-Y', strtotime($to_date));
+
+    echo $from_date.' '.$to_date;
 }
 $driver_id = \backend\models\Car::getDriver($search_car_id);
 $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
