@@ -133,7 +133,7 @@ if ($search_car_type != null) {
                     <?php
                     $line_num += 1;
                     $total_weight += ($value->weight_on_go);
-                    $total_line_amount += ($value->labour_price);
+                    $total_line_amount += ($value->total_amount);
                     ?>
                     <tr>
                         <td style="width: 5%;text-align: center;"><?= $line_num ?></td>
@@ -146,7 +146,7 @@ if ($search_car_type != null) {
                         <td style="width: 10%;text-align: center;"><?= \backend\models\Car::getCartype($value->car_id) ?></td>
                         <td style="width: 10%;text-align: right;"><?= number_format($value->weight_on_go, 3) ?></td>
                         <td style="width: 5%;text-align: right;"><?= number_format($value->labour_price, 2) ?></td>
-                        <td style="width: 10%;text-align: right;"><?= number_format($value->labour_price, 2) ?></td>
+                        <td style="width: 10%;text-align: right;"><?= number_format($value->total_amount, 2) ?></td>
                     </tr>
                 <?php endforeach; ?>
             <?php endif; ?>
