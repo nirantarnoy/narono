@@ -126,12 +126,14 @@ if ($search_car_type != null) {
             </thead>
             <tbody>
             <?php $line_num = 0;
-            $total_weight = 0; ?>
+            $total_weight = 0;
+            $total_line_amount = 0; ?>
             <?php if ($model): ?>
                 <?php foreach ($model as $value): ?>
                     <?php
                     $line_num += 1;
                     $total_weight += ($value->weight_on_go);
+                    $total_line_amount += ($value->labour_price);
                     ?>
                     <tr>
                         <td style="width: 5%;text-align: center;"><?= $line_num ?></td>
@@ -143,8 +145,8 @@ if ($search_car_type != null) {
                         <td style="width: 10%;text-align: center;"><?= \backend\models\Customer::findCusName($value->customer_id) ?></td>
                         <td style="width: 10%;text-align: center;"><?= \backend\models\Car::getCartype($value->car_id) ?></td>
                         <td style="width: 10%;text-align: right;"><?= number_format($value->weight_on_go, 3) ?></td>
-                        <td style="width: 5%;text-align: right;"><?= number_format($value->labour_price, 3) ?></td>
-                        <td style="width: 10%;text-align: right;"><?= number_format($value->labour_price, 3) ?></td>
+                        <td style="width: 5%;text-align: right;"><?= number_format($value->labour_price, 2) ?></td>
+                        <td style="width: 10%;text-align: right;"><?= number_format($value->labour_price, 2) ?></td>
                     </tr>
                 <?php endforeach; ?>
             <?php endif; ?>
@@ -153,8 +155,8 @@ if ($search_car_type != null) {
             <tr>
                 <td colspan="8" style="width: 8%;text-align: right;"><b>รวม</b></td>
                 <td style="width: 10%;text-align: right;"><b><?= number_format($total_weight, 3) ?></b></td>
-                <td style="width: 10%;text-align: right;"><b><?= number_format(0, 2) ?></b></td>
-                <td style="width: 10%;text-align: right;"><b><?= number_format(0, 2) ?></b></td>
+                <td style="width: 10%;text-align: right;"><b></b></td>
+                <td style="width: 10%;text-align: right;"><b><?= number_format($total_line_amount, 2) ?></b></td>
             </tr>
             </tfoot>
 
