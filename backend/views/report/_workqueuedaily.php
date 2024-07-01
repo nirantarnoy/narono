@@ -134,7 +134,7 @@ if ($search_car_type != null) {
                     $total_weight += ($value->weight_on_go);
                     ?>
                     <tr>
-                        <td style="width: 8%;text-align: center;"><?= $line_num ?></td>
+                        <td style="width: 5%;text-align: center;"><?= $line_num ?></td>
                         <td style="width: 10%;text-align: center;"><?= date('d/m/Y', strtotime($value->work_queue_date)) ?></td>
                         <td style="width: 10%;text-align: center;"><?= \backend\models\Car::findName($value->car_id) ?></td>
                         <td style="width: 10%;text-align: center;"><?= \backend\models\Car::findName($value->tail_id) ?></td>
@@ -143,7 +143,7 @@ if ($search_car_type != null) {
                         <td style="width: 10%;text-align: center;"><?= \backend\models\Customer::findCusName($value->customer_id) ?></td>
                         <td style="width: 10%;text-align: center;"><?= \backend\models\Car::getCartype($value->car_id) ?></td>
                         <td style="width: 10%;text-align: right;"><?= number_format($value->weight_on_go, 3) ?></td>
-                        <td style="width: 10%;text-align: right;"><?= number_format($value->price, 3) ?></td>
+                        <td style="width: 5%;text-align: right;"><?= number_format($value->price, 3) ?></td>
                         <td style="width: 10%;text-align: right;"><?= number_format($value->price * $value->weight_on_go, 3) ?></td>
                     </tr>
                 <?php endforeach; ?>
