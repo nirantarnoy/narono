@@ -9,201 +9,113 @@ $model_cityzone = \backend\models\Cityzone::find()->all();
 /** @var yii\web\View $this */
 /** @var backend\models\Quotationtitle $model */
 /** @var yii\widgets\ActiveForm $form */
+
+$price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 'name' => 'ราคาเหมา']];
 ?>
 
-<div class="quotationtitle-form">
+    <div class="quotationtitle-form">
 
-    <?php $form = ActiveForm::begin(); ?>
-    <input type="hidden" class="remove-line-list" value="">
-    <div class="row">
-        <div class="col-lg-6">
-            <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="col-lg-6">
-            <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-3">
-            <?= $form->field($model, 'car_type_id')->widget(\kartik\select2\Select2::className(),[
-                    'data'=>\yii\helpers\ArrayHelper::map(\backend\models\CarType::find()->all(),'id','name'),
-                    'options' => [
-                            'placeholder'=>'--เลือกประเภทรถ--'
-                    ],
-                    'pluginOptions' => [
-                            'allowClear'=>true,
-                    ]
-
-            ]) ?>
-        </div>
-        <div class="col-lg-3">
-            <?php $model->created_at_display = $model->created_at != null ? date('d-m-Y H:i:s', $model->created_at) : '' ?>
-            <?= $form->field($model, 'created_at_display')->textInput(['readonly' => 'readonly']) ?>
-        </div>
-        <div class="col-lg-3">
-            <?php $model->created_by_display = $model->created_by != null ? \backend\models\User::findName($model->created_by) : '' ?>
-            <?= $form->field($model, 'created_by_display')->textInput(['readonly' => 'readonly']) ?>
-        </div>
-        <div class="col-lg-3">
-            <?= $form->field($model, 'fuel_rate')->textInput() ?>
-        </div>
-        <div class="col-lg-3">
-<!--            <select name="xx" class="form-control input-lg" data-live-search="true" id="provice-selected">-->
-<!--                <option>Mustard</option>-->
-<!--                <option>Ketchup</option>-->
-<!--                <option>Barbecue</option>-->
-<!--            </select>-->
-        </div>
-
-    </div>
-    <div class="row">
-        <div class="col-lg-3">
-            <div class="form-group">
-                <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-                <?php if ($model_line != null): ?>
-                    <div class="btn btn-warning" onclick="printquotationview()"><i class="fa fa-print"></i> พิมพ์</div>
-                <?php endif; ?>
+        <?php $form = ActiveForm::begin(); ?>
+        <input type="hidden" class="remove-line-list" value="">
+        <div class="row">
+            <div class="col-lg-6">
+                <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-lg-6">
+                <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
             </div>
         </div>
-    </div>
+        <div class="row">
+            <div class="col-lg-3">
+                <?= $form->field($model, 'car_type_id')->widget(\kartik\select2\Select2::className(), [
+                    'data' => \yii\helpers\ArrayHelper::map(\backend\models\CarType::find()->all(), 'id', 'name'),
+                    'options' => [
+                        'placeholder' => '--เลือกประเภทรถ--'
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                    ]
 
+                ]) ?>
+            </div>
+            <div class="col-lg-3">
+                <?php $model->created_at_display = $model->created_at != null ? date('d-m-Y H:i:s', $model->created_at) : '' ?>
+                <?= $form->field($model, 'created_at_display')->textInput(['readonly' => 'readonly']) ?>
+            </div>
+            <div class="col-lg-3">
+                <?php $model->created_by_display = $model->created_by != null ? \backend\models\User::findName($model->created_by) : '' ?>
+                <?= $form->field($model, 'created_by_display')->textInput(['readonly' => 'readonly']) ?>
+            </div>
+            <div class="col-lg-3">
+                <?= $form->field($model, 'fuel_rate')->textInput() ?>
+            </div>
+            <div class="col-lg-3">
+                <!--            <select name="xx" class="form-control input-lg" data-live-search="true" id="provice-selected">-->
+                <!--                <option>Mustard</option>-->
+                <!--                <option>Ketchup</option>-->
+                <!--                <option>Barbecue</option>-->
+                <!--            </select>-->
+            </div>
 
-    <br/>
-    <div class="row">
-        <div class="col-lg-12">
-            <h4>รายละเอียด</h4>
         </div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-12">
-            <table class="table table-bordered table-striped" id="table-list">
-                <thead>
-                <tr>
-                    <th>จังหวัด</th>
-                    <th>Route</th>
-                    <th>โซนพื้นที่</th>
-                    <th>ระยะทาง</th>
-                    <th>ปริมาณเฉลี่ยตัน/ปี</th>
-                    <th>ราคาที่เสนอ</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php if ($model->isNewRecord): ?>
-                    <tr data-var="">
-                        <td>
-                            <div class="form-group">
-                            <select name="line_warehouse_id[]" class="form-control line-warehouse-id input-lg" data-live-search="true" id="provice-selected"
-                                    onchange="updatevalidate($(this))">
-                                <option value="-1">--เลือกจังหวัด--</option>
-                                <?php foreach ($model_province as $valuex): ?>
-                                    <?php
-                                    $selected = '';
-                                    if ($valuex->PROVINCE_ID == 1) {
-                                        $selected = 'selected';
-                                    }
-                                    ?>
-                                    <option value="<?php echo $valuex->PROVINCE_ID ?>" <?php echo $selected ?>><?php echo $valuex->PROVINCE_NAME ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                            </div>
-                        </td>
-                        <td>
-                            <input type="text" class="form-control line-route" name="line_route[]">
-                        </td>
-                        <td>
-                            <select name="line_zone_id[]" class="form-control line-zone-id" id="">
-                                <option value="-1">--เลือกโซน--</option>
-                            </select>
-                        </td>
-                        <td>
-                            <input type="number" class="form-control line-distance" name="line_distance[]" min="0">
-                        </td>
-                        <td>
-                            <input type="number" class="form-control line-average" name="line_average[]" min="0">
-                        </td>
-                        <td>
-                            <input type="text" class="form-control line-quotation-price" name="line_quotation_price[]">
-                        </td>
-                        <td>
-                            <div class="btn btn-danger btn-sm" onclick="removeline($(this))">ลบ</div>
-                        </td>
-                    </tr>
-                <?php else: ?>
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
                     <?php if ($model_line != null): ?>
-                        <?php foreach ($model_line as $value): ?>
-                            <tr data-var="<?= $value->id ?>">
-                                <td>
-                                    <input type="hidden" class="line-rec-id" value="<?= $value->id ?>">
-                                    <select name="line_warehouse_id[]" class="form-control line-warehouse-id" id=""
+                        <div class="btn btn-warning" onclick="printquotationview()"><i class="fa fa-print"></i> พิมพ์
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+
+
+        <br/>
+        <div class="row">
+            <div class="col-lg-12">
+                <h4>รายละเอียด</h4>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="table table-bordered table-striped" id="table-list">
+                    <thead>
+                    <tr>
+                        <th>จังหวัด</th>
+                        <th>Route</th>
+                        <th>โซนพื้นที่</th>
+                        <th>ระยะทาง</th>
+                        <th>ปริมาณเฉลี่ยตัน/ปี</th>
+                        <th>ราคาที่เสนอ</th>
+                        <th>ประเภทราคา</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php if ($model->isNewRecord): ?>
+                        <tr data-var="">
+                            <td>
+                                <div class="form-group">
+                                    <select name="line_warehouse_id[]" class="form-control line-warehouse-id input-lg"
+                                            data-live-search="true" id="provice-selected"
                                             onchange="updatevalidate($(this))">
                                         <option value="-1">--เลือกจังหวัด--</option>
                                         <?php foreach ($model_province as $valuex): ?>
                                             <?php
                                             $selected = '';
-                                            if ($valuex->PROVINCE_ID == $value->province_id) {
+                                            if ($valuex->PROVINCE_ID == 1) {
                                                 $selected = 'selected';
                                             }
                                             ?>
-                                            <option value="<?= $valuex->PROVINCE_ID ?>" <?= $selected ?>><?= $valuex->PROVINCE_NAME ?></option>
+                                            <option value="<?php echo $valuex->PROVINCE_ID ?>" <?php echo $selected ?>><?php echo $valuex->PROVINCE_NAME ?></option>
                                         <?php endforeach; ?>
                                     </select>
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control line-route" name="line_route[]"
-                                           value="<?= $value->route_code ?>">
-                                </td>
-                                <td>
-                                    <select name="line_zone_id[]" class="form-control line-zone-id" id="">
-                                        <option value="-1">--เลือกโซน--</option>
-                                        <?php foreach ($model_cityzone as $valuex): ?>
-                                            <?php
-                                            $selected = '';
-                                            if ($valuex->id == $value->zone_id) {
-                                                $selected = 'selected';
-                                            }
-                                            ?>
-                                            <option value="<?= $valuex->id ?>" <?= $selected ?>><?= getCityzonedetail($valuex->id) ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </td>
-                                <td>
-                                    <input type="number" class="form-control line-distance" name="line_distance[]"
-                                           min="0" value="<?= $value->distance ?>">
-                                </td>
-                                <td>
-                                    <input type="number" class="form-control line-average" name="line_average[]" min="0"
-                                           value="<?= $value->load_qty ?>">
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control line-quotation-price"
-                                           name="line_quotation_price[]" value="<?= $value->price_current_rate ?>">
-                                </td>
-                                <td>
-                                    <div class="btn btn-danger btn-sm" onclick="removeline($(this))">ลบ</div>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr data-var="">
-                            <td>
-                                <select name="line_warehouse_id[]" class="form-control line-warehouse-id" id=""
-                                        onchange="updatevalidate($(this))">
-                                    <option value="-1">--เลือกจังหวัด--</option>
-                                    <?php foreach ($model_province as $valuex): ?>
-                                        <?php
-                                        $selected = '';
-                                        if ($valuex->PROVINCE_ID == 1) {
-                                            $selected = 'selected';
-                                        }
-                                        ?>
-                                        <option value="<?= $valuex->PROVINCE_ID ?>" <?= $selected ?>><?= $valuex->PROVINCE_NAME ?></option>
-                                    <?php endforeach; ?>
-                                </select>
+                                </div>
                             </td>
                             <td>
-                                <input type="text" class="form-control line-route" name="line_route[]" value="xx">
+                                <input type="text" class="form-control line-route" name="line_route[]">
                             </td>
                             <td>
                                 <select name="line_zone_id[]" class="form-control line-zone-id" id="">
@@ -221,38 +133,165 @@ $model_cityzone = \backend\models\Cityzone::find()->all();
                                        name="line_quotation_price[]">
                             </td>
                             <td>
+                                <select name="line_quotation_price_type_id[]" class="form-control" id="">
+                                    <?php for ($i=0;$i<=count($price_type_data)-1;$i++): ?>
+
+                                        <option value="<?=$price_type_data[$i]['id'] ?>"><?= $price_type_data[$i]['name'] ?></option>
+                                    <?php endfor; ?>
+                                </select>
+                            </td>
+                            <td>
                                 <div class="btn btn-danger btn-sm" onclick="removeline($(this))">ลบ</div>
                             </td>
                         </tr>
+                    <?php else: ?>
+                        <?php if ($model_line != null): ?>
+                            <?php foreach ($model_line as $value): ?>
+                                <tr data-var="<?= $value->id ?>">
+                                    <td>
+                                        <input type="hidden" class="line-rec-id" value="<?= $value->id ?>">
+                                        <select name="line_warehouse_id[]" class="form-control line-warehouse-id" id=""
+                                                onchange="updatevalidate($(this))">
+                                            <option value="-1">--เลือกจังหวัด--</option>
+                                            <?php foreach ($model_province as $valuex): ?>
+                                                <?php
+                                                $selected = '';
+                                                if ($valuex->PROVINCE_ID == $value->province_id) {
+                                                    $selected = 'selected';
+                                                }
+                                                ?>
+                                                <option value="<?= $valuex->PROVINCE_ID ?>" <?= $selected ?>><?= $valuex->PROVINCE_NAME ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control line-route" name="line_route[]"
+                                               value="<?= $value->route_code ?>">
+                                    </td>
+                                    <td>
+                                        <select name="line_zone_id[]" class="form-control line-zone-id" id="">
+                                            <option value="-1">--เลือกโซน--</option>
+                                            <?php foreach ($model_cityzone as $valuex): ?>
+                                                <?php
+                                                $selected = '';
+                                                if ($valuex->id == $value->zone_id) {
+                                                    $selected = 'selected';
+                                                }
+                                                ?>
+                                                <option value="<?= $valuex->id ?>" <?= $selected ?>><?= getCityzonedetail($valuex->id) ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control line-distance" name="line_distance[]"
+                                               min="0" value="<?= $value->distance ?>">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control line-average" name="line_average[]"
+                                               min="0"
+                                               value="<?= $value->load_qty ?>">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control line-quotation-price"
+                                               name="line_quotation_price[]" value="<?= $value->price_current_rate ?>">
+                                    </td>
+                                    <td>
+                                        <select name="line_quotation_price_type_id[]" class="form-control" id="">
+                                            <?php for ($i=0;$i<=count($price_type_data)-1;$i++): ?>
+                                                <?php
+                                            $selected = '';
+                                            if ($value->price_type_id == $price_type_data[$i]['id']) {
+                                                $selected = 'selected';
+                                            }
+                                                ?>
+                                                <option value="<?=$price_type_data[$i]['id'] ?>" <?= $selected ?>><?= $price_type_data[$i]['name'] ?></option>
+                                            <?php endfor; ?>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <div class="btn btn-danger btn-sm" onclick="removeline($(this))">ลบ</div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr data-var="">
+                                <td>
+                                    <select name="line_warehouse_id[]" class="form-control line-warehouse-id" id=""
+                                            onchange="updatevalidate($(this))">
+                                        <option value="-1">--เลือกจังหวัด--</option>
+                                        <?php foreach ($model_province as $valuex): ?>
+                                            <?php
+                                            $selected = '';
+                                            if ($valuex->PROVINCE_ID == 1) {
+                                                $selected = 'selected';
+                                            }
+                                            ?>
+                                            <option value="<?= $valuex->PROVINCE_ID ?>" <?= $selected ?>><?= $valuex->PROVINCE_NAME ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control line-route" name="line_route[]" value="xx">
+                                </td>
+                                <td>
+                                    <select name="line_zone_id[]" class="form-control line-zone-id" id="">
+                                        <option value="-1">--เลือกโซน--</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control line-distance" name="line_distance[]"
+                                           min="0">
+                                </td>
+                                <td>
+                                    <input type="number" class="form-control line-average" name="line_average[]"
+                                           min="0">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control line-quotation-price"
+                                           name="line_quotation_price[]">
+                                </td>
+                                <td>
+                                    <select name="line_quotation_price_type_id[]" class="form-control" id="">
+                                        <?php for ($i=0;$i<=count($price_type_data)-1;$i++): ?>
+
+                                            <option value="<?=$price_type_data[$i]['id'] ?>"><?= $price_type_data[$i]['name'] ?></option>
+                                        <?php endfor; ?>
+                                    </select>
+                                </td>
+                                <td>
+                                    <div class="btn btn-danger btn-sm" onclick="removeline($(this))">ลบ</div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     <?php endif; ?>
-                <?php endif; ?>
 
-                </tbody>
-                <tfoot>
-                <tr>
-                    <td>
-                        <div class="btn btn-primary btn-sm" onclick="addline($(this))"><i class="fa fa-plus"></i>
-                            เพิ่มรายการ
-                        </div>
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                </tfoot>
-            </table>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td>
+                            <div class="btn btn-primary btn-sm" onclick="addline($(this))"><i class="fa fa-plus"></i>
+                                เพิ่มรายการ
+                            </div>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
+
+        <?php ActiveForm::end(); ?>
+
     </div>
-
-    <?php ActiveForm::end(); ?>
-
-</div>
-<form id="form-print" action="<?= \yii\helpers\Url::to(['quotationtitle/printquotationview'], true) ?>" method="post">
-    <input type="hidden" value="<?= $model->id ?>" name="quotation_id">
-</form>
+    <form id="form-print" action="<?= \yii\helpers\Url::to(['quotationtitle/printquotationview'], true) ?>"
+          method="post">
+        <input type="hidden" value="<?= $model->id ?>" name="quotation_id">
+    </form>
 <?php
 
 function getCityzonedetail($city_zone_id)

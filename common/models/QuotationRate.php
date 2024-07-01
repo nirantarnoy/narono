@@ -37,7 +37,7 @@ class QuotationRate extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['zone_id', 'province_id', 'car_type_id', 'created_at', 'created_by', 'updated_a', 'updated_by', 'quotation_title_id'], 'integer'],
+            [['zone_id', 'province_id', 'car_type_id', 'created_at', 'created_by', 'updated_a', 'updated_by', 'quotation_title_id','price_type_id'], 'integer'],
             [['distance', 'load_qty', 'price_current_rate'], 'number'],
             [['route_code'], 'string', 'max' => 255],
         ];

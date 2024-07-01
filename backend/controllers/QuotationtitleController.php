@@ -100,6 +100,7 @@ class QuotationtitleController extends Controller
                 $line_distance = \Yii::$app->request->post('line_distance');
                 $line_average = \Yii::$app->request->post('line_average');
                 $line_quotation_price = \Yii::$app->request->post('line_quotation_price');
+                $line_quotation_price_type_id = \Yii::$app->request->post('line_quotation_price_type_id');
 
 
                 $model->status = 1;
@@ -115,6 +116,7 @@ class QuotationtitleController extends Controller
                             $model_line->price_current_rate = $line_quotation_price[$i];
                             $model_line->load_qty = $line_average[$i];
                             $model_line->zone_id = $line_zone_id[$i];
+                            $model_line->price_type_id = $line_quotation_price_type_id[$i];
                             $model_line->save(false);
                         }
                     }
@@ -150,6 +152,7 @@ class QuotationtitleController extends Controller
             $line_distance = \Yii::$app->request->post('line_distance');
             $line_average = \Yii::$app->request->post('line_average');
             $line_quotation_price = \Yii::$app->request->post('line_quotation_price');
+            $line_quotation_price_type_id = \Yii::$app->request->post('line_quotation_price_type_id');
 
             //echo count($line_warehouse_id);return;
             // print_r(\Yii::$app->request->post());return;
@@ -166,6 +169,7 @@ class QuotationtitleController extends Controller
                         $model_line->load_qty = $line_average[$i];
                         $model_line->route_code = $line_route[$i];
                         $model_line->zone_id = $line_zone_id[$i];
+                        $model_line->price_type_id = $line_quotation_price_type_id[$i];
                         $model_line->save(false);
                     }
                 }
