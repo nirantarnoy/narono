@@ -151,8 +151,10 @@ if ($search_car_type != null) {
             </tbody>
             <tfoot>
             <tr>
-                <td colspan="10" style="width: 8%;text-align: right;"><b>รวม</b></td>
+                <td colspan="8" style="width: 8%;text-align: right;"><b>รวม</b></td>
                 <td style="width: 10%;text-align: right;"><b><?= number_format($total_weight, 3) ?></b></td>
+                <td style="width: 10%;text-align: right;"><b><?= number_format(0, 2) ?></b></td>
+                <td style="width: 10%;text-align: right;"><b><?= number_format(0, 2) ?></b></td>
             </tr>
             </tfoot>
 
