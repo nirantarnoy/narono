@@ -15,7 +15,7 @@ if ($from_date != '' && $to_date != '') {
     $date_year = date('Y', strtotime($to_date)) + 543;
 
     if ($search_car_id != null) {
-        $model_line = \common\models\QueryCarWorkSummary::find()->where(['car_id' => $search_car_id])->andFilterWhere(['>=', 'date(work_queue_date)', date('Y-m-d', strtotime($from_date))])->andFilterWhere(['<=', 'date(work_queue_date)', date('Y-m-d', strtotime($to_date))])->orderBy(['work_queue_date' => SORT_ASC])->all();
+        $model_line = \common\models\QueryCarWorkSummary::find()->where(['company_id' => $search_car_id])->andFilterWhere(['>=', 'date(work_queue_date)', date('Y-m-d', strtotime($from_date))])->andFilterWhere(['<=', 'date(work_queue_date)', date('Y-m-d', strtotime($to_date))])->orderBy(['work_queue_date' => SORT_ASC])->all();
     } else {
         $model_line = \common\models\QueryCarWorkSummary::find()->where(['>=', 'date(work_queue_date)', date('Y-m-d', strtotime($from_date))])->andFilterWhere(['<=', 'date(work_queue_date)', date('Y-m-d', strtotime($to_date))])->orderBy(['work_queue_date' => SORT_ASC])->all();
     }
@@ -165,15 +165,15 @@ $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
                         ?>
                     </div>
                     <div class="col-lg-3">
-                        <label class="form-label">รถ</label>
+                        <label class="form-label">บริษัท</label>
 
                         <?php
                         echo \kartik\select2\Select2::widget([
                             'name' => 'search_car_id',
-                            'data' => \yii\helpers\ArrayHelper::map(\backend\models\Car::find()->where(['status' => 1])->all(), 'id', 'name'),
+                            'data' => \yii\helpers\ArrayHelper::map(\backend\models\Company::find()->where(['status' => 1])->all(), 'id', 'name'),
                             'value' => $search_car_id,
                             'options' => [
-                                'placeholder' => '---เลือกรถ---'
+                                'placeholder' => '---เลือก---'
                             ],
                             'pluginOptions' => [
                                 'allowClear' => true,
@@ -234,19 +234,48 @@ $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
                 <th style="text-align: center;padding: 10px;border: 1px solid grey;"><b>วันที่</b></th>
                 <th style="text-align: center;padding: 10px;border: 1px solid grey;"><b>ลูกค้า</b></th>
                 <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าเที่ยว</b></th>
-                <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าอื่นๆ</b></th>
+                <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าคลุมผ้าใบ</b></th>
+                <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าค้างคืน</b></th>
+                <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าบวกคลัง</b></th>
+                <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าเบิ้ลงาน</b></th>
+                <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าลากจูง</b></th>
                 <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>รวมค่าอื่นๆ</b></th>
             </tr>
             </thead>
             <tbody>
             <?php
-            $total_amount = 0; $total_other_amount = 0;$total_line_all = 0;
+            $total_amount = 0;
+            $total_other_amount = 0;
+            $total_line_all = 0;
+            $total_cover_amount = 0;
+            $total_overnight_amount = 0;
+            $total_warehouse_plus_amount = 0;
+            $total_work_double_amount = 0;
+            $total_towing_amount = 0;
+
             if ($model_line != null):?>
                 <?php $i = 1; ?>
                 <?php foreach ($model_line as $value): ?>
                     <?php
                     $line_amount = $value->work_labour_price;
                     $other_amount = $value->trail_labour_price + $value->cover_sheet_price + $value->overnight_price + $value->warehouse_plus_price + $value->work_double_price + $value->towing_price;
+
+                    $cover_amount = $value->cover_sheet_price;
+                    $overnight_amount = $value->overnight_price;
+                    $warehouse_plus_amount = $value->warehouse_plus_price;
+                    $work_double_amount = $value->work_double_price;
+                    $towing_amount = $value->towing_price;
+
+                    $total_cover_amount = $total_cover_amount + $cover_amount;
+                    $total_overnight_amount = $total_overnight_amount + $overnight_amount;
+                    $total_warehouse_plus_amount = $total_warehouse_plus_amount + $warehouse_plus_amount;
+                    $total_work_double_amount = $total_work_double_amount + $work_double_amount;
+                    $total_towing_amount = $total_towing_amount + $towing_amount;
+
+
+
+
+
                     $line_total_amount = $line_amount + $other_amount;
 
                     $total_amount = $total_amount + $line_amount;
@@ -259,7 +288,11 @@ $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
                         <td style="text-align: center;border: 1px solid grey;padding: 3px;"><?= date('d-m-Y', strtotime($value->work_queue_date)) ?></td>
                         <td style="text-align: left;border: 1px solid grey;padding: 3px;"><?= \backend\models\Customer::findCusName($value->customer_id) ?></td>
                         <td style="text-align: right;border: 1px solid grey;padding: 3px;"><?= number_format($line_amount, 2) ?></td>
-                        <td style="text-align: right;border: 1px solid grey;padding: 3px;"><?= number_format($other_amount, 2) ?></td>
+                        <td style="text-align: right;border: 1px solid grey;padding: 3px;"><?= number_format($cover_amount, 2) ?></td>
+                        <td style="text-align: right;border: 1px solid grey;padding: 3px;"><?= number_format($overnight_amount, 2) ?></td>
+                        <td style="text-align: right;border: 1px solid grey;padding: 3px;"><?= number_format($warehouse_plus_amount, 2) ?></td>
+                        <td style="text-align: right;border: 1px solid grey;padding: 3px;"><?= number_format($work_double_amount, 2) ?></td>
+                        <td style="text-align: right;border: 1px solid grey;padding: 3px;"><?= number_format($towing_amount, 2) ?></td>
                         <td style="text-align: right;border: 1px solid grey;padding: 3px;"><?= number_format($line_total_amount, 2) ?></td>
                     </tr>
                     <?php $i += 1; ?>
@@ -270,7 +303,11 @@ $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
             <tr>
                 <td colspan="4" style="text-align: right;padding: 3px;border: 1px solid grey;"><b>รวม</b></td>
                 <td style="text-align: right;padding: 3px;border: 1px solid grey;"><b><?=number_format($total_amount,2)?></b></td>
-                <td style="text-align: right;padding: 3px;border: 1px solid grey;"><b><?=number_format($total_other_amount,2)?></b></td>
+                <td style="text-align: right;padding: 3px;border: 1px solid grey;"><b><?=number_format($total_cover_amount,2)?></b></td>
+                <td style="text-align: right;padding: 3px;border: 1px solid grey;"><b><?=number_format($total_overnight_amount,2)?></b></td>
+                <td style="text-align: right;padding: 3px;border: 1px solid grey;"><b><?=number_format($total_warehouse_plus_amount,2)?></b></td>
+                <td style="text-align: right;padding: 3px;border: 1px solid grey;"><b><?=number_format($total_work_double_amount,2)?></b></td>
+                <td style="text-align: right;padding: 3px;border: 1px solid grey;"><b><?=number_format($total_towing_amount,2)?></b></td>
                 <td style="text-align: right;padding: 3px;border: 1px solid grey;"><b><?=number_format($total_line_all,2)?></b></td>
             </tr>
             </tfoot>
