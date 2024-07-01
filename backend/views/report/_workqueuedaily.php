@@ -143,8 +143,8 @@ if ($search_car_type != null) {
                         <td style="width: 10%;text-align: center;"><?= \backend\models\Customer::findCusName($value->customer_id) ?></td>
                         <td style="width: 10%;text-align: center;"><?= \backend\models\Car::getCartype($value->car_id) ?></td>
                         <td style="width: 10%;text-align: right;"><?= number_format($value->weight_on_go, 3) ?></td>
-                        <td style="width: 5%;text-align: right;"><?= number_format($value->price, 3) ?></td>
-                        <td style="width: 10%;text-align: right;"><?= number_format($value->price * $value->weight_on_go, 3) ?></td>
+                        <td style="width: 5%;text-align: right;"><?= number_format($value->labour_price, 3) ?></td>
+                        <td style="width: 10%;text-align: right;"><?= number_format($value->labour_price, 3) ?></td>
                     </tr>
                 <?php endforeach; ?>
             <?php endif; ?>
