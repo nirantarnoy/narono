@@ -19,9 +19,12 @@ use yii\widgets\ActiveForm;
             <div class="col-lg-3">
                 <?php $model->trans_date = $model->isNewRecord ? date('Y-m-d') : date('d-m-Y', strtotime($model->trans_date)) ?>
                 <?= $form->field($model, 'trans_date')->widget(\kartik\date\DatePicker::className(), [
-                    'value' => date('Y-m-d'),
+                    'value' => date('d-m-Y'),
                     'pluginOptions' => [
-                        'format' => 'dd-mm-yyyy'
+                        'format' => 'dd-mm-yyyy',
+                        'todayHighlight' => true,
+                        'todayBtn' => true,
+                        'autoclose' => true
                     ]
                 ]) ?>
             </div>
