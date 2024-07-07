@@ -51,11 +51,11 @@ $model = \backend\models\Workqueue::find()->limit(10)->all();
                 ?>
             <?php foreach($model as $value):?>
                     <?php
-                    $line_litre = ($value->oil_lite + $value->oil_out_lite);
-                    $line_oil_amount = (($value->oil_lite * $value->oil_daily_price ) + ($value->oil_out_lite * $value->oil_out_price));
+                    $line_litre = ($value->total_lite + $value->oil_out_lite);
+                    $line_oil_amount = (($value->total_lite * $value->oil_daily_price ) + ($value->oil_out_lite * $value->oil_out_price));
 
-                    $total_lite_all += $value->oil_lite;
-                    $total_lite_amount += ($value->oil_lite * $value->oil_daily_price);
+                    $total_lite_all += $value->total_lite;
+                    $total_lite_amount += ($value->total_lite * $value->oil_daily_price);
                     $total_out_lite_all += $value->oil_out_lite;
                     $total_out_lite_amount += ($value->oil_out_lite * $value->oil_out_price);
 
