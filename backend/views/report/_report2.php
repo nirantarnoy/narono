@@ -67,12 +67,12 @@ $model = \backend\models\Workqueue::find()->limit(10)->all();
                         <td><?= \backend\models\Car::getPlateno($value->car_id) ?></td>
                         <td><?= \backend\models\Employee::findFullName($value->emp_assign) ?></td>
                         <td><?= \backend\models\Customer::findCusName($value->customer_id) ?></td>
-                        <td><?= number_format($value->total_lite, 2) ?></td>
-                        <td><?= number_format($value->oil_daily_price, 2) ?></td>
-                        <td><?= number_format($value->total_out_lite, 2) ?></td>
-                        <td><?= number_format($value->oil_out_price, 2) ?></td>
-                        <td><?= number_format($line_litre, 2) ?></td>
-                        <td><?= number_format($line_oil_amount, 2) ?></td>
+                        <td style="text-align: right;"><?= number_format($value->total_lite, 2) ?></td>
+                        <td style="text-align: right;"><?= number_format($value->oil_daily_price, 2) ?></td>
+                        <td style="text-align: right;"><?= number_format($value->total_out_lite, 2) ?></td>
+                        <td style="text-align: right;"><?= number_format($value->oil_out_price, 2) ?></td>
+                        <td style="text-align: right;"><?= number_format($line_litre, 2) ?></td>
+                        <td style="text-align: right;"><?= number_format($line_oil_amount, 2) ?></td>
                     </tr>
                 <?php endforeach; ?>
             <?php endif; ?>
@@ -83,12 +83,12 @@ $model = \backend\models\Workqueue::find()->limit(10)->all();
                 <td></td>
                 <td></td>
                 <td></td>
-                <td><?= number_format($total_lite_all, 2) ?></td>
-                <td><?= number_format($total_lite_amount, 2) ?></td>
-                <td><?= number_format($total_out_lite_all, 2) ?></td>
-                <td><?= number_format($total_out_lite_amount, 2) ?></td>
-                <td><?= number_format($lint_total_lite_all, 2) ?></td>
-                <td><?= number_format($lint_total_price_amount, 2) ?></td>
+                <td style="text-align: right;"><b><?= number_format($total_lite_all, 2) ?></b></td>
+                <td style="text-align: right;"><b><?= number_format($total_lite_amount, 2) ?></b></td>
+                <td style="text-align: right;"><b><?= number_format($total_out_lite_all, 2) ?></b></td>
+                <td style="text-align: right;"><b><?= number_format($total_out_lite_amount, 2) ?></b></td>
+                <td style="text-align: right;"><b><?= number_format($lint_total_lite_all, 2) ?></b></td>
+                <td style="text-align: right;"><b><?= number_format($lint_total_price_amount, 2) ?></b></td>
             </tr>
             </tbody>
         </table>
