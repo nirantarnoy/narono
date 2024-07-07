@@ -29,12 +29,12 @@ $model = \backend\models\Workqueue::find()->limit(10)->all();
                 <th colspan="2" style="text-align: center;">รวมน้ำมันทั้งหมด</th>
             </tr>
             <tr>
-                <td style="text-align: center;">จำนวนลิตร</td>
-                <td style="text-align: center;">จำนวนบาท</td>
-                <td style="text-align: center;">จำนวนลิตร</td>
-                <td style="text-align: center;">จำนวนบาท</td>
-                <td style="text-align: center;">จำนวนลิตร</td>
-                <td style="text-align: center;">จำนวนบาท</td>
+                <td style="text-align: center;"><b>จำนวนลิตร</b></td>
+                <td style="text-align: center;"><b>จำนวนบาท</b></td>
+                <td style="text-align: center;"><b>จำนวนลิตร</b></td>
+                <td style="text-align: center;"><b>จำนวนบาท</b></td>
+                <td style="text-align: center;"><b>จำนวนลิตร</b></td>
+                <td style="text-align: center;"><b>จำนวนบาท</b></td>
             </tr>
             </thead>
             <tbody>
