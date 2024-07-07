@@ -13,7 +13,7 @@ if($car_search != null){
     <div class="row">
         <div class="col-lg-3">
             <div class="input-group">
-                <input type="text" class="form-control" name="car_search" placeholder="เลขทะเบียน">
+                <input type="text" class="form-control" name="car_search" placeholder="เลขทะเบียน" value="<?=$car_search?>">
                 <button class="btn btn-info">ค้นหา</button>
             </div>
         </div>
