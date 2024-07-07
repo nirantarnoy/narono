@@ -71,8 +71,8 @@ $model = \backend\models\Workqueue::find()->limit(10)->all();
                         <td><?= number_format($value->oil_daily_price, 2) ?></td>
                         <td><?= number_format($value->total_out_lite, 2) ?></td>
                         <td><?= number_format($value->oil_out_price, 2) ?></td>
-                        <td><?= number_format($value->$line_litre, 2) ?></td>
-                        <td><?= number_format($value->$line_oil_amount, 2) ?></td>
+                        <td><?= number_format($line_litre, 2) ?></td>
+                        <td><?= number_format($line_oil_amount, 2) ?></td>
                     </tr>
                 <?php endforeach; ?>
             <?php endif; ?>
