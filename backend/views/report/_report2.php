@@ -3,17 +3,22 @@ $this->title = 'รายงานสรุปน้ำมันแยกคั�
 
 $model = null;
 
-$model = \backend\models\Workqueue::find()->limit(30)->orderBy(['id' => SORT_DESC])->all();
+if($car_search != null){
+    $model = \backend\models\Workqueue::find()->innerJoin()->on('work_queue.car_id = car.id')->where(['like', 'car.plate_no', $car_search])->groupBy(['car.plate_no'])->orderBy(['id' => SORT_ASC])->all();
+}
+
 
 ?>
-<div class="row">
-    <div class="col-lg-3">
-        <div class="input-group">
-            <input type="text" class="form-control" name="car_search" placeholder="เลขทะเบียน">
-            <button class="btn btn-info">ค้นหา</button>
+<form action="<?=\yii\helpers\Url::to(['report/report2'],true)?>" method="post">
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="input-group">
+                <input type="text" class="form-control" name="car_search" placeholder="เลขทะเบียน">
+                <button class="btn btn-info">ค้นหา</button>
+            </div>
         </div>
     </div>
-</div>
+</form>
 <br/>
 <div id="print-area">
     <div class="row">
@@ -96,7 +101,7 @@ $model = \backend\models\Workqueue::find()->limit(30)->orderBy(['id' => SORT_DES
         </div>
     </div>
 </div>
-<br />
+<br/>
 <div class="row">
     <div class="col-lg-12">
         <div class="btn btn-default btn-print" onclick="printContent('print-area')">พิมพ์</div>
