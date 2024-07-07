@@ -23,7 +23,7 @@ if($car_search != null){
 <div id="print-area">
     <div class="row">
         <div class="col-lg-12">
-            <table class="table table-bordered">
+            <table id="table-data" class="table table-bordered">
                 <thead>
                 <tr>
                     <th rowspan="2" style="text-align: center;vertical-align: middle;">วันที่</th>
@@ -106,11 +106,19 @@ if($car_search != null){
 <div class="row">
     <div class="col-lg-12">
         <div class="btn btn-default btn-print" onclick="printContent('print-area')">พิมพ์</div>
+        <div class="btn btn-info" id="btn-export-excel">Export Excel</div>
     </div>
 </div>
 
 <?php
 $js = <<<JS
+$("#btn-export-excel").click(function(){
+  $("#table-data").table2excel({
+    // exclude CSS class
+    exclude: ".noExl",
+    name: "Excel Document Name"
+  });
+});
 function printContent(el)
       {
          var restorepage = document.body.innerHTML;
