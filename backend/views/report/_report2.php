@@ -75,9 +75,9 @@ if($car_search != null){
                             <td><?= \backend\models\Employee::findFullName($value->emp_assign) ?></td>
                             <td><?= \backend\models\Customer::findCusName($value->customer_id) ?></td>
                             <td style="text-align: right;"><?= number_format($value->total_lite, 2) ?></td>
-                            <td style="text-align: right;"><?= number_format($value->oil_daily_price, 2) ?></td>
+                            <td style="text-align: right;"><?= number_format(($value->total_lite * $value->oil_daily_price), 2) ?></td>
                             <td style="text-align: right;"><?= number_format($value->total_out_lite, 2) ?></td>
-                            <td style="text-align: right;"><?= number_format($value->oil_out_price, 2) ?></td>
+                            <td style="text-align: right;"><?= number_format(( $value->total_out_lite * $value->oil_out_price), 2) ?></td>
                             <td style="text-align: right;"><?= number_format($line_litre, 2) ?></td>
                             <td style="text-align: right;"><?= number_format($line_oil_amount, 2) ?></td>
                         </tr>
