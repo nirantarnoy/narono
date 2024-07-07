@@ -4,7 +4,7 @@ $this->title = 'รายงานสรุปน้ำมันแยกคั�
 $model = null;
 
 if($car_search != null){
-    $model = \backend\models\Workqueue::find()->innerJoin('car','work_queue.car_id = car.id')->where(['like', 'car.plate_no', $car_search])->groupBy(['car.plate_no'])->orderBy(['id' => SORT_ASC])->all();
+    $model = \backend\models\Workqueue::find()->innerJoin('car','work_queue.car_id = car.id')->where(['like', 'car.plate_no', $car_search])->orderBy(['id' => SORT_ASC])->all();
 }
 
 
