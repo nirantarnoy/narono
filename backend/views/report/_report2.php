@@ -111,6 +111,7 @@ if($car_search != null){
 </div>
 
 <?php
+$this->registerJsFile(\Yii::$app->request->baseUrl . '/js/jquery.table2excel.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
 $js = <<<JS
 $("#btn-export-excel").click(function(){
   $("#table-data").table2excel({
