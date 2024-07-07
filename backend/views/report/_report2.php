@@ -44,17 +44,18 @@ if($car_search != null){
                 </tr>
                 </thead>
                 <tbody>
+                <?php
+                $total_lite_all = 0;
+                $total_lite_amount = 0;
+                $total_out_lite_all = 0;
+                $total_out_lite_amount = 0;
+
+                $lint_total_lite_all = 0;
+                $lint_total_price_amount = 0;
+
+                ?>
                 <?php if ($model): ?>
-                    <?php
-                    $total_lite_all = 0;
-                    $total_lite_amount = 0;
-                    $total_out_lite_all = 0;
-                    $total_out_lite_amount = 0;
 
-                    $lint_total_lite_all = 0;
-                    $lint_total_price_amount = 0;
-
-                    ?>
                     <?php foreach ($model as $value): ?>
                         <?php
                         $line_litre = ($value->total_lite + $value->total_out_lite);
