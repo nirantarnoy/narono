@@ -14,7 +14,7 @@ $model = \backend\models\Workqueue::find()->limit(10)->all();
         </div>
     </div>
 </div>
-<br />
+<br/>
 <div class="row">
     <div class="col-lg-12">
         <table class="table table-bordered">
@@ -38,44 +38,44 @@ $model = \backend\models\Workqueue::find()->limit(10)->all();
             </tr>
             </thead>
             <tbody>
-            <?php if($model):?>
+            <?php if ($model): ?>
                 <?php
-                  $total_lite_all = 0;
-                  $total_lite_amount = 0;
-                  $total_out_lite_all = 0;
-                  $total_out_lite_amount = 0;
+                $total_lite_all = 0;
+                $total_lite_amount = 0;
+                $total_out_lite_all = 0;
+                $total_out_lite_amount = 0;
 
-                  $lint_total_lite_all = 0;
-                  $lint_total_price_amount = 0;
+                $lint_total_lite_all = 0;
+                $lint_total_price_amount = 0;
 
                 ?>
-            <?php foreach($model as $value):?>
+                <?php foreach ($model as $value): ?>
                     <?php
-                    $line_litre = ($value->total_lite + $value->oil_out_lite);
-                    $line_oil_amount = (($value->total_lite * $value->oil_daily_price ) + ($value->oil_out_lite * $value->oil_out_price));
+                    $line_litre = ($value->total_lite + $value->total_out_lite);
+                    $line_oil_amount = (($value->total_lite * $value->oil_daily_price) + ($value->total_out_lite * $value->oil_out_price));
 
                     $total_lite_all += $value->total_lite;
                     $total_lite_amount += ($value->total_lite * $value->oil_daily_price);
-                    $total_out_lite_all += $value->oil_out_lite;
-                    $total_out_lite_amount += ($value->oil_out_lite * $value->oil_out_price);
+                    $total_out_lite_all += $value->total_out_lite;
+                    $total_out_lite_amount += ($value->total_out_lite * $value->oil_out_price);
 
                     $lint_total_lite_all += $line_litre;
                     $lint_total_price_amount += $line_oil_amount;
                     ?>
-                <tr>
-                    <td style="text-align: center;"><?= date('d-m-Y', strtotime($value->work_queue_date)) ?></td>
-                    <td><?=\backend\models\Car::getPlateno($value->car_id)?></td>
-                    <td><?=\backend\models\Employee::findFullName($value->emp_assign)?></td>
-                    <td><?=\backend\models\Customer::findCusName($value->customer_id)?></td>
-                    <td><?=number_format($value->total_lite,2)?></td>
-                    <td><?=number_format($value->oil_daily_price,2)?></td>
-                    <td><?=number_format($value->total_out_lite,2)?></td>
-                    <td><?=number_format($value->oil_out_price,2)?></td>
-                    <td><?=number_format($value->$line_litre,2)?></td>
-                    <td><?=number_format($value->$line_oil_amount,2)?></td>
-                </tr>
-            <?php endforeach;?>
-            <?php endif;?>
+                    <tr>
+                        <td style="text-align: center;"><?= date('d-m-Y', strtotime($value->work_queue_date)) ?></td>
+                        <td><?= \backend\models\Car::getPlateno($value->car_id) ?></td>
+                        <td><?= \backend\models\Employee::findFullName($value->emp_assign) ?></td>
+                        <td><?= \backend\models\Customer::findCusName($value->customer_id) ?></td>
+                        <td><?= number_format($value->total_lite, 2) ?></td>
+                        <td><?= number_format($value->oil_daily_price, 2) ?></td>
+                        <td><?= number_format($value->total_out_lite, 2) ?></td>
+                        <td><?= number_format($value->oil_out_price, 2) ?></td>
+                        <td><?= number_format($value->$line_litre, 2) ?></td>
+                        <td><?= number_format($value->$line_oil_amount, 2) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php endif; ?>
             </tbody>
             <tbody>
             <tr>
@@ -83,12 +83,12 @@ $model = \backend\models\Workqueue::find()->limit(10)->all();
                 <td></td>
                 <td></td>
                 <td></td>
-                <td><?=number_format($total_lite_all,2)?></td>
-                <td><?=number_format($total_lite_amount,2)?></td>
-                <td><?=number_format($total_out_lite_all,2)?></td>
-                <td><?=number_format($total_out_lite_amount,2)?></td>
-                <td><?=number_format($lint_total_lite_all,2)?></td>
-                <td><?=number_format($lint_total_price_amount,2)?></td>
+                <td><?= number_format($total_lite_all, 2) ?></td>
+                <td><?= number_format($total_lite_amount, 2) ?></td>
+                <td><?= number_format($total_out_lite_all, 2) ?></td>
+                <td><?= number_format($total_out_lite_amount, 2) ?></td>
+                <td><?= number_format($lint_total_lite_all, 2) ?></td>
+                <td><?= number_format($lint_total_price_amount, 2) ?></td>
             </tr>
             </tbody>
         </table>
