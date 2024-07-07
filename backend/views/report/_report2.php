@@ -3,7 +3,7 @@ $this->title = 'รายงานสรุปน้ำมันแยกคั�
 
 $model = null;
 
-$model = \backend\models\Workqueue::find()->limit(30)->all();
+$model = \backend\models\Workqueue::find()->limit(30)->orderBy(['id' => SORT_DESC])->all();
 
 ?>
 <div class="row">
