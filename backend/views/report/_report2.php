@@ -31,7 +31,7 @@ if($car_search != null){
 ?>
 <form action="<?=\yii\helpers\Url::to(['report/report2'],true)?>" method="post">
     <div class="row">
-        <div class="col-lg-3">
+        <div class="col-lg-6">
             <div class="input-group">
                 <input type="text" class="form-control" name="car_search" placeholder="เลขทะเบียน" value="<?=$car_search?>">
                 <?php
