@@ -1,10 +1,30 @@
 <?php
+
+use kartik\date\DatePicker;
+
 $this->title = 'รายงานสรุปน้ำมันแยกคัน';
 
+
+
+$display_date = date('d-m-Y');
+$display_to_date = date('d-m-Y');
+$find_date = date('Y-m-d');
+$find_to_date = date('Y-m-d');
+if ($search_date != null) {
+    $find_date = date('Y-m-d', strtotime($search_date));
+    $display_date = date('d-m-Y', strtotime($search_date));
+}
+if ($search_to_date != null) {
+    $find_to_date = date('Y-m-d', strtotime($search_to_date));
+    $display_to_date = date('d-m-Y', strtotime($search_to_date));
+}
 $model = null;
 
 if($car_search != null){
-    $model = \backend\models\Workqueue::find()->innerJoin('car','work_queue.car_id = car.id')->where(['like', 'car.plate_no', $car_search])->orderBy(['id' => SORT_ASC])->all();
+    $model = \backend\models\Workqueue::find()->innerJoin('car','work_queue.car_id = car.id')
+        ->where(['like', 'car.plate_no', $car_search])->orderBy(['id' => SORT_ASC])
+        ->andFilterWhere(['AND',['>=','date(work_queue_date)',$find_date],['<=','date(work_queue_date)',$find_to_date]])
+        ->all();
 }
 
 
@@ -14,6 +34,26 @@ if($car_search != null){
         <div class="col-lg-3">
             <div class="input-group">
                 <input type="text" class="form-control" name="car_search" placeholder="เลขทะเบียน" value="<?=$car_search?>">
+                <?php
+                echo DatePicker::widget([
+                    'name' => 'search_date',
+                    'type' => DatePicker::TYPE_INPUT,
+                    'value' => $display_date,
+                    'pluginOptions' => [
+                        'autoclose' => true,
+                        'format' => 'dd-mm-yyyy'
+                    ]
+                ]);
+                echo DatePicker::widget([
+                    'name' => 'search_to_date',
+                    'type' => DatePicker::TYPE_INPUT,
+                    'value' => $display_to_date,
+                    'pluginOptions' => [
+                        'autoclose' => true,
+                        'format' => 'dd-mm-yyyy'
+                    ]
+                ]);
+                ?>
                 <button class="btn btn-info">ค้นหา</button>
             </div>
         </div>

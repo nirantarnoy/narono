@@ -22,7 +22,7 @@ use yii\widgets\ActiveForm;
                     'value' => date('d-m-Y'),
                     'pluginOptions' => [
                         'format' => 'dd-mm-yyyy',
-                        'todayHighlight' => true,
+                        'todayHighlight' => true ,
                         'todayBtn' => true,
                         'autoclose' => true
                     ]
