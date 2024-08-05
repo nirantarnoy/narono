@@ -232,6 +232,9 @@ $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
                 <th style="text-align: center;padding: 10px;border: 1px solid grey;width: 10%"><b>ลำดับที่</b></th>
                 <th style="text-align: center;padding: 10px;border: 1px solid grey;"><b>ชื่อพนักงาน</b></th>
                 <th style="text-align: center;padding: 10px;border: 1px solid grey;"><b>วันที่</b></th>
+                <th style="text-align: center;padding: 10px;border: 1px solid grey;"><b>วัน</b></th>
+                <th style="text-align: center;padding: 10px;border: 1px solid grey;"><b>เดือน</b></th>
+                <th style="text-align: center;padding: 10px;border: 1px solid grey;"><b>ปี</b></th>
                 <th style="text-align: center;padding: 10px;border: 1px solid grey;"><b>ลูกค้า</b></th>
                 <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าเที่ยว</b></th>
                 <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าคลุมผ้าใบ</b></th>
@@ -286,6 +289,9 @@ $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
                         <td style="text-align: center;border: 1px solid grey;padding: 3px;"><?= $i ?></td>
                         <td style="text-align: left;border: 1px solid grey;padding: 3px;"><?= \backend\models\Employee::findFullName($value->emp_assign) ?></td>
                         <td style="text-align: center;border: 1px solid grey;padding: 3px;"><?= date('d-m-Y', strtotime($value->work_queue_date)) ?></td>
+                        <td style="text-align: center;border: 1px solid grey;padding: 3px;"><?= date('d', strtotime($value->work_queue_date)) ?></td>
+                        <td style="text-align: center;border: 1px solid grey;padding: 3px;"><?= date('m', strtotime($value->work_queue_date)) ?></td>
+                        <td style="text-align: center;border: 1px solid grey;padding: 3px;"><?= date('Y', strtotime($value->work_queue_date)) ?></td>
                         <td style="text-align: left;border: 1px solid grey;padding: 3px;"><?= \backend\models\Customer::findCusName($value->customer_id) ?></td>
                         <td style="text-align: right;border: 1px solid grey;padding: 3px;"><?= number_format($line_amount, 2) ?></td>
                         <td style="text-align: right;border: 1px solid grey;padding: 3px;"><?= number_format($cover_amount, 2) ?></td>
@@ -301,7 +307,7 @@ $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
             </tbody>
             <tfoot>
             <tr>
-                <td colspan="4" style="text-align: right;padding: 3px;border: 1px solid grey;"><b>รวม</b></td>
+                <td colspan="7" style="text-align: right;padding: 3px;border: 1px solid grey;"><b>รวม</b></td>
                 <td style="text-align: right;padding: 3px;border: 1px solid grey;"><b><?=number_format($total_amount,2)?></b></td>
                 <td style="text-align: right;padding: 3px;border: 1px solid grey;"><b><?=number_format($total_cover_amount,2)?></b></td>
                 <td style="text-align: right;padding: 3px;border: 1px solid grey;"><b><?=number_format($total_overnight_amount,2)?></b></td>
