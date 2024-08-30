@@ -65,7 +65,7 @@ $this->title = 'รายงานจำนวนเที่ยววิ่ง'
         </div>
     </div>
 <?php
-$date_data = ['1/8', '2/8', '3/8', '4/8', '5/8'];
+//$date_data = ['1/8', '2/8', '3/8', '4/8', '5/8'];
 //$date_data = [];
 $date_data_filter = [];
 $data_series = [
@@ -82,6 +82,12 @@ if ($from_date != null && $to_date != null) {
     $model = \backend\models\Workqueue::find()->where(['>=', 'date(work_queue_date)', $from_date])->andFilterWhere(['<=', 'date(work_queue_date)', $to_date])->groupBy(['date(work_queue_date)'])->all();
 } else {
     $model = \backend\models\Workqueue::find()->where(['date(work_queue_date)' => date('Y-m-d')])->groupBy(['date(work_queue_date)'])->all();
+}
+
+if($model!=null){
+  foreach($model as $value){
+      array_push($date_data, date('d/m', strtotime($value->work_queue_date)));
+  }
 }
 
 //// $model_car = \backend\models\Car::find()->all();
