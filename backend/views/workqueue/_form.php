@@ -347,7 +347,7 @@ $dropoff_data = \common\models\DropoffPlace::find()->all();
                             <input type="text" class="form-control price-per-ton" name="price_per_ton[]">
                         </td>
                         <td>
-                            <input type="text" class="form-control line-price" name="line_price[]">
+                            <input type="text" class="form-control line-price" name="line_price[]" readonly>
                         </td>
                         <td>
                             <div class="btn btn-danger btn-sm" onclick="removeline1($(this))"><i
@@ -393,7 +393,7 @@ $dropoff_data = \common\models\DropoffPlace::find()->all();
                                     <input type="text" class="form-control price-per-ton" name="price_per_ton[]">
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control line-price" name="line_price[]">
+                                    <input type="text" class="form-control line-price" name="line_price[]" readonly>
                                 </td>
                                 <td>
                                     <div class="btn btn-danger btn-sm" onclick="removeline1($(this))"><i
@@ -431,7 +431,7 @@ $dropoff_data = \common\models\DropoffPlace::find()->all();
                                 <input type="text" class="form-control price-per-ton" name="price_per_ton[]">
                             </td>
                             <td>
-                                <input type="text" class="form-control line-price" name="line_price[]">
+                                <input type="text" class="form-control line-price" name="line_price[]" readonly>
                             </td>
                             <td>
                                 <div class="btn btn-danger btn-sm" onclick="removeline1($(this))"><i
