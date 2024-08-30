@@ -88,7 +88,7 @@ if($model!=null){
   for($a=1;$a<=2;$a++){
       $data_show = [];
       if($date_data!=null){
-          print_r($date_data);
+          //print_r($date_data);
           for($x=0;$x<=count($date_data)-1;$x++){
               $xp = explode('/',$date_data[$x]);
               $day_total = 0;
@@ -99,7 +99,8 @@ if($model!=null){
                 //  echo $day. ' and '.$mn. ' === '.$xp[0]. ' and '.$xp[1].'<br />';
 
                   if((int)$xp[0]==(int)$day && (int)$xp[1]==(int)$mn && $valuex->company_id == $a){
-                     $day_total+=1;
+                     $model_count = \backend\models\Workqueue::find()->where(['day(work_queue_date)' => $day, 'month(work_queue_date)' => $mn, 'company_id' => $a])->groupBy(['date(work_queue_date)'])->count();
+                     $day_total += $model_count;
                   }
               }
               array_push($data_show,$day_total);
