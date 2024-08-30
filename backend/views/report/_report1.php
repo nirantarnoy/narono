@@ -66,7 +66,7 @@ $this->title = 'รายงานจำนวนเที่ยววิ่ง'
     </div>
 <?php
 //$date_data = ['1/8', '2/8', '3/8', '4/8', '5/8'];
-//$date_data = [];
+$date_data = [];
 $date_data_filter = [];
 $data_series = [
       ['name' => '7XXX', 'data' => [10, 5, 4,5,9]],
