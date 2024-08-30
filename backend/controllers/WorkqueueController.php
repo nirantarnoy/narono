@@ -106,6 +106,8 @@ class WorkqueueController extends Controller
                 $dropoff_no = \Yii::$app->request->post('dropoff_no');
                 $qty = \Yii::$app->request->post('qty');
                 $weight = \Yii::$app->request->post('weight');
+                $price_per_ton = \Yii::$app->request->post('price_per_ton');
+                $price_line_total = \Yii::$app->request->post('price_line_total');
 
                 $company_id = \backend\models\Customer::findCompanyByCustomer($model->customer_id);
 
@@ -154,6 +156,8 @@ class WorkqueueController extends Controller
                             $model_df->dropoff_no = $dropoff_no[$a];
                             $model_df->qty = $qty[$a];
                             $model_df->weight = $weight[$a];
+                            $model_df->price_per_ton = $price_per_ton[$a];
+                            $model_df->price_line_total = $price_line_total[$a];
                             $model_df->save(false);
                         }
                     }
@@ -219,6 +223,8 @@ class WorkqueueController extends Controller
             $dropoff_no = \Yii::$app->request->post('dropoff_no');
             $qty = \Yii::$app->request->post('qty');
             $weight = \Yii::$app->request->post('weight');
+            $price_per_ton = \Yii::$app->request->post('price_per_ton');
+            $price_line_total = \Yii::$app->request->post('price_line_total');
 
             $oil_daily_price = \Yii::$app->request->post('oil_daily_price');
             $oil_out_price = \Yii::$app->request->post('oil_out_price');
@@ -278,6 +284,8 @@ class WorkqueueController extends Controller
                             $model_test->dropoff_no = $dropoff_no[$a];
                             $model_test->qty = (float)$qty[$a];
                             $model_test->weight = (float)$weight[$a];
+                            $model_test->price_per_ton = (float)$price_per_ton[$a];
+                            $model_test->price_line_total = (float)$price_line_total[$a];
                             $model_test->save(false);
                         } else {
                             $model_do = new \common\models\WorkQueueDropoff();
@@ -286,6 +294,8 @@ class WorkqueueController extends Controller
                             $model_do->dropoff_no = $dropoff_no[$a];
                             $model_do->qty = (float)$qty[$a];
                             $model_do->weight = (float)$weight[$a];
+                            $model_do->price_per_ton = (float)$price_per_ton[$a];
+                            $model_do->price_line_total = (float)$price_line_total[$a];
                             $model_do->save(false);
                         }
                     }

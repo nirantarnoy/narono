@@ -341,13 +341,13 @@ $dropoff_data = \common\models\DropoffPlace::find()->all();
                         <td>
                             <input type="number" name="weight[]"
                                    step="any"
-                                   class="form-control weight" id="">
+                                   class="form-control weight" id="" onchange="calpriceperton($(this))">
                         </td>
                         <td>
-                            <input type="text" class="form-control price-per-ton" name="price_per_ton[]">
+                            <input type="text" class="form-control price-per-ton" name="price_per_ton[]" onchange="calpriceperton($(this))">
                         </td>
                         <td>
-                            <input type="text" class="form-control line-price" name="line_price[]" readonly>
+                            <input type="text" class="form-control price-line-total" name="price_line_total[]" readonly>
                         </td>
                         <td>
                             <div class="btn btn-danger btn-sm" onclick="removeline1($(this))"><i
@@ -387,13 +387,14 @@ $dropoff_data = \common\models\DropoffPlace::find()->all();
                                     <input type="number" name="weight[]"
                                            class="form-control weight" id=""
                                            step="any"
-                                           value="<?= $key->weight ?>">
+                                           value="<?= $key->weight ?>" onchange="calpriceperton($(this))">
+                                </td>
+
+                                <td>
+                                    <input type="text" class="form-control price-per-ton" name="price_per_ton[]" value="<?=$key->price_per_ton?>" onchange="calpriceperton($(this))">
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control price-per-ton" name="price_per_ton[]">
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control line-price" name="line_price[]" readonly>
+                                    <input type="text" class="form-control price-line-total" name="price_line_total[]" value="<?= $key->price_line_total ?>" readonly>
                                 </td>
                                 <td>
                                     <div class="btn btn-danger btn-sm" onclick="removeline1($(this))"><i
@@ -423,15 +424,14 @@ $dropoff_data = \common\models\DropoffPlace::find()->all();
                             </td>
                             <td>
                                 <input type="number" name="weight[]"
-                                       class="form-control weight"
                                        step="any"
-                                       id="">
+                                       class="form-control weight" id="" onchange="calpriceperton($(this))">
                             </td>
                             <td>
-                                <input type="text" class="form-control price-per-ton" name="price_per_ton[]">
+                                <input type="text" class="form-control price-per-ton" name="price_per_ton[]" onchange="calpriceperton($(this))">
                             </td>
                             <td>
-                                <input type="text" class="form-control line-price" name="line_price[]" readonly>
+                                <input type="text" class="form-control price-line-total" name="price_line_total[]" readonly>
                             </td>
                             <td>
                                 <div class="btn btn-danger btn-sm" onclick="removeline1($(this))"><i
@@ -1012,7 +1012,13 @@ function removeline1(e) {
         }
     }
 
-
+function calpriceperton(e){
+    var line_w = e.closest("tr").find(".weight").val();
+    var line_p = e.closest("tr").find(".price-per-ton").val();
+    var line_total = parseFloat(line_w) * parseFloat(line_p);
+    
+    e.closest("tr").find(".price-line-total").val(parseFloat(line_total).toFixed(2));
+}
 JS;
 $this->registerJs($js, static::POS_END);
 ?>
