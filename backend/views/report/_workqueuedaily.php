@@ -111,17 +111,17 @@ if ($search_car_type != null) {
         <table class="table table-bordered" id="table-data">
             <thead>
             <tr>
-                <th style="width: 8%;text-align: center;">ลำดับที่</th>
-                <th style="width: 10%;text-align: center;">วันที่</th>
-                <th style="width: 10%;text-align: center;">ทะเบียนหัว</th>
-                <th style="width: 10%;text-align: center;">ทะเบียนหาง</th>
-                <th style="width: 10%;text-align: center;">ชื่อ พขร.</th>
-                <th style="width: 10%;text-align: center;">ประเภทงาน</th>
+                <th style="width: 5%;text-align: center;">ลำดับ</th>
+                <th style="width: 8%;text-align: center;">วันที่</th>
+                <th style="width: 8%;text-align: center;">ทะเบียนหัว</th>
+                <th style="width: 8%;text-align: center;">ทะเบียนหาง</th>
+                <th style="width: 8%;text-align: center;">ชื่อ พขร.</th>
+                <th style="width: 8%;text-align: center;">ประเภทงาน</th>
                 <th style="width: 10%;text-align: center;">ลูกค้า</th>
-                <th style="width: 10%;text-align: center;">ประเภทรถ</th>
-                <th style="width: 10%;text-align: right;">น้ำหนัก(ตัน)</th>
-                <th style="width: 10%;text-align: right;">ราคา</th>
-                <th style="width: 10%;text-align: right;">จำนวเงิน</th>
+                <th style="width: 8%;text-align: center;">ประเภทรถ</th>
+                <th style="width: 8%;text-align: center;">น้ำหนัก(ตัน)</th>
+                <th style="width: 8%;text-align: center;">ราคา</th>
+                <th style="width: 8%;text-align: center;">จำนวเงิน</th>
             </tr>
             </thead>
             <tbody>
@@ -137,16 +137,16 @@ if ($search_car_type != null) {
                     ?>
                     <tr>
                         <td style="width: 5%;text-align: center;"><?= $line_num ?></td>
-                        <td style="width: 10%;text-align: center;"><?= date('d/m/Y', strtotime($value->work_queue_date)) ?></td>
-                        <td style="width: 10%;text-align: center;"><?= \backend\models\Car::findName($value->car_id) ?></td>
-                        <td style="width: 10%;text-align: center;"><?= \backend\models\Car::findName($value->tail_id) ?></td>
-                        <td style="width: 10%;text-align: center;"><?= \backend\models\Employee::findFullName($value->emp_assign) ?></td>
-                        <td style="width: 10%;text-align: center;"><?= \backend\models\Customer::findWorkTypeByCustomerid($value->customer_id) ?></td>
+                        <td style="width: 8%;text-align: center;"><?= date('d/m/Y', strtotime($value->work_queue_date)) ?></td>
+                        <td style="width: 8%;text-align: center;"><?= \backend\models\Car::findName($value->car_id) ?></td>
+                        <td style="width: 8%;text-align: center;"><?= \backend\models\Car::findName($value->tail_id) ?></td>
+                        <td style="width: 8%;text-align: center;"><?= \backend\models\Employee::findFullName($value->emp_assign) ?></td>
+                        <td style="width: 8%;text-align: center;"><?= \backend\models\Customer::findWorkTypeByCustomerid($value->customer_id) ?></td>
                         <td style="width: 10%;text-align: center;"><?= \backend\models\Customer::findCusName($value->customer_id) ?></td>
-                        <td style="width: 10%;text-align: center;"><?= \backend\models\Car::getCartype($value->car_id) ?></td>
-                        <td style="width: 10%;text-align: right;"><?= number_format($value->weight_on_go, 3) ?></td>
-                        <td style="width: 5%;text-align: right;"><?= number_format($value->labour_price, 2) ?></td>
-                        <td style="width: 10%;text-align: right;"><?= number_format($value->total_amount, 2) ?></td>
+                        <td style="width: 8%;text-align: center;"><?= \backend\models\Car::getCartype($value->car_id) ?></td>
+                        <td style="width: 8%;text-align: right;"><?= number_format($value->weight_on_go, 3) ?></td>
+                        <td style="width: 8%;text-align: right;"><?= number_format($value->labour_price, 2) ?></td>
+                        <td style="width: 8%;text-align: right;"><?= number_format($value->total_amount, 2) ?></td>
                     </tr>
                 <?php endforeach; ?>
             <?php endif; ?>
@@ -154,9 +154,9 @@ if ($search_car_type != null) {
             <tfoot>
             <tr>
                 <td colspan="8" style="width: 8%;text-align: right;"><b>รวม</b></td>
-                <td style="width: 10%;text-align: right;"><b><?= number_format($total_weight, 3) ?></b></td>
-                <td style="width: 10%;text-align: right;"><b></b></td>
-                <td style="width: 10%;text-align: right;"><b><?= number_format($total_line_amount, 2) ?></b></td>
+                <td style="width: 8%;text-align: right;"><b><?= number_format($total_weight, 3) ?></b></td>
+                <td style="width: 8%;text-align: right;"><b></b></td>
+                <td style="width: 8%;text-align: right;"><b><?= number_format($total_line_amount, 2) ?></b></td>
             </tr>
             </tfoot>
 
