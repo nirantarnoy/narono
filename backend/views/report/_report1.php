@@ -44,19 +44,19 @@ $this->title = 'รายงานจำนวนเที่ยววิ่ง'
             </div>
         </div>
     </form>
-    <br/>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="btn-group">
-                <div class="btn btn-success btn-3d" id="btn-3d" data-var="3" onclick="changefilter($(this))">3 Days</div>
-                <div class="btn btn-default btn-5d" id="btn-5d" data-var="5" onclick="changefilter($(this))">5 Days</div>
-                <div class="btn btn-default btn-7d" id="btn-7d" data-var="7" onclick="changefilter($(this))">7 Days</div>
-                <div class="btn btn-default btn-15d" id="btn-15d" data-var="15" onclick="changefilter($(this))">15 Days</div>
-                <div class="btn btn-default btn-30d" id="btn-30d" data-var="30" onclick="changefilter($(this))">30 Days</div>
-                <div class="btn btn-default btn-1y" id="btn-1y" data-var="365" onclick="changefilter($(this))">1 Year</div>
-            </div>
-        </div>
-    </div>
+<!--    <br/>-->
+<!--    <div class="row">-->
+<!--        <div class="col-lg-12">-->
+<!--            <div class="btn-group">-->
+<!--                <div class="btn btn-success btn-3d" id="btn-3d" data-var="3" onclick="changefilter($(this))">3 Days</div>-->
+<!--                <div class="btn btn-default btn-5d" id="btn-5d" data-var="5" onclick="changefilter($(this))">5 Days</div>-->
+<!--                <div class="btn btn-default btn-7d" id="btn-7d" data-var="7" onclick="changefilter($(this))">7 Days</div>-->
+<!--                <div class="btn btn-default btn-15d" id="btn-15d" data-var="15" onclick="changefilter($(this))">15 Days</div>-->
+<!--                <div class="btn btn-default btn-30d" id="btn-30d" data-var="30" onclick="changefilter($(this))">30 Days</div>-->
+<!--                <div class="btn btn-default btn-1y" id="btn-1y" data-var="365" onclick="changefilter($(this))">1 Year</div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
     <br/>
     <div class="row">
         <div class="col-lg-12">
