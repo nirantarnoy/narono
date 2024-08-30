@@ -105,6 +105,8 @@ if($model!=null){
 
 }
 
+print_r($date_data);
+
 //// $model_car = \backend\models\Car::find()->all();
 //if ($model) {
 //    foreach ($model as $value) {
