@@ -95,7 +95,7 @@ if($model!=null){
                   $mn = date('m',strtotime($valuex->work_queue_date));
 
                   if((int)$xp[0]==$day && (int)$xp[1]==$mn && $valuex->company_id == $a){
-                     array_push($data_show,(int)$valuex->count());
+                     array_push($data_show,10 +$a);
                   }
               }
           }
