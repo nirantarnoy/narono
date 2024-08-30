@@ -88,6 +88,7 @@ if($model!=null){
   for($a=1;$a<=2;$a++){
       $data_show = [];
       if($date_data!=null){
+          echo "yes";
           for($x=0;$x<=count($date_data)-1;$x++){
               $xp = explode($date_data[$x],'/');
               foreach($model as $valuex){
@@ -95,6 +96,7 @@ if($model!=null){
                   $mn = date('m',strtotime($valuex->work_queue_date));
 
                   if((int)$xp[0]==(int)$day && (int)$xp[1]==(int)$mn && $valuex->company_id == $a){
+                      echo "okkk";
                      array_push($data_show,10 +$a);
                   }
               }
