@@ -101,11 +101,12 @@ if($model!=null){
           }
       }
       $data_series[$a-1]['data'] = $data_show;
+      print_r($data_show);
   }
 
 }
 
-print_r($date_data);
+//print_r($date_data);
 
 //// $model_car = \backend\models\Car::find()->all();
 //if ($model) {
