@@ -114,10 +114,10 @@ if($model!=null){
               array_push($data_show,$day_total);
           }
       }
-
+      $data_series[$a-1]['data'] = $data_show;
      // print_r($data_show);
   }
-    $data_series[$a-1]['data'] = $data_show;
+
 
 }
 
