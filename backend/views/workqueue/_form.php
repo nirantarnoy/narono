@@ -314,6 +314,8 @@ $dropoff_data = \common\models\DropoffPlace::find()->all();
                 <th>เลขที่ใบตั้ง</th>
                 <th>จำนวนม้วน</th>
                 <th>น้ำหนัก</th>
+                <th>ราคาบาท/ตัน</th>
+                <th>จำนวนเงิน</th>
                 <th></th>
                 </thead>
                 <tbody>
@@ -340,6 +342,12 @@ $dropoff_data = \common\models\DropoffPlace::find()->all();
                             <input type="number" name="weight[]"
                                    step="any"
                                    class="form-control weight" id="">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control price-per-ton" name="price_per_ton[]">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control line-price" name="line_price[]">
                         </td>
                         <td>
                             <div class="btn btn-danger btn-sm" onclick="removeline1($(this))"><i
@@ -382,6 +390,12 @@ $dropoff_data = \common\models\DropoffPlace::find()->all();
                                            value="<?= $key->weight ?>">
                                 </td>
                                 <td>
+                                    <input type="text" class="form-control price-per-ton" name="price_per_ton[]">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control line-price" name="line_price[]">
+                                </td>
+                                <td>
                                     <div class="btn btn-danger btn-sm" onclick="removeline1($(this))"><i
                                                 class="fa fa-trash"></i></div>
                                 </td>
@@ -412,6 +426,12 @@ $dropoff_data = \common\models\DropoffPlace::find()->all();
                                        class="form-control weight"
                                        step="any"
                                        id="">
+                            </td>
+                            <td>
+                                <input type="text" class="form-control price-per-ton" name="price_per_ton[]">
+                            </td>
+                            <td>
+                                <input type="text" class="form-control line-price" name="line_price[]">
                             </td>
                             <td>
                                 <div class="btn btn-danger btn-sm" onclick="removeline1($(this))"><i
