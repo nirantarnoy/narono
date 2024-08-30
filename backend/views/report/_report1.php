@@ -90,17 +90,18 @@ if($model!=null){
       if($date_data!=null){
           for($x=0;$x<=count($date_data)-1;$x++){
               $xp = explode($date_data[$x],'/');
-              foreach($model as $valuex){
-                  $day = date('d',strtotime($valuex->work_queue_date));
-                  $mn = date('m',strtotime($valuex->work_queue_date));
-
-                  echo $day. ' and '.$mn. ' === '.$xp[0]. ' and '.$xp[1].'<br />';
-
-                  if((int)$xp[0]==(int)$day && (int)$xp[1]==(int)$mn && $valuex->company_id == $a){
-                      echo "okkk";
-                     array_push($data_show,10 +$a);
-                  }
-              }
+              print_r($xp);
+//              foreach($model as $valuex){
+//                  $day = date('d',strtotime($valuex->work_queue_date));
+//                  $mn = date('m',strtotime($valuex->work_queue_date));
+//
+//                  echo $day. ' and '.$mn. ' === '.$xp[0]. ' and '.$xp[1].'<br />';
+//
+//                  if((int)$xp[0]==(int)$day && (int)$xp[1]==(int)$mn && $valuex->company_id == $a){
+//                      echo "okkk";
+//                     array_push($data_show,10 +$a);
+//                  }
+//              }
           }
       }
       $data_series[$a-1]['data'] = $data_show;
