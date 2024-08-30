@@ -69,11 +69,8 @@ $this->title = 'รายงานจำนวนเที่ยววิ่ง'
 $date_data = [];
 $date_data_filter = [];
 $data_series = [
-      ['name' => '7XXX', 'data' => [10, 5, 4,5,9]],
-      ['name' => '8XXX', 'data' => [5, 7, 3,6,5]],
-      ['name' => '9XXX', 'data' => [4, 12, 8,7,10]],
-      ['name' => '6XXX', 'data' => [8, 2, 8,9,11]],
-      ['name' => '5XXX', 'data' => [9, 8, 15,2,5]]
+      ['name' => 'ณโรโน่', 'data' => []],
+      ['name' => 'ลานเหล็ก', 'data' => []],
   ];
 //$xyz = [10, 5, 4,5,9];
 //$data_series = [];
@@ -88,6 +85,24 @@ if($model!=null){
   foreach($model as $value){
       array_push($date_data, date('d/m', strtotime($value->work_queue_date)));
   }
+  for($a=1;$a<=2;$a++){
+      $data_show = [];
+      if($date_data!=null){
+          for($x=0;$x<=count($date_data)-1;$x++){
+              $xp = explode($date_data[$x],'/');
+              foreach($model as $valuex){
+                  $day = date('d',strtotime($valuex->work_queue_date));
+                  $mn = date('m',strtotime($valuex->work_queue_date));
+
+                  if((int)$xp[0]==$day && (int)$xp[1]==$mn && $valuex->company_id == $a){
+                     array_push($data_show,(int)$valuex->count());
+                  }
+              }
+          }
+      }
+      $data_series[$a-1]['data'] = $data_show;
+  }
+
 }
 
 //// $model_car = \backend\models\Car::find()->all();
