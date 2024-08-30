@@ -96,7 +96,7 @@ if($model!=null){
                   $day = date('d',strtotime($valuex->work_queue_date));
                   $mn = date('m',strtotime($valuex->work_queue_date));
 
-                  echo $day. ' and '.$mn. ' === '.$xp[0]. ' and '.$xp[1].'<br />';
+                //  echo $day. ' and '.$mn. ' === '.$xp[0]. ' and '.$xp[1].'<br />';
 
                   if((int)$xp[0]==(int)$day && (int)$xp[1]==(int)$mn && $valuex->company_id == $a){
                      $day_total+=1;
