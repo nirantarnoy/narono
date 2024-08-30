@@ -107,7 +107,7 @@ if($model!=null){
                   if(count($xp)>1){
                       $day = $xp[0];
                       $mn = $xp[1];
-                      $model_count = \backend\models\Workqueue::find()->where(['day(work_queue_date)' => $day, 'month(work_queue_date)' => $mn, 'company_id' => 1])->count();
+                      $model_count = \backend\models\Workqueue::find()->where(['day(work_queue_date)' => $day, 'month(work_queue_date)' => $mn, 'company_id' => $a])->count();
                       $day_total += $model_count;
                   }
               }
