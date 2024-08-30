@@ -14,11 +14,10 @@ $this->title = 'รายงานจำนวนเที่ยววิ่ง'
                 echo \kartik\date\DatePicker::widget([
                     'value' => date('d/m/Y', strtotime($from_date)),
                     'name' => 'from_date',
-                    'options' => [
-                        'format' => 'dd/mm/yyyy',
-                    ],
                     'pluginOptions' => [
-
+                        'format' => 'dd/mm/yyyy',
+                        'showTodayButton' => true,
+                        'autoclose' => true
                     ]
                 ]);
                 ?>
@@ -30,10 +29,12 @@ $this->title = 'รายงานจำนวนเที่ยววิ่ง'
                     'value' => date('d/m/Y', strtotime($to_date)),
                     'name' => 'to_date',
                     'options' => [
-                        'format' => 'dd/mm/yyyy',
+
                     ],
                     'pluginOptions' => [
-
+                        'format' => 'dd/mm/yyyy',
+                        'showTodayButton' => true,
+                        'autoclose' => true
                     ]
                 ]);
                 ?>
