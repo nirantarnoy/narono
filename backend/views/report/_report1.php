@@ -87,6 +87,7 @@ if($model!=null){
   }
   for($a=1;$a<=2;$a++){
       $data_show = [];
+      $data_show2 = [];
       if($date_data!=null){
           //print_r($date_data);
           for($x=0;$x<=count($date_data)-1;$x++){
@@ -107,16 +108,23 @@ if($model!=null){
                   if(count($xp)>1){
                       $day = $xp[0];
                       $mn = $xp[1];
-                      $model_count = \backend\models\Workqueue::find()->where(['day(work_queue_date)' => $day, 'month(work_queue_date)' => $mn, 'company_id' => $a])->groupBy(['date(work_queue_date)'])->count();
+                      $model_count = \backend\models\Workqueue::find()->where(['month(work_queue_date)' => $mn, 'company_id' => $a])->groupBy(['date(work_queue_date)'])->count();
                       $day_total += $model_count;
                   }
               }
-              array_push($data_show,$day_total);
+              if($a == 1){
+                  array_push($data_show,$day_total);
+              }else if($a == 2){
+                  array_push($data_show2,$day_total);
+              }
+
           }
       }
-      $data_series[$a-1]['data'] = $data_show;
+
      // print_r($data_show);
   }
+    $data_series[0]['data'] = $data_show;
+    $data_series[1]['data'] = $data_show2;
 
 }
 
