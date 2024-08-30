@@ -91,6 +91,7 @@ if($model!=null){
           print_r($date_data);
           for($x=0;$x<=count($date_data)-1;$x++){
               $xp = explode('/',$date_data[$x]);
+              $day_total = 0;
               foreach($model as $valuex){
                   $day = date('d',strtotime($valuex->work_queue_date));
                   $mn = date('m',strtotime($valuex->work_queue_date));
@@ -98,10 +99,10 @@ if($model!=null){
                   echo $day. ' and '.$mn. ' === '.$xp[0]. ' and '.$xp[1].'<br />';
 
                   if((int)$xp[0]==(int)$day && (int)$xp[1]==(int)$mn && $valuex->company_id == $a){
-                      echo "okkk";
-                     array_push($data_show,$valuex->count);
+                     $day_total+=1;
                   }
               }
+              array_push($data_show,$day_total);
           }
       }
       $data_series[$a-1]['data'] = $data_show;
