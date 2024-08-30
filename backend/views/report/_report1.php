@@ -92,15 +92,23 @@ if($model!=null){
           for($x=0;$x<=count($date_data)-1;$x++){
               $xp = explode('/',$date_data[$x]);
               $day_total = 0;
-              foreach($model as $valuex){
-                  $day = date('d',strtotime($valuex->work_queue_date));
-                  $mn = date('m',strtotime($valuex->work_queue_date));
-
-                //  echo $day. ' and '.$mn. ' === '.$xp[0]. ' and '.$xp[1].'<br />';
-
-                  if((int)$xp[0]==(int)$day && (int)$xp[1]==(int)$mn && $valuex->company_id == $a){
-                     $model_count = \backend\models\Workqueue::find()->where(['day(work_queue_date)' => $day, 'month(work_queue_date)' => $mn, 'company_id' => $a])->groupBy(['date(work_queue_date)'])->count();
-                     $day_total += $model_count;
+//              foreach($model as $valuex){
+//                  $day = date('d',strtotime($valuex->work_queue_date));
+//                  $mn = date('m',strtotime($valuex->work_queue_date));
+//
+//                //  echo $day. ' and '.$mn. ' === '.$xp[0]. ' and '.$xp[1].'<br />';
+//
+//                  if((int)$xp[0]==(int)$day && (int)$xp[1]==(int)$mn && $valuex->company_id == $a){
+//                     $model_count = \backend\models\Workqueue::find()->where(['day(work_queue_date)' => $day, 'month(work_queue_date)' => $mn, 'company_id' => $a])->groupBy(['date(work_queue_date)'])->count();
+//                     $day_total += $model_count;
+//                  }
+//              }
+              if($xp!=null){
+                  if(count($xp)>1){
+                      $day = $xp[0];
+                      $mn = $xp[1];
+                      $model_count = \backend\models\Workqueue::find()->where(['day(work_queue_date)' => $day, 'month(work_queue_date)' => $mn, 'company_id' => $a])->groupBy(['date(work_queue_date)'])->count();
+                      $day_total += $model_count;
                   }
               }
               array_push($data_show,$day_total);
