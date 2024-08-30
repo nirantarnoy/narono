@@ -99,7 +99,7 @@ if($model!=null){
 
                   if((int)$xp[0]==(int)$day && (int)$xp[1]==(int)$mn && $valuex->company_id == $a){
                       echo "okkk";
-                     array_push($data_show,10 +$a);
+                     array_push($data_show,$valuex->count);
                   }
               }
           }
