@@ -88,9 +88,10 @@ if($model!=null){
   for($a=1;$a<=2;$a++){
       $data_show = [];
       if($date_data!=null){
+          print_r($date_data);
           for($x=0;$x<=count($date_data)-1;$x++){
               $xp = explode($date_data[$x],'/');
-              print_r($xp);
+
 //              foreach($model as $valuex){
 //                  $day = date('d',strtotime($valuex->work_queue_date));
 //                  $mn = date('m',strtotime($valuex->work_queue_date));
