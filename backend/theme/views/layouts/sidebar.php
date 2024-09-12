@@ -634,6 +634,75 @@
                 <?php //endif;?>
                 <?php //endif; ?>
                 <?php //endif; ?>
+                <li class="nav-item has-treeview has-sub">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-check-circle"></i>
+                        <p>
+                            ข้อมูลความปลอดภัย
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <?php //if (\Yii::$app->user->can('producttype/index')): ?>
+                        <li class="nav-item">
+                            <a href="index.php?r=accidenttitle/index" class="nav-link accidenttitle">
+                                <i class="far fa-circlez nav-icon"></i>
+                                <p>หัวข้ออุบัติเหตุ</p>
+                            </a>
+                        </li>
+                        <?php //endif; ?>
+                        <?php // if (\Yii::$app->user->can('productgroup/index')): ?>
+                        <li class="nav-item">
+                            <a href="index.php?r=complaintitle/index" class="nav-link complaintitle">
+                                <i class="far fa-circlez nav-icon"></i>
+                                <p>
+                                    หัวข้อคอมเพลน
+                                    <!--                                <span class="right badge badge-danger">New</span>-->
+                                </p>
+                            </a>
+                        </li>
+                        <?php //endif; ?>
+                        <?php // if (\Yii::$app->user->can('productgroup/index')): ?>
+                        <li class="nav-item">
+                            <a href="index.php?r=accident/index" class="nav-link accident">
+                                <i class="far fa-circlez nav-icon"></i>
+                                <p>
+                                    บันทึกอุบัติเหตุ
+                                    <!--                                <span class="right badge badge-danger">New</span>-->
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="index.php?r=complain/index" class="nav-link complain">
+                                <i class="far fa-circlez nav-icon"></i>
+                                <p>
+                                    บันทึกคอมเพลน
+                                    <!--                                <span class="right badge badge-danger">New</span>-->
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="index.php?r=employeefine/index" class="nav-link employeefine">
+                                <i class="far fa-circlez nav-icon"></i>
+                                <p>
+                                    บันทึกค่าปรับ
+                                    <!--                                <span class="right badge badge-danger">New</span>-->
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="index.php?r=alert/index" class="nav-link alert">
+                                <i class="far fa-circlez nav-icon"></i>
+                                <p>
+                                    บันทึก Alert
+                                    <!--                                <span class="right badge badge-danger">New</span>-->
+                                </p>
+                            </a>
+                        </li>
+                        <?php //endif; ?>
+
+                    </ul>
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
