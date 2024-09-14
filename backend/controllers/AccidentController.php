@@ -143,4 +143,12 @@ class AccidentController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+    public function actionReport()
+    {
+        $search_year = date('Y');
+
+        return $this->render('_report', [
+            'search_year' => $search_year,
+        ]);
+    }
 }

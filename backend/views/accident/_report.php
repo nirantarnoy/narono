@@ -8,7 +8,7 @@ $find_date = date('Y-m-d');
 
 
 $m_name = [['id' => 1, 'name' => 'มกราคม'], ['id' => 2, 'name' => 'กุมภาพันธ์'], ['id' => 3, 'name' => 'มีนาคม'], ['id' => 4, 'name' => 'เมษายน'], ['id' => 5, 'name' => 'พฤษภาคม'], ['id' => 6, 'name' => 'มิถุนายน'], ['id' => 7, 'name' => 'กรกฎาคม'], ['id' => 8, 'name' => 'สิงหาคม'], ['id' => 9, 'name' => 'กันยายน'], ['id' => 10, 'name' => 'ตุลาคม'], ['id' => 11, 'name' => 'พฤศจิกายน'], ['id' => 12, 'name' => 'ธันวาคม']];
-$model_title = \common\models\ComplainTitle::find()->orderBy(['id' => SORT_ASC])->all();
+$model_title = \common\models\AccidentTitle::find()->orderBy(['id' => SORT_ASC])->all();
 ?>
     <form action="<?= \yii\helpers\Url::to(['complain/report'], true) ?>" method="post">
 
@@ -17,7 +17,7 @@ $model_title = \common\models\ComplainTitle::find()->orderBy(['id' => SORT_ASC])
     <div id="print-area">
         <table style="width: 100%;">
             <tr>
-                <td style="text-align: center;"><h3><b>รายงานคอมเพลน</b></h3></td>
+                <td style="text-align: center;"><h3><b>รายงานอุบัติเหตุ</b></h3></td>
             </tr>
             <tr>
                 <td style="text-align: center;"><b>วันที่ <?= date('d/m/Y'); ?></b></td>
@@ -64,7 +64,7 @@ $model_title = \common\models\ComplainTitle::find()->orderBy(['id' => SORT_ASC])
 <?php foreach($model_title as $title){
     $data_list = [];
     for($i = 0; $i < count($m_name); $i++){
-       $m_count = \common\models\Complain::find()->where(['year(trans_date)' => date('Y'), 'complain_title_id' => $title->id, 'MONTH(trans_date)' => $m_name[$i]['id']])->count();
+       $m_count = \common\models\Accident::find()->where(['year(trans_date)' => date('Y'), 'accident_title_id' => $title->id, 'MONTH(trans_date)' => $m_name[$i]['id']])->count();
        array_push($data_list, (int)$m_count);
     }
     array_push($series_data, ['name' => $title->name, 'data' => $data_list]);
@@ -77,7 +77,7 @@ $model_title = \common\models\ComplainTitle::find()->orderBy(['id' => SORT_ASC])
             <?php
             echo Highcharts::widget([
                 'options' => [
-                    'title' => ['text' => 'กราฟแสดงจำนวนคอมเพลน'],
+                    'title' => ['text' => 'กราฟแสดงจำนวนอุบัติเหตุ'],
                     'xAxis' => [
                         'categories' => ['มค.', 'กพ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.']
                     ],

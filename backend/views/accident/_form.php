@@ -34,7 +34,7 @@ use kartik\datetime\DateTimePicker;
         </div>
         <div class="col-lg-4">
             <?= $form->field($model, 'accident_title_id')->Widget(\kartik\select2\Select2::className(), [
-                'data' => \yii\helpers\ArrayHelper::map(\backend\models\Complaintitle::find()->all(), 'id', function ($data) {
+                'data' => \yii\helpers\ArrayHelper::map(\backend\models\Accidenttitle::find()->all(), 'id', function ($data) {
                     return $data->name;
                 }),
                 'options' => [

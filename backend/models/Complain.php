@@ -63,7 +63,7 @@ class Complain extends \common\models\Complain
 
     public static function getLastNo()
     {
-        $model = Complain::find()->MAX('journal_no');
+        $model = Complain::find()->MAX('case_no');
 
         $pre = "CP";
 
