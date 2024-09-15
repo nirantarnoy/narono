@@ -19,6 +19,8 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-lg-10">
             <p>
                 <?= Html::a(Yii::t('app', '<i class="fa fa-plus"></i> สร้างใหม่'), ['create'], ['class' => 'btn btn-success']) ?>
+                <?= Html::a(Yii::t('app', '<i class="fa fa-list-alt"></i> รายงานประจำเดือน'), ['reportmonth'], ['class' => 'btn btn-primary']) ?>
+                <?= Html::a(Yii::t('app', '<i class="fa fa-list-alt"></i> รายงานประจำปี'), ['reportyear'], ['class' => 'btn btn-info']) ?>
             </p>
         </div>
         <div class="col-lg-2" style="text-align: right">

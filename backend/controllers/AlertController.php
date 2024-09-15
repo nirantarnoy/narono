@@ -141,4 +141,20 @@ class AlertController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+    public function actionReportmonth()
+    {
+        $search_month = date('M');
+
+        return $this->render('_reportmonth', [
+            'search_month' => $search_month,
+        ]);
+    }
+    public function actionReportyear()
+    {
+        $search_year = date('M');
+
+//        return $this->render('_reportyear', [
+//            'search_year' => $search_year,
+//        ]);
+    }
 }

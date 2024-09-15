@@ -141,4 +141,19 @@ class EmployeefineController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    public function actionGetemployee(){
+        $html = '';
+        $car_id = \Yii::$app->request->post('id');
+        if($car_id){
+           $model = \backend\models\Car::find()->where(['id'=>$car_id])->one();
+           if($model){
+               $model_driver = \backend\models\Employee::findFullName($model->driver_id);
+
+               $html.='<option value="'.$model->driver_id.'">'.$model_driver.'</option>';
+           }
+
+        }
+        echo $html;
+    }
 }
