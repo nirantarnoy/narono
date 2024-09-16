@@ -95,7 +95,7 @@ $model_data = \common\models\EmployeeFine::find()->where(['company_id'=>$search_
             </tbody>
             <tfoot>
                <tr>
-                   <td colspan="8" style="text-align: right;"><b>รวมทั้งหมด</b></td>
+                   <td colspan="7" style="text-align: right;"><b>รวมทั้งหมด</b></td>
                    <td style="text-align: center;"><b><?= number_format($total_fine_amount,2) ?></b></td>
             </tfoot>
 
