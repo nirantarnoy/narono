@@ -24,6 +24,11 @@ if ($from_date != '' && $to_date != '') {
 $driver_id = \backend\models\Car::getDriver($search_car_id);
 $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
 
+$fine_employee_amount = 0;
+if($driver_id != null){
+    $fine_employee_amount = \backend\models\Employeefine::find()->where(['emp_id' => $driver_id])->andFilterWhere(['>=', 'date(trans_date)', $from_date])->andFilterWhere(['<=', 'date(trans_date)', $to_date])->sum('fine_amount');
+}
+
 ?>
 <style>
     /*body {*/
@@ -395,7 +400,7 @@ $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
                     <b><?php echo number_format($cost_living_price + $sum_col_4, 2) ?></b></td>
                 <td style="text-align: center;padding: 5px;">บาท</td>
                 <td style="padding-left: 10px">ค่าปรับจราจร</td>
-                <td style="text-align: right;padding: 5px;">0</td>
+                <td style="text-align: right;padding: 5px;"><?=number_format($fine_employee_amount,2)?></td>
                 <td style="text-align: center;padding: 5px;">บาท</td>
             </tr>
             <tr>
@@ -437,7 +442,7 @@ $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
                 <td style="text-align: center;padding: 5px;">บาท</td>
                 <td><b>คงเหลือ</b></td>
                 <td style="text-align: right;padding: 5px;">
-                    <b><u><?= number_format(($sum_col_10 + $cost_living_price + $sum_col_9) - $deduct_total - $test_price - $damage_price - $deduct_other_price, 2) ?></u></b>
+                    <b><u><?= number_format(($sum_col_10 + $cost_living_price + $sum_col_9) - $deduct_total - $test_price - $damage_price - $deduct_other_price - $fine_employee_amount, 2) ?></u></b>
                 </td>
                 <td style="text-align: center;padding: 5px;">บาท</td>
             </tr>
