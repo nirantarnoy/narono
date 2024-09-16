@@ -20,6 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-lg-10">
             <p>
                 <?= Html::a(Yii::t('app', '<i class="fa fa-plus"></i> สร้างใหม่'), ['create'], ['class' => 'btn btn-success']) ?>
+                <?= Html::a(Yii::t('app', '<i class="fa fa-list-alt"></i> รายงาน'), ['report'], ['class' => 'btn btn-primary']) ?>
             </p>
         </div>
         <div class="col-lg-2" style="text-align: right">
@@ -67,11 +68,24 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
+                'attribute' => 'company_id',
+                'value' => function ($data) {
+                    return \backend\models\Company::findCompanyName($data->company_id);
+                }
+            ],
+            [
                 'attribute' => 'car_id',
                 'value' => function ($data) {
                     return \backend\models\Car::getPlateno($data->car_id);
                 }
             ],
+            [
+                'attribute' => 'fine_amount',
+                'value' => function ($data) {
+                    return number_format($data->fine_amount, 2);
+                }
+            ],
+
             //'company_id',
             //'car_id',
             //'emp_id',

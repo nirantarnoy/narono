@@ -41,6 +41,7 @@ class EmployeeFine extends \yii\db\ActiveRecord
             [['trans_date'], 'safe'],
             [['company_id', 'car_id', 'emp_id', 'customer_id', 'status', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
             [['case_no', 'place', 'cause_description'], 'string', 'max' => 255],
+            [['fine_amount'], 'number'],
         ];
     }
 
@@ -59,6 +60,7 @@ class EmployeeFine extends \yii\db\ActiveRecord
             'car_id' => 'ทะเบียน',
             'emp_id' => 'พนักงานขับรถ',
             'customer_id' => 'ลูกค้า',
+            'fine_amount' => 'จำนวนเงินค่าปรับ',
             'status' => 'สถานะ',
             'created_at' => 'Created At',
             'created_by' => 'Created By',

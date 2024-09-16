@@ -394,8 +394,8 @@ $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
                 <td style="text-align: right;padding: 5px;">
                     <b><?php echo number_format($cost_living_price + $sum_col_4, 2) ?></b></td>
                 <td style="text-align: center;padding: 5px;">บาท</td>
-                <td style="padding-left: 10px">หักอื่นๆ</td>
-                <td style="text-align: right;padding: 5px;"><?= number_format($deduct_other_price, 2) ?></td>
+                <td style="padding-left: 10px">ค่าปรับจราจร</td>
+                <td style="text-align: right;padding: 5px;">0</td>
                 <td style="text-align: center;padding: 5px;">บาท</td>
             </tr>
             <tr>
@@ -404,16 +404,16 @@ $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
                 <td></td>
                 <td style="text-align: right;padding: 5px;"><?php echo number_format($sum_col_9, 2) ?></td>
                 <td style="text-align: center;padding: 5px;">บาท</td>
-                <td style="padding-left: 10px"></td>
-                <td style="text-align: right;padding: 5px;"></td>
-                <td style="text-align: center;padding: 5px;"></td>
+                <td style="padding-left: 10px">หักอื่นๆ</td>
+                <td style="text-align: right;padding: 5px;"><?= number_format($deduct_other_price, 2) ?></td>
+                <td style="text-align: center;padding: 5px;">บาท</td>
             </tr>
             <tr>
                 <td></td>
                 <td style="padding-left: 10px;"></td>
                 <td></td>
                 <td style="text-align: right;padding: 5px;"><?php //echo number_format($sum_col_8,2)?></td>
-                <td style="text-align: center;padding: 5px;">บาท</td>
+                <td style="text-align: center;padding: 5px;"></td>
                 <td></td>
                 <td style="text-align: right;padding: 5px;"></td>
                 <td></td>

@@ -19,7 +19,7 @@ use kartik\datetime\DateTimePicker;
             </div>
             <div class="col-lg-4">
                 <?php $model->trans_date = $model->isNewRecord ? date('Y-m-d') : date('Y-m-d', strtotime($model->trans_date)); ?>
-                <?= $form->field($model, 'trans_date')->widget(DateTimePicker::className(), [
+                <?= $form->field($model, 'trans_date')->widget(kartik\datetime\DateTimePicker::className(), [
                     'options' => [
                         'class' => 'form-control',
                         'autocomplete' => 'off',
@@ -89,6 +89,9 @@ use kartik\datetime\DateTimePicker;
             <div class="col-lg-4">
                 <?= $form->field($model, 'cause_description')->textarea(['maxlength' => true]) ?>
             </div>
+            <div class="col-lg-4">
+                <?= $form->field($model, 'fine_amount')->textinput(['maxlength' => true]) ?>
+            </div>
         </div>
 
 
@@ -120,7 +123,7 @@ function getemployee(id){
         data:{id:id},
         success:function(data){
            if(data != null){
-               alert(data);
+             //  alert(data);
                $("#emp-id").html(data);
            }
         }

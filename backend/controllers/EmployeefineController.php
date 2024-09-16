@@ -51,6 +51,7 @@ class EmployeefineController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'perpage' => $pageSize,
+
         ]);
     }
 
@@ -80,7 +81,7 @@ class EmployeefineController extends Controller
             if ($model->load($this->request->post())) {
                 $model->case_no = $model::getLastNo();
                 if($model->save(false)){
-                    return $this->redirect(['view', 'id' => $model->id]);
+                    return $this->redirect(['index']);
                 }
             }
         } else {
@@ -104,7 +105,7 @@ class EmployeefineController extends Controller
         $model = $this->findModel($id);
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [
@@ -155,5 +156,17 @@ class EmployeefineController extends Controller
 
         }
         echo $html;
+    }
+    public function actionReport()
+    {
+        $search_year = date('Y');
+        $search_company_id = \Yii::$app->request->post("search_company_id");
+        $find_month = \Yii::$app->request->post("find_month");
+
+        return $this->render('_report', [
+            'search_year' => $search_year,
+            'search_company_id' => $search_company_id,
+            'find_month' => $find_month,
+        ]);
     }
 }
