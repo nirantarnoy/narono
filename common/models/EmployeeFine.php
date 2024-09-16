@@ -38,9 +38,9 @@ class EmployeeFine extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['trans_date'], 'safe'],
-            [['company_id', 'car_id', 'emp_id', 'customer_id', 'status', 'created_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
-            [['case_no', 'place', 'cause_description'], 'string', 'max' => 255],
+            [['trans_date','fine_date'], 'safe'],
+            [['company_id', 'car_id', 'emp_id', 'customer_id', 'status', 'created_at', 'created_by', 'updated_at', 'updated_by','district_id','city_id','province_id'], 'integer'],
+            [['case_no', 'place', 'cause_description','street','zone','kilometer'], 'string', 'max' => 255],
             [['fine_amount'], 'number'],
         ];
     }
@@ -53,7 +53,8 @@ class EmployeeFine extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'case_no' => 'Case No',
-            'trans_date' => 'วันที่ปรับ',
+            'trans_date' => 'วันที่',
+            'fine_date' => 'วันที่ปรับ',
             'place' => 'สถานที่',
             'cause_description' => 'คำอธิบายการเสียค่าปรับ',
             'company_id' => 'บริษัท',
@@ -61,6 +62,12 @@ class EmployeeFine extends \yii\db\ActiveRecord
             'emp_id' => 'พนักงานขับรถ',
             'customer_id' => 'ลูกค้า',
             'fine_amount' => 'จำนวนเงินค่าปรับ',
+            'district_id' => 'ตำบล',
+            'city_id' => 'อำเภอ',
+            'province_id' => 'จังหวัด',
+            'street' => 'ถนน',
+            'zone' => 'ฝั่ง',
+            'kilometer' => 'กิโลเมตร',
             'status' => 'สถานะ',
             'created_at' => 'Created At',
             'created_by' => 'Created By',

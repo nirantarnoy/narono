@@ -58,7 +58,18 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'case_no',
-            'trans_date',
+            [
+                'attribute' => 'trans_date',
+                'value' => function ($data) {
+                    return date('d/m/Y', strtotime($data->trans_date));
+                },
+            ],
+            [
+                'attribute' => 'fine_date',
+                'value' => function ($data) {
+                    return date('d/m/Y', strtotime($data->fine_date));
+                },
+            ],
             'place',
             'cause_description',
             [

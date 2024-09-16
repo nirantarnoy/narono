@@ -79,6 +79,17 @@ class EmployeefineController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
+
+                $district_id = \Yii::$app->request->post('district_id');
+                $city_id = \Yii::$app->request->post('city_id');
+                $province_id = \yii::$app->request->post('province_id');
+
+                $model->district_id = $district_id;
+                $model->city_id = $city_id;
+                $model->province_id = $province_id;
+              //  $model->trans_date = date('Y-m-d');
+
+
                 $model->case_no = $model::getLastNo();
                 if($model->save(false)){
                     return $this->redirect(['index']);
@@ -104,8 +115,18 @@ class EmployeefineController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            $district_id = \Yii::$app->request->post('district_id');
+            $city_id = \Yii::$app->request->post('city_id');
+            $province_id = \yii::$app->request->post('province_id');
+
+            $model->district_id = $district_id;
+            $model->city_id = $city_id;
+            $model->province_id = $province_id;
+            if($model->save(false)){
+                return $this->redirect(['index']);
+            }
+
         }
 
         return $this->render('update', [
