@@ -54,7 +54,7 @@ $model_data = \common\models\EmployeeFine::find()->where(['company_id'=>$search_
                 <td style="text-align: center;"><b>บริษัท <?= \backend\models\Company::findCompanyName($search_company_id); ?></b></td>
             </tr>
             <tr>
-                <td style="text-align: center;"><b>ประจำเดือน <?= $m_name[$find_month - 1]['name']; ?></b></td>
+                <td style="text-align: center;"><b>ประจำเดือน <?= $find_month >0 ?$m_name[$find_month - 1]['name']:''; ?></b></td>
             </tr>
         </table>
         <br>
