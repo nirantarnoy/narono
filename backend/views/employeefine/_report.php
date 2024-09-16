@@ -82,7 +82,7 @@ $model_data = \common\models\EmployeeFine::find()->where(['company_id'=>$search_
 
                 <tr>
                     <td style="text-align: center;"><?= $line_no ?></td>
-                    <td style="text-align: center;"><?= $value->car_id ?></td>
+                    <td style="text-align: center;"><?= \backend\models\Car::getPlateno($value->car_id) ?></td>
                     <td style="text-align: center;"><?= getEmpName($value->emp_id) ?></td>
                     <td style="text-align: center;"><?= date('d/m/Y', strtotime($value->trans_date)) ?></td>
                     <td style="text-align: center;"><?= date('H:i', strtotime($value->trans_date)) ?></td>
