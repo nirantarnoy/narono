@@ -84,11 +84,31 @@ class EmployeefineController extends Controller
                 $city_id = \Yii::$app->request->post('city_id');
                 $province_id = \yii::$app->request->post('province_id');
 
+
+                $x1 = explode(' ',$model->trans_date);
+                $x2 = explode(' ',$model->fine_date);
+
+                $trans_date = date("Y-m-d H:i:s");
+                $fine_date = date("Y-m-d H:i:s");
+
+                $x11 = explode('-',$x1[0]);
+                $x22 = explode('-',$x2[0]);
+
+                if($x11!=null){
+                    //echo count($x1);
+                    $trans_date = $x11[2].'-'.$x11[1].'-'.$x11[0]. ' '.date('H:i:s', strtotime($x1[1]));
+                }
+
+                if($x22!=null){
+                    $fine_date = $x22[2].'-'.$x22[1].'-'.$x22[0].' '.date('H:i:s', strtotime($x2[1]));
+                }
+
                 $model->district_id = $district_id;
                 $model->city_id = $city_id;
                 $model->province_id = $province_id;
               //  $model->trans_date = date('Y-m-d');
-
+                $model->trans_date = date('Y-m-d H:i:s',strtotime($trans_date));
+                $model->fine_date = date('Y-m-d H:i:s',strtotime($fine_date));
 
                 $model->case_no = $model::getLastNo();
                 if($model->save(false)){

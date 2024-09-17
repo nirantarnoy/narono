@@ -84,8 +84,8 @@ $model_data = \common\models\EmployeeFine::find()->where(['company_id'=>$search_
                     <td style="text-align: center;"><?= $line_no ?></td>
                     <td style="text-align: center;"><?= \backend\models\Car::getPlateno($value->car_id) ?></td>
                     <td style="text-align: center;"><?= getEmpName($value->emp_id) ?></td>
-                    <td style="text-align: center;"><?= date('d/m/Y', strtotime($value->trans_date)) ?></td>
-                    <td style="text-align: center;"><?= date('H:i', strtotime($value->trans_date)) ?></td>
+                    <td style="text-align: center;"><?= date('d/m/Y', strtotime($value->fine_date)) ?></td>
+                    <td style="text-align: center;"><?= date('H:i', strtotime($value->fine_date)) ?></td>
                     <td style="text-align: center;"><?= $value->place ?></td>
                     <td style="text-align: center;"><?= $value->cause_description ?></td>
                     <td style="text-align: center;"><?= number_format($value->fine_amount,2) ?></td>

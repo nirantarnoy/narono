@@ -38,12 +38,12 @@ $province_data = \backend\models\Province::find()->all();
                 ]) ?>
             </div>
             <div class="col-lg-3">
-                <?php $model->fine_date = $model->isNewRecord ? date('Y-m-d') : date('Y-m-d', strtotime($model->fine_date)); ?>
+                <?php $model->fine_date = $model->isNewRecord ? date('Y-m-d H:i:s') : date('Y-m-d H:i:s', strtotime($model->fine_date)); ?>
                 <?= $form->field($model, 'fine_date')->widget(kartik\datetime\DateTimePicker::className(), [
                     'options' => [
                         'class' => 'form-control',
                         'autocomplete' => 'off',
-                        'format' => 'dd-mm-yyyy',
+                        'format' => 'dd-mm-yyyy H:i:ss',
                     ],
                     'pluginOptions' => [
                         //'format' => 'dd-mm-yyyy',

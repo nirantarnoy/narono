@@ -67,7 +67,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'fine_date',
                 'value' => function ($data) {
-                    return date('d/m/Y', strtotime($data->fine_date));
+                    return date('d/m/Y H:i:s', strtotime($data->fine_date));
                 },
             ],
             'place',
