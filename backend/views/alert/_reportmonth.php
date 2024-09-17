@@ -8,19 +8,54 @@ $find_date = date('Y-m-d');
 
 
 $m_name = [['id' => 1, 'name' => 'มกราคม'], ['id' => 2, 'name' => 'กุมภาพันธ์'], ['id' => 3, 'name' => 'มีนาคม'], ['id' => 4, 'name' => 'เมษายน'], ['id' => 5, 'name' => 'พฤษภาคม'], ['id' => 6, 'name' => 'มิถุนายน'], ['id' => 7, 'name' => 'กรกฎาคม'], ['id' => 8, 'name' => 'สิงหาคม'], ['id' => 9, 'name' => 'กันยายน'], ['id' => 10, 'name' => 'ตุลาคม'], ['id' => 11, 'name' => 'พฤศจิกายน'], ['id' => 12, 'name' => 'ธันวาคม']];
-$model_title = \common\models\Alert::find()->groupBy(['emp_id'])->orderBy(['id' => SORT_ASC])->all();
-?>
-    <form action="<?= \yii\helpers\Url::to(['complain/report'], true) ?>" method="post">
+$model_title = null;
 
+if($find_month != null && $find_year != null){
+    $model_title = \common\models\Alert::find()->where(['month(trans_date)'=>$find_month,'year(trans_date)'=>$find_year])->groupBy(['emp_id'])->orderBy(['id' => SORT_ASC])->all();
+}else{
+    $model_title = \common\models\Alert::find()->groupBy(['emp_id'])->orderBy(['id' => SORT_ASC])->all();
+}
+
+$index_month = (int)$find_month-1;
+
+$y_name = [];
+for($x=0;$x<=2;$x++){
+    $new_year = date('Y')-($x);
+    $y_name[] = ['id' => $new_year, 'name' => $new_year];
+}
+?>
+    <form action="<?= \yii\helpers\Url::to(['alert/reportmonth'], true) ?>" method="post">
+        <div class="row">
+            <div class="col-lg-3">
+                <select name="find_month" class="form-control" id="">
+                    <?php for ($i = 0; $i < count($m_name) - 1; $i++): ?>
+                        <option value="<?= $m_name[$i]['id'] ?> "><?= $m_name[$i]['name'] ?></option>
+                    <?php endfor; ?>
+                </select>
+            </div>
+            <div class="col-lg-3">
+                <select name="find_year" class="form-control" id="">
+                    <?php for ($i = 0; $i < count($y_name) - 1; $i++): ?>
+                        <option value="<?= $y_name[$i]['id'] ?> "><?= $y_name[$i]['name'] ?></option>
+                    <?php endfor; ?>
+                </select>
+            </div>
+            <div class="col-lg-3">
+                <button type="submit" class="btn btn-primary">ค้นหา</button>
+            </div>
+            <div class="col-lg-3"></div>
+        </div>
+        <br/>
     </form>
     <br/>
+
     <div id="print-area">
         <table style="width: 100%;">
             <tr>
                 <td style="text-align: center;"><h3><b>รายงาน Alert</b></h3></td>
             </tr>
             <tr>
-                <td style="text-align: center;"><b>ประจำเดือน <?= date('M'); ?></b></td>
+                <td style="text-align: center;"><b>ประจำเดือน <?= $find_month == null ? '': $m_name[$index_month]['name']; ?></b></td>
             </tr>
         </table>
         <br>
@@ -37,20 +72,20 @@ $model_title = \common\models\Alert::find()->groupBy(['emp_id'])->orderBy(['id' 
             </thead>
             <tbody>
             <?php foreach ($model_title as $title): ?>
-            <?php
-            $data = getDataAlert($title->emp_id,$find_date);
+                <?php
+                $data = getDataAlert($title->emp_id, $find_date);
 //            print_r($data);
-            $data_alert = $data[0]['normal_alert'];
-            $data_alert2 = $data[0]['city_alert'];
-            $data_alert4 = $data[0]['alert_4'];
-            $data_alert10 = $data[0]['alert_10'];
-            ?>
+                $data_alert = $data[0]['normal_alert'];
+                $data_alert2 = $data[0]['city_alert'];
+                $data_alert4 = $data[0]['alert_4'];
+                $data_alert10 = $data[0]['alert_10'];
+                ?>
                 <tr>
                     <td><?= getEmpName($title->emp_id) ?></td>
-                    <td style="text-align: center"><?=number_format($data_alert)?></td>
-                    <td style="text-align: center"><?=number_format($data_alert2)?></td>
-                    <td style="text-align: center"><?=number_format($data_alert4)?></td>
-                    <td style="text-align: center"><?=number_format($data_alert10)?></td>
+                    <td style="text-align: center"><?= number_format($data_alert) ?></td>
+                    <td style="text-align: center"><?= number_format($data_alert2) ?></td>
+                    <td style="text-align: center"><?= number_format($data_alert4) ?></td>
+                    <td style="text-align: center"><?= number_format($data_alert10) ?></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>
@@ -61,7 +96,7 @@ $model_title = \common\models\Alert::find()->groupBy(['emp_id'])->orderBy(['id' 
         </table>
     </div>
 
-    <br />
+    <br/>
 
 
     <div class="row">
@@ -70,20 +105,24 @@ $model_title = \common\models\Alert::find()->groupBy(['emp_id'])->orderBy(['id' 
         </div>
     </div>
 <?php
-function getEmpName($emp_id){
+function getEmpName($emp_id)
+{
     $name = \backend\models\Employee::findFullName($emp_id);
     return $name;
 }
-function getDataAlert($emp_id,$month){
-  $data = [];
-  if($emp_id){
-    $model = \backend\models\Alert::find()->select(['SUM(normal_alert) as normal_alert,SUM(city_alert) as city_alert,SUM(four_hour_alert) as four_hour_alert,SUM(ten_hour_alert) as ten_hour_alert'])->where(['emp_id' => $emp_id])->one();
-    if($model){
-       array_push($data,['normal_alert' => $model->normal_alert,'city_alert' => $model->city_alert,'alert_4' => $model->four_hour_alert,'alert_10' => $model->ten_hour_alert]);
+
+function getDataAlert($emp_id, $month)
+{
+    $data = [];
+    if ($emp_id) {
+        $model = \backend\models\Alert::find()->select(['SUM(normal_alert) as normal_alert,SUM(city_alert) as city_alert,SUM(four_hour_alert) as four_hour_alert,SUM(ten_hour_alert) as ten_hour_alert'])->where(['emp_id' => $emp_id])->one();
+        if ($model) {
+            array_push($data, ['normal_alert' => $model->normal_alert, 'city_alert' => $model->city_alert, 'alert_4' => $model->four_hour_alert, 'alert_10' => $model->ten_hour_alert]);
+        }
     }
-  }
-  return $data;
+    return $data;
 }
+
 ?>
 <?php
 $js = <<<JS

@@ -143,18 +143,19 @@ class AlertController extends Controller
     }
     public function actionReportmonth()
     {
-        $search_month = date('M');
+        $find_month = \Yii::$app->request->post('find_month');
+        $find_year = \Yii::$app->request->post('find_year');
 
         return $this->render('_reportmonth', [
-            'search_month' => $search_month,
+           'find_month' => $find_month,
+           'find_year' => $find_year,
         ]);
     }
     public function actionReportyear()
     {
-        $search_year = date('M');
-
-//        return $this->render('_reportyear', [
-//            'search_year' => $search_year,
-//        ]);
+        $find_year = \Yii::$app->request->post('find_year');
+        return $this->render('_reportyear', [
+            'find_year' => $find_year,
+        ]);
     }
 }
