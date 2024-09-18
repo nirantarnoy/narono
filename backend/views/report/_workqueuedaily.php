@@ -46,7 +46,16 @@ if ($search_car_type != null) {
         }
 
     } else {
-        $model = \backend\models\Workqueue::find()->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
+        //$model = \backend\models\Workqueue::find()->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
+        if ($search_car_id != null && $search_emp_id != null) {
+            $model = \backend\models\Workqueue::find()->where([ 'car_id' => $search_car_id, 'emp_assign' => $search_emp_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
+        } else if ($search_car_id != null && $search_emp_id == null) {
+            $model = \backend\models\Workqueue::find()->where([ 'car_id' => $search_car_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
+        }else if($search_car_id == null && $search_emp_id!=null){
+            $model = \backend\models\Workqueue::find()->where(['emp_assign'=>$search_emp_id])->andFilterWhere(['>=','date(work_queue_date)',$find_date])->andFilterWhere(['<=','date(work_queue_date)',$find_to_date])->all();
+        } else {
+            $model = \backend\models\Workqueue::find()->where(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
+        }
     }
 
 }
