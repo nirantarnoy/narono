@@ -108,12 +108,12 @@ for($x=0;$x<=2;$x++){
             </tbody>
             <tfoot>
               <tr style="background-color: #f0ad4e">
-                  <td style="text-align: center"><b>รวมทั้งหมด</b></td>
-                  <td style="text-align: center"><b><?= number_format($all_total_all_1) ?></b></td>
-                  <td style="text-align: center"><b><?= number_format($all_total_all_2) ?></b></td>
-                  <td style="text-align: center"><b><?= number_format($all_total_all_4) ?></b></td>
-                  <td style="text-align: center"><b><?= number_format($all_total_all_10) ?></td>
-                  <td style="text-align: center"><b><?= number_format($all_total_all) ?></b></td>
+                  <td style="text-align: center;background-color: #f0ad4e"><b>รวมทั้งหมด</b></td>
+                  <td style="text-align: center;background-color: #f0ad4e"><b><?= number_format($all_total_all_1) ?></b></td>
+                  <td style="text-align: center;background-color: #f0ad4e"><b><?= number_format($all_total_all_2) ?></b></td>
+                  <td style="text-align: center;background-color: #f0ad4e"><b><?= number_format($all_total_all_4) ?></b></td>
+                  <td style="text-align: center;background-color: #f0ad4e"><b><?= number_format($all_total_all_10) ?></td>
+                  <td style="text-align: center;background-color: #f0ad4e"><b><?= number_format($all_total_all) ?></b></td>
               </tr>
             </tfoot>
 
