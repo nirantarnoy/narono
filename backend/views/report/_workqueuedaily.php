@@ -112,6 +112,7 @@ if ($search_car_type != null) {
             <thead>
             <tr>
                 <th style="width: 5%;text-align: center;">ลำดับ</th>
+                <th style="width: 5%;text-align: center;">เลขที่</th>
                 <th style="width: 8%;text-align: center;">วันที่</th>
                 <th style="width: 8%;text-align: center;">ทะเบียนหัว</th>
                 <th style="width: 8%;text-align: center;">ทะเบียนหาง</th>
@@ -155,7 +156,7 @@ if ($search_car_type != null) {
             </tbody>
             <tfoot>
             <tr>
-                <td colspan="8" style="width: 8%;text-align: right;"><b>รวม</b></td>
+                <td colspan="9" style="width: 8%;text-align: right;"><b>รวม</b></td>
                 <td style="width: 8%;text-align: center;"><b><?= number_format($total_weight, 3) ?></b></td>
                 <td style="width: 8%;text-align: center;"><b></b></td>
                 <td style="width: 8%;text-align: center;"><b><?= number_format($total_line_amount, 2) ?></b></td>
