@@ -50,10 +50,14 @@ class ReportController extends Controller
         $car_search = \Yii::$app->request->post('car_search');
         $search_date = \Yii::$app->request->post('search_date');
         $search_to_date = \Yii::$app->request->post('search_to_date');
+        $search_car_id = \Yii::$app->request->post('search_car_id');
+        $search_emp_id  = \Yii::$app->request->post('search_emp_id');
         return $this->render('_report2',[
             'car_search' => $car_search,
             'search_date' => $search_date,
             'search_to_date' => $search_to_date,
+            'search_car_id' => $search_car_id,
+            'search_emp_id' => $search_emp_id,
         ]);
     }
     public function actionWorkqueuedaily(){
@@ -61,11 +65,15 @@ class ReportController extends Controller
         $search_to_date = \Yii::$app->request->post('search_to_date');
         $search_company_id = \Yii::$app->request->post('search_company_id');
         $search_car_type = \Yii::$app->request->post('search_car_type');
+        $search_car_id = \Yii::$app->request->post('search_car_id');
+        $search_emp_id  = \Yii::$app->request->post('search_emp_id');
         return $this->render('_workqueuedaily',[
             'search_date' => $search_date,
             'search_car_type' => $search_car_type,
             'search_to_date' => $search_to_date,
             'search_company_id' => $search_company_id,
+            'search_car_id' => $search_car_id,
+            'search_emp_id' => $search_emp_id,
         ]);
     }
     public function actionReportcashrecord(){

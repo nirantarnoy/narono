@@ -91,6 +91,32 @@ if ($search_car_type != null) {
                             'allowClear' => true,
                         ]
                     ]);
+                    echo \kartik\select2\Select2::widget([
+                        'name' => 'search_car_id',
+                        'data' => \yii\helpers\ArrayHelper::map(\backend\models\Car::find()->all(), 'id', function($data){
+                            return $data->plate_no;
+                        }),
+                        'value' => $search_car_id,
+                        'options' => [
+                            'placeholder'=>'---เลือกทะเบียน---'
+                        ],
+                        'pluginOptions' => [
+                            'allowClear' => true,
+                        ]
+                    ]);
+                    echo \kartik\select2\Select2::widget([
+                        'name' => 'search_emp_id',
+                        'data' => \yii\helpers\ArrayHelper::map(\backend\models\Employee::find()->all(), 'id', function($data){
+                            return $data->fname.' '.$data->lname;
+                        }),
+                        'value' => $search_emp_id,
+                        'options' => [
+                            'placeholder'=>'---พขร---'
+                        ],
+                        'pluginOptions' => [
+                            'allowClear' => true,
+                        ]
+                    ]);
                     ?>
                     <button class="btn btn-primary">ค้นหา</button>
                 </div>
