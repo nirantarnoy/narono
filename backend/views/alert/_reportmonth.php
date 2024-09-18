@@ -107,8 +107,8 @@ for($x=0;$x<=2;$x++){
             <?php endforeach; ?>
             </tbody>
             <tfoot>
-              <tr>
-                  <td style="text-align: center">รวมทั้งหมด</td>
+              <tr style="background-color: #f0ad4e">
+                  <td style="text-align: center"><b>รวมทั้งหมด</b></td>
                   <td style="text-align: center"><b><?= number_format($all_total_all_1) ?></b></td>
                   <td style="text-align: center"><b><?= number_format($all_total_all_2) ?></b></td>
                   <td style="text-align: center"><b><?= number_format($all_total_all_4) ?></b></td>
