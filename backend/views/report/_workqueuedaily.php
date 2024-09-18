@@ -134,7 +134,7 @@ if ($search_car_type != null) {
                     $line_num += 1;
                     $total_weight += ($value->weight_on_go);
                     $total_line_amount += ($value->total_amount);
-                    $line_price_per_ton = getDropoffPriceperton($value->id,$value->dropoff_id);
+                    $line_price_per_ton = getDropoffPriceperton($value->id);
                     ?>
                     <tr>
                         <td style="width: 5%;text-align: center;"><?= $line_num ?></td>
@@ -173,9 +173,9 @@ if ($search_car_type != null) {
     </div>
 <?php
 
-function getDropoffPriceperton($workqueue_id,$dropoff_id){
+function getDropoffPriceperton($workqueue_id){
     $price = 0;
-    $model = \common\models\WorkQueueDropoff::find()->where(['work_queue_id'=>$workqueue_id,'dropoff_id'=>$dropoff_id])->one();
+    $model = \common\models\WorkQueueDropoff::find()->where(['work_queue_id'=>$workqueue_id])->one();
     if($model){
         $price = $model->price_per_ton;
     }
