@@ -25,19 +25,28 @@ if ($search_car_type != null) {
             array_push($car_list, $value->id);
         }
         //$model = \backend\models\Workqueue::find()->where(['date(work_queue_date)' => $find_date, 'car_id' => $car_list])->all();
-        if($search_company_id != null){
-            $model = \backend\models\Workqueue::find()->where(['car_id' => $car_list,'company_id'=>$search_company_id])->andFilterWhere(['>=','date(work_queue_date)',$find_date])->andFilterWhere(['<=','date(work_queue_date)',$find_to_date])->all();
-        }else{
-            $model = \backend\models\Workqueue::find()->where(['car_id' => $car_list])->andFilterWhere(['>=','date(work_queue_date)',$find_date])->andFilterWhere(['<=','date(work_queue_date)',$find_to_date])->all();
+        if ($search_company_id != null) {
+            $model = \backend\models\Workqueue::find()->where(['car_id' => $car_list, 'company_id' => $search_company_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
+        } else {
+            $model = \backend\models\Workqueue::find()->where(['car_id' => $car_list])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
         }
 
     }
 
 } else {
-    if($search_company_id!=null){
-        $model = \backend\models\Workqueue::find()->where(['company_id' => $search_company_id,])->andFilterWhere(['>=','date(work_queue_date)',$find_date])->andFilterWhere(['<=','date(work_queue_date)',$find_to_date])->all();
-    }else{
-        $model = \backend\models\Workqueue::find()->where(['company_id' => $search_company_id])->andFilterWhere(['>=','date(work_queue_date)',$find_date])->andFilterWhere(['<=','date(work_queue_date)',$find_to_date])->all();
+    if ($search_company_id != null) {
+        if ($search_car_id != null && $search_emp_id != null) {
+            $model = \backend\models\Workqueue::find()->where(['company_id' => $search_company_id, 'car_id' => $search_car_id, 'driver_id' => $search_emp_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
+        } else if ($search_car_id != null && $search_emp_id == null) {
+            $model = \backend\models\Workqueue::find()->where(['company_id' => $search_company_id, 'car_id' => $search_car_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
+        }if($search_car_id == null && $search_emp_id!=null){
+            $model = \backend\models\Workqueue::find()->where(['company_id' => $search_company_id,'driver_id'=>$search_emp_id])->andFilterWhere(['>=','date(work_queue_date)',$find_date])->andFilterWhere(['<=','date(work_queue_date)',$find_to_date])->all();
+        } else {
+            $model = \backend\models\Workqueue::find()->where(['company_id' => $search_company_id,])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
+        }
+
+    } else {
+        $model = \backend\models\Workqueue::find()->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
     }
 
 }
@@ -74,7 +83,7 @@ if ($search_car_type != null) {
                         'data' => \yii\helpers\ArrayHelper::map(\backend\models\CarType::find()->all(), 'id', 'name'),
                         'value' => $search_car_type,
                         'options' => [
-                            'placeholder'=>'---เลือกประเภทรถ---'
+                            'placeholder' => '---เลือกประเภทรถ---'
                         ],
                         'pluginOptions' => [
                             'allowClear' => true,
@@ -85,7 +94,7 @@ if ($search_car_type != null) {
                         'data' => \yii\helpers\ArrayHelper::map(\backend\models\Company::find()->all(), 'id', 'name'),
                         'value' => $search_company_id,
                         'options' => [
-                            'placeholder'=>'---เลือกบริษัท---'
+                            'placeholder' => '---เลือกบริษัท---'
                         ],
                         'pluginOptions' => [
                             'allowClear' => true,
@@ -93,12 +102,12 @@ if ($search_car_type != null) {
                     ]);
                     echo \kartik\select2\Select2::widget([
                         'name' => 'search_car_id',
-                        'data' => \yii\helpers\ArrayHelper::map(\backend\models\Car::find()->all(), 'id', function($data){
+                        'data' => \yii\helpers\ArrayHelper::map(\backend\models\Car::find()->all(), 'id', function ($data) {
                             return $data->plate_no;
                         }),
                         'value' => $search_car_id,
                         'options' => [
-                            'placeholder'=>'---เลือกทะเบียน---'
+                            'placeholder' => '---เลือกทะเบียน---'
                         ],
                         'pluginOptions' => [
                             'allowClear' => true,
@@ -106,12 +115,12 @@ if ($search_car_type != null) {
                     ]);
                     echo \kartik\select2\Select2::widget([
                         'name' => 'search_emp_id',
-                        'data' => \yii\helpers\ArrayHelper::map(\backend\models\Employee::find()->all(), 'id', function($data){
-                            return $data->fname.' '.$data->lname;
+                        'data' => \yii\helpers\ArrayHelper::map(\backend\models\Employee::find()->all(), 'id', function ($data) {
+                            return $data->fname . ' ' . $data->lname;
                         }),
                         'value' => $search_emp_id,
                         'options' => [
-                            'placeholder'=>'---พขร---'
+                            'placeholder' => '---พขร---'
                         ],
                         'pluginOptions' => [
                             'allowClear' => true,
@@ -123,14 +132,15 @@ if ($search_car_type != null) {
             </div>
         </div>
     </form>
-    <br />
+    <br/>
     <div id="print-area">
         <table style="width: 100%;">
             <tr>
                 <td style="text-align: center;"><h3><b>รายงานประจำวัน</b></h3></td>
             </tr>
             <tr>
-                <td style="text-align: center;"><b>ตั้งแต่วันที่ <?= date('d/m/Y', strtotime($find_date)); ?> ถึง <?= date('d/m/Y', strtotime($find_to_date)); ?></b></td>
+                <td style="text-align: center;"><b>ตั้งแต่วันที่ <?= date('d/m/Y', strtotime($find_date)); ?>
+                        ถึง <?= date('d/m/Y', strtotime($find_to_date)); ?></b></td>
             </tr>
         </table>
         <br>
@@ -200,10 +210,11 @@ if ($search_car_type != null) {
     </div>
 <?php
 
-function getDropoffPriceperton($workqueue_id){
+function getDropoffPriceperton($workqueue_id)
+{
     $price = 0;
-    $model = \common\models\WorkQueueDropoff::find()->where(['work_queue_id'=>$workqueue_id])->one();
-    if($model){
+    $model = \common\models\WorkQueueDropoff::find()->where(['work_queue_id' => $workqueue_id])->one();
+    if ($model) {
         $price = $model->price_per_ton;
     }
     return $price;
