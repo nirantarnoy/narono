@@ -134,9 +134,11 @@ if ($search_car_type != null) {
                     $line_num += 1;
                     $total_weight += ($value->weight_on_go);
                     $total_line_amount += ($value->total_amount);
+                    $line_price_per_ton = getDropoffPriceperton($value->id,$value->dropoff_id);
                     ?>
                     <tr>
                         <td style="width: 5%;text-align: center;"><?= $line_num ?></td>
+                        <td style="width: 8%;text-align: center;"><?= $value->work_queue_no ?></td>
                         <td style="width: 8%;text-align: center;"><?= date('d/m/Y', strtotime($value->work_queue_date)) ?></td>
                         <td style="width: 8%;text-align: center;"><?= \backend\models\Car::findName($value->car_id) ?></td>
                         <td style="width: 8%;text-align: center;"><?= \backend\models\Car::findName($value->tail_id) ?></td>
@@ -145,7 +147,7 @@ if ($search_car_type != null) {
                         <td style="width: 10%;text-align: center;"><?= \backend\models\Customer::findCusName($value->customer_id) ?></td>
                         <td style="width: 8%;text-align: center;"><?= \backend\models\Car::getCartype($value->car_id) ?></td>
                         <td style="width: 8%;text-align: center;"><?= number_format($value->weight_on_go, 3) ?></td>
-                        <td style="width: 8%;text-align: center;"><?= number_format($value->labour_price, 2) ?></td>
+                        <td style="width: 8%;text-align: center;"><?= number_format($line_price_per_ton, 2) ?></td>
                         <td style="width: 8%;text-align: center;"><?= number_format($value->total_amount, 2) ?></td>
                     </tr>
                 <?php endforeach; ?>
@@ -153,7 +155,7 @@ if ($search_car_type != null) {
             </tbody>
             <tfoot>
             <tr>
-                <td colspan="8" style="width: 8%;text-align: right;"><b>รวม</b></td>
+                <td colspan="9" style="width: 8%;text-align: right;"><b>รวม</b></td>
                 <td style="width: 8%;text-align: center;"><b><?= number_format($total_weight, 3) ?></b></td>
                 <td style="width: 8%;text-align: center;"><b></b></td>
                 <td style="width: 8%;text-align: center;"><b><?= number_format($total_line_amount, 2) ?></b></td>
@@ -170,6 +172,17 @@ if ($search_car_type != null) {
         </div>
     </div>
 <?php
+
+function getDropoffPriceperton($workqueue_id,$dropoff_id){
+    $price = 0;
+    $model = \common\models\WorkQueueDropoff::find()->where(['work_queue_id'=>$workqueue_id,'dropoff_id'=>$dropoff_id])->one();
+    if($model){
+        $price = $model->price_per_ton;
+    }
+    return $price;
+}
+
+
 $this->registerJsFile(\Yii::$app->request->baseUrl . '/js/jquery.table2excel.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
 $js = <<<JS
 $("#btn-export-excel").click(function(){
