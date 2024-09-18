@@ -42,7 +42,7 @@ if ($search_car_type != null) {
         }if($search_car_id == null && $search_emp_id!=null){
           //  $model = \backend\models\Workqueue::find()->where(['company_id' => $search_company_id,'driver_id'=>$search_emp_id])->andFilterWhere(['>=','date(work_queue_date)',$find_date])->andFilterWhere(['<=','date(work_queue_date)',$find_to_date])->all();
         } else {
-          //  $model = \backend\models\Workqueue::find()->where(['company_id' => $search_company_id,])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
+            $model = \backend\models\Workqueue::find()->where(['company_id' => $search_company_id,])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
         }
 
     } else {
