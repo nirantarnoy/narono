@@ -67,10 +67,18 @@ for($x=0;$x<=2;$x++){
                 <th style="width: 20%;text-align: center;">จำนวน Alert ในเส้นทางชุมชน</th>
                 <th style="width: 20%;text-align: center;">จำนวน Alert 4 ชั่วโมง</th>
                 <th style="width: 20%;text-align: center;">จำนวน Alert 10 ชั่วโมง</th>
+                <th style="width: 10%;text-align: center;">รวม</th>
 
             </tr>
             </thead>
             <tbody>
+            <?php
+            $all_total_all_1 = 0;
+            $all_total_all_2 = 0;
+            $all_total_all_4 = 0;
+            $all_total_all_10 = 0;
+            $all_total_all = 0;
+            ?>
             <?php foreach ($model_title as $title): ?>
                 <?php
                 $data = getDataAlert($title->emp_id, $find_date);
@@ -79,18 +87,34 @@ for($x=0;$x<=2;$x++){
                 $data_alert2 = $data[0]['city_alert'];
                 $data_alert4 = $data[0]['alert_4'];
                 $data_alert10 = $data[0]['alert_10'];
+
+                $all_total_all_1 += $data_alert;
+                $all_total_all_2 += $data_alert2;
+                $all_total_all_4 += $data_alert4;
+                $all_total_all_10 += $data_alert10;
+
+                $line_total = $data_alert + $data_alert2 + $data_alert4 + $data_alert10;
+                $all_total_all += $line_total;
                 ?>
                 <tr>
                     <td><?= getEmpName($title->emp_id) ?></td>
-                    <td style="text-align: center"><?= number_format($data_alert) ?></td>
-                    <td style="text-align: center"><?= number_format($data_alert2) ?></td>
-                    <td style="text-align: center"><?= number_format($data_alert4) ?></td>
-                    <td style="text-align: center"><?= number_format($data_alert10) ?></td>
+                    <td style="text-align: center"><?= number_format($data_alert,0) ?></td>
+                    <td style="text-align: center"><?= number_format($data_alert2,0) ?></td>
+                    <td style="text-align: center"><?= number_format($data_alert4,0) ?></td>
+                    <td style="text-align: center"><?= number_format($data_alert10,0) ?></td>
+                    <td style="text-align: center"><?= number_format($line_total,0) ?></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>
             <tfoot>
-
+              <tr>
+                  <td style="text-align: center">รวมทั้งหมด</td>
+                  <td style="text-align: center"><b><?= number_format($all_total_all_1) ?></b></td>
+                  <td style="text-align: center"><b><?= number_format($all_total_all_2) ?></b></td>
+                  <td style="text-align: center"><b><?= number_format($all_total_all_4) ?></b></td>
+                  <td style="text-align: center"><b><?= number_format($all_total_all_10) ?></td>
+                  <td style="text-align: center"><b><?= number_format($all_total_all) ?></b></td>
+              </tr>
             </tfoot>
 
         </table>
