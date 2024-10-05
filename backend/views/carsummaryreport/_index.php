@@ -252,6 +252,7 @@ if($driver_id != null){
                 <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าค้างคืน</b></th>
                 <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าบวกคลัง</b></th>
                 <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าเบิ้ลงาน</b></th>
+                <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าลาก/แบก</b></th>
                 <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>รวม</b></th>
             </tr>
             </thead>
@@ -265,6 +266,7 @@ if($driver_id != null){
             $sum_col_9 = 0;
             $sum_col_10 = 0;
             $sum_col_11 = 0;
+            $sum_col_12 = 0;
 
             $test_price = 0;
             $damage_price = 0;
@@ -293,6 +295,7 @@ if($driver_id != null){
                     $sum_col_8 += ($value->warehouse_plus_price);
                     $sum_col_9 += ($value->work_other_price);
                     $sum_col_11 += ($value->work_double_price);
+                    $sum_col_12 += ($value->towing_price);
 
                     $test_price += ($value->test_price);
                     $damage_price += ($value->damaged_price);
@@ -313,6 +316,7 @@ if($driver_id != null){
                         <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->overnight_price, 2) ?></td>
                         <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->warehouse_plus_price, 2) ?></td>
                         <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->work_double_price, 2) ?></td>
+                        <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->towing_price, 2) ?></td>
                         <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($line_total, 2) ?></td>
                     </tr>
                 <?php endforeach; ?>
@@ -340,6 +344,8 @@ if($driver_id != null){
                     <b><?= number_format($sum_col_8, 2) ?></b></td>
                 <td style="border: 1px solid grey;padding: 5px;text-align: right;">
                     <b><?= number_format($sum_col_11, 2) ?></b></td>
+                <td style="border: 1px solid grey;padding: 5px;text-align: right;">
+                    <b><?= number_format($sum_col_12, 2) ?></b></td>
                 <td style="border: 1px solid grey;padding: 5px;text-align: right;">
                     <b><?= number_format($sum_col_10, 2) ?></b></td>
 
@@ -383,24 +389,17 @@ if($driver_id != null){
             <tr>
                 <td></td>
 
-                <td style="padding-left: 10px;">ค่าลาก/ค่าแบก</td>
-                <td></td>
-                <td style="text-align: right;padding: 5px;"><?= number_format($total_towing_amount, 2) ?></td>
-                <td style="text-align: center;padding: 5px;">บาท</td>
-                <td style="padding-left: 10px;">ค่าประกันสินค้าเสียหาย</td>
-                <td style="text-align: right;padding: 5px;"><?= number_format($damage_price, 2) ?></td>
-                <td style="text-align: center;padding: 5px;">บาท</td>
-            </tr>
-            <tr>
-                <td></td>
-
+<!--                <td style="padding-left: 10px;">ค่าลาก/ค่าแบก</td>-->
+<!--                <td></td>-->
+<!--                <td style="text-align: right;padding: 5px;">--><?php //= number_format($total_towing_amount, 2) ?><!--</td>-->
+<!--                <td style="text-align: center;padding: 5px;">บาท</td>-->
                 <td style="padding-left: 10px;"><b>ยอดรวม</b></td>
                 <td></td>
                 <td style="text-align: right;padding: 5px;">
                     <b><?php echo number_format($cost_living_price + $sum_col_4, 2) ?></b></td>
                 <td style="text-align: center;padding: 5px;">บาท</td>
-                <td style="padding-left: 10px">ค่าปรับจราจร</td>
-                <td style="text-align: right;padding: 5px;"><?=number_format($fine_employee_amount,2)?></td>
+                <td style="padding-left: 10px;">ค่าประกันสินค้าเสียหาย</td>
+                <td style="text-align: right;padding: 5px;"><?= number_format($damage_price, 2) ?></td>
                 <td style="text-align: center;padding: 5px;">บาท</td>
             </tr>
             <tr>
@@ -409,6 +408,16 @@ if($driver_id != null){
                 <td></td>
                 <td style="text-align: right;padding: 5px;"><?php echo number_format($sum_col_9, 2) ?></td>
                 <td style="text-align: center;padding: 5px;">บาท</td>
+                <td style="padding-left: 10px">ค่าปรับจราจร</td>
+                <td style="text-align: right;padding: 5px;"><?=number_format($fine_employee_amount,2)?></td>
+                <td style="text-align: center;padding: 5px;">บาท</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="padding-left: 10px;"></td>
+                <td></td>
+                <td style="text-align: right;padding: 5px;"></td>
+                <td style="text-align: center;padding: 5px;"></td>
                 <td style="padding-left: 10px">หักอื่นๆ</td>
                 <td style="text-align: right;padding: 5px;"><?= number_format($deduct_other_price, 2) ?></td>
                 <td style="text-align: center;padding: 5px;">บาท</td>
