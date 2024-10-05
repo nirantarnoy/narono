@@ -96,7 +96,8 @@ class EmployeefineController extends Controller
 
                 if($x11!=null){
                     //echo count($x1);
-                    $trans_date = $x11[2].'-'.$x11[1].'-'.$x11[0]. ' '.date('H:i:s', strtotime($x1[1]));
+                   // $trans_date = $x11[2].'-'.$x11[1].'-'.$x11[0]. ' '.date('H:i:s', strtotime($x1[1]));
+                    $trans_date = $x11[2].'-'.$x11[1].'-'.$x11[0];
                 }
 
                 if($x22!=null){
