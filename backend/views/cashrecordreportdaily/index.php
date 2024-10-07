@@ -13,7 +13,7 @@ if($search_company_id == null && $search_office_id ==null){
 }
 
 if($search_company_id != null && $search_office_id ==null){
-   // echo $search_company_id;
+    echo $search_company_id;
     $model = \common\models\QueryCashCompareReceipt::find()->where(['>=','date(trans_date)',date('Y-m-d',strtotime($from_date))])->andFilterWhere(['<=','date(trans_date)',date('Y-m-d',strtotime($to_date))])->andfilterWhere(['and','company_idx' => $search_company_id,'company_id_2' => $search_company_id])->all();
 }
 if($search_company_id == null && $search_company_id != null){
