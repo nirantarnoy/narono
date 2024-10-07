@@ -5,7 +5,7 @@ use kartik\date\DatePicker;
 $model = null;
 
 //if ($from_date!=null && $to_date != null) {
-$model = \common\models\QueryCashCompareReceipt::find()->where(['>=','date(trans_date)',date('Y-m-d',strtotime($from_date))])
+$model = \common\models\QueryCashCompareReceipt::find()->where(['>=','date(trans_datex)',date('Y-m-d',strtotime($from_date))])
     ->andFilterWhere(['<=','date(trans_date)',date('Y-m-d',strtotime($to_date))]);
 if($search_company_id != null){
     $model = $model->andfilterWhere(['or','company_idx' => $search_company_id,'company_id_2x' => $search_company_id]);
