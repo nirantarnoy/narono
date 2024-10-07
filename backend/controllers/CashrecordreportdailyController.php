@@ -46,7 +46,7 @@ class CashrecordreportdailyController extends Controller
         $search_company_id = \Yii::$app->request->post('search_company_id');
         $search_office_id = \Yii::$app->request->post('search_office_id');
 
-        echo $search_office_id;
+      //  echo $search_office_id;
 
         $x1 = explode('-', $from_date);
         $x2 = explode('-', $to_date);
