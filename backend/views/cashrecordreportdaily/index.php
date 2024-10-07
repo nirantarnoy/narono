@@ -5,14 +5,19 @@ use kartik\date\DatePicker;
 $model = null;
 
 //if ($from_date!=null && $to_date != null) {
-$model = \common\models\QueryCashCompareReceipt::find()->where(['>=','date(trans_date)',date('Y-m-d',strtotime($from_date))])
-    ->andFilterWhere(['<=','date(trans_date)',date('Y-m-d',strtotime($to_date))]);
-if($search_company_id != null){
-   // echo $search_company_id;
-    $model->andfilterWhere(['or','company_id' => $search_company_id,'company_id_2' => $search_company_id]);
+if($search_company_id == null && $search_office_id ==null){
+    $model = \common\models\QueryCashCompareReceipt::find()->where(['>=','date(trans_date)',date('Y-m-d',strtotime($from_date))])
+        ->andFilterWhere(['<=','date(trans_date)',date('Y-m-d',strtotime($to_date))]);
+}else if($search_company_id != null && $search_office_id != null){
+    $model = \common\models\QueryCashCompareReceipt::find()->where(['>=','date(trans_date)',date('Y-m-d',strtotime($from_date))])->andFilterWhere(['<=','date(trans_date)',date('Y-m-d',strtotime($to_date))])->andfilterWhere(['or','company_id' => $search_company_id,'company_id_2' => $search_company_id]);
 }
-if($search_office_id != null){
-    $model->andFilterWhere(['or','office_id' => $search_office_id,'office_id_2' => $search_office_id]);
+
+if($search_company_id != null && $search_office_id ==null){
+   // echo $search_company_id;
+    $model = \common\models\QueryCashCompareReceipt::find()->where(['>=','date(trans_date)',date('Y-m-d',strtotime($from_date))])->andFilterWhere(['<=','date(trans_date)',date('Y-m-d',strtotime($to_date))])->andfilterWhere(['or','company_id' => $search_company_id,'company_id_2' => $search_company_id]);
+}
+if($search_company_id == null && $search_company_id != null){
+    $model = \common\models\QueryCashCompareReceipt::find()->where(['>=','date(trans_date)',date('Y-m-d',strtotime($from_date))])->andFilterWhere(['or','office_id' => $search_office_id,'office_id_2' => $search_office_id]);
 }
 
 $model = $model->all();
