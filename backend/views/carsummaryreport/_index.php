@@ -14,8 +14,12 @@ if ($from_date != '' && $to_date != '') {
     $date_month = \backend\helpers\Thaimonth::getTypeById((int)(date('m', strtotime($to_date))));
     $date_year = date('Y', strtotime($to_date)) + 543;
 
-    if ($search_car_id != null) {
+    if ($search_car_id != null && $search_emp_id == null) {
         $model_line = \common\models\QueryCarWorkSummary::find()->where(['car_id' => $search_car_id])->andFilterWhere(['>=', 'date(work_queue_date)', $from_date])->andFilterWhere(['<=', 'date(work_queue_date)', $to_date])->orderBy(['work_queue_date' => SORT_ASC])->all();
+    }else if($search_car_id != null && $search_emp_id != null) {
+        $model_line = \common\models\QueryCarWorkSummary::find()->where(['car_id' => $search_car_id,'emp_assign'=>$search_emp_id])->andFilterWhere(['>=', 'date(work_queue_date)', $from_date])->andFilterWhere(['<=', 'date(work_queue_date)', $to_date])->orderBy(['work_queue_date' => SORT_ASC])->all();
+    }else if($search_car_id == null && $search_emp_id != null) {
+        $model_line = \common\models\QueryCarWorkSummary::find()->where(['emp_assign'=>$search_emp_id])->andFilterWhere(['>=', 'date(work_queue_date)', $from_date])->andFilterWhere(['<=', 'date(work_queue_date)', $to_date])->orderBy(['work_queue_date' => SORT_ASC])->all();
     }
 
     $from_date = date('d-m-Y', strtotime($from_date));
@@ -161,7 +165,7 @@ if($driver_id != null){
                         ]);
                         ?>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
                         <label class="form-label">รถ</label>
 
                         <?php
@@ -181,11 +185,30 @@ if($driver_id != null){
 
                     </div>
                     <div class="col-lg-2">
+                        <label class="form-label">พขร.</label>
+
+                        <?php
+                        echo \kartik\select2\Select2::widget([
+                            'name' => 'search_emp_id',
+                            'data' => \yii\helpers\ArrayHelper::map(\backend\models\Employee::find()->where(['status' => 1])->all(), 'id', 'name'),
+                            'value' => $search_emp_id,
+                            'options' => [
+                                'placeholder' => '---เลือกพนักงาน---'
+                            ],
+                            'pluginOptions' => [
+                                'allowClear' => true,
+                            ]
+                        ]);
+                        ?>
+
+
+                    </div>
+                    <div class="col-lg-2">
 
                         <label class="form-label">% ประกันสังคม</label>
                         <input type="number" class="form-control" name="social_per" min="0" value="<?= $social_per ?>">
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
                         <div style="height: 35px;"></div>
                         <button class="btn btn-sm btn-primary">ค้นหาและคำนวน</button>
                     </div>

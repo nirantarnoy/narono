@@ -313,7 +313,7 @@ $dropoff_data = \common\models\DropoffPlace::find()->all();
                 <th>สถานที่ขึ้นสินค้า</th>
                 <th>เลขที่ใบตั้ง</th>
                 <th>จำนวนม้วน</th>
-                <th>น้ำหนัก</th>
+                <th>น้ำหนัก/เหมา</th>
                 <th>ราคาบาท/ตัน</th>
                 <th>จำนวนเงิน</th>
                 <th></th>
