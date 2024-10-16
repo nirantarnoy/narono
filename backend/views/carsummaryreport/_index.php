@@ -190,7 +190,9 @@ if($driver_id != null){
                         <?php
                         echo \kartik\select2\Select2::widget([
                             'name' => 'search_emp_id',
-                            'data' => \yii\helpers\ArrayHelper::map(\backend\models\Employee::find()->where(['status' => 1])->all(), 'id', 'name'),
+                            'data' => \yii\helpers\ArrayHelper::map(\backend\models\Employee::find()->where(['status' => 1])->all(), 'id', function($data){
+                                return $data->fname.' '.$data->lname;
+                            }),
                             'value' => $search_emp_id,
                             'options' => [
                                 'placeholder' => '---เลือกพนักงาน---'
