@@ -254,7 +254,7 @@ if($driver_id != null){
         <table style="width: 100%">
             <tr>
                 <td style="width:30%;padding: 5px;">ชื่อพนักงานขับรถ
-                    <b><?= \backend\models\Car::findDrivername($search_car_id) ?>
+                    <b><?= $search_car_id !=null? \backend\models\Car::findDrivername($search_car_id): \backend\models\Employee::findFullName($search_emp_id) ?>
                     </b>
                 </td>
                 <!--            <td><input type="text" class="form-control"></td>-->
