@@ -175,18 +175,20 @@ if ($search_car_type != null) {
         <table class="table table-bordered" id="table-data">
             <thead>
             <tr>
-                <th style="width: 5%;text-align: center;">ลำดับ</th>
+                <th style="width: 5%;text-align: center;">เที่ยว</th>
                 <th style="width: 5%;text-align: center;">เลขที่</th>
                 <th style="width: 8%;text-align: center;">วันที่</th>
                 <th style="width: 8%;text-align: center;">ทะเบียนหัว</th>
                 <th style="width: 8%;text-align: center;">ทะเบียนหาง</th>
                 <th style="width: 8%;text-align: center;">ชื่อ พขร.</th>
                 <th style="width: 8%;text-align: center;">ประเภทงาน</th>
+                <th style="width: 8%;text-align: center;">เลขDP</th>
                 <th style="width: 10%;text-align: center;">ลูกค้า</th>
                 <th style="width: 8%;text-align: center;">ประเภทรถ</th>
                 <th style="width: 8%;text-align: center;">น้ำหนัก(ตัน)</th>
                 <th style="width: 8%;text-align: center;">ราคา</th>
                 <th style="width: 8%;text-align: center;">จำนวเงิน</th>
+                <th>หมายเหตุ</th>
             </tr>
             </thead>
             <tbody>
@@ -198,8 +200,10 @@ if ($search_car_type != null) {
                     <?php
                     $line_num += 1;
                     $total_weight += ($value->weight_on_go);
-                    $total_line_amount += ($value->total_amount);
                     $line_price_per_ton = getDropoffPriceperton($value->id);
+                    $line_weight_ton = getDropoffWeightton($value->id);
+                    $line_dp = getDropoffDP($value->id);
+                    $total_line_amount += ($line_weight_ton * $line_price_per_ton);
                     ?>
                     <tr>
                         <td style="width: 5%;text-align: center;"><?= $line_num ?></td>
@@ -209,11 +213,13 @@ if ($search_car_type != null) {
                         <td style="width: 8%;text-align: center;"><?= \backend\models\Car::findName($value->tail_id) ?></td>
                         <td style="width: 8%;text-align: center;"><?= \backend\models\Employee::findFullName($value->emp_assign) ?></td>
                         <td style="width: 8%;text-align: center;"><?= \backend\models\Customer::findWorkTypeByCustomerid($value->customer_id) ?></td>
+                        <td style="width: 8%;text-align: center;"><?= $line_dp ?></td>
                         <td style="width: 10%;text-align: center;"><?= \backend\models\Customer::findCusName($value->customer_id) ?></td>
                         <td style="width: 8%;text-align: center;"><?= \backend\models\Car::getCartype($value->car_id) ?></td>
-                        <td style="width: 8%;text-align: center;"><?= number_format($value->weight_on_go, 3) ?></td>
+                        <td style="width: 8%;text-align: center;"><?= number_format($line_weight_ton, 3) ?></td>
                         <td style="width: 8%;text-align: center;"><?= number_format($line_price_per_ton, 2) ?></td>
-                        <td style="width: 8%;text-align: center;"><?= number_format($value->total_amount, 2) ?></td>
+                        <td style="width: 8%;text-align: center;"><?= number_format(($$line_weight_ton * $line_price_per_ton), 2) ?></td>
+                        <td><?=$value->go_deduct_reason?></td>
                     </tr>
                 <?php endforeach; ?>
             <?php endif; ?>
@@ -224,6 +230,7 @@ if ($search_car_type != null) {
                 <td style="width: 8%;text-align: center;"><b><?= number_format($total_weight, 3) ?></b></td>
                 <td style="width: 8%;text-align: center;"><b></b></td>
                 <td style="width: 8%;text-align: center;"><b><?= number_format($total_line_amount, 2) ?></b></td>
+                <td></td>
             </tr>
             </tfoot>
 
@@ -247,6 +254,26 @@ function getDropoffPriceperton($workqueue_id)
     }
     return $price;
 }
+function getDropoffWeightton($workqueue_id)
+{
+    $price = 0;
+    $model = \common\models\WorkQueueDropoff::find()->where(['work_queue_id' => $workqueue_id])->one();
+    if ($model) {
+        $price = $model->weight;
+    }
+    return $price;
+}
+
+function getDropoffDP($workqueue_id)
+{
+    $dropoff_no = 0;
+    $model = \common\models\WorkQueueDropoff::find()->where(['work_queue_id' => $workqueue_id])->one();
+    if ($model) {
+        $dropoff_no = $model->dropoff_no;
+    }
+    return $dropoff_no;
+}
+
 
 
 $this->registerJsFile(\Yii::$app->request->baseUrl . '/js/jquery.table2excel.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
