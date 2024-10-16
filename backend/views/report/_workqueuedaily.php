@@ -199,10 +199,11 @@ if ($search_car_type != null) {
                 <?php foreach ($model as $value): ?>
                     <?php
                     $line_num += 1;
-                    $total_weight += ($value->weight_on_go);
+
                     $line_price_per_ton = getDropoffPriceperton($value->id);
                     $line_weight_ton = getDropoffWeightton($value->id);
                     $line_dp = getDropoffDP($value->id);
+                    $total_weight += ($line_weight_ton);
                     $total_line_amount += ($line_weight_ton * $line_price_per_ton);
                     ?>
                     <tr>
@@ -226,7 +227,7 @@ if ($search_car_type != null) {
             </tbody>
             <tfoot>
             <tr>
-                <td colspan="9" style="width: 8%;text-align: right;"><b>รวม</b></td>
+                <td colspan="10" style="width: 8%;text-align: right;"><b>รวม</b></td>
                 <td style="width: 8%;text-align: center;"><b><?= number_format($total_weight, 3) ?></b></td>
                 <td style="width: 8%;text-align: center;"><b></b></td>
                 <td style="width: 8%;text-align: center;"><b><?= number_format($total_line_amount, 2) ?></b></td>
