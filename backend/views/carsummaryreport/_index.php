@@ -313,7 +313,8 @@ if($driver_id != null){
             <?php if ($model_line != null): ?>
                 <?php foreach ($model_line as $value): ?>
                     <?php
-                    $sum_col_4 += ($value->work_labour_price + $value->trail_labour_price + $value->cover_sheet_price + $value->overnight_price + $value->warehouse_plus_price + $value->work_double_price + $value->towing_price);
+                    //$sum_col_4 += ($value->work_labour_price + $value->trail_labour_price + $value->cover_sheet_price + $value->overnight_price + $value->warehouse_plus_price + $value->work_double_price + $value->towing_price);
+                    $sum_col_4 += ($value->work_labour_price);
                     $sum_col_5 += ($value->work_express_road_price);
                     $sum_col_6 += ($value->cover_sheet_price);
                     $sum_col_7 += ($value->overnight_price);
