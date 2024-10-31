@@ -351,10 +351,10 @@ if($driver_id != null){
             <?php endif; ?>
             <?php
             $base_deduct = (($social_base_price * $social_price) / 100); //15000
-            if (($line_total + $cost_living_price) >= $social_base_price) {
+            if (($sum_col_10 + $cost_living_price) >= $social_base_price) {
                 $deduct_total = $base_deduct;
             } else {
-                $deduct_total = (($line_total + $cost_living_price) * $social_price / 100);
+                $deduct_total = (($sum_col_10 + $cost_living_price) * $social_price / 100);
             }
 
             ?>
@@ -408,7 +408,7 @@ if($driver_id != null){
 
                 <td style="padding-left: 10px;">ค่าเที่ยว</td>
                 <td></td>
-                <td style="text-align: right;padding: 5px;"><?= number_format($sum_col_4, 2) ?></td>
+                <td style="text-align: right;padding: 5px;"><?= number_format($sum_col_10, 2) ?></td>
                 <td style="text-align: center;padding: 5px;">บาท</td>
                 <td style="padding-left: 10px;">เงินยืมทดลอง</td>
                 <td style="text-align: right;padding: 5px;"><?= number_format($test_price, 2) ?></td>
