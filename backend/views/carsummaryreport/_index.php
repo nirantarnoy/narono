@@ -306,6 +306,8 @@ if($driver_id != null){
             $social_base_price = \backend\models\Company::findSocialbasePrice($emp_company_id);
             $deduct_total = 0;
 
+            $line_total  = 0;
+
             if ($social_per != '' || $social_per != null || $social_per != 0) {
                 $social_price = $social_per;
             }
@@ -349,10 +351,10 @@ if($driver_id != null){
             <?php endif; ?>
             <?php
             $base_deduct = (($social_base_price * $social_price) / 100); //15000
-            if (($sum_col_4 + $cost_living_price) >= $social_base_price) {
+            if (($line_total + $cost_living_price) >= $social_base_price) {
                 $deduct_total = $base_deduct;
             } else {
-                $deduct_total = (($sum_col_4 + $cost_living_price) * $social_price / 100);
+                $deduct_total = (($line_total + $cost_living_price) * $social_price / 100);
             }
 
             ?>
