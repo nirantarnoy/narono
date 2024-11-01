@@ -410,7 +410,7 @@ if($driver_id != null){
                 <td></td>
                 <td style="text-align: right;padding: 5px;"><?= number_format($sum_col_10, 2) ?></td>
                 <td style="text-align: center;padding: 5px;">บาท</td>
-                <td style="padding-left: 10px;">เงินยืมทดลอง</td>
+                <td style="padding-left: 10px;">เงินยืมทดรอง</td>
                 <td style="text-align: right;padding: 5px;"><?= number_format($test_price, 2) ?></td>
                 <td style="text-align: center;padding: 5px;">บาท</td>
             </tr>
