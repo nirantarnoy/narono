@@ -141,18 +141,18 @@ if ($model) {
                 <tfoot>
                 <tr>
                     <td style="text-align: right;width: 20%;"><b>รวม</b></td>
-                    <td style="text-align: center;"><?= number_format($total_m1) ?></td>
-                    <td style="text-align: center;"><?= number_format($total_m2) ?></td>
-                    <td style="text-align: center;"><?= number_format($total_m3) ?></td>
-                    <td style="text-align: center;"><?= number_format($total_m4) ?></td>
-                    <td style="text-align: center;"><?= number_format($total_m5) ?></td>
-                    <td style="text-align: center;"><?= number_format($total_m6) ?></td>
-                    <td style="text-align: center;"><?= number_format($total_m7) ?></td>
-                    <td style="text-align: center;"><?= number_format($total_m8) ?></td>
-                    <td style="text-align: center;"><?= number_format($total_m9) ?></td>
-                    <td style="text-align: center;"><?= number_format($total_m10) ?></td>
-                    <td style="text-align: center;"><?= number_format($total_m11) ?></td>
-                    <td style="text-align: center;"><?= number_format($total_m12) ?></td>
+                    <td style="text-align: center;"><b><?= number_format($total_m1) ?></b></td>
+                    <td style="text-align: center;"><b><?= number_format($total_m2) ?></b></td>
+                    <td style="text-align: center;"><b><?= number_format($total_m3) ?></b></td>
+                    <td style="text-align: center;"><b><?= number_format($total_m4) ?></b></td>
+                    <td style="text-align: center;"><b><?= number_format($total_m5) ?></b></td>
+                    <td style="text-align: center;"><b><?= number_format($total_m6) ?></b></td>
+                    <td style="text-align: center;"><b><?= number_format($total_m7) ?></b></td>
+                    <td style="text-align: center;"><b><?= number_format($total_m8) ?></b></td>
+                    <td style="text-align: center;"><b><?= number_format($total_m9) ?></b></td>
+                    <td style="text-align: center;"><b><?= number_format($total_m10) ?></b></td>
+                    <td style="text-align: center;"><b><?= number_format($total_m11) ?></b></td>
+                    <td style="text-align: center;"><b><?= number_format($total_m12) ?></b></td>
                 </tr>
                 </tfoot>
             </table>
@@ -180,8 +180,8 @@ function getLineData($customer_id, $find_year, $car_type_id)
     }
 
     $sql .= " GROUP BY t1.customer_id, month(t1.work_queue_date)";
-   // $sql .= " ORDER BY month(t1.work_queue_date) asc ,count(t1.customer_id) desc";
-    $sql .= " ORDER BY count(t1.customer_id) desc";
+    $sql .= " ORDER BY month(t1.work_queue_date) asc ,count(t1.customer_id) desc";
+    //$sql .= " ORDER BY count(t1.customer_id) desc";
 
     $query = \Yii::$app->db->createCommand($sql);
     $model = $query->queryAll();
