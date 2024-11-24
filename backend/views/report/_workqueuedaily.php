@@ -203,8 +203,17 @@ if ($search_car_type != null) {
                     $line_price_per_ton = getDropoffPriceperton($value->id);
                     $line_weight_ton = getDropoffWeightton($value->id);
                     $line_dp = getDropoffDP($value->id);
-                    $total_weight += ($line_weight_ton);
-                    $total_line_amount += ($line_weight_ton * $line_price_per_ton);
+                    if($line_weight_ton!=null) {
+                        //if($line_weight_ton[0]['is_charter'] == 0){
+                        $total_weight += $line_weight_ton[0]['is_charter'] == 1 ? 0:($line_weight_ton[0]['weight']);
+                        $total_line_amount += ($line_weight_ton[0]['weight'] * $line_price_per_ton);
+                      //  $total_line_amount += ( $line_price_per_ton);
+                        // }
+                    }else{
+                        $total_weight += 0;
+                        $total_line_amount += 10;
+                    }
+
                     ?>
                     <tr>
                         <td style="width: 5%;text-align: center;"><?= $line_num ?></td>
@@ -217,9 +226,9 @@ if ($search_car_type != null) {
                         <td style="width: 8%;text-align: center;"><?= $line_dp ?></td>
                         <td style="width: 10%;text-align: center;"><?= \backend\models\Customer::findCusName($value->customer_id) ?></td>
                         <td style="width: 8%;text-align: center;"><?= \backend\models\Car::getCartype($value->car_id) ?></td>
-                        <td style="width: 8%;text-align: center;"><?= number_format($line_weight_ton, 3) ?></td>
+                        <td style="width: 8%;text-align: center;"><?= $line_weight_ton[0]['is_charter'] == 1?'เหมา': number_format($line_weight_ton[0]['weight'], 3) ?></td>
                         <td style="width: 8%;text-align: center;"><?= number_format($line_price_per_ton, 2) ?></td>
-                        <td style="width: 8%;text-align: center;"><?= number_format(($line_weight_ton * $line_price_per_ton), 2) ?></td>
+                        <td style="width: 8%;text-align: center;"><?= $line_weight_ton[0]['is_charter'] == 1? number_format($line_price_per_ton,2): number_format(($line_weight_ton[0]['weight'] * $line_price_per_ton), 2) ?></td>
                         <td><?=$value->go_deduct_reason?></td>
                     </tr>
                 <?php endforeach; ?>
@@ -257,12 +266,26 @@ function getDropoffPriceperton($workqueue_id)
 }
 function getDropoffWeightton($workqueue_id)
 {
-    $price = 0;
+//    $price = 0;
+//    $model = \common\models\WorkQueueDropoff::find()->where(['work_queue_id' => $workqueue_id])->one();
+//    if ($model) {
+//        if($model->is_charter == 0){
+//            $price = $model->weight;
+//        }
+//    }
+//    return $price;
+    $data = [];
     $model = \common\models\WorkQueueDropoff::find()->where(['work_queue_id' => $workqueue_id])->one();
     if ($model) {
-        $price = $model->weight;
+        if($model->is_charter == 0 || $model->is_charter == null){
+            array_push($data,['is_charter'=>$model->is_charter,'weight'=>$model->weight]);
+        }else{
+            array_push($data,['is_charter'=>1,'weight'=>1]);
+        }
+    }else{
+        array_push($data,['is_charter'=>0,'weight'=>0]);
     }
-    return $price;
+    return $data;
 }
 
 function getDropoffDP($workqueue_id)

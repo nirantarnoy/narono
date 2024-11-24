@@ -48,6 +48,8 @@ if (!$model->isNewRecord) {
 //print_r($dropoff_list);
 //print_r($model->route_plan_id);
 $dropoff_data = \common\models\DropoffPlace::find()->all();
+
+$charter_data = [['id'=>0,'name'=>'No'],['id'=>1,'name'=>'Yes']];
 ?>
 
 <div class="workqueue-form">
@@ -313,7 +315,8 @@ $dropoff_data = \common\models\DropoffPlace::find()->all();
                 <th>สถานที่ขึ้นสินค้า</th>
                 <th>เลขที่ใบตั้ง</th>
                 <th>จำนวนม้วน</th>
-                <th>น้ำหนัก/เหมา</th>
+                <th>เหมา</th>
+                <th>น้ำหนัก</th>
                 <th>ราคาบาท/ตัน</th>
                 <th>จำนวนเงิน</th>
                 <th></th>
@@ -322,7 +325,7 @@ $dropoff_data = \common\models\DropoffPlace::find()->all();
                 <?php if ($model->isNewRecord): ?>
                     <tr>
                         <td>
-                            <select name="dropoff_id[]" class="form-control dropoff-id" id="">
+                            <select name="dropoff_id[]" class="form-control dropoff-id" id="" >
                                 <option value="0">--สถานที่ชื้นสินค้า--</option>
                                 <?php for ($i = 0; $i <= count($dropoff_data) - 1; $i++) : ?>
                                     <option value="<?= $dropoff_data[$i]['id'] ?>"><?= $dropoff_data[$i]['name'] ?></option>
@@ -337,6 +340,13 @@ $dropoff_data = \common\models\DropoffPlace::find()->all();
                             <input type="number" name="qty[]"
                                    step="any"
                                    class="form-control qty" id="">
+                        </td>
+                        <td>
+                            <select name="is_charter" id="" class="form-control is-charter" onchange="checkcharter($(this))">
+                                <?php for($z=0;$z<=count($charter_data)-1;$z++):?>
+                                <option value="<?=$charter_data[$z]['id']?>"><?=$charter_data[$z]['name']?></option>
+                                <?php endfor;?>
+                            </select>
                         </td>
                         <td>
                             <input type="number" name="weight[]"
@@ -384,10 +394,20 @@ $dropoff_data = \common\models\DropoffPlace::find()->all();
                                            value="<?= $key->qty ?>">
                                 </td>
                                 <td>
+                                    <select name="is_charter" id="" class="form-control is-charter" onchange="checkcharter($(this))">
+                                        <?php for($z=0;$z<=count($charter_data)-1;$z++):?>
+                                            <?php
+                                              $selected = $charter_data[$z]['id'] == $key->is_charter ? "selected" : "";
+                                            ?>
+                                            <option value="<?=$charter_data[$z]['id']?>" <?=$selected?>><?=$charter_data[$z]['name']?></option>
+                                        <?php endfor;?>
+                                    </select>
+                                </td>
+                                <td>
                                     <input type="number" name="weight[]"
                                            class="form-control weight" id=""
                                            step="any"
-                                           value="<?= $key->weight ?>" onchange="calpriceperton($(this))">
+                                           value="<?= $key->weight ?>" onchange="calpriceperton($(this))" readonly="<?=$key->is_charter == 1?'readonly':''?>">
                                 </td>
 
                                 <td>
@@ -421,6 +441,13 @@ $dropoff_data = \common\models\DropoffPlace::find()->all();
                                        class="form-control qty"
                                        step="any"
                                        id="">
+                            </td>
+                            <td>
+                                <select name="is_charter" id="" class="form-control is-charter" onchange="checkcharter($(this))">
+                                    <?php for($z=0;$z<=count($charter_data)-1;$z++):?>
+                                        <option value="<?=$charter_data[$z]['id']?>"><?=$charter_data[$z]['name']?></option>
+                                    <?php endfor;?>
+                                </select>
                             </td>
                             <td>
                                 <input type="number" name="weight[]"
@@ -642,6 +669,17 @@ $(function(){
         $(".total-amount-2").val(parseFloat(total_amount).toFixed(2));
     });
 });
+
+function checkcharter(e){
+    var checked_yesno = e.val();
+    if(parseInt(checked_yesno) == 1){
+        e.closest("tr").find(".weight").val(0).prop("readonly", true);
+        var per_ton_price = e.closest("tr").find(".price-per-ton").val();
+        e.closest("tr").find(".price-line-total").val(parseFloat(per_ton_price).toFixed(2));
+    }else{
+       e.closest("tr").find(".weight").prop("readonly", false);  
+    }
+}
 
 
 function enableLabour(e){
@@ -1015,7 +1053,16 @@ function removeline1(e) {
 function calpriceperton(e){
     var line_w = e.closest("tr").find(".weight").val();
     var line_p = e.closest("tr").find(".price-per-ton").val();
-    var line_total = parseFloat(line_w) * parseFloat(line_p);
+    var check_yesno = e.closest("tr").find(".is-charter").val();
+    var line_total = 0;
+    
+    if(parseInt(check_yesno) == 0){
+        line_total = parseFloat(line_w) * parseFloat(line_p);
+    }else{
+        line_total = parseFloat(line_p);
+    }
+    
+    
     
     e.closest("tr").find(".price-line-total").val(parseFloat(line_total).toFixed(2));
 }

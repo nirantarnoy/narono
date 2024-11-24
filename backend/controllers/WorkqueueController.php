@@ -108,6 +108,7 @@ class WorkqueueController extends Controller
                 $weight = \Yii::$app->request->post('weight');
                 $price_per_ton = \Yii::$app->request->post('price_per_ton');
                 $price_line_total = \Yii::$app->request->post('price_line_total');
+                $is_charter = \Yii::$app->request->post('is_charter');
 
                 $company_id = \backend\models\Customer::findCompanyByCustomer($model->customer_id);
 
@@ -158,6 +159,7 @@ class WorkqueueController extends Controller
                             $model_df->weight = $weight[$a];
                             $model_df->price_per_ton = $price_per_ton[$a];
                             $model_df->price_line_total = $price_line_total[$a];
+                            $model_df->is_charter = $is_charter[$a];
                             $model_df->save(false);
                         }
                     }
@@ -236,6 +238,8 @@ class WorkqueueController extends Controller
 
             $removelist2 = \Yii::$app->request->post('remove_list2');
 
+            $is_charter = \Yii::$app->request->post('is_charter');
+
 
 
 
@@ -286,6 +290,7 @@ class WorkqueueController extends Controller
                             $model_test->weight = (float)$weight[$a];
                             $model_test->price_per_ton = (float)$price_per_ton[$a];
                             $model_test->price_line_total = (float)$price_line_total[$a];
+                            $model_test->is_charter = $is_charter[$a];
                             $model_test->save(false);
                         } else {
                             $model_do = new \common\models\WorkQueueDropoff();
@@ -296,6 +301,7 @@ class WorkqueueController extends Controller
                             $model_do->weight = (float)$weight[$a];
                             $model_do->price_per_ton = (float)$price_per_ton[$a];
                             $model_do->price_line_total = (float)$price_line_total[$a];
+                            $model_do->is_charter = $is_charter[$a];
                             $model_do->save(false);
                         }
                     }

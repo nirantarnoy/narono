@@ -27,7 +27,7 @@ class WorkQueueDropoff extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['work_queue_id', 'dropoff_id'], 'integer'],
+            [['work_queue_id', 'dropoff_id','is_charter'], 'integer'],
             [['qty','weight','price_per_ton','price_line_total'], 'number'],
             [['dropoff_no'], 'string'],
         ];
