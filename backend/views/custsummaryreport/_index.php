@@ -86,10 +86,40 @@ if ($model) {
                 </thead>
                 <tbody>
                 <?php if ($customer_data != null): ?>
+                    <?php
+                    $total_m1 = 0;
+                    $total_m2 = 0;
+                    $total_m3 = 0;
+                    $total_m4 =0;
+                    $total_m5 = 0;
+                    $total_m6 =0;
+                    $total_m7 =0;
+                    $total_m8 = 0;
+                    $total_m9 = 0;
+                    $total_m10 = 0;
+                    $total_m11 =0;
+                    $total_m12 = 0;
+                    ?>
                     <?php for ($k = 0; $k <= count($customer_data) - 1; $k++): ?>
                         <?php if ($customer_data[$k] == null) continue; ?>
                         <?php $line_count_data = getLineData($customer_data[$k], $find_year, $car_type_id); ?>
                         <?php // print_r($line_count_data);?>
+                         <?php
+                          $total_m1 += $line_count_data != null ? (int)$line_count_data[0] : 0;
+                          $total_m2 += $line_count_data != null ? (int)$line_count_data[1] : 0;
+                          $total_m3 += $line_count_data != null ? (int)$line_count_data[2] : 0;
+                          $total_m4 += $line_count_data != null ? (int)$line_count_data[3] : 0;
+                          $total_m5 += $line_count_data != null ? (int)$line_count_data[4] : 0;
+                          $total_m6 += $line_count_data != null ? (int)$line_count_data[5] : 0;
+                          $total_m7 += $line_count_data != null ? (int)$line_count_data[6] : 0;
+                          $total_m8 += $line_count_data != null ? (int)$line_count_data[7] : 0;
+                          $total_m9 += $line_count_data != null ? (int)$line_count_data[8] : 0;
+                          $total_m10 += $line_count_data != null ? (int)$line_count_data[9] : 0;
+                          $total_m11 += $line_count_data != null ? (int)$line_count_data[10] : 0;
+                          $total_m12 += $line_count_data != null ? (int)$line_count_data[11] : 0;
+                        ?>
+
+
                         <tr>
                             <td style="text-align: left;width: 20%;"><?= \backend\models\Customer::findCusName($customer_data[$k]) ?></td>
                             <td style="text-align: center;"><?= number_format($line_count_data != null ? $line_count_data[0] : 0) ?></td>
@@ -108,6 +138,23 @@ if ($model) {
                     <?php endfor; ?>
                 <?php endif; ?>
                 </tbody>
+                <tfoot>
+                <tr>
+                    <td style="text-align: right;width: 20%;"><b>รวม</b></td>
+                    <td style="text-align: center;"><?= number_format($total_m1) ?></td>
+                    <td style="text-align: center;"><?= number_format($total_m2) ?></td>
+                    <td style="text-align: center;"><?= number_format($total_m3) ?></td>
+                    <td style="text-align: center;"><?= number_format($total_m4) ?></td>
+                    <td style="text-align: center;"><?= number_format($total_m5) ?></td>
+                    <td style="text-align: center;"><?= number_format($total_m6) ?></td>
+                    <td style="text-align: center;"><?= number_format($total_m7) ?></td>
+                    <td style="text-align: center;"><?= number_format($total_m8) ?></td>
+                    <td style="text-align: center;"><?= number_format($total_m9) ?></td>
+                    <td style="text-align: center;"><?= number_format($total_m10) ?></td>
+                    <td style="text-align: center;"><?= number_format($total_m11) ?></td>
+                    <td style="text-align: center;"><?= number_format($total_m12) ?></td>
+                </tr>
+                </tfoot>
             </table>
         </div>
     </div>
@@ -133,7 +180,7 @@ function getLineData($customer_id, $find_year, $car_type_id)
     }
 
     $sql .= " GROUP BY t1.customer_id, month(t1.work_queue_date)";
-    $sql .= " ORDER BY month(t1.work_queue_date) asc";
+    $sql .= " ORDER BY month(t1.work_queue_date) asc ,count(t1.customer_id) desc";
 
     $query = \Yii::$app->db->createCommand($sql);
     $model = $query->queryAll();
