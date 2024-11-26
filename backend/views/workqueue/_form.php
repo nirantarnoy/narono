@@ -342,7 +342,7 @@ $charter_data = [['id'=>0,'name'=>'No'],['id'=>1,'name'=>'Yes']];
                                    class="form-control qty" id="">
                         </td>
                         <td>
-                            <select name="is_charter" id="" class="form-control is-charter" onchange="checkcharter($(this))">
+                            <select name="is_charter[]" id="" class="form-control is-charter" onchange="checkcharter($(this))">
                                 <?php for($z=0;$z<=count($charter_data)-1;$z++):?>
                                 <option value="<?=$charter_data[$z]['id']?>"><?=$charter_data[$z]['name']?></option>
                                 <?php endfor;?>
@@ -394,7 +394,7 @@ $charter_data = [['id'=>0,'name'=>'No'],['id'=>1,'name'=>'Yes']];
                                            value="<?= $key->qty ?>">
                                 </td>
                                 <td>
-                                    <select name="is_charter" id="" class="form-control is-charter" onchange="checkcharter($(this))">
+                                    <select name="is_charter[]" id="" class="form-control is-charter" onchange="checkcharter($(this))">
                                         <?php for($z=0;$z<=count($charter_data)-1;$z++):?>
                                             <?php
                                               $selected = $charter_data[$z]['id'] == $key->is_charter ? "selected" : "";
@@ -443,7 +443,7 @@ $charter_data = [['id'=>0,'name'=>'No'],['id'=>1,'name'=>'Yes']];
                                        id="">
                             </td>
                             <td>
-                                <select name="is_charter" id="" class="form-control is-charter" onchange="checkcharter($(this))">
+                                <select name="is_charter[]" id="" class="form-control is-charter" onchange="checkcharter($(this))">
                                     <?php for($z=0;$z<=count($charter_data)-1;$z++):?>
                                         <option value="<?=$charter_data[$z]['id']?>"><?=$charter_data[$z]['name']?></option>
                                     <?php endfor;?>
