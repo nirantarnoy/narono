@@ -405,7 +405,7 @@ if($driver_id != null){
                 <td style="text-align: right;padding: 5px;"><?= number_format($cost_living_price, 2) ?></td>
                 <td style="text-align: center;padding: 5px;">บาท</td>
                 <td style="padding-left: 10px;">ค่าประกันสังคม <?= $social_price . ' %' ?></td>
-                <td style="text-align: right;padding: 5px;"><?= number_format($deduct_total, 2) ?></td>
+                <td style="text-align: right;padding: 5px;"><?= number_format(1, 2) ?></td>
                 <td style="text-align: center;padding: 5px;">บาท</td>
             </tr>
             <tr>
