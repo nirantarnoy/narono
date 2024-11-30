@@ -27,7 +27,7 @@ if ($from_date != '' && $to_date != '') {
 }
 $emp_company_id = 0;
 $driver_id = \backend\models\Car::getDriver($search_car_id);
-if($driver_id != null && $driver_id != ''){
+if($search_car_id != null) {
     $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
 }else{
     $emp_company_id = $search_emp_id;
