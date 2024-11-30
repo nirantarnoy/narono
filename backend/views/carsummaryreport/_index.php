@@ -25,8 +25,14 @@ if ($from_date != '' && $to_date != '') {
     $from_date = date('d-m-Y', strtotime($from_date));
     $to_date = date('d-m-Y', strtotime($to_date));
 }
+$emp_company_id = 0;
 $driver_id = \backend\models\Car::getDriver($search_car_id);
-$emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
+if($driver_id != null && $driver_id != ''){
+    $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
+}else{
+    $emp_company_id = $search_emp_id;
+}
+
 
 $fine_employee_amount = 0;
 if($driver_id != null){
@@ -357,9 +363,9 @@ if($driver_id != null){
             <?php
             $base_deduct = (($social_base_price * $social_price) / 100); //15000
             if (($sum_col_10 + $cost_living_price) >= $social_base_price) {
-                $deduct_total = $social_base_price;// $base_deduct;
+                $deduct_total =  $base_deduct;
             } else {
-                $deduct_total = 1; // (($sum_col_10 + $cost_living_price) * $social_price / 100);
+                $deduct_total =  (($sum_col_10 + $cost_living_price) * $social_price / 100);
             }
 
             ?>
@@ -405,7 +411,7 @@ if($driver_id != null){
                 <td style="text-align: right;padding: 5px;"><?= number_format($cost_living_price, 2) ?></td>
                 <td style="text-align: center;padding: 5px;">บาท</td>
                 <td style="padding-left: 10px;">ค่าประกันสังคม <?= $social_price . ' %' ?></td>
-                <td style="text-align: right;padding: 5px;"><?= number_format(1, 2) ?></td>
+                <td style="text-align: right;padding: 5px;"><?= number_format($deduct_total, 2) ?></td>
                 <td style="text-align: center;padding: 5px;">บาท</td>
             </tr>
             <tr>
