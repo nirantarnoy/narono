@@ -159,6 +159,19 @@ class Employee extends \common\models\Employee
 
         return $price;
     }
+    public static function findCostLivingPriceByDriver($id)
+    {
+        $price = 0;
+//        $model_x = Car::find()->where(['id' => $id])->one();
+//        if ($model_x) {
+            $model_emp = Employee::find()->where(['id' => $id])->one();
+            if ($model_emp) {
+                $price = $model_emp->cost_living_price;
+            }
+       // }
+
+        return $price;
+    }
     public static function findSocialPrice($id)
     {
         $price = 0;

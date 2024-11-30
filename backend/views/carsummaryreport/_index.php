@@ -298,8 +298,13 @@ if($driver_id != null){
             $deduct_other_price = 0;
             $total_towing_amount = 0;
 
+            $cost_living_price = 0;
+            if($search_car_id != null && $search_emp_id == null){
+                $cost_living_price = \backend\models\Employee::findCostLivingPrice($search_car_id);
+            }else if($search_car_id == null && $search_emp_id != null){
+                $cost_living_price = \backend\models\Employee::findCostLivingPriceByDriver($search_emp_id);
+            }
 
-            $cost_living_price = \backend\models\Employee::findCostLivingPrice($search_car_id);
             //$social_price = \backend\models\Employee::findSocialPrice($search_car_id); // percent
             $social_price = \backend\models\Company::findCompanySocialPer($emp_company_id); // company percent
             //$social_per_text = \backend\models\Employee::findSocialPricePer($search_car_id);
