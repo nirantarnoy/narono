@@ -357,9 +357,9 @@ if($driver_id != null){
             <?php
             $base_deduct = (($social_base_price * $social_price) / 100); //15000
             if (($sum_col_10 + $cost_living_price) >= $social_base_price) {
-                $deduct_total = $base_deduct;
+                $deduct_total = $social_base_price;// $base_deduct;
             } else {
-                $deduct_total = (($sum_col_10 + $cost_living_price) * $social_price / 100);
+                $deduct_total = 1; // (($sum_col_10 + $cost_living_price) * $social_price / 100);
             }
 
             ?>
