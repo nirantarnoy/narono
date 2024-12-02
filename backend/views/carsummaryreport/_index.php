@@ -39,6 +39,10 @@ if($driver_id != null){
     $fine_employee_amount = \backend\models\Employeefine::find()->where(['emp_id' => $driver_id])->andFilterWhere(['>=', 'date(trans_date)', date('Y-m-d',strtotime($from_date))])->andFilterWhere(['<=', 'date(trans_date)', date('Y-m-d',strtotime($to_date))])->sum('fine_amount');
 }
 
+if($driver_id == null || $search_emp_id !=null){
+    $fine_employee_amount = \backend\models\Employeefine::find()->where(['emp_id' => $search_emp_id])->andFilterWhere(['>=', 'date(trans_date)', date('Y-m-d',strtotime($from_date))])->andFilterWhere(['<=', 'date(trans_date)', date('Y-m-d',strtotime($to_date))])->sum('fine_amount');
+}
+
 ?>
 <style>
     /*body {*/
