@@ -88,57 +88,83 @@ if ($model) {
                 <tbody>
                 <?php if ($customer_data != null): ?>
                     <?php
+                    $line_m1 = 0;
+                    $line_m2 = 0;
+                    $line_m3 = 0;
+                    $line_m4 = 0;
+                    $line_m5 = 0;
+                    $line_m6 = 0;
+                    $line_m7 = 0;
+                    $line_m8 = 0;
+                    $line_m9 = 0;
+                    $line_m10 = 0;
+                    $line_m11 = 0;
+                    $line_m12 = 0;
+
                     $total_m1 = 0;
                     $total_m2 = 0;
                     $total_m3 = 0;
-                    $total_m4 =0;
+                    $total_m4 = 0;
                     $total_m5 = 0;
-                    $total_m6 =0;
-                    $total_m7 =0;
+                    $total_m6 = 0;
+                    $total_m7 = 0;
                     $total_m8 = 0;
                     $total_m9 = 0;
                     $total_m10 = 0;
-                    $total_m11 =0;
+                    $total_m11 = 0;
                     $total_m12 = 0;
 
                     ?>
                     <?php for ($k = 0; $k <= count($customer_data) - 1; $k++): ?>
                         <?php if ($customer_data[$k] == null) continue; ?>
-                        <?php $line_all_total=0;?>
+                        <?php $line_all_total = 0; ?>
                         <?php $line_count_data = getLineData($customer_data[$k], $find_year, $car_type_id); ?>
                         <?php // print_r($line_count_data);?>
-                         <?php
-                          $total_m1 += $line_count_data != null ? (int)$line_count_data[0] : 0;
-                          $total_m2 += $line_count_data != null ? (int)$line_count_data[1] : 0;
-                          $total_m3 += $line_count_data != null ? (int)$line_count_data[2] : 0;
-                          $total_m4 += $line_count_data != null ? (int)$line_count_data[3] : 0;
-                          $total_m5 += $line_count_data != null ? (int)$line_count_data[4] : 0;
-                          $total_m6 += $line_count_data != null ? (int)$line_count_data[5] : 0;
-                          $total_m7 += $line_count_data != null ? (int)$line_count_data[6] : 0;
-                          $total_m8 += $line_count_data != null ? (int)$line_count_data[7] : 0;
-                          $total_m9 += $line_count_data != null ? (int)$line_count_data[8] : 0;
-                          $total_m10 += $line_count_data != null ? (int)$line_count_data[9] : 0;
-                          $total_m11 += $line_count_data != null ? (int)$line_count_data[10] : 0;
-                          $total_m12 += $line_count_data != null ? (int)$line_count_data[11] : 0;
+                        <?php
+                        $line_m1 = $line_count_data != null ? (int)$line_count_data[0] : 0;
+                        $line_m2 = $line_count_data != null ? (int)$line_count_data[1] : 0;
+                        $line_m3 = $line_count_data != null ? (int)$line_count_data[2] : 0;
+                        $line_m4 = $line_count_data != null ? (int)$line_count_data[3] : 0;
+                        $line_m5 = $line_count_data != null ? (int)$line_count_data[4] : 0;
+                        $line_m6 = $line_count_data != null ? (int)$line_count_data[5] : 0;
+                        $line_m7 = $line_count_data != null ? (int)$line_count_data[6] : 0;
+                        $line_m8 = $line_count_data != null ? (int)$line_count_data[7] : 0;
+                        $line_m9 = $line_count_data != null ? (int)$line_count_data[8] : 0;
+                        $line_m10 = $line_count_data != null ? (int)$line_count_data[9] : 0;
+                        $line_m11 = $line_count_data != null ? (int)$line_count_data[10] : 0;
+                        $line_m12 = $line_count_data != null ? (int)$line_count_data[11] : 0;
 
-                          $line_all_total = (int)$line_count_data[0] + (int)$line_count_data[1] + (int)$line_count_data[2] + (int)$line_count_data[3] + (int)$line_count_data[4] + (int)$line_count_data[5] + (int)$line_count_data[6] + (int)$line_count_data[7] + (int)$line_count_data[8] + (int)$line_count_data[9] + (int)$line_count_data[10] + (int)$line_count_data[11];
+                        $total_m1 += $line_m1;
+                        $total_m2 += $line_m2;
+                        $total_m3 += $line_m3;
+                        $total_m4 += $line_m4;
+                        $total_m5 += $line_m5;
+                        $total_m6 += $line_m6;
+                        $total_m7 += $line_m7;
+                        $total_m8 += $line_m8;
+                        $total_m9 += $line_m9;
+                        $total_m10 += $line_m10;
+                        $total_m11 += $line_m11;
+                        $total_m12 += $line_m12;
+
+                        $line_all_total = ($line_m1 + $line_m2 + $line_m3 + $line_m4 +$line_m5 + $line_m6 + $line_m7 + $line_m8 + $line_m9 + $line_m10 + $line_m11 + $line_m12);
                         ?>
 
 
                         <tr>
                             <td style="text-align: left;width: 20%;"><?= \backend\models\Customer::findCusName($customer_data[$k]) ?></td>
-                            <td style="text-align: center;"><?= number_format($line_count_data != null ? $line_count_data[0] : 0) ?></td>
-                            <td style="text-align: center;"><?= number_format($line_count_data != null ? $line_count_data[1] : 0) ?></td>
-                            <td style="text-align: center;"><?= number_format($line_count_data != null ? $line_count_data[2] : 0) ?></td>
-                            <td style="text-align: center;"><?= number_format($line_count_data != null ? $line_count_data[3] : 0) ?></td>
-                            <td style="text-align: center;"><?= number_format($line_count_data != null ? $line_count_data[4] : 0) ?></td>
-                            <td style="text-align: center;"><?= number_format($line_count_data != null ? $line_count_data[5] : 0) ?></td>
-                            <td style="text-align: center;"><?= number_format($line_count_data != null ? $line_count_data[6] : 0) ?></td>
-                            <td style="text-align: center;"><?= number_format($line_count_data != null ? $line_count_data[7] : 0) ?></td>
-                            <td style="text-align: center;"><?= number_format($line_count_data != null ? $line_count_data[8] : 0) ?></td>
-                            <td style="text-align: center;"><?= number_format($line_count_data != null ? $line_count_data[9] : 0) ?></td>
-                            <td style="text-align: center;"><?= number_format($line_count_data != null ? $line_count_data[10] : 0) ?></td>
-                            <td style="text-align: center;"><?= number_format($line_count_data != null ? $line_count_data[11] : 0) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m1) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m2) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m3) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m4) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m5) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m6) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m7) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m8) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m9) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m10) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m11) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m12) ?></td>
                             <td style="text-align: center;"><b><?= number_format($line_all_total) ?></b></td>
                         </tr>
                     <?php endfor; ?>
@@ -159,7 +185,9 @@ if ($model) {
                     <td style="text-align: center;"><b><?= number_format($total_m10) ?></b></td>
                     <td style="text-align: center;"><b><?= number_format($total_m11) ?></b></td>
                     <td style="text-align: center;"><b><?= number_format($total_m12) ?></b></td>
-                    <td style="text-align: center;"><b><?= number_format($total_m1 + $total_m2 + $total_m3 + $total_m4 + $total_m5 + $total_m6 + $total_m7 + $total_m8 + $total_m9 + $total_m10 + $total_m11 + $total_m12) ?></b></td>
+                    <td style="text-align: center;">
+                        <b><?= number_format($total_m1 + $total_m2 + $total_m3 + $total_m4 + $total_m5 + $total_m6 + $total_m7 + $total_m8 + $total_m9 + $total_m10 + $total_m11 + $total_m12) ?></b>
+                    </td>
 
                 </tr>
                 </tfoot>
