@@ -138,8 +138,7 @@ if ($model) {
                             <td style="text-align: center;"><?= number_format($line_count_data != null ? $line_count_data[9] : 0) ?></td>
                             <td style="text-align: center;"><?= number_format($line_count_data != null ? $line_count_data[10] : 0) ?></td>
                             <td style="text-align: center;"><?= number_format($line_count_data != null ? $line_count_data[11] : 0) ?></td>
-                            <td style="text-align: center;"><?= number_format($line_count_data != null ? $line_count_data[11] : 0) ?></td>
-                            <td style="text-align: center;"><b><?= number_format($line_count_data != null ? $line_all_total : 0) ?></b></td>
+                            <td style="text-align: center;"><b><?= number_format($line_all_total) ?></b></td>
                         </tr>
                     <?php endfor; ?>
                 <?php endif; ?>
