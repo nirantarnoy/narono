@@ -100,10 +100,11 @@ if ($model) {
                     $total_m10 = 0;
                     $total_m11 =0;
                     $total_m12 = 0;
-                    $line_all_total = 0;
+
                     ?>
                     <?php for ($k = 0; $k <= count($customer_data) - 1; $k++): ?>
                         <?php if ($customer_data[$k] == null) continue; ?>
+                        <?php $line_all_total=0;?>
                         <?php $line_count_data = getLineData($customer_data[$k], $find_year, $car_type_id); ?>
                         <?php // print_r($line_count_data);?>
                          <?php
@@ -120,7 +121,7 @@ if ($model) {
                           $total_m11 += $line_count_data != null ? (int)$line_count_data[10] : 0;
                           $total_m12 += $line_count_data != null ? (int)$line_count_data[11] : 0;
 
-                          $line_all_total = $line_count_data != null ? (int)$line_count_data[0] + (int)$line_count_data[1] + (int)$line_count_data[2] + (int)$line_count_data[3] + (int)$line_count_data[4] + (int)$line_count_data[5] + (int)$line_count_data[6] + (int)$line_count_data[7] + (int)$line_count_data[8] + (int)$line_count_data[9] + (int)$line_count_data[10] + (int)$line_count_data[11] : 0;
+                          $line_all_total = (int)$line_count_data[0] + (int)$line_count_data[1] + (int)$line_count_data[2] + (int)$line_count_data[3] + (int)$line_count_data[4] + (int)$line_count_data[5] + (int)$line_count_data[6] + (int)$line_count_data[7] + (int)$line_count_data[8] + (int)$line_count_data[9] + (int)$line_count_data[10] + (int)$line_count_data[11];
                         ?>
 
 
