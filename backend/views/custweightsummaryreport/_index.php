@@ -37,7 +37,7 @@ if ($model) {
     </div>
 </div>
 <br/>
-<form action="index.php?r=custsummaryreport" method="post">
+<form action="index.php?r=custweightsummaryreport" method="post">
     <div class="row">
         <div class="col-lg-3">
             <label for="">ประจำปี</label>
