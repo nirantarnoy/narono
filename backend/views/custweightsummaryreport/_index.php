@@ -8,24 +8,25 @@ for ($i = 2022; $i <= date('Y'); $i++) {
 $car_type_data = \backend\models\CarType::find()->where(['status' => 1])->all();
 
 $customer_data = [];
+if($find_year !=null) {
+    $sql = "SELECT t1.customer_id";
+    $sql .= " FROM work_queue as t1 inner join car as t2 on t1.car_id = t2.id";
+    $sql .= " WHERE t1.id > 0";
+    if ($find_year != null) {
+        $sql .= " AND year(t1.work_queue_date)=" . $find_year;
+    }
+    if ($car_type_id != null) {
+        $sql .= " AND t2.car_type_id=" . $car_type_id;
+    }
 
-$sql = "SELECT t1.customer_id";
-$sql .= " FROM work_queue as t1 inner join car as t2 on t1.car_id = t2.id";
-$sql .= " WHERE t1.id > 0";
-if ($find_year != null) {
-    $sql .= " AND year(t1.work_queue_date)=" . $find_year;
-}
-if ($car_type_id != null) {
-    $sql .= " AND t2.car_type_id=" . $car_type_id;
-}
+    $sql .= " GROUP BY t1.customer_id";
 
-$sql .= " GROUP BY t1.customer_id";
-
-$query = \Yii::$app->db->createCommand($sql);
-$model = $query->queryAll();
-if ($model) {
-    for ($i = 0; $i <= count($model) - 1; $i++) {
-        array_push($customer_data, $model[$i]['customer_id']);
+    $query = \Yii::$app->db->createCommand($sql);
+    $model = $query->queryAll();
+    if ($model) {
+        for ($i = 0; $i <= count($model) - 1; $i++) {
+            array_push($customer_data, $model[$i]['customer_id']);
+        }
     }
 }
 
