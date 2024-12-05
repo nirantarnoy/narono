@@ -557,6 +557,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="index.php?r=custweightsummaryreport/index" class="nav-link custweightsummaryreport">
+                                <i class="far fa-circlez nav-icon"></i>
+                                <p> น้ำหนักแยกลูกค้า </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="index.php?r=carsummaryexport/index" class="nav-link carsummaryexport">
                                 <i class="far fa-circlez nav-icon"></i>
                                 <p>Export ค่าเที่ยว</p>
