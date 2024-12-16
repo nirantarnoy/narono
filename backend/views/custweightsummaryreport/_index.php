@@ -87,35 +87,36 @@ if($find_year !=null) {
                 </tr>
                 </thead>
                 <tbody>
+                <?php
+                $line_m1 = 0;
+                $line_m2 = 0;
+                $line_m3 = 0;
+                $line_m4 = 0;
+                $line_m5 = 0;
+                $line_m6 = 0;
+                $line_m7 = 0;
+                $line_m8 = 0;
+                $line_m9 = 0;
+                $line_m10 = 0;
+                $line_m11 = 0;
+                $line_m12 = 0;
+
+                $total_m1 = 0;
+                $total_m2 = 0;
+                $total_m3 = 0;
+                $total_m4 = 0;
+                $total_m5 = 0;
+                $total_m6 = 0;
+                $total_m7 = 0;
+                $total_m8 = 0;
+                $total_m9 = 0;
+                $total_m10 = 0;
+                $total_m11 = 0;
+                $total_m12 = 0;
+
+                ?>
                 <?php if ($customer_data != null): ?>
-                    <?php
-                    $line_m1 = 0;
-                    $line_m2 = 0;
-                    $line_m3 = 0;
-                    $line_m4 = 0;
-                    $line_m5 = 0;
-                    $line_m6 = 0;
-                    $line_m7 = 0;
-                    $line_m8 = 0;
-                    $line_m9 = 0;
-                    $line_m10 = 0;
-                    $line_m11 = 0;
-                    $line_m12 = 0;
 
-                    $total_m1 = 0;
-                    $total_m2 = 0;
-                    $total_m3 = 0;
-                    $total_m4 = 0;
-                    $total_m5 = 0;
-                    $total_m6 = 0;
-                    $total_m7 = 0;
-                    $total_m8 = 0;
-                    $total_m9 = 0;
-                    $total_m10 = 0;
-                    $total_m11 = 0;
-                    $total_m12 = 0;
-
-                    ?>
                     <?php for ($k = 0; $k <= count($customer_data) - 1; $k++): ?>
                         <?php if ($customer_data[$k] == null) continue; ?>
                         <?php $line_all_total = 0; ?>
