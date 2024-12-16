@@ -187,7 +187,7 @@ if ($search_car_type != null) {
                 <th style="width: 8%;text-align: center;">ประเภทรถ</th>
                 <th style="width: 8%;text-align: center;">น้ำหนัก(ตัน)</th>
                 <th style="width: 8%;text-align: center;">ราคา</th>
-                <th style="width: 8%;text-align: center;">จำนวเงิน</th>
+                <th style="width: 8%;text-align: center;">จำนวนเงิน</th>
                 <th>หมายเหตุ</th>
             </tr>
             </thead>
