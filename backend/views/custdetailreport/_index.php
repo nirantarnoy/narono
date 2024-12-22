@@ -67,15 +67,15 @@ for ($k = 0; $k <= count($m_data) - 1; $k++) {
     array_push($m_data_gharp, $m_data[$k]['name']);
 }
 $m1 = [];
-
-for ($ix = 0; $ix <= count($m_data) - 1; $ix++) {
-    $line_x = getAmount($m_data[$ix]['id'], $find_customer_id, $find_year, $car_type_id);
-    //echo $line_x;return;
-    array_push($m1, (float)$line_x);
-}
+for($k=0;$k<=count($find_year)-1;$k++) {
+    for ($ix = 0; $ix <= count($m_data) - 1; $ix++) {
+        $line_x = getAmount($m_data[$ix]['id'], $find_customer_id, $find_year[$k], $car_type_id);
+        //echo $line_x;return;
+        array_push($m1, (float)$line_x);
+    }
 //    print_r($m1);
-array_push($total_for_gharp, ['name' => $find_year, 'data' => $m1]);
-
+    array_push($total_for_gharp, ['name' => $find_year[$k], 'data' => $m1]);
+}
 $data_series = $total_for_gharp;
 
 
@@ -232,9 +232,9 @@ function getAmount($m, $find_customer_id, $find_year, $car_type_id)
     if ($find_customer_id != null) {
         $sql .= " AND t1.customer_id =" . $find_customer_id;
     }
-//    if ($find_year != null) {
-//        $sql .= " AND year(t1.work_queue_date)=" . $find_year;
-//    }
+    if ($find_year != null) {
+        $sql .= " AND year(t1.work_queue_date)=" . $find_year;
+    }
     if ($m != null) {
         $sql .= " AND month(t1.work_queue_date)=" . $m;
     }
