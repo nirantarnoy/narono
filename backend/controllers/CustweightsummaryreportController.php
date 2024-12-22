@@ -15,7 +15,7 @@ class CustweightsummaryreportController extends Controller
     public $enableCsrfValidation = false;
     public function actionIndex(){
         $year = \Yii::$app->request->post('find_year');
-        $month = \Yii::$app->request->post('find_month');
+        $month = !empty(\Yii::$app->request->post('find_month')) ? \Yii::$app->request->post('find_month') : null;
         $car_type_id = \Yii::$app->request->post('find_car_type_id');
 
 
