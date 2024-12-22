@@ -5,10 +5,12 @@ for ($i = 2022; $i <= date('Y'); $i++) {
     array_push($year, $i);
 }
 
+$month_data = [['id' => 1, 'name' => 'มกราคม'], ['id' => 2, 'name' => 'กุมภาพันธ์'], ['id' => 3, 'name' => 'มีนาคม'], ['id' => 4, 'name' => 'เมษายน'], ['id' => 5, 'name' => 'พฤษภาคม'], ['id' => 6, 'name' => 'มิถุนายน'], ['id' => 7, 'name' => 'กรกฎาคม'], ['id' => 8, 'name' => 'สิงหาคม'], ['id' => 9, 'name' => 'กันยายน'], ['id' => 10, 'name' => 'ตุลาคม'], ['id' => 11, 'name' => 'พฤศจิกายน'], ['id' => 12, 'name' => 'ธันวาคม']];
+
 $car_type_data = \backend\models\CarType::find()->where(['status' => 1])->all();
 
 $customer_data = [];
-if($find_year !=null) {
+if ($find_year != null) {
     $sql = "SELECT t1.customer_id";
     $sql .= " FROM work_queue as t1 inner join car as t2 on t1.car_id = t2.id";
     $sql .= " WHERE t1.id > 0";
@@ -41,6 +43,15 @@ if($find_year !=null) {
 <form action="index.php?r=custweightsummaryreport" method="post">
     <div class="row">
         <div class="col-lg-3">
+            <label for="">ประเดือน</label>
+            <select class="form-control" id="find-month" name="find_month">
+                <option value="">ทั้งหมด</option>
+                <?php foreach ($month_data as $key => $x): ?>
+                    <option value="<?= $month_data[$key]['id'] ?>" <?= ($month_data[$key]['id'] == $find_month) ? 'selected' : '' ?>><?= $month_data[$key]['name'] ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="col-lg-3">
             <label for="">ประจำปี</label>
             <select class="form-control" id="find_year" name="find_year">
                 <option value="">ทั้งหมด</option>
@@ -69,22 +80,54 @@ if($find_year !=null) {
         <div class="col-lg-12">
             <table class="table table-bordered">
                 <thead>
-                <tr>
-                    <th style="text-align: center;width: 20%;">ลูกค้า</th>
-                    <th style="text-align: center;">ม.ค.</th>
-                    <th style="text-align: center;">ก.พ.</th>
-                    <th style="text-align: center;">มี.ค.</th>
-                    <th style="text-align: center;">เม.ย.</th>
-                    <th style="text-align: center;">พ.ค.</th>
-                    <th style="text-align: center;">มิ.ย.</th>
-                    <th style="text-align: center;">ก.ค.</th>
-                    <th style="text-align: center;">ส.ค.</th>
-                    <th style="text-align: center;">ก.ย.</th>
-                    <th style="text-align: center;">ต.ค.</th>
-                    <th style="text-align: center;">พ.ค.</th>
-                    <th style="text-align: center;">ธ.ค.</th>
-                    <th style="text-align: center;">รวม</th>
-                </tr>
+                <?php if ($find_month == null || $find_month == ''): ?>
+                    <tr>
+                        <th style="text-align: center;width: 20%;">ลูกค้า</th>
+                        <th style="text-align: center;">ม.ค.</th>
+                        <th style="text-align: center;">ก.พ.</th>
+                        <th style="text-align: center;">มี.ค.</th>
+                        <th style="text-align: center;">เม.ย.</th>
+                        <th style="text-align: center;">พ.ค.</th>
+                        <th style="text-align: center;">มิ.ย.</th>
+                        <th style="text-align: center;">ก.ค.</th>
+                        <th style="text-align: center;">ส.ค.</th>
+                        <th style="text-align: center;">ก.ย.</th>
+                        <th style="text-align: center;">ต.ค.</th>
+                        <th style="text-align: center;">พ.ค.</th>
+                        <th style="text-align: center;">ธ.ค.</th>
+                        <th style="text-align: center;">รวม</th>
+                    </tr>
+                <?php else: ?>
+                    <tr>
+                        <th style="text-align: center;width: 20%;">ลูกค้า</th>
+                        <?php if ($find_month == 1): ?>
+                            <th style="text-align: center;">ม.ค.</th>
+                        <?php elseif ($find_month == 2): ?>
+                            <th style="text-align: center;">ก.พ.</th>
+                        <?php elseif ($find_month == 3): ?>
+                            <th style="text-align: center;">มี.ค.</th>
+                        <?php elseif ($find_month == 4): ?>
+                            <th style="text-align: center;">เม.ย.</th>
+                        <?php elseif ($find_month == 5): ?>
+                            <th style="text-align: center;">พ.ค.</th>
+                        <?php elseif ($find_month == 6): ?>
+                            <th style="text-align: center;">มิ.ย.</th>
+                        <?php elseif ($find_month == 7): ?>
+                            <th style="text-align: center;">ก.ค.</th>
+                        <?php elseif ($find_month == 8): ?>
+                            <th style="text-align: center;">ส.ค.</th>
+                        <?php elseif ($find_month == 9): ?>
+                            <th style="text-align: center;">ก.ย.</th>
+                        <?php elseif ($find_month == 10): ?>
+                            <th style="text-align: center;">ต.ค.</th>
+                        <?php elseif ($find_month == 11): ?>
+                            <th style="text-align: center;">พ.ค.</th>
+                        <?php elseif ($find_month == 12): ?>
+                            <th style="text-align: center;">ธ.ค.</th>
+                        <?php endif; ?>
+                        <th style="text-align: center;">รวม</th>
+                    </tr>
+                <?php endif; ?>
                 </thead>
                 <tbody>
                 <?php
@@ -120,7 +163,7 @@ if($find_year !=null) {
                     <?php for ($k = 0; $k <= count($customer_data) - 1; $k++): ?>
                         <?php if ($customer_data[$k] == null) continue; ?>
                         <?php $line_all_total = 0; ?>
-                        <?php $line_count_data = getLineData($customer_data[$k], $find_year, $car_type_id); ?>
+                        <?php $line_count_data = getLineData($customer_data[$k], $find_year, $car_type_id, $find_month); ?>
                         <?php // print_r($line_count_data);?>
                         <?php
                         $line_m1 = $line_count_data != null ? (int)$line_count_data[0] : 0;
@@ -149,7 +192,7 @@ if($find_year !=null) {
                         $total_m11 += $line_m11;
                         $total_m12 += $line_m12;
 
-                        $line_all_total = ($line_m1 + $line_m2 + $line_m3 + $line_m4 +$line_m5 + $line_m6 + $line_m7 + $line_m8 + $line_m9 + $line_m10 + $line_m11 + $line_m12);
+                        $line_all_total = ($line_m1 + $line_m2 + $line_m3 + $line_m4 + $line_m5 + $line_m6 + $line_m7 + $line_m8 + $line_m9 + $line_m10 + $line_m11 + $line_m12);
                         ?>
 
 
@@ -173,6 +216,7 @@ if($find_year !=null) {
                 <?php endif; ?>
                 </tbody>
                 <tfoot>
+                <?php if ($find_month == null || $find_month == ''): ?>
                 <tr>
                     <td style="text-align: right;width: 20%;"><b>รวม</b></td>
                     <td style="text-align: center;"><b><?= number_format($total_m1) ?></b></td>
@@ -192,6 +236,37 @@ if($find_year !=null) {
                     </td>
 
                 </tr>
+                <?php else:?>
+                    <tr>
+                        <th style="text-align: center;width: 20%;"><b>รวม</b></th>
+                        <?php if ($find_month == 1): ?>
+                            <th style="text-align: center;"><b><?= number_format($total_m1) ?></b></th>
+                        <?php elseif ($find_month == 2): ?>
+                            <th style="text-align: center;"><b><?= number_format($total_m2) ?></b></th>
+                        <?php elseif ($find_month == 3): ?>
+                            <th style="text-align: center;"><b><?= number_format($total_m3) ?></b></th>
+                        <?php elseif ($find_month == 4): ?>
+                            <th style="text-align: center;"><b><?= number_format($total_m4) ?></b></th>
+                        <?php elseif ($find_month == 5): ?>
+                            <th style="text-align: center;"><b><?= number_format($total_m5) ?></b></th>
+                        <?php elseif ($find_month == 6): ?>
+                            <th style="text-align: center;"><b><?= number_format($total_m6) ?></b></th>
+                        <?php elseif ($find_month == 7): ?>
+                            <th style="text-align: center;"><b><?= number_format($total_m7) ?></b></th>
+                        <?php elseif ($find_month == 8): ?>
+                            <th style="text-align: center;"><b><?= number_format($total_m8) ?></b></th>
+                        <?php elseif ($find_month == 9): ?>
+                            <th style="text-align: center;"><b><?= number_format($total_m9) ?></b></th>
+                        <?php elseif ($find_month == 10): ?>
+                            <th style="text-align: center;"><b><?= number_format($total_m10) ?></b></th>
+                        <?php elseif ($find_month == 11): ?>
+                            <th style="text-align: center;"><b><?= number_format($total_m11) ?></b></th>
+                        <?php elseif ($find_month == 12): ?>
+                            <th style="text-align: center;"><b><?= number_format($total_m12) ?></b></th>
+                        <?php endif; ?>
+                        <th style="text-align: center;"><b><?= number_format($total_m1 + $total_m2 + $total_m3 + $total_m4 + $total_m5 + $total_m6 + $total_m7 + $total_m8 + $total_m9 + $total_m10 + $total_m11 + $total_m12) ?></b></th>
+                    </tr>
+                <?php endif;?>
                 </tfoot>
             </table>
         </div>
@@ -204,7 +279,7 @@ if($find_year !=null) {
     </div>
 </div>
 <?php
-function getLineData($customer_id, $find_year, $car_type_id)
+function getLineData($customer_id, $find_year, $car_type_id, $find_month)
 {
     $data = [];
     $sql = "SELECT month(t1.work_queue_date) as month,SUM(t3.weight) as total_weight";
@@ -212,6 +287,9 @@ function getLineData($customer_id, $find_year, $car_type_id)
     $sql .= " WHERE t1.customer_id =" . $customer_id;
     if ($find_year != null) {
         $sql .= " AND year(t1.work_queue_date)=" . $find_year;
+    }
+    if ($find_month != null || $find_month != '-1') {
+        $sql .= " AND month(t1.work_queue_date)=" . $find_month;
     }
     if ($car_type_id != null) {
         $sql .= " AND t2.car_type_id=" . $car_type_id;
@@ -224,19 +302,26 @@ function getLineData($customer_id, $find_year, $car_type_id)
     $query = \Yii::$app->db->createCommand($sql);
     $model = $query->queryAll();
     if ($model) {
-        for ($m = 0; $m <= 11; $m++) {
-            $has_data = false;
-            for ($i = 0; $i <= count($model) - 1; $i++) {
-                if ($m + 1 == (int)$model[$i]['month']) {
-                    $data[$m] = $model[$i]['total_weight'];
-                    $has_data = true;
+        if($find_month == '-1') { // all month
+            for ($m = 0; $m <= 11; $m++) {
+                $has_data = false;
+                for ($i = 0; $i <= count($model) - 1; $i++) {
+                    if ($m + 1 == (int)$model[$i]['month']) {
+                        $data[$m] = $model[$i]['total_weight'];
+                        $has_data = true;
+                    }
+                }
+
+                if (!$has_data) {
+                    $data[$m] = 0;
                 }
             }
-
-            if (!$has_data) {
-                $data[$m] = 0;
+        }else{
+            for ($i = 0; $i <= count($model) - 1; $i++) {
+                    $data[$i] = $model[$i]['total_weight'];
             }
         }
+
 
     }
 
