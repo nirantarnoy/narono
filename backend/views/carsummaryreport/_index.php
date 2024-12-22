@@ -288,6 +288,7 @@ if($driver_id == null || $search_emp_id !=null){
                 <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าบวกคลัง</b></th>
                 <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าเบิ้ลงาน</b></th>
                 <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าลาก/แบก</b></th>
+                <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>อื่นๆ</b></th>
                 <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>รวม</b></th>
             </tr>
             </thead>
@@ -302,6 +303,7 @@ if($driver_id == null || $search_emp_id !=null){
             $sum_col_10 = 0;
             $sum_col_11 = 0;
             $sum_col_12 = 0;
+            $sum_col_13 = 0;
 
             $test_price = 0;
             $damage_price = 0;
@@ -339,13 +341,14 @@ if($driver_id == null || $search_emp_id !=null){
                     $sum_col_9 += ($value->work_other_price);
                     $sum_col_11 += ($value->work_double_price);
                     $sum_col_12 += ($value->towing_price);
+                    $sum_col_13 += ($value->other_price);
 
                     $test_price += ($value->test_price);
                     $damage_price += ($value->damaged_price);
                     $deduct_other_price += ($value->deduct_other_price);
                     $total_towing_amount +=($value->towing_price);
 
-                    $line_total = ($value->work_labour_price + $value->trail_labour_price + $value->work_express_road_price + $value->cover_sheet_price + $value->overnight_price + $value->warehouse_plus_price + $value->work_double_price + $value->towing_price);
+                    $line_total = ($value->work_labour_price + $value->trail_labour_price + $value->work_express_road_price + $value->cover_sheet_price + $value->overnight_price + $value->warehouse_plus_price + $value->work_double_price + $value->towing_price + $value->other_price);
                     $sum_col_10 += ($line_total);
 
 
@@ -360,6 +363,7 @@ if($driver_id == null || $search_emp_id !=null){
                         <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->warehouse_plus_price, 2) ?></td>
                         <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->work_double_price, 2) ?></td>
                         <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->towing_price, 2) ?></td>
+                        <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->other_price, 2) ?></td>
                         <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($line_total, 2) ?></td>
                     </tr>
                 <?php endforeach; ?>
@@ -389,6 +393,8 @@ if($driver_id == null || $search_emp_id !=null){
                     <b><?= number_format($sum_col_11, 2) ?></b></td>
                 <td style="border: 1px solid grey;padding: 5px;text-align: right;">
                     <b><?= number_format($sum_col_12, 2) ?></b></td>
+                <td style="border: 1px solid grey;padding: 5px;text-align: right;">
+                    <b><?= number_format($sum_col_13, 2) ?></b></td>
                 <td style="border: 1px solid grey;padding: 5px;text-align: right;">
                     <b><?= number_format($sum_col_10, 2) ?></b></td>
 
