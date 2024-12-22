@@ -83,7 +83,7 @@ if ($find_year != null) {
         <div class="col-lg-12">
             <table class="table table-bordered">
                 <thead>
-                <?php if ($find_month == null || $find_month == ''): ?>
+                <?php if ($find_month == null || $find_month == '-1'): ?>
                     <tr>
                         <th style="text-align: center;width: 20%;">ลูกค้า</th>
                         <th style="text-align: center;">ม.ค.</th>
