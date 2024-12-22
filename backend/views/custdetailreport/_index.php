@@ -32,7 +32,7 @@ if ($find_customer_id != null) {
     $sql .= " FROM work_queue as t1 inner join car as t2 on t1.car_id = t2.id inner join work_queue_dropoff as t3 on t1.id = t3.work_queue_id inner join dropoff_place as t4 on t3.dropoff_id = t4.id inner join customer as t5 on t1.customer_id = t5.id";
     $sql .= " WHERE t1.customer_id =" . $find_customer_id;
     if ($find_year_data != '') {
-        $sql .= " AND year(t1.work_queue_date) in(" . $find_year.")";
+        $sql .= " AND year(t1.work_queue_date) in(" . $find_year_data.")";
     }
     if ($car_type_id != null) {
         $sql .= " AND t2.car_type_id=" . $car_type_id;
