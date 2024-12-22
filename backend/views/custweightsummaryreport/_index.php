@@ -222,8 +222,22 @@ if ($find_year != null) {
                     <?php endif; ?>
                 <?php else: ?>
                     <?php $line_all_total = 0; ?>
-                    <?php $line_count_data = getLineData2($customer_data, $find_year, $car_type_id,$find_month); ?>
-                    <?php for($m = 0;$m<=count($line_count_data)-1;$m++):?>
+                    <?php $line_count_data = getLineData2($customer_data, $find_year, $car_type_id, $find_month); ?>
+                    <?php for ($m = 0; $m <= count($line_count_data) - 1; $m++): ?>
+                        <?php
+                        $line_m1 = $line_count_data != null && $find_month == 1 ? (int)$line_count_data[0] : 0;
+                        $line_m2 = $line_count_data != null && $find_month == 1 ? (int)$line_count_data[1] : 0;
+                        $line_m3 = $line_count_data != null && $find_month == 1 ? (int)$line_count_data[2] : 0;
+                        $line_m4 = $line_count_data != null && $find_month == 1 ? (int)$line_count_data[3] : 0;
+                        $line_m5 = $line_count_data != null && $find_month == 1 ? (int)$line_count_data[4] : 0;
+                        $line_m6 = $line_count_data != null && $find_month == 1 ? (int)$line_count_data[5] : 0;
+                        $line_m7 = $line_count_data != null && $find_month == 1 ? (int)$line_count_data[6] : 0;
+                        $line_m8 = $line_count_data != null && $find_month == 1 ? (int)$line_count_data[7] : 0;
+                        $line_m9 = $line_count_data != null && $find_month == 1 ? (int)$line_count_data[8] : 0;
+                        $line_m10 = $line_count_data != null && $find_month == 1 ? (int)$line_count_data[9] : 0;
+                        $line_m11 = $line_count_data != null && $find_month == 1 ? (int)$line_count_data[10] : 0;
+                        $line_m12 = $line_count_data != null && $find_month == 1 ? (int)$line_count_data[11] : 0;
+                        ?>
                     <?php endfor; ?>
                 <?php endif; ?>
                 </tbody>
@@ -333,19 +347,19 @@ function getLineData($customer_id, $find_year, $car_type_id)
     return $data;
 }
 
-function getLineData2($customer_id, $find_year, $car_type_id,$find_month)
+function getLineData2($customer_id, $find_year, $car_type_id, $find_month)
 {
     $data = [];
     $data_filter = '1';
-    if($customer_id!=null){
+    if ($customer_id != null) {
         $xloop = 0;
-        for($x=0;$x<=count($customer_id)-1;$x++){
-            if($xloop == count($customer_id)-1){
-                $data_filter.= $customer_id[$x];
-            }else{
-                $data_filter.= $customer_id[$x].',';
+        for ($x = 0; $x <= count($customer_id) - 1; $x++) {
+            if ($xloop == count($customer_id) - 1) {
+                $data_filter .= $customer_id[$x];
+            } else {
+                $data_filter .= $customer_id[$x] . ',';
             }
-           $xloop+=1;
+            $xloop += 1;
         }
     }
 
@@ -353,7 +367,7 @@ function getLineData2($customer_id, $find_year, $car_type_id,$find_month)
     $sql .= " FROM work_queue as t1 inner join car as t2 on t1.car_id = t2.id inner join work_queue_dropoff as t3 on t3.work_queue_id=t1.id";
     $sql .= " WHERE t1.id > 0";
     if ($data_filter != '') {
-        $sql .= " AND t1.customer_id in(" . $data_filter.")";
+        $sql .= " AND t1.customer_id in(" . $data_filter . ")";
     }
     if ($find_year != null) {
         $sql .= " AND year(t1.work_queue_date)=" . $find_year;
