@@ -105,6 +105,7 @@ $data_series = $total_for_gharp;
             echo \kartik\select2\Select2::widget([
                 'name' => 'find_year',
                 'data' => \yii\helpers\ArrayHelper::map($year, 'id', 'name'),
+                'value' => $find_year,
                 'options' => [
                     'multiple' => true,
                 ],
