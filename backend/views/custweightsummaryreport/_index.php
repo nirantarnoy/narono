@@ -243,18 +243,43 @@ if ($find_year != null) {
                         ?>
                         <tr>
                             <td style="text-align: left;width: 20%;"><?= \backend\models\Customer::findCusName($line_count_data[$m]['customer_id']) ?></td>
+                            <?php if($find_month ==1):?>
                             <td style="text-align: center;"><?= number_format($line_m1) ?></td>
+                            <?php endif;?>
+                            <?php if($find_month ==2):?>
                             <td style="text-align: center;"><?= number_format($line_m2) ?></td>
+                            <?php endif;?>
+                            <?php if($find_month ==3):?>
                             <td style="text-align: center;"><?= number_format($line_m3) ?></td>
+                            <?php endif;?>
+                            <?php if($find_month ==4):?>
                             <td style="text-align: center;"><?= number_format($line_m4) ?></td>
+                            <?php endif;?>
+                            <?php if($find_month ==5):?>
                             <td style="text-align: center;"><?= number_format($line_m5) ?></td>
+                            <?php endif;?>
+                            <?php if($find_month ==6):?>
                             <td style="text-align: center;"><?= number_format($line_m6) ?></td>
+                            <?php endif;?>
+                            <?php if($find_month ==7):?>
                             <td style="text-align: center;"><?= number_format($line_m7) ?></td>
+                            <?php endif;?>
+                            <?php if($find_month ==8):?>
                             <td style="text-align: center;"><?= number_format($line_m8) ?></td>
+                            <?php endif;?>
+                            <?php if($find_month ==9):?>
                             <td style="text-align: center;"><?= number_format($line_m9) ?></td>
+                            <?php endif;?>
+                            <?php if($find_month ==10):?>
                             <td style="text-align: center;"><?= number_format($line_m10) ?></td>
+                            <?php endif;?>
+                            <?php if($find_month ==11):?>
                             <td style="text-align: center;"><?= number_format($line_m11) ?></td>
+                            <?php endif;?>
+                            <?php if($find_month ==12):?>
                             <td style="text-align: center;"><?= number_format($line_m12) ?></td>
+                            <?php endif;?>
+
                             <td style="text-align: center;"><b><?= number_format($line_all_total) ?></b></td>
                         </tr>
                     <?php endfor; ?>
