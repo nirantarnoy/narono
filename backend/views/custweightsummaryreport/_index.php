@@ -354,7 +354,13 @@ function getLineData($customer_id, $find_year, $car_type_id, $find_month)
     }
 
     $sql .= " GROUP BY t1.customer_id, month(t1.work_queue_date)";
-    $sql .= " ORDER BY month(t1.work_queue_date) asc";
+
+    if($find_month == '-1'){
+        $sql .= " ORDER BY month(t1.work_queue_date) asc";
+    }else{
+        $sql .= " ORDER BY SUM(t3.weight) desc";
+    }
+
     //$sql .= " ORDER BY count(t1.customer_id) desc";
 
     $query = \Yii::$app->db->createCommand($sql);
