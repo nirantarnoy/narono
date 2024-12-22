@@ -67,17 +67,20 @@ for ($k = 0; $k <= count($m_data) - 1; $k++) {
     array_push($m_data_gharp, $m_data[$k]['name']);
 }
 
-for($k=0;$k<=count($find_year)-1;$k++) {
-    $m1 = [];
-    $line_x = 0;
-    for ($ix = 0; $ix <= count($m_data) - 1; $ix++) {
-        $line_x = getAmount($m_data[$ix]['id'], $find_customer_id, $find_year[$k], $car_type_id);
-        //echo $line_x;return;
-        array_push($m1, (float)$line_x);
-    }
+if($find_year !=null){
+    for($k=0;$k<=count($find_year)-1;$k++) {
+        $m1 = [];
+        $line_x = 0;
+        for ($ix = 0; $ix <= count($m_data) - 1; $ix++) {
+            $line_x = getAmount($m_data[$ix]['id'], $find_customer_id, $find_year[$k], $car_type_id);
+            //echo $line_x;return;
+            array_push($m1, (float)$line_x);
+        }
 //    print_r($m1);
-    array_push($total_for_gharp, ['name' => $find_year[$k], 'data' => $m1]);
+        array_push($total_for_gharp, ['name' => $find_year[$k], 'data' => $m1]);
+    }
 }
+
 $data_series = $total_for_gharp;
 
 
