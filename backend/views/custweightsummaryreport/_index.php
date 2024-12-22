@@ -429,9 +429,9 @@ function getLineData2($customer_id, $find_year, $car_type_id, $find_month)
     if ($find_year != null) {
         $sql .= " AND year(t1.work_queue_date)=" . $find_year;
     }
-    if ($find_month != '-1') {
-        $sql .= " AND month(t1.work_queue_date)=" . $find_month;
-    }
+//    if ($find_month != '-1') {
+//        $sql .= " AND month(t1.work_queue_date)=" . $find_month;
+//    }
 
     if ($car_type_id != null) {
         $sql .= " AND t2.car_type_id=" . $car_type_id;
