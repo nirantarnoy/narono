@@ -66,8 +66,10 @@ $total_for_gharp = [];
 for ($k = 0; $k <= count($m_data) - 1; $k++) {
     array_push($m_data_gharp, $m_data[$k]['name']);
 }
-$m1 = [];
+
 for($k=0;$k<=count($find_year)-1;$k++) {
+    $m1 = [];
+    $line_x = 0;
     for ($ix = 0; $ix <= count($m_data) - 1; $ix++) {
         $line_x = getAmount($m_data[$ix]['id'], $find_customer_id, $find_year[$k], $car_type_id);
         //echo $line_x;return;
