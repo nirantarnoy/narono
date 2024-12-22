@@ -47,7 +47,7 @@ if ($find_year != null) {
 <form action="index.php?r=custweightsummaryreport" method="post">
     <div class="row">
         <div class="col-lg-3">
-            <label for="">ประเดือน</label>
+            <label for="">เดือน</label>
             <select class="form-control" id="find-month" name="find_month">
                 <option value="-1">ทั้งหมด</option>
                 <?php foreach ($month_data as $key => $x): ?>
