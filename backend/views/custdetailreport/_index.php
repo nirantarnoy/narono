@@ -24,6 +24,7 @@ if($find_year != null){
         }else{
             $find_year_data.=$find_year[$i].',';
         }
+        $loop_num+=1;
     }
 }
 
