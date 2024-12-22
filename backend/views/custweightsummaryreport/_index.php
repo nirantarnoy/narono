@@ -211,7 +211,7 @@ if ($find_year != null) {
                         $line_all_total = ($line_m1 + $line_m2 + $line_m3 + $line_m4 + $line_m5 + $line_m6 + $line_m7 + $line_m8 + $line_m9 + $line_m10 + $line_m11 + $line_m12);
                         ?>
 
-
+                       <?php if($find_month == '-1'):?>
                         <tr>
                             <td style="text-align: left;width: 20%;"><?= \backend\models\Customer::findCusName($customer_data[$k]) ?></td>
                             <td style="text-align: center;"><?= number_format($line_m1) ?></td>
@@ -228,6 +228,48 @@ if ($find_year != null) {
                             <td style="text-align: center;"><?= number_format($line_m12) ?></td>
                             <td style="text-align: center;"><b><?= number_format($line_all_total) ?></b></td>
                         </tr>
+                        <?php else:?>
+                            <tr>
+                                <td style="text-align: left;width: 20%;"><?= \backend\models\Customer::findCusName($customer_data[$k]) ?></td>
+                                <?php if($find_month == 1):?>
+                                <td style="text-align: center;"><?= number_format($line_m1) ?></td>
+                                <?php endif;?>
+                                <?php if($find_month == 2):?>
+                                <td style="text-align: center;"><?= number_format($line_m2) ?></td>
+                               <?php endif;?>
+                                <?php if($find_month == 3):?>
+                                <td style="text-align: center;"><?= number_format($line_m3) ?></td>
+                                <?php endif;?>
+                                <?php if($find_month == 4):?>
+                                <td style="text-align: center;"><?= number_format($line_m4) ?></td>
+                                <?php endif;?>
+                                <?php if($find_month == 5):?>
+                                <td style="text-align: center;"><?= number_format($line_m5) ?></td>
+                                <?php endif;?>
+                                <?php if($find_month == 6):?>
+                                <td style="text-align: center;"><?= number_format($line_m6) ?></td>
+                                <?php endif;?>
+                                <?php if($find_month == 7):?>
+                                <td style="text-align: center;"><?= number_format($line_m7) ?></td>
+                                <?php endif;?>
+                                <?php if($find_month == 8):?>
+                                <td style="text-align: center;"><?= number_format($line_m8) ?></td>
+                                <?php endif;?>
+                                <?php if($find_month == 9):?>
+                                <td style="text-align: center;"><?= number_format($line_m9) ?></td>
+                                <?php endif;?>
+                                <?php if($find_month == 10):?>
+                                <td style="text-align: center;"><?= number_format($line_m10) ?></td>
+                                <?php endif;?>
+                                <?php if($find_month == 11):?>
+                                <td style="text-align: center;"><?= number_format($line_m11) ?></td>
+                                <?php endif;?>
+                                <?php if($find_month == 12):?>
+                                <td style="text-align: center;"><?= number_format($line_m12) ?></td>
+                                <?php endif;?>
+                                <td style="text-align: center;"><b><?= number_format($line_all_total) ?></b></td>
+                            </tr>
+                        <?php endif;?>
                     <?php endfor; ?>
                 <?php endif; ?>
                 </tbody>
