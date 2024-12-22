@@ -4,8 +4,9 @@ use miloschuman\highcharts\Highcharts;
 
 $year = [];
 
+
 for ($i = 2022; $i <= date('Y'); $i++) {
-    array_push($year, $i);
+    array_push($year, ['id' => $i, 'name' => $i]);
 }
 
 $car_type_data = \backend\models\CarType::find()->where(['status' => 1])->all();
@@ -14,7 +15,7 @@ $model_customer = \backend\models\Customer::find()->where(['status' => 1])->all(
 $table_data = [];
 $model = null;
 
-if($find_customer_id != null){
+if ($find_customer_id != null) {
     $sql = "SELECT t1.work_queue_no,t1.customer_id,t4.name as dropoff_name,t1.work_queue_date,t2.plate_no,t5.name as customer_name";
     $sql .= " FROM work_queue as t1 inner join car as t2 on t1.car_id = t2.id inner join work_queue_dropoff as t3 on t1.id = t3.work_queue_id inner join dropoff_place as t4 on t3.dropoff_id = t4.id inner join customer as t5 on t1.customer_id = t5.id";
     $sql .= " WHERE t1.customer_id =" . $find_customer_id;
@@ -37,7 +38,7 @@ if($find_customer_id != null){
                 'dropoff_name' => $model[$i]['dropoff_name'],
                 'plate_no' => $model[$i]['plate_no'],
                 'customer_name' => $model[$i]['customer_name'],
-                'trans_date' => date('d-m-Y',strtotime($model[$i]['work_queue_date']))]);
+                'trans_date' => date('d-m-Y', strtotime($model[$i]['work_queue_date']))]);
         }
     }
 }
@@ -49,19 +50,18 @@ $total = [];
 $total_for_gharp = [];
 
 
-
 for ($k = 0; $k <= count($m_data) - 1; $k++) {
     array_push($m_data_gharp, $m_data[$k]['name']);
 }
 $m1 = [];
 
 for ($ix = 0; $ix <= count($m_data) - 1; $ix++) {
-    $line_x = getAmount($m_data[$ix]['id'], $find_customer_id, $find_year,$car_type_id);
+    $line_x = getAmount($m_data[$ix]['id'], $find_customer_id, $find_year, $car_type_id);
     //echo $line_x;return;
     array_push($m1, (float)$line_x);
 }
 //    print_r($m1);
-    array_push($total_for_gharp, ['name' => $find_year, 'data' => $m1]);
+array_push($total_for_gharp, ['name' => $find_year, 'data' => $m1]);
 
 $data_series = $total_for_gharp;
 
@@ -86,12 +86,18 @@ $data_series = $total_for_gharp;
         </div>
         <div class="col-lg-3">
             <label for="">ประจำปี</label>
-            <select class="form-control" id="find_year" name="find_year" multiple="multiple">
-                <option value="">ทั้งหมด</option>
-                <?php foreach ($year as $y): ?>
-                    <option value="<?= $y ?>" <?= ($y == $find_year) ? 'selected' : '' ?>><?= $y ?></option>
-                <?php endforeach; ?>
-            </select>
+            <?php
+            echo \kartik\select2\Select2::widget([
+                'name' => 'find_year',
+                'data' => \yii\helpers\ArrayHelper::map($year, 'id', 'name'),
+                'options' => [
+                    'multiple' => true,
+                ],
+                'pluginOptions' => [
+                    'allowClear' => true,
+                ]
+            ])
+            ?>
         </div>
         <div class="col-lg-3">
             <label for="">ประเภทรถ</label>
@@ -203,12 +209,13 @@ function getLineData($customer_id, $find_year, $car_type_id)
 
     return $data;
 }
-function getAmount($m,$find_customer_id,$find_year,$car_type_id)
+
+function getAmount($m, $find_customer_id, $find_year, $car_type_id)
 {
     $cnt = 0;
     $sql = "SELECT count(t1.customer_id) as cnt";
     $sql .= " FROM work_queue as t1 inner join car as t2 on t1.car_id = t2.id";
-    $sql .= " WHERE t1.id > 0" ;
+    $sql .= " WHERE t1.id > 0";
     if ($find_customer_id != null) {
         $sql .= " AND t1.customer_id =" . $find_customer_id;
     }
@@ -228,12 +235,13 @@ function getAmount($m,$find_customer_id,$find_year,$car_type_id)
     $query = \Yii::$app->db->createCommand($sql);
     $model = $query->queryAll();
     if ($model) {
-       for($i = 0; $i <= count($model) - 1; $i++){
-           $cnt = $model[$i]['cnt'];
-       }
+        for ($i = 0; $i <= count($model) - 1; $i++) {
+            $cnt = $model[$i]['cnt'];
+        }
     }
     return $cnt;
 }
+
 ?>
 
 <?php
