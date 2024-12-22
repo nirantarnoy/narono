@@ -15,12 +15,24 @@ $model_customer = \backend\models\Customer::find()->where(['status' => 1])->all(
 $table_data = [];
 $model = null;
 
+$find_year_data = '';
+if($find_year != null){
+    $loop_num = 0;
+    for($i = 0; $i <= count($find_year)-1; $i++){
+        if($loop_num == count($find_year)-1){
+            $find_year_data.=$find_year[$i];
+        }else{
+            $find_year_data.=$find_year[$i].',';
+        }
+    }
+}
+
 if ($find_customer_id != null) {
     $sql = "SELECT t1.work_queue_no,t1.customer_id,t4.name as dropoff_name,t1.work_queue_date,t2.plate_no,t5.name as customer_name";
     $sql .= " FROM work_queue as t1 inner join car as t2 on t1.car_id = t2.id inner join work_queue_dropoff as t3 on t1.id = t3.work_queue_id inner join dropoff_place as t4 on t3.dropoff_id = t4.id inner join customer as t5 on t1.customer_id = t5.id";
     $sql .= " WHERE t1.customer_id =" . $find_customer_id;
-    if ($find_year != null) {
-        $sql .= " AND year(t1.work_queue_date)=" . $find_year;
+    if ($find_year_data != '') {
+        $sql .= " AND year(t1.work_queue_date) in(" . $find_year.")";
     }
     if ($car_type_id != null) {
         $sql .= " AND t2.car_type_id=" . $car_type_id;
