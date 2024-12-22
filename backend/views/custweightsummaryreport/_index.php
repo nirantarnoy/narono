@@ -225,19 +225,38 @@ if ($find_year != null) {
                     <?php $line_count_data = getLineData2($customer_data, $find_year, $car_type_id, $find_month); ?>
                     <?php for ($m = 0; $m <= count($line_count_data) - 1; $m++): ?>
                         <?php
-                        $line_m1 = $line_count_data != null && $find_month == 1 ? (int)$line_count_data[0] : 0;
-                        $line_m2 = $line_count_data != null && $find_month == 1 ? (int)$line_count_data[1] : 0;
-                        $line_m3 = $line_count_data != null && $find_month == 1 ? (int)$line_count_data[2] : 0;
-                        $line_m4 = $line_count_data != null && $find_month == 1 ? (int)$line_count_data[3] : 0;
-                        $line_m5 = $line_count_data != null && $find_month == 1 ? (int)$line_count_data[4] : 0;
-                        $line_m6 = $line_count_data != null && $find_month == 1 ? (int)$line_count_data[5] : 0;
-                        $line_m7 = $line_count_data != null && $find_month == 1 ? (int)$line_count_data[6] : 0;
-                        $line_m8 = $line_count_data != null && $find_month == 1 ? (int)$line_count_data[7] : 0;
-                        $line_m9 = $line_count_data != null && $find_month == 1 ? (int)$line_count_data[8] : 0;
-                        $line_m10 = $line_count_data != null && $find_month == 1 ? (int)$line_count_data[9] : 0;
-                        $line_m11 = $line_count_data != null && $find_month == 1 ? (int)$line_count_data[10] : 0;
-                        $line_m12 = $line_count_data != null && $find_month == 1 ? (int)$line_count_data[11] : 0;
+                        $line_m1 = $line_count_data != null && $find_month == 1 ? (int)$line_count_data[$m]['total'] : 0;
+                        $line_m2 = $line_count_data != null && $find_month == 2 ? (int)$line_count_data[$m]['total'] : 0;
+                        $line_m3 = $line_count_data != null && $find_month == 3 ? (int)$line_count_data[$m]['total'] : 0;
+                        $line_m4 = $line_count_data != null && $find_month == 4 ? (int)$line_count_data[$m]['total'] : 0;
+                        $line_m5 = $line_count_data != null && $find_month == 5 ? (int)$line_count_data[$m]['total'] : 0;
+                        $line_m6 = $line_count_data != null && $find_month == 6 ? (int)$line_count_data[$m]['total'] : 0;
+                        $line_m7 = $line_count_data != null && $find_month == 7 ? (int)$line_count_data[$m]['total'] : 0;
+                        $line_m8 = $line_count_data != null && $find_month == 8 ? (int)$line_count_data[$m]['total'] : 0;
+                        $line_m9 = $line_count_data != null && $find_month == 9 ? (int)$line_count_data[$m]['total'] : 0;
+                        $line_m10 = $line_count_data != null && $find_month == 10 ? (int)$line_count_data[$m]['total'] : 0;
+                        $line_m11 = $line_count_data != null && $find_month == 11 ? (int)$line_count_data[$m]['total'] : 0;
+                        $line_m12 = $line_count_data != null && $find_month == 12 ? (int)$line_count_data[$m]['total'] : 0;
+
+                        $line_all_total = ($line_m1 + $line_m2 + $line_m3 + $line_m4 + $line_m5 + $line_m6 + $line_m7 + $line_m8 + $line_m9 + $line_m10 + $line_m11 + $line_m12);
+
                         ?>
+                        <tr>
+                            <td style="text-align: left;width: 20%;"><?= \backend\models\Customer::findCusName($line_count_data[$m]['total']) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m1) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m2) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m3) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m4) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m5) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m6) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m7) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m8) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m9) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m10) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m11) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m12) ?></td>
+                            <td style="text-align: center;"><b><?= number_format($line_all_total) ?></b></td>
+                        </tr>
                     <?php endfor; ?>
                 <?php endif; ?>
                 </tbody>
@@ -389,18 +408,8 @@ function getLineData2($customer_id, $find_year, $car_type_id, $find_month)
     $query = \Yii::$app->db->createCommand($sql);
     $model = $query->queryAll();
     if ($model) {
-        for ($m = 0; $m <= 11; $m++) {
-            $has_data = false;
-            for ($i = 0; $i <= count($model) - 1; $i++) {
-                if ($m + 1 == (int)$model[$i]['month']) {
-                    $data[$m] = $model[$i]['total_weight'];
-                    $has_data = true;
-                }
-            }
-
-            if (!$has_data) {
-                $data[$m] = 0;
-            }
+        for ($i = 0; $i <= count($model) - 1; $i++) {
+                array_push($data,['customer_id'=>$model[$i]['customer_id'],'total'=>$model[$i]['total_weight']]) ;
         }
     }
     return $data;
