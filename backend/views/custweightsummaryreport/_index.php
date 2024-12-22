@@ -48,7 +48,7 @@ if ($find_year != null) {
         <div class="col-lg-3">
             <label for="">ประเดือน</label>
             <select class="form-control" id="find-month" name="find_month">
-                <option value="">ทั้งหมด</option>
+                <option value="-1">ทั้งหมด</option>
                 <?php foreach ($month_data as $key => $x): ?>
                     <option value="<?= $month_data[$key]['id'] ?>" <?= ($month_data[$key]['id'] == $find_month) ? 'selected' : '' ?>><?= $month_data[$key]['name'] ?></option>
                 <?php endforeach; ?>
@@ -358,7 +358,7 @@ function getLineData2($customer_id, $find_year, $car_type_id,$find_month)
     if ($find_year != null) {
         $sql .= " AND year(t1.work_queue_date)=" . $find_year;
     }
-    if ($find_month != '-1') {
+    if ($find_month != '-1' || $find_month != '') {
         $sql .= " AND month(t1.work_queue_date)=" . $find_month;
     }
 
