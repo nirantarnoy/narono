@@ -338,8 +338,14 @@ function getLineData2($customer_id, $find_year, $car_type_id,$find_month)
     $data = [];
     $data_filter = '1';
     if($customer_id!=null){
+        $xloop = 0;
         for($x=0;$x<=count($customer_id)-1;$x++){
-            $data_filter.= $customer_id[$x].',';
+            if($xloop == count($customer_id)){
+                $data_filter.= $customer_id[$x];
+            }else{
+                $data_filter.= $customer_id[$x].',';
+            }
+
         }
     }
 
