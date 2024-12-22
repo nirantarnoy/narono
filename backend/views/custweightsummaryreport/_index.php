@@ -238,6 +238,19 @@ if ($find_year != null) {
                         $line_m11 = $line_count_data != null && $find_month == 11 ? (int)$line_count_data[$m]['total'] : 0;
                         $line_m12 = $line_count_data != null && $find_month == 12 ? (int)$line_count_data[$m]['total'] : 0;
 
+                        $total_m1 += $line_m1;
+                        $total_m2 += $line_m2;
+                        $total_m3 += $line_m3;
+                        $total_m4 += $line_m4;
+                        $total_m5 += $line_m5;
+                        $total_m6 += $line_m6;
+                        $total_m7 += $line_m7;
+                        $total_m8 += $line_m8;
+                        $total_m9 += $line_m9;
+                        $total_m10 += $line_m10;
+                        $total_m11 += $line_m11;
+                        $total_m12 += $line_m12;
+
                         $line_all_total = ($line_m1 + $line_m2 + $line_m3 + $line_m4 + $line_m5 + $line_m6 + $line_m7 + $line_m8 + $line_m9 + $line_m10 + $line_m11 + $line_m12);
 
                         ?>
