@@ -369,7 +369,7 @@ function getLineData($customer_id, $find_year, $car_type_id)
     $data = [];
     $sql = "SELECT month(t1.work_queue_date) as month,SUM(t3.weight) as total_weight";
     $sql .= " FROM work_queue as t1 inner join car as t2 on t1.car_id = t2.id inner join work_queue_dropoff as t3 on t3.work_queue_id=t1.id";
-    $sql .= " WHERE t1.customer_id =" . $customer_id;
+    $sql .= " WHERE t1.customer_idx =" . $customer_id;
     if ($find_year != null) {
         $sql .= " AND year(t1.work_queue_date)=" . $find_year;
     }
