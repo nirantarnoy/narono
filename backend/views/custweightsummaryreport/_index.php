@@ -166,18 +166,34 @@ if ($find_year != null) {
                         <?php $line_count_data = getLineData($customer_data[$k], $find_year, $car_type_id, $find_month); ?>
                         <?php // print_r($line_count_data);?>
                         <?php
-                        $line_m1 = $line_count_data != null ? (int)$line_count_data[0] : 0;
-                        $line_m2 = $line_count_data != null ? (int)$line_count_data[1] : 0;
-                        $line_m3 = $line_count_data != null ? (int)$line_count_data[2] : 0;
-                        $line_m4 = $line_count_data != null ? (int)$line_count_data[3] : 0;
-                        $line_m5 = $line_count_data != null ? (int)$line_count_data[4] : 0;
-                        $line_m6 = $line_count_data != null ? (int)$line_count_data[5] : 0;
-                        $line_m7 = $line_count_data != null ? (int)$line_count_data[6] : 0;
-                        $line_m8 = $line_count_data != null ? (int)$line_count_data[7] : 0;
-                        $line_m9 = $line_count_data != null ? (int)$line_count_data[8] : 0;
-                        $line_m10 = $line_count_data != null ? (int)$line_count_data[9] : 0;
-                        $line_m11 = $line_count_data != null ? (int)$line_count_data[10] : 0;
-                        $line_m12 = $line_count_data != null ? (int)$line_count_data[11] : 0;
+                         if($find_month == '-1'){
+                             $line_m1 = $line_count_data != null ? (int)$line_count_data[0] : 0;
+                             $line_m2 = $line_count_data != null ? (int)$line_count_data[1] : 0;
+                             $line_m3 = $line_count_data != null ? (int)$line_count_data[2] : 0;
+                             $line_m4 = $line_count_data != null ? (int)$line_count_data[3] : 0;
+                             $line_m5 = $line_count_data != null ? (int)$line_count_data[4] : 0;
+                             $line_m6 = $line_count_data != null ? (int)$line_count_data[5] : 0;
+                             $line_m7 = $line_count_data != null ? (int)$line_count_data[6] : 0;
+                             $line_m8 = $line_count_data != null ? (int)$line_count_data[7] : 0;
+                             $line_m9 = $line_count_data != null ? (int)$line_count_data[8] : 0;
+                             $line_m10 = $line_count_data != null ? (int)$line_count_data[9] : 0;
+                             $line_m11 = $line_count_data != null ? (int)$line_count_data[10] : 0;
+                             $line_m12 = $line_count_data != null ? (int)$line_count_data[11] : 0;
+                         }else{
+                             $line_m1 = $line_count_data != null && $find_month ==1 ? (int)$line_count_data[0] : 0;
+                             $line_m2 = $line_count_data != null && $find_month ==2 ? (int)$line_count_data[1] : 0;
+                             $line_m3 = $line_count_data != null && $find_month ==3 ? (int)$line_count_data[2] : 0;
+                             $line_m4 = $line_count_data != null && $find_month ==4 ? (int)$line_count_data[3] : 0;
+                             $line_m5 = $line_count_data != null && $find_month ==5 ? (int)$line_count_data[4] : 0;
+                             $line_m6 = $line_count_data != null && $find_month ==6 ? (int)$line_count_data[5] : 0;
+                             $line_m7 = $line_count_data != null && $find_month ==7 ? (int)$line_count_data[6] : 0;
+                             $line_m8 = $line_count_data != null && $find_month ==8 ? (int)$line_count_data[7] : 0;
+                             $line_m9 = $line_count_data != null && $find_month ==9 ? (int)$line_count_data[8] : 0;
+                             $line_m10 = $line_count_data != null && $find_month ==10 ? (int)$line_count_data[9] : 0;
+                             $line_m11 = $line_count_data != null && $find_month ==11 ? (int)$line_count_data[10] : 0;
+                             $line_m12 = $line_count_data != null && $find_month ==12 ? (int)$line_count_data[11] : 0;
+
+                         }
 
                         $total_m1 += $line_m1;
                         $total_m2 += $line_m2;
