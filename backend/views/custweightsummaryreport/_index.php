@@ -242,7 +242,7 @@ if ($find_year != null) {
 
                         ?>
                         <tr>
-                            <td style="text-align: left;width: 20%;"><?= \backend\models\Customer::findCusName($line_count_data[$m]['total']) ?></td>
+                            <td style="text-align: left;width: 20%;"><?= \backend\models\Customer::findCusName($line_count_data[$m]['customer_id']) ?></td>
                             <td style="text-align: center;"><?= number_format($line_m1) ?></td>
                             <td style="text-align: center;"><?= number_format($line_m2) ?></td>
                             <td style="text-align: center;"><?= number_format($line_m3) ?></td>
