@@ -86,7 +86,7 @@ $data_series = $total_for_gharp;
         </div>
         <div class="col-lg-3">
             <label for="">ประจำปี</label>
-            <select class="form-control" id="find_year" name="find_year" multiple>
+            <select class="form-control" id="find_year" name="find_year" multiple="multiple">
                 <option value="">ทั้งหมด</option>
                 <?php foreach ($year as $y): ?>
                     <option value="<?= $y ?>" <?= ($y == $find_year) ? 'selected' : '' ?>><?= $y ?></option>
