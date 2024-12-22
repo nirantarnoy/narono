@@ -345,7 +345,7 @@ function getLineData2($customer_id, $find_year, $car_type_id,$find_month)
             }else{
                 $data_filter.= $customer_id[$x].',';
             }
-
+           $xloop+=1;
         }
     }
 
