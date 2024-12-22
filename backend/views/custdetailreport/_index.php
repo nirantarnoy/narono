@@ -232,9 +232,9 @@ function getAmount($m, $find_customer_id, $find_year, $car_type_id)
     if ($find_customer_id != null) {
         $sql .= " AND t1.customer_id =" . $find_customer_id;
     }
-    if ($find_year != null) {
-        $sql .= " AND year(t1.work_queue_date)=" . $find_year;
-    }
+//    if ($find_year != null) {
+//        $sql .= " AND year(t1.work_queue_date)=" . $find_year;
+//    }
     if ($m != null) {
         $sql .= " AND month(t1.work_queue_date)=" . $m;
     }
