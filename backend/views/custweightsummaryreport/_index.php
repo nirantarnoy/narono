@@ -347,7 +347,7 @@ function getLineData2($customer_id, $find_year, $car_type_id,$find_month)
     $sql .= " FROM work_queue as t1 inner join car as t2 on t1.car_id = t2.id inner join work_queue_dropoff as t3 on t3.work_queue_id=t1.id";
     $sql .= " WHERE t1.id > 0";
     if ($data_filter != '') {
-        $sql .= " AND t1.customer_id in(" . count($customer_id).")";
+        $sql .= " AND t1.customer_id in(" . $data_filter.")";
     }
     if ($find_year != null) {
         $sql .= " AND year(t1.work_queue_date)=" . $find_year;
