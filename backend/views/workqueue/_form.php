@@ -301,6 +301,7 @@ $charter_data = [['id'=>0,'name'=>'No'],['id'=>1,'name'=>'Yes']];
     <div class="row">
         <div class="col-lg-4"><?= $form->field($model, 'work_double_price')->textinput(['maxlength' => true, 'id' => 'work-double-price',]) ?></div>
         <div class="col-lg-4"><?= $form->field($model, 'towing_price')->textinput(['maxlength' => true, 'id' => 'work-towing-price',]) ?></div>
+        <div class="col-lg-4"><?= $form->field($model, 'other_amt')->textinput(['maxlength' => true, 'id' => 'work-other-amt',]) ?></div>
     </div>
 
     <br/>

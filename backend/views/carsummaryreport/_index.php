@@ -341,14 +341,14 @@ if($driver_id == null || $search_emp_id !=null){
                     $sum_col_9 += ($value->work_other_price);
                     $sum_col_11 += ($value->work_double_price);
                     $sum_col_12 += ($value->towing_price);
-                    $sum_col_13 += ($value->other_price);
+                    $sum_col_13 += ($value->other_amt);
 
                     $test_price += ($value->test_price);
                     $damage_price += ($value->damaged_price);
                     $deduct_other_price += ($value->deduct_other_price);
                     $total_towing_amount +=($value->towing_price);
 
-                    $line_total = ($value->work_labour_price + $value->trail_labour_price + $value->work_express_road_price + $value->cover_sheet_price + $value->overnight_price + $value->warehouse_plus_price + $value->work_double_price + $value->towing_price + $value->other_price);
+                    $line_total = ($value->work_labour_price + $value->trail_labour_price + $value->work_express_road_price + $value->cover_sheet_price + $value->overnight_price + $value->warehouse_plus_price + $value->work_double_price + $value->towing_price + $value->other_amt);
                     $sum_col_10 += ($line_total);
 
 
@@ -363,7 +363,7 @@ if($driver_id == null || $search_emp_id !=null){
                         <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->warehouse_plus_price, 2) ?></td>
                         <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->work_double_price, 2) ?></td>
                         <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->towing_price, 2) ?></td>
-                        <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->other_price, 2) ?></td>
+                        <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->other_amt, 2) ?></td>
                         <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($line_total, 2) ?></td>
                     </tr>
                 <?php endforeach; ?>
