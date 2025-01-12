@@ -408,7 +408,7 @@ $charter_data = [['id'=>0,'name'=>'No'],['id'=>1,'name'=>'Yes']];
                                     <input type="number" name="weight[]"
                                            class="form-control weight" id=""
                                            step="any"
-                                           value="<?= $key->weight ?>" onchange="calpriceperton($(this))" readonly="<?=$key->is_charter == 1?'readonly':''?>">
+                                           value="<?= $key->weight ?>" onchange="calpriceperton($(this))" <?=$key->is_charter == 1?'readonly':''?>>
                                 </td>
 
                                 <td>
