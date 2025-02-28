@@ -246,9 +246,10 @@ if ($search_car_type != null) {
                                 <td style="width: 8%;text-align: center;"><?= $line_weight_ton_new[0]['is_charter'] == 1 ? number_format($line_price_per_ton, 2) : number_format(($line_weight_ton_new[0]['weight'] * $line_price_per_ton), 2) ?></td>
                                 <td><?= $value->go_deduct_reason ?></td>
                             </tr>
+                            <?php $old_work_id = $value->id; ?>
                         <?php endforeach; ?>
                     <?php endif; ?>
-                <?php $old_work_id = $value->id; ?>
+                    <?php $old_work_id = $value->id; ?>
                 <?php endforeach; ?>
             <?php endif; ?>
             </tbody>
