@@ -28,22 +28,22 @@ if ($search_car_type != null) {
         if ($search_company_id != null) {
             //$model = \backend\models\Workqueue::find()->where(['car_id' => $car_list, 'company_id' => $search_company_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
             if ($search_car_id != null && $search_emp_id != null) {
-                $model = \backend\models\Workqueue::find()->where(['car_id' => $car_list, 'company_id' => $search_company_id, 'car_id' => $search_car_id, 'emp_assign' => $search_emp_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
+                $model = \backend\models\Workqueue::find()->where(['car_id' => $car_list,'company_id' => $search_company_id, 'car_id' => $search_car_id, 'emp_assign' => $search_emp_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
             } else if ($search_car_id != null && $search_emp_id == null) {
-                $model = \backend\models\Workqueue::find()->where(['car_id' => $car_list, 'company_id' => $search_company_id, 'car_id' => $search_car_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
-            } else if ($search_car_id == null && $search_emp_id != null) {
-                $model = \backend\models\Workqueue::find()->where(['car_id' => $car_list, 'company_id' => $search_company_id, 'emp_assign' => $search_emp_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
+                $model = \backend\models\Workqueue::find()->where(['car_id' => $car_list,'company_id' => $search_company_id, 'car_id' => $search_car_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
+            }else if($search_car_id == null && $search_emp_id!=null){
+                $model = \backend\models\Workqueue::find()->where(['car_id' => $car_list,'company_id' => $search_company_id,'emp_assign'=>$search_emp_id])->andFilterWhere(['>=','date(work_queue_date)',$find_date])->andFilterWhere(['<=','date(work_queue_date)',$find_to_date])->all();
             } else {
-                $model = \backend\models\Workqueue::find()->where(['car_id' => $car_list, 'company_id' => $search_company_id,])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
+                $model = \backend\models\Workqueue::find()->where(['car_id' => $car_list,'company_id' => $search_company_id,])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
             }
         } else {
-            //  $model = \backend\models\Workqueue::find()->where(['car_id' => $car_list])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
+          //  $model = \backend\models\Workqueue::find()->where(['car_id' => $car_list])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
             if ($search_car_id != null && $search_emp_id != null) {
                 $model = \backend\models\Workqueue::find()->where(['car_id' => $car_list, 'car_id' => $search_car_id, 'emp_assign' => $search_emp_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
             } else if ($search_car_id != null && $search_emp_id == null) {
                 $model = \backend\models\Workqueue::find()->where(['car_id' => $car_list, 'car_id' => $search_car_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
-            } else if ($search_car_id == null && $search_emp_id != null) {
-                $model = \backend\models\Workqueue::find()->where(['car_id' => $car_list, 'emp_assign' => $search_emp_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
+            }else if($search_car_id == null && $search_emp_id!=null){
+                $model = \backend\models\Workqueue::find()->where(['car_id' => $car_list,'emp_assign'=>$search_emp_id])->andFilterWhere(['>=','date(work_queue_date)',$find_date])->andFilterWhere(['<=','date(work_queue_date)',$find_to_date])->all();
             } else {
                 $model = \backend\models\Workqueue::find()->where(['car_id' => $car_list])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
             }
@@ -58,8 +58,8 @@ if ($search_car_type != null) {
             $model = \backend\models\Workqueue::find()->where(['company_id' => $search_company_id, 'car_id' => $search_car_id, 'emp_assign' => $search_emp_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
         } else if ($search_car_id != null && $search_emp_id == null) {
             $model = \backend\models\Workqueue::find()->where(['company_id' => $search_company_id, 'car_id' => $search_car_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
-        } else if ($search_car_id == null && $search_emp_id != null) {
-            $model = \backend\models\Workqueue::find()->where(['company_id' => $search_company_id, 'emp_assign' => $search_emp_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
+        }else if($search_car_id == null && $search_emp_id!=null){
+            $model = \backend\models\Workqueue::find()->where(['company_id' => $search_company_id,'emp_assign'=>$search_emp_id])->andFilterWhere(['>=','date(work_queue_date)',$find_date])->andFilterWhere(['<=','date(work_queue_date)',$find_to_date])->all();
         } else {
             $model = \backend\models\Workqueue::find()->where(['company_id' => $search_company_id,])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
         }
@@ -67,11 +67,11 @@ if ($search_car_type != null) {
     } else {
         //$model = \backend\models\Workqueue::find()->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
         if ($search_car_id != null && $search_emp_id != null) {
-            $model = \backend\models\Workqueue::find()->where(['car_id' => $search_car_id, 'emp_assign' => $search_emp_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
+            $model = \backend\models\Workqueue::find()->where([ 'car_id' => $search_car_id, 'emp_assign' => $search_emp_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
         } else if ($search_car_id != null && $search_emp_id == null) {
-            $model = \backend\models\Workqueue::find()->where(['car_id' => $search_car_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
-        } else if ($search_car_id == null && $search_emp_id != null) {
-            $model = \backend\models\Workqueue::find()->where(['emp_assign' => $search_emp_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
+            $model = \backend\models\Workqueue::find()->where([ 'car_id' => $search_car_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
+        }else if($search_car_id == null && $search_emp_id!=null){
+            $model = \backend\models\Workqueue::find()->where(['emp_assign'=>$search_emp_id])->andFilterWhere(['>=','date(work_queue_date)',$find_date])->andFilterWhere(['<=','date(work_queue_date)',$find_to_date])->all();
         } else {
             $model = \backend\models\Workqueue::find()->where(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
         }
@@ -203,41 +203,34 @@ if ($search_car_type != null) {
                     $line_price_per_ton = getDropoffPriceperton($value->id);
                     $line_weight_ton = getDropoffWeightton($value->id);
                     $line_dp = getDropoffDP($value->id);
-                    if ($line_weight_ton != null) {
+                    if($line_weight_ton!=null) {
                         //if($line_weight_ton[0]['is_charter'] == 0){
-                        $total_weight += $line_weight_ton[0]['is_charter'] == 1 ? 0 : ($line_weight_ton[0]['weight']);
+                        $total_weight += $line_weight_ton[0]['is_charter'] == 1 ? 0:($line_weight_ton[0]['weight']);
                         $total_line_amount += ($line_weight_ton[0]['weight'] * $line_price_per_ton);
-                        //  $total_line_amount += ( $line_price_per_ton);
+                      //  $total_line_amount += ( $line_price_per_ton);
                         // }
-                    } else {
+                    }else{
                         $total_weight += 0;
                         $total_line_amount += 10;
                     }
 
                     ?>
-                    <?php
-                    $model_line_dp = \common\models\WorkQueueDropoff::find()->where(['work_queue_id' => $value->id])->all();
-                    ?>
-                    <?php if ($model_line_dp != null): ?>
-                        <?php foreach ($model_line_dp as $value_dp): ?>
-                            <tr>
-                                <td style="width: 5%;text-align: center;"><?= $line_num ?></td>
-                                <td style="width: 8%;text-align: center;"><?= $value->work_queue_no ?></td>
-                                <td style="width: 8%;text-align: center;"><?= date('d/m/Y', strtotime($value->work_queue_date)) ?></td>
-                                <td style="width: 8%;text-align: center;"><?= \backend\models\Car::findName($value->car_id) ?></td>
-                                <td style="width: 8%;text-align: center;"><?= \backend\models\Car::findName($value->tail_id) ?></td>
-                                <td style="width: 8%;text-align: center;"><?= \backend\models\Employee::findFullName($value->emp_assign) ?></td>
-                                <td style="width: 8%;text-align: center;"><?= \backend\models\Customer::findWorkTypeByCustomerid($value->customer_id) ?></td>
-                                <td style="width: 8%;text-align: center;"><?= $line_dp ?></td>
-                                <td style="width: 10%;text-align: center;"><?= \backend\models\Customer::findCusName($value->customer_id) ?></td>
-                                <td style="width: 8%;text-align: center;"><?= \backend\models\Car::getCartype($value->car_id) ?></td>
-                                <td style="width: 8%;text-align: center;"><?= $line_weight_ton[0]['is_charter'] == 1 ? 'เหมา' : number_format($line_weight_ton[0]['weight'], 3) ?></td>
-                                <td style="width: 8%;text-align: center;"><?= number_format($line_price_per_ton, 2) ?></td>
-                                <td style="width: 8%;text-align: center;"><?= $line_weight_ton[0]['is_charter'] == 1 ? number_format($line_price_per_ton, 2) : number_format(($line_weight_ton[0]['weight'] * $line_price_per_ton), 2) ?></td>
-                                <td><?= $value->go_deduct_reason ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
+                    <tr>
+                        <td style="width: 5%;text-align: center;"><?= $line_num ?></td>
+                        <td style="width: 8%;text-align: center;"><?= $value->work_queue_no ?></td>
+                        <td style="width: 8%;text-align: center;"><?= date('d/m/Y', strtotime($value->work_queue_date)) ?></td>
+                        <td style="width: 8%;text-align: center;"><?= \backend\models\Car::findName($value->car_id) ?></td>
+                        <td style="width: 8%;text-align: center;"><?= \backend\models\Car::findName($value->tail_id) ?></td>
+                        <td style="width: 8%;text-align: center;"><?= \backend\models\Employee::findFullName($value->emp_assign) ?></td>
+                        <td style="width: 8%;text-align: center;"><?= \backend\models\Customer::findWorkTypeByCustomerid($value->customer_id) ?></td>
+                        <td style="width: 8%;text-align: center;"><?= $line_dp ?></td>
+                        <td style="width: 10%;text-align: center;"><?= \backend\models\Customer::findCusName($value->customer_id) ?></td>
+                        <td style="width: 8%;text-align: center;"><?= \backend\models\Car::getCartype($value->car_id) ?></td>
+                        <td style="width: 8%;text-align: center;"><?= $line_weight_ton[0]['is_charter'] == 1?'เหมา': number_format($line_weight_ton[0]['weight'], 3) ?></td>
+                        <td style="width: 8%;text-align: center;"><?= number_format($line_price_per_ton, 2) ?></td>
+                        <td style="width: 8%;text-align: center;"><?= $line_weight_ton[0]['is_charter'] == 1? number_format($line_price_per_ton,2): number_format(($line_weight_ton[0]['weight'] * $line_price_per_ton), 2) ?></td>
+                        <td><?=$value->go_deduct_reason?></td>
+                    </tr>
                 <?php endforeach; ?>
             <?php endif; ?>
             </tbody>
@@ -271,7 +264,6 @@ function getDropoffPriceperton($workqueue_id)
     }
     return $price;
 }
-
 function getDropoffWeightton($workqueue_id)
 {
 //    $price = 0;
@@ -285,13 +277,13 @@ function getDropoffWeightton($workqueue_id)
     $data = [];
     $model = \common\models\WorkQueueDropoff::find()->where(['work_queue_id' => $workqueue_id])->one();
     if ($model) {
-        if ($model->is_charter == 0 || $model->is_charter == null) {
-            array_push($data, ['is_charter' => $model->is_charter, 'weight' => $model->weight]);
-        } else {
-            array_push($data, ['is_charter' => 1, 'weight' => 1]);
+        if($model->is_charter == 0 || $model->is_charter == null){
+            array_push($data,['is_charter'=>$model->is_charter,'weight'=>$model->weight]);
+        }else{
+            array_push($data,['is_charter'=>1,'weight'=>1]);
         }
-    } else {
-        array_push($data, ['is_charter' => 0, 'weight' => 0]);
+    }else{
+        array_push($data,['is_charter'=>0,'weight'=>0]);
     }
     return $data;
 }
@@ -305,6 +297,7 @@ function getDropoffDP($workqueue_id)
     }
     return $dropoff_no;
 }
+
 
 
 $this->registerJsFile(\Yii::$app->request->baseUrl . '/js/jquery.table2excel.js', ['depends' => [\yii\web\JqueryAsset::className()]]);
