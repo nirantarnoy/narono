@@ -203,7 +203,7 @@ if ($search_car_type != null) {
                     if($old_work_id != $value->id){
                         $line_num += 1;
                     }
-                  
+
 
                    // $line_price_per_ton = getDropoffPriceperton($value->id);
                 //    $line_weight_ton = getDropoffWeightton($value->id);

@@ -231,7 +231,7 @@ if ($search_car_type != null) {
                             }
                             ?>
                             <tr>
-                                <td style="width: 5%;text-align: center;"><?= $line_num ?></td>
+                                <td style="width: 5%;text-align: center;"><?= $old_work_id == $value->id ? '' : $line_num ?></td>
                                 <td style="width: 8%;text-align: center;"><?= $value->work_queue_no ?></td>
                                 <td style="width: 8%;text-align: center;"><?= date('d/m/Y', strtotime($value->work_queue_date)) ?></td>
                                 <td style="width: 8%;text-align: center;"><?= \backend\models\Car::findName($value->car_id) ?></td>
