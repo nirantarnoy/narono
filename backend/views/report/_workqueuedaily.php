@@ -238,7 +238,7 @@ if ($search_car_type != null) {
                                 <td style="width: 8%;text-align: center;"><?= \backend\models\Car::getCartype($value->car_id) ?></td>
                                 <td style="width: 8%;text-align: center;"><?= $line_weight_ton_new[0]['is_charter'] == 1 ? 'เหมา' : number_format($line_weight_ton_new[0]['weight'], 3) ?></td>
                                 <td style="width: 8%;text-align: center;"><?= number_format($line_price_per_ton, 2) ?></td>
-                                <td style="width: 8%;text-align: center;"><?= $line_weight_ton[0]['is_charter'] == 1 ? number_format($line_price_per_ton, 2) : number_format(($line_weight_ton[0]['weight'] * $line_price_per_ton), 2) ?></td>
+                                <td style="width: 8%;text-align: center;"><?= $line_weight_ton_new[0]['is_charter'] == 1 ? number_format($line_price_per_ton, 2) : number_format(($line_weight_ton_new[0]['weight'] * $line_price_per_ton), 2) ?></td>
                                 <td><?= $value->go_deduct_reason ?></td>
                             </tr>
                         <?php endforeach; ?>

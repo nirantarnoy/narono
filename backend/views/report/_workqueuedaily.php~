@@ -200,9 +200,9 @@ if ($search_car_type != null) {
                     <?php
                     $line_num += 1;
 
-                    $line_price_per_ton = getDropoffPriceperton($value->id);
+                   // $line_price_per_ton = getDropoffPriceperton($value->id);
                 //    $line_weight_ton = getDropoffWeightton($value->id);
-                    $line_dp = getDropoffDP($value->id);
+                //    $line_dp = getDropoffDP($value->id);
 
 
                     ?>
@@ -211,8 +211,9 @@ if ($search_car_type != null) {
                     ?>
                     <?php if ($model_line_dp != null): ?>
                         <?php foreach ($model_line_dp as $value_dp): ?>
-                        <?php $line_weight_ton_new = getDropoffWeighttonNew($value_dp->id); ?>
-                        <?php
+                            <?php $line_weight_ton_new = getDropoffWeighttonNew($value_dp->id); ?>
+                            <?php $line_price_per_ton = getDropoffPricepertonNew($value_dp->id); ?>
+                            <?php
                             if ($line_weight_ton_new != null) {
                                 //if($line_weight_ton[0]['is_charter'] == 0){
                                 $total_weight += $line_weight_ton_new[0]['is_charter'] == 1 ? 0 : ($line_weight_ton_new[0]['weight']);
