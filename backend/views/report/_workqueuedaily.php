@@ -200,7 +200,7 @@ if ($search_car_type != null) {
             <?php if ($model): ?>
                 <?php foreach ($model as $value): ?>
                     <?php
-                    if($old_work_id != $value->id){
+                    if($old_work_id != $value->id || $old_work_id == 0){
                         $line_num += 1;
                     }
 
