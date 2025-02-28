@@ -228,7 +228,7 @@ if ($search_car_type != null) {
                                 <td style="width: 8%;text-align: center;"><?= \backend\models\Car::findName($value->tail_id) ?></td>
                                 <td style="width: 8%;text-align: center;"><?= \backend\models\Employee::findFullName($value->emp_assign) ?></td>
                                 <td style="width: 8%;text-align: center;"><?= \backend\models\Customer::findWorkTypeByCustomerid($value->customer_id) ?></td>
-                                <td style="width: 8%;text-align: center;"><?= $line_dp ?></td>
+                                <td style="width: 8%;text-align: center;"><?= $value_dp->dropoff_no ?></td>
                                 <td style="width: 10%;text-align: center;"><?= \backend\models\Customer::findCusName($value->customer_id) ?></td>
                                 <td style="width: 8%;text-align: center;"><?= \backend\models\Car::getCartype($value->car_id) ?></td>
                                 <td style="width: 8%;text-align: center;"><?= $line_weight_ton[0]['is_charter'] == 1 ? 'เหมา' : number_format($line_weight_ton[0]['weight'], 3) ?></td>
