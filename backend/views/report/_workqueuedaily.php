@@ -220,6 +220,7 @@ if ($search_car_type != null) {
                     ?>
                     <?php if ($model_line_dp != null): ?>
                         <?php foreach ($model_line_dp as $value_dp): ?>
+                        <?php $line_weight_ton_new = getDropoffWeighttonNew($value_dp->id); ?>
                             <tr>
                                 <td style="width: 5%;text-align: center;"><?= $line_num ?></td>
                                 <td style="width: 8%;text-align: center;"><?= $value->work_queue_no ?></td>
@@ -231,7 +232,7 @@ if ($search_car_type != null) {
                                 <td style="width: 8%;text-align: center;"><?= $value_dp->dropoff_no ?></td>
                                 <td style="width: 10%;text-align: center;"><?= \backend\models\Customer::findCusName($value->customer_id) ?></td>
                                 <td style="width: 8%;text-align: center;"><?= \backend\models\Car::getCartype($value->car_id) ?></td>
-                                <td style="width: 8%;text-align: center;"><?= $line_weight_ton[0]['is_charter'] == 1 ? 'เหมา' : number_format($line_weight_ton[0]['weight'], 3) ?></td>
+                                <td style="width: 8%;text-align: center;"><?= $line_weight_ton_new[0]['is_charter'] == 1 ? 'เหมา' : number_format($line_weight_ton_new[0]['weight'], 3) ?></td>
                                 <td style="width: 8%;text-align: center;"><?= number_format($line_price_per_ton, 2) ?></td>
                                 <td style="width: 8%;text-align: center;"><?= $line_weight_ton[0]['is_charter'] == 1 ? number_format($line_price_per_ton, 2) : number_format(($line_weight_ton[0]['weight'] * $line_price_per_ton), 2) ?></td>
                                 <td><?= $value->go_deduct_reason ?></td>
@@ -284,6 +285,30 @@ function getDropoffWeightton($workqueue_id)
 //    return $price;
     $data = [];
     $model = \common\models\WorkQueueDropoff::find()->where(['work_queue_id' => $workqueue_id])->one();
+    if ($model) {
+        if ($model->is_charter == 0 || $model->is_charter == null) {
+            array_push($data, ['is_charter' => $model->is_charter, 'weight' => $model->weight]);
+        } else {
+            array_push($data, ['is_charter' => 1, 'weight' => 1]);
+        }
+    } else {
+        array_push($data, ['is_charter' => 0, 'weight' => 0]);
+    }
+    return $data;
+}
+
+function getDropoffWeighttonNew($id)
+{
+//    $price = 0;
+//    $model = \common\models\WorkQueueDropoff::find()->where(['work_queue_id' => $workqueue_id])->one();
+//    if ($model) {
+//        if($model->is_charter == 0){
+//            $price = $model->weight;
+//        }
+//    }
+//    return $price;
+    $data = [];
+    $model = \common\models\WorkQueueDropoff::find()->where(['id' => $id])->one();
     if ($model) {
         if ($model->is_charter == 0 || $model->is_charter == null) {
             array_push($data, ['is_charter' => $model->is_charter, 'weight' => $model->weight]);
