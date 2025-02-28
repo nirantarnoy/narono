@@ -200,19 +200,10 @@ if ($search_car_type != null) {
                     <?php
                     $line_num += 1;
 
-                    $line_price_per_ton = getDropoffPriceperton($value->id);
-                    $line_weight_ton = getDropoffWeightton($value->id);
-                    $line_dp = getDropoffDP($value->id);
-                    if ($line_weight_ton != null) {
-                        //if($line_weight_ton[0]['is_charter'] == 0){
-                        $total_weight += $line_weight_ton[0]['is_charter'] == 1 ? 0 : ($line_weight_ton[0]['weight']);
-                        $total_line_amount += ($line_weight_ton[0]['weight'] * $line_price_per_ton);
-                        //  $total_line_amount += ( $line_price_per_ton);
-                        // }
-                    } else {
-                        $total_weight += 0;
-                        $total_line_amount += 10;
-                    }
+                   // $line_price_per_ton = getDropoffPriceperton($value->id);
+                //    $line_weight_ton = getDropoffWeightton($value->id);
+                //    $line_dp = getDropoffDP($value->id);
+
 
                     ?>
                     <?php
@@ -220,7 +211,20 @@ if ($search_car_type != null) {
                     ?>
                     <?php if ($model_line_dp != null): ?>
                         <?php foreach ($model_line_dp as $value_dp): ?>
-                        <?php $line_weight_ton_new = getDropoffWeighttonNew($value_dp->id); ?>
+                            <?php $line_weight_ton_new = getDropoffWeighttonNew($value_dp->id); ?>
+                            <?php $line_price_per_ton = getDropoffPricepertonNew($value_dp->id); ?>
+                            <?php
+                            if ($line_weight_ton_new != null) {
+                                //if($line_weight_ton[0]['is_charter'] == 0){
+                                $total_weight += $line_weight_ton_new[0]['is_charter'] == 1 ? 0 : ($line_weight_ton_new[0]['weight']);
+                                $total_line_amount += ($line_weight_ton_new[0]['weight'] * $line_price_per_ton);
+                                //  $total_line_amount += ( $line_price_per_ton);
+                                // }
+                            } else {
+                                $total_weight += 0;
+                                $total_line_amount += 10;
+                            }
+                            ?>
                             <tr>
                                 <td style="width: 5%;text-align: center;"><?= $line_num ?></td>
                                 <td style="width: 8%;text-align: center;"><?= $value->work_queue_no ?></td>
@@ -267,6 +271,15 @@ function getDropoffPriceperton($workqueue_id)
 {
     $price = 0;
     $model = \common\models\WorkQueueDropoff::find()->where(['work_queue_id' => $workqueue_id])->one();
+    if ($model) {
+        $price = $model->price_per_ton;
+    }
+    return $price;
+}
+function getDropoffPricepertonNew($id)
+{
+    $price = 0;
+    $model = \common\models\WorkQueueDropoff::find()->where(['id' => $id])->one();
     if ($model) {
         $price = $model->price_per_ton;
     }
