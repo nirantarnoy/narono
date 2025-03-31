@@ -40,6 +40,7 @@ class QuotationRate extends \yii\db\ActiveRecord
             [['zone_id', 'province_id', 'car_type_id', 'created_at', 'created_by', 'updated_a', 'updated_by', 'quotation_title_id','price_type_id'], 'integer'],
             [['distance', 'load_qty', 'price_current_rate'], 'number'],
             [['route_code'], 'string', 'max' => 255],
+            [['drop_off_id'],'safe']
         ];
     }
 
@@ -62,6 +63,7 @@ class QuotationRate extends \yii\db\ActiveRecord
             'updated_a' => 'Updated A',
             'updated_by' => 'Updated By',
             'quotation_title_id' => 'Quotation Title ID',
+            'drop_off_id'=>'Drop Off',
         ];
     }
 }
