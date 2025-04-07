@@ -190,18 +190,18 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
                                         </select>
                                     </td>
                                     <td>
-                                        <select name="line_drop_off_id[]" class="form-control line-drop-off-id" id="">
-                                            <option value="-1">--ที่ขั้นสินค้า--</option>
-                                            <?php foreach ($model_dropoff as $valuex): ?>
-                                                <?php
-                                                $selected = '';
-                                                if ($valuex->id == $value->drop_off_id) {
-                                                    $selected = 'selected';
-                                                }
-                                                ?>
-                                                <option value="<?= $valuex->id ?>" <?= $selected ?>><?= $valuex->name ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
+<!--                                        <select name="line_drop_off_id[]" class="form-control line-drop-off-id" id="">-->
+<!--                                            <option value="-1">--ที่ขั้นสินค้า--</option>-->
+<!--                                            --><?php //foreach ($model_dropoff as $valuex): ?>
+<!--                                                --><?php
+//                                                $selected = '';
+//                                                if ($valuex->id == $value->drop_off_id) {
+//                                                    $selected = 'selected';
+//                                                }
+//                                                ?>
+<!--                                                <option value="--><?php //= $valuex->id ?><!--" --><?php //= $selected ?><!-->--><?php //= $valuex->name ?><!--</option>-->
+<!--                                            --><?php //endforeach; ?>
+<!--                                        </select>-->
                                     </td>
                                     <td>
                                         <input type="number" class="form-control line-distance" name="line_distance[]"

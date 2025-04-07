@@ -6,7 +6,7 @@ use yii\widgets\ActiveForm;
 
 $model_province = \backend\models\Province::find()->all();
 $model_cityzone = \backend\models\Cityzone::find()->all();
-/** @var yii\web\View $this */
+$model_dropoff = \backend\models\DropoffPlace::find()->all();/** @var yii\web\View $this */
 /** @var backend\models\Quotationtitle $model */
 /** @var yii\widgets\ActiveForm $form */
 
@@ -192,14 +192,14 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
                                     <td>
                                         <select name="line_drop_off_id[]" class="form-control line-drop-off-id" id="">
                                             <option value="-1">--ที่ขั้นสินค้า--</option>
-                                            <?php foreach ($model_cityzone as $valuex): ?>
+                                            <?php foreach ($model_dropoff as $valuex): ?>
                                                 <?php
                                                 $selected = '';
-                                                if ($valuex->id == $value->zone_id) {
+                                                if ($valuex->id == $value->drop_off_id) {
                                                     $selected = 'selected';
                                                 }
                                                 ?>
-                                                <option value="<?= $valuex->id ?>" <?= $selected ?>><?= getCityzonedetail($valuex->id) ?></option>
+                                                <option value="<?= $valuex->id ?>" <?= $selected ?>><?= $valuex->name ?></option>
                                             <?php endforeach; ?>
                                         </select>
                                     </td>
