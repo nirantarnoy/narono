@@ -199,7 +199,7 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
 //                                                    $selected = 'selected';
 //                                                }
 //                                                ?>
-<!--                                                <option value="--><?php //= $valuex->id ?><!--" --><?php //= $selected ?><!-->--><?php //= $valuex->name ?><!--</option>-->
+<!--                                                <option value="--><?php //= $valuex->id ?><!--" --><?php //= $selected ?><?php //= $valuex->name ?><!--</option>-->
 <!--                                            --><?php //endforeach; ?>
 <!--                                        </select>-->
                                     </td>
