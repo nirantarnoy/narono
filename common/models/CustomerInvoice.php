@@ -45,6 +45,7 @@ class CustomerInvoice extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['sale_id', 'customer_id'], 'required'],
             [['invoice_date', 'invoice_target_date'], 'safe'],
             [['sale_id', 'customer_id', 'create_at', 'created_by', 'updated_at', 'updated_by', 'status'], 'integer'],
             [['total_amount', 'vat_amount', 'vat_per', 'total_all_amount','final_amount'], 'number'],
