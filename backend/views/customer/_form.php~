@@ -331,13 +331,6 @@ if($model_user_group_list!=null){
                     <th style="width: 5%;text-align: center"></th>
                 </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                  </tr>
-                </tbody>
             </table>
         </div>
     </div>
