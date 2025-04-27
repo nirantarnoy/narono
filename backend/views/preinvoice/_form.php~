@@ -134,7 +134,7 @@ use yii\widgets\ActiveForm;
                                 </td>
                                 <td>
                                     <input type="number" class="form-control line-work-queue-amount"
-                                           name="line_work_queue_amount[]" min="0" onchange="calinvoiceall();">
+                                           name="line_work_queue_amount[]" min="0" step="any" onchange="calinvoiceall();">
                                 </td>
                                 <td style="text-align: center;">
                                     <div class="btn btn-danger" onclick="removeline($(this))">ลบ</div>
