@@ -319,8 +319,8 @@ if($model_user_group_list!=null){
             </table>
         </div>
     </div>
-    <h4>ลูกค้าวางบิล</h4>
     <br/>
+    <h4>ลูกค้าวางบิล</h4>
     <div class="row">
         <div class="col-lg-12">
             <table class="table table-bordered table-striped" id="table-customer-list">
@@ -338,6 +338,13 @@ if($model_user_group_list!=null){
                       <td></td>
                   </tr>
                 </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="3">
+                        <div class="btn btn-primary" onclick="addlinecustomer($(this))"></div>
+                    </td>
+                </tr>
+                </tfoot>
             </table>
         </div>
     </div>
