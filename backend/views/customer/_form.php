@@ -187,7 +187,9 @@ if($model_user_group_list!=null){
             ]) ?>
 
         </div>
-        <div class="col-lg-3"></div>
+        <div class="col-lg-3">
+            <?= $form->field($model, 'is_invoice')->widget(\toxor88\switchery\Switchery::className(), ['options' => ['label' => '', 'class' => 'form-control']])->label() ?>
+        </div>
         <div class="col-lg-3"></div>
     </div>
     <br/>
