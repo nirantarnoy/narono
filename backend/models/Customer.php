@@ -36,6 +36,7 @@ class Customer extends \common\models\Customer
             [['business_type', 'status', 'crated_at', 'created_by', 'updated_at', 'udpated_by','customer_group_id','company_id','payment_term_id','payment_method_id','work_type_id'], 'integer'],
             [['code', 'name','phone','email'], 'string', 'max' => 255],
             [['address','taxid','branch_code','branch_name'], 'string', 'max' => 255],
+            [['is_invoice'],'safe'],
         ];
     }
 
@@ -65,6 +66,7 @@ class Customer extends \common\models\Customer
             'created_by' => 'สร้างโดย',
             'updated_at' => 'แก้ไขเมื่อ',
             'udpated_by' => 'แก้ไขโดย',
+            'is_invoice' => 'ลูกค้าวางบิล',
         ];
     }
 
