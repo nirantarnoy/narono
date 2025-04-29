@@ -87,6 +87,7 @@ $charter_data = [['id'=>0,'name'=>'No'],['id'=>1,'name'=>'Yes']];
         </div>
 
             <div class="col-lg-3">
+                <label for="">ลูกค้าวางบิล</label>
                 <input type="text" class="form-control" readonly value="<?=$model->isNewRecord?'':\backend\models\Customer::findCustomerInvoiceName($model->customer_id)?>">
             </div>
 
