@@ -351,7 +351,7 @@ class CustomerController extends Controller
                 if($remove_line_customer!=null){
                     $xplode = explode(",", $remove_line_customer);
                     if(count($xplode)>0){
-                        \common\models\CustomerInvoiceChild::deleteAll(['idx'=>$xplode]);
+                        \common\models\CustomerInvoiceChild::deleteAll(['id'=>$xplode]);
                     }
                 }
 
