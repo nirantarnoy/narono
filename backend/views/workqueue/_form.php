@@ -85,11 +85,11 @@ $charter_data = [['id'=>0,'name'=>'No'],['id'=>1,'name'=>'Yes']];
                 ]
             ]) ?>
         </div>
-        <div class="row">
+
             <div class="col-lg-3">
                 <input type="text" class="form-control" readonly value="<?=$model->isNewRecord?'':\backend\models\Customer::findCustomerInvoiceName($model->customer_id)?>">
             </div>
-        </div>
+
     </div>
 
 
