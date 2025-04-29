@@ -88,7 +88,7 @@ $charter_data = [['id'=>0,'name'=>'No'],['id'=>1,'name'=>'Yes']];
 
             <div class="col-lg-3">
                 <label for="">ลูกค้าวางบิล</label>
-                <input type="text" class="form-control" readonly value="<?=$model->isNewRecord?'':\backend\models\Customer::findCustomerInvoiceName($model->customer_id)?>">
+                <input type="text" class="form-control customer-invoice-name" readonly value="<?=$model->isNewRecord?'':\backend\models\Customer::findCustomerInvoiceName($model->customer_id)?>">
             </div>
 
     </div>
@@ -887,7 +887,7 @@ function getCarinfo(e){
 }
 function getCustomerInvoiceName(id){
     // alert(e.val());
-    if(id != ''){
+    if(id !=null){
         $.ajax({
             'type': 'post',
             'dataType': 'json',

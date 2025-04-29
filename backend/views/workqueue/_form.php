@@ -887,18 +887,15 @@ function getCarinfo(e){
 }
 function getCustomerInvoiceName(id){
     // alert(e.val());
-    if(id != ''){
+    if(id !=null){
         $.ajax({
             'type': 'post',
-            'dataType': 'json',
+            'dataType': 'html',
             'url': '$url_to_customer_invoice',
             'data': {'customer_id': id},
             'success': function(data){
                 // alert(data);
-                if(data != null){
-                    var customer_invoice_name = data[0]['customer_invoice_name'];
-                    $('.customer-invoice-name').val(customer_invoice_name);
-                }
+                 $('.customer-invoice-name').val(data);
             },
             'error': function(data){
                  alert(data);//return;
