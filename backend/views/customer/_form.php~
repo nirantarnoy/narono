@@ -595,8 +595,6 @@ $(".btn-emp-selected").click(function () {
                         tr.after(clone);
                     } 
              }
-                
-          
         }
         
         $("#table-customer-list tbody tr").each(function () {

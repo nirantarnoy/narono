@@ -563,6 +563,7 @@ function addselecteditem(e) {
 
 function disableselectitem() {
         if (selecteditem.length > 0) {
+            alert();
             $(".btn-emp-selected").prop("disabled", "");
             $(".btn-emp-selected").removeClass('btn-outline-success');
             $(".btn-emp-selected").addClass('btn-success');
