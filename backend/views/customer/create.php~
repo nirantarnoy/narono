@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'model_customer_tax_info'=> null,
         'model_user_group_list' => null,
-        'model_customer_invoice_child' => null,
+        '$model_customer_invoice_child' => null,
     ]) ?>
 
 </div>
