@@ -392,7 +392,7 @@ if($model_user_group_list!=null){
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <h3>รายการใบงาน</h3>
+                <h3>รายการเลือกลูกค้าสำหรับใช้วางบิล</h3>
             </div>
             <!--            <div class="modal-body" style="white-space:nowrap;overflow-y: auto">-->
             <!--            <div class="modal-body" style="white-space:nowrap;overflow-y: auto;scrollbar-x-position: top">-->
