@@ -88,7 +88,7 @@ $charter_data = [['id'=>0,'name'=>'No'],['id'=>1,'name'=>'Yes']];
 
             <div class="col-lg-3">
                 <label for="">ลูกค้าวางบิล</label>
-                <input type="text" class="form-control" readonly value="<?=$model->isNewRecord?'':\backend\models\Customer::findCustomerInvoiceName($model->customer_id)?>">
+                <input type="text" class="form-control customer-invoice-name" readonly value="<?=$model->isNewRecord?'':\backend\models\Customer::findCustomerInvoiceName($model->customer_id)?>">
             </div>
 
     </div>
@@ -627,6 +627,7 @@ $charter_data = [['id'=>0,'name'=>'No'],['id'=>1,'name'=>'Yes']];
 $url_to_getCardata = \yii\helpers\Url::to(['car/getcarinfo'], true);
 $url_to_routeplan = \yii\helpers\Url::to(['car/getrouteplan'], true);
 $url_to_find_item = \yii\helpers\Url::to(['item/finditem'], true);
+$url_to_customer_invoice = \yii\helpers\Url::to(['customer/getcustomerinvoice'], true);
 
 $js = <<<JS
 var removelist = [];
@@ -637,6 +638,11 @@ var loop3 = 0;
 
 $(function(){
      //alert($("#is-page-new").val());
+     
+     $("#customer-selected-id").on("click",function(){
+         var customer_id = $(this).val();
+         getCustomerInvoiceName(customer_id);
+     });
    
     if($("#is-page-new").val() == 0){
         $("#labour-price-checked").val($("#workqueue-is_labur").val());
@@ -870,6 +876,28 @@ function getCarinfo(e){
                     
                     
                     getRouteplan();
+                }
+            },
+            'error': function(data){
+                 alert(data);//return;
+            }
+            
+        });
+    }
+}
+function getCustomerInvoiceName(id){
+    // alert(e.val());
+    if(id != ''){
+        $.ajax({
+            'type': 'post',
+            'dataType': 'json',
+            'url': '$url_to_customer_invoice',
+            'data': {'customer_id': id},
+            'success': function(data){
+                // alert(data);
+                if(data != null){
+                    var customer_invoice_name = data[0]['customer_invoice_name'];
+                    $('.customer-invoice-name').val(customer_invoice_name);
                 }
             },
             'error': function(data){
