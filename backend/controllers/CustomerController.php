@@ -456,6 +456,7 @@ class CustomerController extends Controller
              $html .= '<td style="text-align: center">
                             <div class="btn btn-outline-success btn-sm" onclick="addselecteditem($(this))" data-var="' . $value->id . '">เลือก</div>
                             <input type="hidden" class="line-find-customer-id" value="' . $value->id . '">                    
+                            <input type="hidden" class="line-find-customer-name" value="' . $value->name . '">                    
                            </td>';
              $html .= '<td style="text-align: left">' . $value->name . '</td>';
              $html .= '</tr>';

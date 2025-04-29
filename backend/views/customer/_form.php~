@@ -413,7 +413,7 @@ $url_to_getAddress = \yii\helpers\Url::to(['customer/showaddress'], true);
 $url_to_find_customer = \yii\helpers\Url::to(['customer/findcustomerinvoice'], true);
 $js = <<<JS
 var removelist = [];
-
+var selecteditem = [];
 $(function(){
     
 });
@@ -504,8 +504,8 @@ function getAddres(e){
     });
 }
 
-function addlinecustomer(){
-    if(customer_id > 0){
+function addlinecustomer(e){
+    if(1 > 0){
         $.ajax({
           type: 'post',
           dataType: 'html',
@@ -524,6 +524,98 @@ function addlinecustomer(){
         });
     }
 }
+function addselecteditem(e) {
+        var id = e.attr('data-var');
+        var customer_id = e.closest('tr').find('.line-find-customer-id').val();
+        var customer_name = e.closest('tr').find('.line-find-customer-name').val();
+        ///////
+        if (id) {
+            // if(checkhasempdaily(id)){
+            //     alert("คุณได้ทำการจัดรถให้พนักงานคนนี้ไปแล้ว");
+            //     return false;
+            // }
+            if (e.hasClass('btn-outline-success')) {
+                var obj = {};
+                obj['id'] = id;
+                obj['customer_id'] = customer_id;
+                obj['line_customer_name'] = customer_name;
+                selecteditem.push(obj);
+               
+                e.removeClass('btn-outline-success');
+                e.addClass('btn-success');
+                disableselectitem();
+                console.log(selecteditem);
+            } else {
+                //selecteditem.pop(id);
+                $.each(selecteditem, function (i, el) {
+                    if (this.id == id) {
+                        selecteditem.splice(i, 1);
+                    }
+                });
+                e.removeClass('btn-success');
+                e.addClass('btn-outline-success');
+                
+                disableselectitem();
+                console.log(selecteditem);
+            }
+        }
+}
+
+function disableselectitem() {
+        if (selecteditem.length > 0) {
+            $(".btn-emp-selected").prop("disabled", "");
+            $(".btn-emp-selected").removeClass('btn-outline-success');
+            $(".btn-emp-selected").addClass('btn-success');
+        } else {
+            $(".btn-emp-selected").prop("disabled", "disabled");
+            $(".btn-emp-selected").removeClass('btn-success');
+            $(".btn-emp-selected").addClass('btn-outline-success');
+        }
+}
+
+$(".btn-emp-selected").click(function () {
+        var linenum = 0;
+        if(selecteditem.length >0){
+             var tr = $("#table-customer-list tbody tr:last");
+             
+             for(var i=0;i<=selecteditem.length-1;i++){
+               //  var new_text = selecteditem[i]['line_work_type_name'] + "\\n" + "Order No."+selecteditem[i]['line_order_no'];
+                   if (tr.closest("tr").find(".line-customer-id").val() == "") {
+                  //  alert(line_prod_code);
+            
+                    tr.closest("tr").find(".line-customer-id").val(selecteditem[i]['customer_id']);
+                    tr.closest("tr").find(".line-customer-name").val(selecteditem[i]['line_customer_name']);
+                    //console.log(line_prod_code);
+                    } else {
+                        var clone = tr.clone();
+                        clone.closest("tr").find(".line-rec-id").val('0');
+                        clone.closest("tr").find(".line-customer-id").val(selecteditem[i]['customer_id']);
+                        clone.closest("tr").find(".line-customer-name").val(selecteditem[i]['line_customer_name']);
+                      
+                        tr.after(clone);
+                    } 
+             }
+                
+          
+        }
+        
+        $("#table-customer-list tbody tr").each(function () {
+           linenum += 1;
+            $(this).closest("tr").find("td:eq(0)").text(linenum);
+            // $(this).closest("tr").find(".line-prod-code").val(line_prod_code);
+        });
+        
+        selecteditem = [];
+
+        $("#table-find-list tbody tr").each(function () {
+            $(this).closest("tr").find(".btn-line-select").removeClass('btn-success');
+            $(this).closest("tr").find(".btn-line-select").addClass('btn-outline-success');
+        });
+        
+        $(".btn-emp-selected").removeClass('btn-success');
+        $(".btn-emp-selected").addClass('btn-outline-success');
+        $("#findcustomerModal").modal('hide');
+});
 
 JS;
 $this->registerJs($js, static::POS_END);
