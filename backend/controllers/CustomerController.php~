@@ -348,12 +348,12 @@ class CustomerController extends Controller
                         }
                     }
                 }
-                if($remove_line_customer!=null){
-                    $xplode = explode(",", $remove_line_customer);
-                    if(count($xplode)>0){
-                        \common\models\CustomerInvoiceChild::deleteAll(['idx'=>$xplode]);
-                    }
-                }
+//                if($remove_line_customer!=null){
+//                    $xplode = explode(",", $remove_line_customer);
+//                    if(count($xplode)>0){
+//                        \common\models\CustomerInvoiceChild::deleteAll(['id'=>$xplode]);
+//                    }
+//                }
 
             }
             return $this->redirect(['view', 'id' => $model->id]);

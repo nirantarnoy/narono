@@ -337,6 +337,12 @@ class CustomerController extends Controller
                     }
                 }
 
+                if ($remove_line_customer != null) {
+                    $xplode = explode(",", $remove_line_customer);
+                    if (count($xplode) > 0) {
+                        \common\models\CustomerInvoiceChild::deleteAll(['id' => $xplode]);
+                    }
+                }
                 if($line_customer_id!=null){
                     if(count($line_customer_id)>0){
                         \common\models\CustomerInvoiceChild::deleteAll(['customer_id'=>$model->id]);
@@ -348,12 +354,7 @@ class CustomerController extends Controller
                         }
                     }
                 }
-                if($remove_line_customer!=null){
-                    $xplode = explode(",", $remove_line_customer);
-                    if(count($xplode)>0){
-                        \common\models\CustomerInvoiceChild::deleteAll(['id'=>$xplode]);
-                    }
-                }
+
 
             }
             return $this->redirect(['view', 'id' => $model->id]);
