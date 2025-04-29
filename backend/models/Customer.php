@@ -107,6 +107,17 @@ class Customer extends \common\models\Customer
         }
         return '';
     }
+    public static function findCustomerInvoiceName($id)
+    {
+        $model = Customer::find()->where(['id' => $id])->one();
+        if($model){
+            $model_type = \common\models\Customer::find()->where(['id'=>$model->customer_invoice_id])->one();
+            if($model_type){
+                return  $model_type->name;
+            }
+        }
+        return '';
+    }
     public static function findWorkTypeIdByCustomer($id)
     {
         $type_id = 0;
