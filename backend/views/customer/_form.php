@@ -393,7 +393,7 @@ if($model_user_group_list!=null){
             </div>
 
             <div class="modal-footer">
-                <button class="btn btn-outline-success btn-customer-selected" data-dismiss="modalx" disabled><i
+                <button class="btn btn-outline-success btn-emp-selected" data-dismiss="modalx" disabled><i
                             class="fa fa-check"></i> ตกลง
                 </button>
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i
@@ -563,7 +563,6 @@ function addselecteditem(e) {
 
 function disableselectitem() {
         if (selecteditem.length > 0) {
-            alert();
             $(".btn-emp-selected").prop("disabled", "");
             $(".btn-emp-selected").removeClass('btn-outline-success');
             $(".btn-emp-selected").addClass('btn-success');
