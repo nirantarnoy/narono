@@ -639,7 +639,7 @@ var loop3 = 0;
 $(function(){
      //alert($("#is-page-new").val());
      
-     $("#customer-selected-id").on("click",function(){
+     $("#customer-selected-id").on('chance',function(){
          var customer_id = $(this).val();
          getCustomerInvoiceName(customer_id);
      });
@@ -890,15 +890,12 @@ function getCustomerInvoiceName(id){
     if(id !=null){
         $.ajax({
             'type': 'post',
-            'dataType': 'json',
+            'dataType': 'html',
             'url': '$url_to_customer_invoice',
             'data': {'customer_id': id},
             'success': function(data){
                 // alert(data);
-                if(data != null){
-                    var customer_invoice_name = data[0]['customer_invoice_name'];
-                    $('.customer-invoice-name').val(customer_invoice_name);
-                }
+                 $('.customer-invoice-name').val(data);
             },
             'error': function(data){
                  alert(data);//return;

@@ -639,7 +639,7 @@ var loop3 = 0;
 $(function(){
      //alert($("#is-page-new").val());
      
-     $("#customer-selected-id").on("click",function(){
+     $("#customer-selected-id").on('change',function(){
          var customer_id = $(this).val();
          getCustomerInvoiceName(customer_id);
      });
