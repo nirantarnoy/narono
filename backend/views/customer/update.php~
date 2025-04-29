@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = 'แก้ไข';
         'model_contact_line'=>$model_contact_line,
         'model_customer_tax_info' => $model_customer_tax_info,
         'model_user_group_list' => $model_user_group_list,
-        'model_customer_invoice_child' => $model_customer_invoice_child,
+        '$model_customer_invoice_child' => $model_customer_invoice_child,
     ]) ?>
 
 </div>
