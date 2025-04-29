@@ -452,13 +452,7 @@ class CustomerController extends Controller
      $model = \common\models\Customer::find()->where(['status' => 1,'is_invoice'=>1])->all();
      if($model){
          foreach ($model as $value) {
-             $html .= '<tr>';
-             $html .= '<td style="text-align: center">
-                            <div class="btn btn-outline-success btn-sm" onclick="addselecteditem($(this))" data-var="' . $value->id . '">เลือก</div>
-                            <input type="hidden" class="line-find-customer-id" value="' . $value->id . '">                    
-                           </td>';
-             $html .= '<td style="text-align: left">' . $value->name . '</td>';
-             $html .= '</tr>';
+             $html .= '<option value="'.$value->id.'">'.$value->name.'</option>';
          }
      }
      echo $html;

@@ -368,12 +368,49 @@ if($model_user_group_list!=null){
 
 </div>
 
+<div id="findcustomerModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>รายการใบงาน</h3>
+            </div>
+            <!--            <div class="modal-body" style="white-space:nowrap;overflow-y: auto">-->
+            <!--            <div class="modal-body" style="white-space:nowrap;overflow-y: auto;scrollbar-x-position: top">-->
+
+            <div class="modal-body">
+                <table class="table table-bordered table-striped table-find-list" width="100%">
+                    <thead>
+                    <tr>
+                        <th style="width:10%;text-align: center">เลือก</th>
+                        <th style="width: 20%;text-align: center">ชื่อลูกค้า</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-outline-success btn-customer-selected" data-dismiss="modalx" disabled><i
+                            class="fa fa-check"></i> ตกลง
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i
+                            class="fa fa-close text-danger"></i> ปิดหน้าต่าง
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 <?php
 $url_to_getcity = \yii\helpers\Url::to(['customer/showcity'], true);
 $url_to_getdistrict = \yii\helpers\Url::to(['customer/showdistrict'], true);
 $url_to_getzipcode = \yii\helpers\Url::to(['customer/showzipcode'], true);
 $url_to_getAddress = \yii\helpers\Url::to(['customer/showaddress'], true);
-
+$url_to_find_customer = \yii\helpers\Url::to(['customer/findcustomerinvoice'], true);
 $js = <<<JS
 var removelist = [];
 
@@ -418,6 +455,30 @@ function removeline(e) {
             // cal_all();
         }
     }
+    
+    function removecustomerline(e) {
+        if (confirm("ต้องการลบรายการนี้ใช่หรือไม่?")) {
+            if (e.parent().parent().attr("data-var") != '') {
+                removelist.push(e.parent().parent().attr("data-var"));
+                $(".remove-list").val(removelist);
+            }
+            // alert(removelist);
+            // alert(e.parent().parent().attr("data-var"));
+
+            if ($("#table-customer-list tbody tr").length == 1) {
+                $("#table-customer-list tbody tr").each(function () {
+                    $(this).find(":text").val("");
+                   // $(this).find(".line-prod-photo").attr('src', '');
+                    $(this).find(".line-customer-id").val(0);
+                    // cal_num();
+                });
+            } else {
+                e.parent().parent().remove();
+            }
+            // cal_linenum();
+            // cal_all();
+        }
+    }
 function getCity(e){
     $.post("$url_to_getcity"+"&id="+e.val(),function(data){
         $("select#city").html(data);
@@ -441,6 +502,27 @@ function getAddres(e){
         $("#city").html(data);
         $("select#city").prop("disabled","");
     });
+}
+
+function addlinecustomer(e){
+    if(1 > 0){
+        $.ajax({
+          type: 'post',
+          dataType: 'html',
+          url:'$url_to_find_customer',
+          async: false,
+          data: {},
+          success: function(data){
+             // alert(data);
+              $(".table-find-list tbody").html(data);
+              $("#findcustomerModal").modal("show");
+          },
+          error: function(err){
+              alert(err);
+          }
+          
+        });
+    }
 }
 
 JS;
