@@ -40,6 +40,7 @@ if($model_user_group_list!=null){
 
     <?php $form = ActiveForm::begin(); ?>
     <input type="hidden" class="remove-list" name="remove_list" value="">
+    <input type="hidden" class="remove-customer-list" name="remove_customer_list" value="">
 
     <div class="row">
         <div class="col-lg-3">
@@ -338,7 +339,7 @@ if($model_user_group_list!=null){
                 <?php $loopnum = 0;?>
                 <?php foreach ($model_customer_invoice_child as $value): ?>
                         <?php $loopnum +=1;?>
-                  <tr>
+                  <tr data-var="<?= $value->id ?>">
                       <td style="text-align: center;"><?=$loopnum?></td>
                       <td>
                           <input type="hidden" class="line-customer-id" name="line_customer_id[]" value="<?=$value->customer_id?>">
@@ -432,6 +433,7 @@ $url_to_find_customer = \yii\helpers\Url::to(['customer/findcustomerinvoice'], t
 $js = <<<JS
 var removelist = [];
 var selecteditem = [];
+var removecustomerlist = [];
 $(function(){
     
 });
@@ -477,8 +479,8 @@ function removeline(e) {
     function removecustomerline(e) {
         if (confirm("ต้องการลบรายการนี้ใช่หรือไม่?")) {
             if (e.parent().parent().attr("data-var") != '') {
-                removelist.push(e.parent().parent().attr("data-var"));
-                $(".remove-list").val(removelist);
+                removecustomerlist.push(e.parent().parent().attr("data-var"));
+                $(".remove-customer-list").val(removecustomerlist);
             }
             // alert(removelist);
             // alert(e.parent().parent().attr("data-var"));

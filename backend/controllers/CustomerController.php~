@@ -238,7 +238,7 @@ class CustomerController extends Controller
 
             $line_customer_id = \Yii::$app->request->post('line_customer_id');
             $line_customer_name = \Yii::$app->request->post('line_customer_name');
-            $remove_line_customer = \Yii::$app->request->post('remove_line_customer');
+            $remove_line_customer = \Yii::$app->request->post('remove_customer_list');
 
             // print_r($model->customer_group_id);return;
 
@@ -359,7 +359,7 @@ class CustomerController extends Controller
             'model_contact_line' => $model_contact_line,
             'model_customer_tax_info' => $model_customer_tax_info,
             'model_user_group_list' => $model_user_group_list,
-            '$model_customer_invoice_child' => $model_customer_invoice_child
+            'model_customer_invoice_child' => $model_customer_invoice_child
         ]);
     }
 

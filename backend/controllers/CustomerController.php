@@ -238,7 +238,7 @@ class CustomerController extends Controller
 
             $line_customer_id = \Yii::$app->request->post('line_customer_id');
             $line_customer_name = \Yii::$app->request->post('line_customer_name');
-            $remove_line_customer = \Yii::$app->request->post('remove_line_customer');
+            $remove_line_customer = \Yii::$app->request->post('remove_customer_list');
 
             // print_r($model->customer_group_id);return;
 
@@ -346,6 +346,12 @@ class CustomerController extends Controller
                             $model_customer_invoice_child_new->customer_child_id = $line_customer_id[$m];
                             $model_customer_invoice_child_new->save(false);
                         }
+                    }
+                }
+                if($remove_line_customer!=null){
+                    $xplode = explode(",", $remove_line_customer);
+                    if(count($xplode)>0){
+                        \common\models\CustomerInvoiceChild::deleteAll(['id'=>$xplode]);
                     }
                 }
 
