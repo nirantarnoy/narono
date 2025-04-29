@@ -211,6 +211,8 @@ class CustomerController extends Controller
 
         $model_user_group_list = \common\models\CustomerAssignList::find()->where(['customer_id'=>$id])->all();
 
+        $model_customer_invoice_child = \common\models\CustomerInvoiceChild::find()->where(['customer_id' => $id])->all();
+
         if ($this->request->isPost && $model->load($this->request->post())) {
             $party_type = 2;
             $address = \Yii::$app->request->post('cus_address');
@@ -339,10 +341,10 @@ class CustomerController extends Controller
                     if(count($line_customer_id)>0){
                         \common\models\CustomerInvoiceChild::deleteAll(['customer_id'=>$model->id]);
                         for ($m = 0; $m <= count($line_customer_id) - 1; $m++) {
-                            $model_customer_invoice_child = new \common\models\CustomerInvoiceChild();
-                            $model_customer_invoice_child->customer_id = $model->id;
-                            $model_customer_invoice_child->child_id = $line_customer_id[$m];
-                            $model_customer_invoice_child->save(false);
+                            $model_customer_invoice_child_new = new \common\models\CustomerInvoiceChild();
+                            $model_customer_invoice_child_new->customer_id = $model->id;
+                            $model_customer_invoice_child_new->customer_child_id = $line_customer_id[$m];
+                            $model_customer_invoice_child_new->save(false);
                         }
                     }
                 }
@@ -357,6 +359,7 @@ class CustomerController extends Controller
             'model_contact_line' => $model_contact_line,
             'model_customer_tax_info' => $model_customer_tax_info,
             'model_user_group_list' => $model_user_group_list,
+            '$model_customer_invoice_child' => $model_customer_invoice_child
         ]);
     }
 
