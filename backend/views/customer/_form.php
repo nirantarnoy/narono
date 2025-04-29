@@ -334,17 +334,35 @@ if($model_user_group_list!=null){
                 </tr>
                 </thead>
                 <tbody>
+                <?php if($model_customer_invoice_child!=null):?>
+                <?php $loopnum = 0;?>
+                <?php foreach ($model_customer_invoice_child as $value): ?>
+                        <?php $loopnum +=1;?>
                   <tr>
-                      <td></td>
+                      <td style="text-align: center;"><?=$loopnum?></td>
                       <td>
-                          <input type="hidden" class="line-customer-id" name="line_customer_id[]" value="">
-                          <input type="text" class="form-control line-customer-name" name="line_customer_name[]" value="">
+                          <input type="hidden" class="line-customer-id" name="line_customer_id[]" value="<?=$value->customer_id?>">
+                          <input type="text" class="form-control line-customer-name" name="line_customer_name[]" value="<?=\backend\models\Customer::findCusName($value->customer_id)?>">
                       </td>
                       <td>
                           <div class="btn btn-danger btn-sm" onclick="removecustomerline($(this))"><i
                                       class="fa fa-trash"></i></div>
                       </td>
                   </tr>
+                  <?php endforeach; ?>
+                <?php else:?>
+                    <tr>
+                        <td style="text-align: center;"></td>
+                        <td>
+                            <input type="hidden" class="line-customer-id" name="line_customer_id[]" value="">
+                            <input type="text" class="form-control line-customer-name" name="line_customer_name[]" value="">
+                        </td>
+                        <td>
+                            <div class="btn btn-danger btn-sm" onclick="removecustomerline($(this))"><i
+                                        class="fa fa-trash"></i></div>
+                        </td>
+                    </tr>
+                <?php endif;?>
                 </tbody>
                 <tfoot>
                 <tr>

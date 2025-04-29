@@ -211,6 +211,8 @@ class CustomerController extends Controller
 
         $model_user_group_list = \common\models\CustomerAssignList::find()->where(['customer_id'=>$id])->all();
 
+        $model_customer_invoice_child = \common\models\CustomerInvoiceChild::find()->where(['customer_id' => $id])->all();
+
         if ($this->request->isPost && $model->load($this->request->post())) {
             $party_type = 2;
             $address = \Yii::$app->request->post('cus_address');
@@ -230,6 +232,13 @@ class CustomerController extends Controller
             $customer_payment_tax_id = \Yii::$app->request->post('customer_tax_id');
             $customer_payment_tax_branch = \Yii::$app->request->post('customer_tax_branch');
             $customer_payment_tax_email = \Yii::$app->request->post('customer_tax_email');
+
+
+            // customer invoice
+
+            $line_customer_id = \Yii::$app->request->post('line_customer_id');
+            $line_customer_name = \Yii::$app->request->post('line_customer_name');
+            $remove_line_customer = \Yii::$app->request->post('remove_line_customer');
 
             // print_r($model->customer_group_id);return;
 
@@ -328,6 +337,18 @@ class CustomerController extends Controller
                     }
                 }
 
+                if($line_customer_id!=null){
+                    if(count($line_customer_id)>0){
+                        \common\models\CustomerInvoiceChild::deleteAll(['customer_id'=>$model->id]);
+                        for ($m = 0; $m <= count($line_customer_id) - 1; $m++) {
+                            $model_customer_invoice_child_new = new \common\models\CustomerInvoiceChild();
+                            $model_customer_invoice_child_new->customer_id = $model->id;
+                            $model_customer_invoice_child_new->customer_child_id = $line_customer_id[$m];
+                            $model_customer_invoice_child_new->save(false);
+                        }
+                    }
+                }
+
             }
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -338,6 +359,7 @@ class CustomerController extends Controller
             'model_contact_line' => $model_contact_line,
             'model_customer_tax_info' => $model_customer_tax_info,
             'model_user_group_list' => $model_user_group_list,
+            '$model_customer_invoice_child' => $model_customer_invoice_child
         ]);
     }
 

@@ -231,6 +231,13 @@ class CustomerController extends Controller
             $customer_payment_tax_branch = \Yii::$app->request->post('customer_tax_branch');
             $customer_payment_tax_email = \Yii::$app->request->post('customer_tax_email');
 
+
+            // customer invoice
+
+            $line_customer_id = \Yii::$app->request->post('line_customer_id');
+            $line_customer_name = \Yii::$app->request->post('line_customer_name');
+            $remove_line_customer = \Yii::$app->request->post('remove_line_customer');
+
             // print_r($model->customer_group_id);return;
 
 //            print_r($removelist); return;
@@ -325,6 +332,18 @@ class CustomerController extends Controller
                         $model_group_assign->customer_id = $model->id;
                         $model_group_assign->group_id = $model->customer_group_id[$m];
                         $model_group_assign->save(false);
+                    }
+                }
+
+                if($line_customer_id!=null){
+                    if(count($line_customer_id)>0){
+                        \common\models\CustomerInvoiceChild::deleteAll(['customer_id'=>$model->id]);
+                        for ($m = 0; $m <= count($line_customer_id) - 1; $m++) {
+                            $model_customer_invoice_child = new \common\models\CustomerInvoiceChild();
+                            $model_customer_invoice_child->customer_id = $model->id;
+                            $model_customer_invoice_child->child_id = $line_customer_id[$m];
+                            $model_customer_invoice_child->save(false);
+                        }
                     }
                 }
 
@@ -456,6 +475,7 @@ class CustomerController extends Controller
              $html .= '<td style="text-align: center">
                             <div class="btn btn-outline-success btn-sm" onclick="addselecteditem($(this))" data-var="' . $value->id . '">เลือก</div>
                             <input type="hidden" class="line-find-customer-id" value="' . $value->id . '">                    
+                            <input type="hidden" class="line-find-customer-name" value="' . $value->name . '">                    
                            </td>';
              $html .= '<td style="text-align: left">' . $value->name . '</td>';
              $html .= '</tr>';

@@ -334,8 +334,10 @@ if($model_user_group_list!=null){
                 </tr>
                 </thead>
                 <tbody>
+                <?php if($model_customer_invoice_child!=null):?>
+                <?php foreach ($model_customer_invoice_child as $value): ?>
                   <tr>
-                      <td></td>
+                      <td style="text-align: center;"></td>
                       <td>
                           <input type="hidden" class="line-customer-id" name="line_customer_id[]" value="">
                           <input type="text" class="form-control line-customer-name" name="line_customer_name[]" value="">
@@ -345,6 +347,20 @@ if($model_user_group_list!=null){
                                       class="fa fa-trash"></i></div>
                       </td>
                   </tr>
+                  <?php endforeach; ?>
+                <?php else:?>
+                    <tr>
+                        <td style="text-align: center;"></td>
+                        <td>
+                            <input type="hidden" class="line-customer-id" name="line_customer_id[]" value="">
+                            <input type="text" class="form-control line-customer-name" name="line_customer_name[]" value="">
+                        </td>
+                        <td>
+                            <div class="btn btn-danger btn-sm" onclick="removecustomerline($(this))"><i
+                                        class="fa fa-trash"></i></div>
+                        </td>
+                    </tr>
+                <?php endif;?>
                 </tbody>
                 <tfoot>
                 <tr>
@@ -393,7 +409,7 @@ if($model_user_group_list!=null){
             </div>
 
             <div class="modal-footer">
-                <button class="btn btn-outline-success btn-customer-selected" data-dismiss="modalx" disabled><i
+                <button class="btn btn-outline-success btn-emp-selected" data-dismiss="modalx" disabled><i
                             class="fa fa-check"></i> ตกลง
                 </button>
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i
