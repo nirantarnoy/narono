@@ -482,7 +482,7 @@ function removeline(e) {
                 removecustomerlist.push(e.parent().parent().attr("data-var"));
                 $(".remove-customer-list").val(removecustomerlist);
             }
-            // alert(removelist);
+             alert(removecustomerlist);
             // alert(e.parent().parent().attr("data-var"));
 
             if ($("#table-customer-list tbody tr").length == 1) {
