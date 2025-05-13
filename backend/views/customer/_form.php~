@@ -191,7 +191,16 @@ if($model_user_group_list!=null){
         <div class="col-lg-3">
             <?= $form->field($model, 'is_invoice')->widget(\toxor88\switchery\Switchery::className(), ['options' => ['label' => '', 'class' => 'form-control']])->label() ?>
         </div>
-        <div class="col-lg-3"></div>
+        <div class="col-lg-3">
+            <?= $form->field($model, 'customer_invoice_id')->Widget(\kartik\select2\Select2::className(), [
+                'data' => \yii\helpers\ArrayHelper::map(\backend\models\Customer::find()->where(['status' => 1,'is_invoice'=>1])->all(), 'id', function ($data) {
+                    return $data->name;
+                }),
+                'options' => [
+                    'placeholder' => '--เลือกลูกค้าวางบิล--'
+                ]
+            ]) ?>
+        </div>
     </div>
     <br/>
     <div class="row">
@@ -323,7 +332,7 @@ if($model_user_group_list!=null){
         </div>
     </div>
     <br/>
-    <div style="display: none">
+    <div style="display: nonex">
     <h4>ลูกค้าวางบิล</h4>
     <div class="row">
         <div class="col-lg-12">

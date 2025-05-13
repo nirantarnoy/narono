@@ -495,4 +495,16 @@ class CustomerController extends Controller
      echo $html;
     }
 
+    function actionGetcustomerinvoice(){
+        $name = '';
+        $id = \Yii::$app->request->post('customer_id');
+        if($id){
+            $model = \common\models\Customer::find()->where(['id'=>$id])->one();
+            if($model){
+                $name = \backend\models\Customer::findCustomerInvoiceName($model->id);
+            }
+        }
+        echo $name;
+    }
+
 }
