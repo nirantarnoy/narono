@@ -155,7 +155,7 @@ class QuotationtitleController extends Controller
             $line_average = \Yii::$app->request->post('line_average');
             $line_quotation_price = \Yii::$app->request->post('line_quotation_price');
             $line_quotation_price_type_id = \Yii::$app->request->post('line_quotation_price_type_id');
-            $line_drop_off_id = \Yii::$app->request->post('line_drop_off_id');
+           // $line_drop_off_id = \Yii::$app->request->post('line_drop_off_id');
 
             //echo count($line_warehouse_id);return;
             // print_r(\Yii::$app->request->post());return;
@@ -173,7 +173,7 @@ class QuotationtitleController extends Controller
                         $model_line->route_code = $line_route[$i];
                         $model_line->zone_id = $line_zone_id[$i];
                         $model_line->price_type_id = $line_quotation_price_type_id[$i];
-                        $model_line->drop_off_id = $line_drop_off_id[$i];
+                      //  $model_line->drop_off_id = $line_drop_off_id[$i];
                         $model_line->save(false);
                     }
                 }
@@ -278,5 +278,24 @@ class QuotationtitleController extends Controller
             }
         }
         echo $html;
+    }
+
+    public function actionSavedropoff(){
+        $drop_off_id = \Yii::$app->request->post('drop_off_id');
+        $quotation_rate_id = \Yii::$app->request->post('quotation_rate_id');
+
+        if($quotation_rate_id != null){
+            if($drop_off_id != null){
+                $exp = explode(",", $drop_off_id);
+                if($exp!=null){
+                    for($i = 0; $i <= count($exp)-1; $i++){
+                        $model = new \common\models\QuotationRateDropOff();
+                        $model->quotation_rate_id = $quotation_rate_id;
+                        $model->dropoff_id = $exp[$i];
+                        $model->save(false);
+                    }
+                }
+            }
+        }
     }
 }
