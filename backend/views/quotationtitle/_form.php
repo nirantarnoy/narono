@@ -190,18 +190,7 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
                                         </select>
                                     </td>
                                     <td>
-<!--                                        <select name="line_drop_off_id[]" class="form-control line-drop-off-id" id="">-->
-<!--                                            <option value="-1">--ที่ขั้นสินค้า--</option>-->
-<!--                                            --><?php //foreach ($model_dropoff as $valuex): ?>
-<!--                                                --><?php
-//                                                $selected = '';
-//                                                if ($valuex->id == $value->drop_off_id) {
-//                                                    $selected = 'selected';
-//                                                }
-//                                                ?>
-<!--                                                <option value="--><?php //= $valuex->id ?><!--" --><?php //= $selected ?><?php //= $valuex->name ?><!--</option>-->
-<!--                                            --><?php //endforeach; ?>
-<!--                                        </select>-->
+                                       <div class="btn btn-sm btn-outline-success" onclick="adddropoff($(this))">เลือกที่ขึ้นสินค้า</div>
                                     </td>
                                     <td>
                                         <input type="number" class="form-control line-distance" name="line_distance[]"
@@ -318,6 +307,49 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
           method="post">
         <input type="hidden" value="<?= $model->id ?>" name="quotation_id">
     </form>
+
+    <div id="finddropoffModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-xl">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>เพิ่มจุดขึ้นสินค้า</h3>
+                </div>
+                <!--            <div class="modal-body" style="white-space:nowrap;overflow-y: auto">-->
+                <!--            <div class="modal-body" style="white-space:nowrap;overflow-y: auto;scrollbar-x-position: top">-->
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-3"><label for="">จุดขึ้นสินค้า</label></div>
+                        <div class="col-lg-9">
+                            <?php
+                              echo \kartik\select2\Select2::widget([
+                                  'name' => 'drop_off_id',
+                                  'value' => '',
+                                  'data' => \yii\helpers\ArrayHelper::map(\backend\models\DropoffPlace::find()->where(['status'=>1])->all(), 'id', 'name'),
+                                  'options' => ['placeholder' => 'เลือกจุดขึ้นสินค้า','id'=>'drop-off-id'],
+                                  'pluginOptions' => [
+                                      'allowClear' => true,
+                                      'multiple' => true,
+                                  ]
+                              ]);
+                            ?>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-outline-success btn-emp-selected" data-dismiss="modalx" disabled><i
+                                class="fa fa-check"></i> ตกลง
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><i
+                                class="fa fa-close text-danger"></i> ปิดหน้าต่าง
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 <?php
 
 function getCityzonedetail($city_zone_id)
@@ -449,6 +481,10 @@ function removeline(e) {
  }   
  function printquotationview(){
     $("form#form-print").submit();
+ }
+ 
+ function adddropoff(e){
+     
  }
 JS;
 $this->registerJs($js, static::POS_END);
