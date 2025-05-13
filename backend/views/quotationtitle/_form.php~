@@ -327,7 +327,7 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
                                   'name' => 'drop_off_id',
                                   'value' => '',
                                   'data' => \yii\helpers\ArrayHelper::map(\backend\models\DropoffPlace::find()->where(['status'=>1])->all(), 'id', 'name'),
-                                  'options' => ['placeholder' => 'เลือกจุดขึ้นสินค้า'],
+                                  'options' => ['placeholder' => 'เลือกจุดขึ้นสินค้า','id'=>'drop-off-id'],
                                   'pluginOptions' => [
                                       'allowClear' => true,
                                       'multiple' => true,
@@ -484,7 +484,7 @@ function removeline(e) {
  }
  
  function adddropoff(e){
-     
+     $("#finddropoffModal").modal("show");
  }
 JS;
 $this->registerJs($js, static::POS_END);

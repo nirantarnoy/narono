@@ -190,7 +190,7 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
                                         </select>
                                     </td>
                                     <td>
-                                       <div class="btn btn-sm btn-outline-success" onclick="adddropoff($(this))">เลือกที่ขึ้นสินค้า</div>
+                                       <div class="btn btn-sm btn-outline-success" onclick="adddropoff($(this))">ที่ขึ้นสินค้า</div>
                                     </td>
                                     <td>
                                         <input type="number" class="form-control line-distance" name="line_distance[]"
@@ -484,7 +484,7 @@ function removeline(e) {
  }
  
  function adddropoff(e){
-     
+     $("#finddropoffModal").modal("show");
  }
 JS;
 $this->registerJs($js, static::POS_END);
