@@ -507,4 +507,19 @@ class CustomerController extends Controller
         echo $name;
     }
 
+    function actionTransfercustomerinvoice(){
+        $model = \common\models\Customer::find()->all();
+        if($model){
+            foreach($model as $value){
+                if($value->customer_child_id){
+                    $model_new = new \common\models\CustomerInvoiceChild();
+                    $model_new->customer_id = $value->id;
+                    $model_new->customer_child_id = $value->customer_child_id;
+                    $model_new->status = 1;
+                    $model_new->save(false);
+                }
+            }
+        }
+    }
+
 }
