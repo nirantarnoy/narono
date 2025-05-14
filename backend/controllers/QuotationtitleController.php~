@@ -283,7 +283,8 @@ class QuotationtitleController extends Controller
     public function actionSavedropoff(){
         $drop_off_id = \Yii::$app->request->post('drop_off_id');
         $quotation_rate_id = \Yii::$app->request->post('quotation_rate_id');
-
+        echo $quotation_rate_id."<br/>";
+        echo $drop_off_id;
         if($quotation_rate_id != null){
             if($drop_off_id != null){
                 $exp = explode(",", $drop_off_id);
