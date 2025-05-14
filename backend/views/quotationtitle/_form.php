@@ -191,7 +191,14 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
                                         </select>
                                     </td>
                                     <td>
-                                        <div class="btn btn-sm btn-outline-success" data-var="<?= $value->id ?>"
+                                        <?php
+                                        $dropoff_active = 'btn-outline-success';
+                                        $cnt_dropoff = countDropoff($value->id);
+                                        if($cnt_dropoff > 0){
+                                            $dropoff_active = 'btn-success';
+                                        }
+                                        ?>
+                                        <div class="btn btn-sm <?=$dropoff_active?>" data-var="<?= $value->id ?>"
                                              onclick="adddropoff($(this))">ที่ขึ้นสินค้า
                                         </div>
                                     </td>
@@ -370,6 +377,13 @@ function getCityzonedetail($city_zone_id)
         }
     }
     return $name;
+}
+function countDropoff($quote_rate_id){
+    $cnt = 0;
+    if($quote_rate_id){
+        $cnt = \common\models\QuotationRateDropoff::find()->where(['quotation_rate_id' => $quote_rate_id])->count();
+    }
+    return $cnt;
 }
 
 ?>

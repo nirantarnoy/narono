@@ -323,6 +323,7 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
                 <!--            <div class="modal-body" style="white-space:nowrap;overflow-y: auto;scrollbar-x-position: top">-->
                 <form action="<?= \yii\helpers\Url::to(['quotationtitle/savedropoff'], true) ?>" method="post">
                     <input type="hidden" class="current-quote-rate-id" name="quotation_rate_id" value="">
+                    <input type="hidden" class="current-quote-id" name="quotation_id" value="<?=$model->id;?>">
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-lg-3"><label for="">จุดขึ้นสินค้า</label></div>
@@ -369,6 +370,13 @@ function getCityzonedetail($city_zone_id)
         }
     }
     return $name;
+}
+function countDropoff($quote_rate_id){
+    $cnt = 0;
+    if($quote_rate_id){
+        $cnt = \common\models\QuotationRateDropoff::find()->where(['quotation_rate_id' => $quote_rate_id])->count();
+    }
+    return $cnt;
 }
 
 ?>
