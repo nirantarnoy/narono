@@ -515,6 +515,7 @@ function removeline(e) {
              async: true,
              data: {'quote_rate_id': id},
              success: function(data){
+                 alert(data);
                  $(".drop-off-id").html(data);
              }
      });

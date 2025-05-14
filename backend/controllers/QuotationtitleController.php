@@ -323,7 +323,8 @@ class QuotationtitleController extends Controller
                 }
             }
 
-            echo $html;
+
         }
+        echo $html;
     }
 }

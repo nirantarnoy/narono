@@ -512,7 +512,7 @@ function removeline(e) {
              type: "post",
              dataType: "html",
              url: "$url_to_get_quote_rate_dropoff",
-             async: false,
+             async: true,
              data: {'quote_rate_id': id},
              success: function(data){
                  $(".drop-off-id").html(data);
