@@ -381,7 +381,7 @@ function getCityzonedetail($city_zone_id)
 function countDropoff($quote_rate_id){
     $cnt = 0;
     if($quote_rate_id){
-        $cnt = \common\models\QuotationRateDropoff::find()->where(['quotation_rate_id' => $quote_rate_id])->count();
+        $cnt = \common\models\QuotationDropoff::find()->where(['quotation_rate_id' => $quote_rate_id])->count();
     }
     return $cnt;
 }
