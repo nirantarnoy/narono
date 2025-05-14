@@ -307,14 +307,19 @@ class QuotationtitleController extends Controller
         if($quote_rate_id != null){
             $model_dropoff = \common\models\DropoffPlace::find()->where(['status'=>1])->all();
             if($model_dropoff){
+                $data = [];
+                $model = \common\models\QuotationDropoff::find()->where(['quotation_rate_id' => $quote_rate_id])->all();
+                if($model){
+                    foreach ($model as $value){
+                        array_push($data,$value->dropoff_id);
+                    }
+                }
                 foreach ($model_dropoff as $value){
                     $selected ='';
-            $model = \common\models\QuotationDropoff::find()->where(['quotation_rate_id'=>$quote_rate_id])->all();
-            if($model){
-                foreach ($model as $value){
-                    $html.='<option value="'.$value->dropoff_id.'">'.$value->dropoff_id.'</option>';
-                }
-            }
+                    if(in_array($value->id,$data)){
+                        $selected = 'selected';
+                    }
+                    $html.='<option value="'.$value->id.'" '.$selected.'>'.$value->name.'</option>';
                 }
             }
 

@@ -300,7 +300,7 @@ class QuotationtitleController extends Controller
         return $this->redirect(['update', 'id' => $quot_id]);
     }
 
-    public function getquoteratedropoff()
+    public function actionGetquoteratedropoff()
     {
         $quote_rate_id = \Yii::$app->request->post('quote_rate_id');
         $html = '';
