@@ -321,9 +321,8 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
                 </div>
                 <!--            <div class="modal-body" style="white-space:nowrap;overflow-y: auto">-->
                 <!--            <div class="modal-body" style="white-space:nowrap;overflow-y: auto;scrollbar-x-position: top">-->
-
-                <div class="modal-body">
-                    <form action="<?=\yii\helpers\Url::to(['quotationtitle/savedropoff'],true)?>" method="post">
+                <form action="<?= \yii\helpers\Url::to(['quotationtitle/savedropoff'], true) ?>" method="post">
+                    <div class="modal-body">
                         <div class="row">
                             <div class="col-lg-3"><label for="">จุดขึ้นสินค้า</label></div>
                             <div class="col-lg-9">
@@ -341,17 +340,16 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
                                 ?>
                             </div>
                         </div>
-                    </form>
-                </div>
-
-                <div class="modal-footer">
-                    <button class="btn btn-outline-success btn-emp-selected" data-dismiss="modalx" disabled><i
-                                class="fa fa-check"></i> ตกลง
-                    </button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal"><i
-                                class="fa fa-close text-danger"></i> ปิดหน้าต่าง
-                    </button>
-                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-outline-success btn-emp-selected" data-dismiss="modalx"><i
+                                    class="fa fa-check"></i> ตกลง
+                        </button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><i
+                                    class="fa fa-close text-danger"></i> ปิดหน้าต่าง
+                        </button>
+                    </div>
+                </form>
             </div>
 
         </div>
