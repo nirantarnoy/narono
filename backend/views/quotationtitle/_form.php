@@ -390,6 +390,7 @@ function countDropoff($quote_rate_id){
 <?php
 $url_to_getzone = \yii\helpers\Url::to(['quotationtitle/getcityzone'], true);
 $url_to_getprovince = \yii\helpers\Url::to(['quotationtitle/getprovince'], true);
+$url_to_get_quote_rate_dropoff = \yii\helpers\Url::to(['quotationtitle/getquoteratedropoff'], true);
 $js = <<<JS
 var removelist = [];
 $(function(){
@@ -503,13 +504,23 @@ function removeline(e) {
     $("form#form-print").submit();
  }
  
- function getDropofitem(){
-     
- }
- 
  function adddropoff(e){
      $(".current-quote-rate-id").val(e.attr('data-var'));
+     var id = e.attr('data-var');
+     if(id !=''){
+         $.ajax({
+             type: "post",
+             dataType: "html",
+             url: "$url_to_get_quote_rate_dropoff",
+             async: true,
+             data: {'quote_rate_id': id},
+             success: function(data){
+                 $(".drop-off-id").html(data);
+             }
+     });
+     }
      $("#finddropoffModal").modal("show");
+     
  }
 JS;
 $this->registerJs($js, static::POS_END);

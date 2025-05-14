@@ -299,4 +299,31 @@ class QuotationtitleController extends Controller
         }
         return $this->redirect(['update', 'id' => $quot_id]);
     }
+
+    public function getquoteratedropoff()
+    {
+        $quote_rate_id = \Yii::$app->request->post('quote_rate_id');
+        $html = '';
+        if($quote_rate_id != null){
+            $model_dropoff = \common\models\DropoffPlace::find()->where(['status'=>1])->all();
+            if($model_dropoff){
+                $data = [];
+                $model = \common\models\QuotationDropoff::find()->where(['quotation_rate_id' => $quote_rate_id])->all();
+                if($model){
+                    foreach ($model as $value){
+                        array_push($data,$value->dropoff_id);
+                    }
+                }
+                foreach ($model_dropoff as $value){
+                    $selected ='';
+                    if(in_array($value->id,$data)){
+                        $selected = 'selected';
+                    }
+                    $html.='<option value="'.$value->id.'" '.$selected.'>'.$value->name.'</option>';
+                }
+            }
+
+            echo $html;
+        }
+    }
 }

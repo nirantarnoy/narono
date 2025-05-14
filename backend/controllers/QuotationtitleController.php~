@@ -283,6 +283,7 @@ class QuotationtitleController extends Controller
     public function actionSavedropoff(){
         $drop_off_id = \Yii::$app->request->post('drop_off_id');
         $quotation_rate_id = \Yii::$app->request->post('quotation_rate_id');
+        $quot_id = \Yii::$app->request->post('quotation_id');
 
         if($quotation_rate_id != null){
             if($drop_off_id != null){
@@ -296,6 +297,28 @@ class QuotationtitleController extends Controller
                 }
             }
         }
-        return $this->redirect(['update', 'id' => $quotation_rate_id]);
+        return $this->redirect(['update', 'id' => $quot_id]);
+    }
+
+    public function getquoteratedropoff()
+    {
+        $quote_rate_id = \Yii::$app->request->post('quote_rate_id');
+        $html = '';
+        if($quote_rate_id != null){
+            $model_dropoff = \common\models\DropoffPlace::find()->where(['status'=>1])->all();
+            if($model_dropoff){
+                foreach ($model_dropoff as $value){
+                    $selected ='';
+            $model = \common\models\QuotationDropoff::find()->where(['quotation_rate_id'=>$quote_rate_id])->all();
+            if($model){
+                foreach ($model as $value){
+                    $html.='<option value="'.$value->dropoff_id.'">'.$value->dropoff_id.'</option>';
+                }
+            }
+                }
+            }
+
+            echo $html;
+        }
     }
 }
