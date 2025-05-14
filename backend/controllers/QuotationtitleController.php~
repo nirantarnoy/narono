@@ -289,7 +289,7 @@ class QuotationtitleController extends Controller
                 $exp = explode(",", $drop_off_id);
                 if($exp!=null){
                     for($i = 0; $i <= count($exp)-1; $i++){
-                        $model = new \common\models\QuotationRateDropOff();
+                        $model = new \common\models\QuotationDropOff();
                         $model->quotation_rate_id = $quotation_rate_id;
                         $model->dropoff_id = $exp[$i];
                         $model->save(false);
