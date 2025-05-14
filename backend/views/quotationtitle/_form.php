@@ -322,7 +322,7 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
                 <!--            <div class="modal-body" style="white-space:nowrap;overflow-y: auto">-->
                 <!--            <div class="modal-body" style="white-space:nowrap;overflow-y: auto;scrollbar-x-position: top">-->
                 <form action="<?= \yii\helpers\Url::to(['quotationtitle/savedropoff'], true) ?>" method="post">
-                    <input type="text" class="current-quote-rate-id" name="quotation_rate_id" value="">
+                    <input type="hidden" class="current-quote-rate-id" name="quotation_rate_id" value="">
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-lg-3"><label for="">จุดขึ้นสินค้า</label></div>
@@ -489,7 +489,7 @@ function removeline(e) {
  }
  
  function adddropoff(e){
-     $(".current-quote-rate-id").val(e.val());
+     $(".current-quote-rate-id").val(e.attr('data-var'));
      $("#finddropoffModal").modal("show");
  }
 JS;
