@@ -296,5 +296,6 @@ class QuotationtitleController extends Controller
                 }
             }
         }
+        return $this->redirect(['update', 'id' => $quotation_rate_id]);
     }
 }

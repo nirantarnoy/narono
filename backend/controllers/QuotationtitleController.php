@@ -283,6 +283,7 @@ class QuotationtitleController extends Controller
     public function actionSavedropoff(){
         $drop_off_id = \Yii::$app->request->post('drop_off_id');
         $quotation_rate_id = \Yii::$app->request->post('quotation_rate_id');
+        $quot_id = \Yii::$app->request->post('quotation_id');
 
         if($quotation_rate_id != null){
             if($drop_off_id != null){
@@ -296,6 +297,6 @@ class QuotationtitleController extends Controller
                 }
             }
         }
-        return $this->redirect(['update', 'id' => $quotation_rate_id]);
+        return $this->redirect(['update', 'id' => $quot_id]);
     }
 }

@@ -488,8 +488,12 @@ function removeline(e) {
     $("form#form-print").submit();
  }
  
+ function getDropofitem(){
+     
+ }
+ 
  function adddropoff(e){
-     $(".current-quote-rate-id").val(e.val());
+     $(".current-quote-rate-id").val(e.attr('data-var'));
      $("#finddropoffModal").modal("show");
  }
 JS;
