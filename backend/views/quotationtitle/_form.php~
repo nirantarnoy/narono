@@ -70,6 +70,23 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-lg-3"><label for="">จุดขึ้นสินค้า</label></div>
+            <div class="col-lg-9">
+                <?php
+                echo \kartik\select2\Select2::widget([
+                    'name' => 'drop_off_id',
+                    'value' => '',
+                    'data' => \yii\helpers\ArrayHelper::map(\backend\models\DropoffPlace::find()->where(['status' => 1])->all(), 'id', 'name'),
+                    'options' => ['placeholder' => 'เลือกจุดขึ้นสินค้า', 'id' => 'drop-off-id'],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                        'multiple' => true,
+                    ]
+                ]);
+                ?>
+            </div>
+        </div>
 
 
         <br/>
@@ -87,7 +104,7 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
                         <th>จังหวัด</th>
                         <th>Route</th>
                         <th>โซนพื้นที่</th>
-                        <th>ที่ขึ้นสินค้า</th>
+<!--                        <th>ที่ขึ้นสินค้า</th>-->
                         <th>ระยะทาง</th>
                         <th>ปริมาณเฉลี่ยตัน/ปี</th>
                         <th>ราคาที่เสนอ</th>
@@ -124,11 +141,11 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
                                     <option value="-1">--เลือกโซน--</option>
                                 </select>
                             </td>
-                            <td>
-                                <select name="line_drop_off_id[]" class="form-control line-drop-off-id" id="">
-                                    <option value="-1">--ที่ขั้นสินค้า--</option>
-                                </select>
-                            </td>
+<!--                            <td>-->
+<!--                                <select name="line_drop_off_id[]" class="form-control line-drop-off-id" id="">-->
+<!--                                    <option value="-1">--ที่ขั้นสินค้า--</option>-->
+<!--                                </select>-->
+<!--                            </td>-->
 
                             <td>
                                 <input type="number" class="form-control line-distance" name="line_distance[]" min="0">
@@ -190,18 +207,18 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
                                             <?php endforeach; ?>
                                         </select>
                                     </td>
-                                    <td>
-                                        <?php
-                                        $dropoff_active = 'btn-outline-success';
-                                        $cnt_dropoff = countDropoff($value->id);
-                                        if($cnt_dropoff > 0){
-                                            $dropoff_active = 'btn-success';
-                                        }
-                                        ?>
-                                        <div class="btn btn-sm <?=$dropoff_active?>" data-var="<?= $value->id ?>"
-                                             onclick="adddropoff($(this))">ที่ขึ้นสินค้า
-                                        </div>
-                                    </td>
+<!--                                    <td>-->
+<!--                                        --><?php
+//                                        $dropoff_active = 'btn-outline-success';
+//                                        $cnt_dropoff = countDropoff($value->id);
+//                                        if($cnt_dropoff > 0){
+//                                            $dropoff_active = 'btn-success';
+//                                        }
+//                                        ?>
+<!--                                        <div class="btn btn-sm --><?php //=$dropoff_active?><!--" data-var="--><?php //= $value->id ?><!--"-->
+<!--                                             onclick="adddropoff($(this))">ที่ขึ้นสินค้า-->
+<!--                                        </div>-->
+<!--                                    </td>-->
                                     <td>
                                         <input type="number" class="form-control line-distance" name="line_distance[]"
                                                min="0" value="<?= $value->distance ?>">
@@ -258,11 +275,11 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
                                         <option value="-1">--เลือกโซน--</option>
                                     </select>
                                 </td>
-                                <td>
-                                    <select name="line_drop_off_id[]" class="form-control line-drop-off-id" id="">
-                                        <option value="-1">--ที่ขั้นสินค้า--</option>
-                                    </select>
-                                </td>
+<!--                                <td>-->
+<!--                                    <select name="line_drop_off_id[]" class="form-control line-drop-off-id" id="">-->
+<!--                                        <option value="-1">--ที่ขั้นสินค้า--</option>-->
+<!--                                    </select>-->
+<!--                                </td>-->
                                 <td>
                                     <input type="number" class="form-control line-distance" name="line_distance[]"
                                            min="0">
@@ -515,7 +532,7 @@ function removeline(e) {
              async: true,
              data: {'quote_rate_id': id},
              success: function(data){
-                 alert(data);
+                 //alert(data);
                  $("#drop-off-id").html(data);
              }
      });
