@@ -445,7 +445,7 @@ if($driver_id == null || $search_emp_id !=null){
                 <td style="padding-left: 10px;"><b>ยอดรวม</b></td>
                 <td></td>
                 <td style="text-align: right;padding: 5px;">
-                    <b><?php echo number_format($cost_living_price + $sum_col_10, 2) ?></b></td>
+                    <b><?php echo number_format($cost_living_price + $sum_col_4, 2) ?></b></td>
                 <td style="text-align: center;padding: 5px;">บาท</td>
                 <td style="padding-left: 10px;">ค่าประกันสินค้าเสียหาย</td>
                 <td style="text-align: right;padding: 5px;"><?= number_format($damage_price, 2) ?></td>
