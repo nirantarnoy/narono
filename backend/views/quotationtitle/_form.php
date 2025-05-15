@@ -60,17 +60,6 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
 
         </div>
         <div class="row">
-            <div class="col-lg-3">
-                <div class="form-group">
-                    <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-                    <?php if ($model_line != null): ?>
-                        <div class="btn btn-warning" onclick="printquotationview()"><i class="fa fa-print"></i> พิมพ์
-                        </div>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </div>
-        <div class="row">
             <div class="col-lg-1"><label for="">จุดขึ้นสินค้า</label></div>
             <div class="col-lg-11">
                 <?php
@@ -87,9 +76,19 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
                 ?>
             </div>
         </div>
-
-
-        <br/>
+        <br />
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="form-group">
+                    <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+                    <?php if ($model_line != null): ?>
+                        <div class="btn btn-warning" onclick="printquotationview()"><i class="fa fa-print"></i> พิมพ์
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+                <br/>
         <div class="row">
             <div class="col-lg-12">
                 <h4>รายละเอียด</h4>
