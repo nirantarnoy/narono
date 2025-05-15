@@ -317,7 +317,7 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
                         </td>
                         <td></td>
                         <td></td>
-                        <td></td>
+<!--                        <td></td>-->
                         <td></td>
                         <td></td>
                         <td></td>

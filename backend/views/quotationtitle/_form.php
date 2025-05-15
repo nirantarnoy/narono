@@ -71,8 +71,8 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-3"><label for="">จุดขึ้นสินค้า</label></div>
-            <div class="col-lg-9">
+            <div class="col-lg-1"><label for="">จุดขึ้นสินค้า</label></div>
+            <div class="col-lg-11">
                 <?php
                 echo \kartik\select2\Select2::widget([
                     'name' => 'drop_off_id',
