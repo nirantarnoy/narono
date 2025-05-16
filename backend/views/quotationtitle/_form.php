@@ -133,7 +133,7 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
                         <th>ระยะทาง</th>
                         <th>ปริมาณเฉลี่ยตัน/ปี</th>
                         <th>ราคาที่เสนอ</th>
-                        <th>ประเภทราคา</th>
+<!--                        <th>ประเภทราคา</th>-->
                         <th></th>
                     </tr>
                     </thead>
@@ -182,14 +182,14 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
                                 <input type="text" class="form-control line-quotation-price"
                                        name="line_quotation_price[]">
                             </td>
-                            <td>
-                                <select name="line_quotation_price_type_id[]" class="form-control" id="">
-                                    <?php for ($i = 0; $i <= count($price_type_data) - 1; $i++): ?>
-
-                                        <option value="<?= $price_type_data[$i]['id'] ?>"><?= $price_type_data[$i]['name'] ?></option>
-                                    <?php endfor; ?>
-                                </select>
-                            </td>
+<!--                            <td>-->
+<!--                                <select name="line_quotation_price_type_id[]" class="form-control" id="">-->
+<!--                                    --><?php //for ($i = 0; $i <= count($price_type_data) - 1; $i++): ?>
+<!---->
+<!--                                        <option value="--><?php //= $price_type_data[$i]['id'] ?><!--">--><?php //= $price_type_data[$i]['name'] ?><!--</option>-->
+<!--                                    --><?php //endfor; ?>
+<!--                                </select>-->
+<!--                            </td>-->
                             <td>
                                 <div class="btn btn-danger btn-sm" onclick="removeline($(this))">ลบ</div>
                             </td>
@@ -257,19 +257,19 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
                                         <input type="text" class="form-control line-quotation-price"
                                                name="line_quotation_price[]" value="<?= $value->price_current_rate ?>">
                                     </td>
-                                    <td>
-                                        <select name="line_quotation_price_type_id[]" class="form-control" id="">
-                                            <?php for ($i = 0; $i <= count($price_type_data) - 1; $i++): ?>
-                                                <?php
-                                                $selected = '';
-                                                if ($value->price_type_id == $price_type_data[$i]['id']) {
-                                                    $selected = 'selected';
-                                                }
-                                                ?>
-                                                <option value="<?= $price_type_data[$i]['id'] ?>" <?= $selected ?>><?= $price_type_data[$i]['name'] ?></option>
-                                            <?php endfor; ?>
-                                        </select>
-                                    </td>
+<!--                                    <td>-->
+<!--                                        <select name="line_quotation_price_type_id[]" class="form-control" id="">-->
+<!--                                            --><?php //for ($i = 0; $i <= count($price_type_data) - 1; $i++): ?>
+<!--                                                --><?php
+//                                                $selected = '';
+//                                                if ($value->price_type_id == $price_type_data[$i]['id']) {
+//                                                    $selected = 'selected';
+//                                                }
+//                                                ?>
+<!--                                                <option value="--><?php //= $price_type_data[$i]['id'] ?><!--" --><?php //= $selected ?><!-->--><?php //= $price_type_data[$i]['name'] ?><!--</option>-->
+<!--                                            --><?php //endfor; ?>
+<!--                                        </select>-->
+<!--                                    </td>-->
                                     <td>
                                         <div class="btn btn-danger btn-sm" onclick="removeline($(this))">ลบ</div>
                                     </td>
@@ -317,14 +317,14 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
                                     <input type="text" class="form-control line-quotation-price"
                                            name="line_quotation_price[]">
                                 </td>
-                                <td>
-                                    <select name="line_quotation_price_type_id[]" class="form-control" id="">
-                                        <?php for ($i = 0; $i <= count($price_type_data) - 1; $i++): ?>
-
-                                            <option value="<?= $price_type_data[$i]['id'] ?>"><?= $price_type_data[$i]['name'] ?></option>
-                                        <?php endfor; ?>
-                                    </select>
-                                </td>
+<!--                                <td>-->
+<!--                                    <select name="line_quotation_price_type_id[]" class="form-control" id="">-->
+<!--                                        --><?php //for ($i = 0; $i <= count($price_type_data) - 1; $i++): ?>
+<!---->
+<!--                                            <option value="--><?php //= $price_type_data[$i]['id'] ?><!--">--><?php //= $price_type_data[$i]['name'] ?><!--</option>-->
+<!--                                        --><?php //endfor; ?>
+<!--                                    </select>-->
+<!--                                </td>-->
                                 <td>
                                     <div class="btn btn-danger btn-sm" onclick="removeline($(this))">ลบ</div>
                                 </td>
@@ -344,7 +344,7 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
                         <td></td>
 <!--                        <td></td>-->
                         <td></td>
-                        <td></td>
+<!--                        <td></td>-->
                         <td></td>
                     </tr>
                     </tfoot>
