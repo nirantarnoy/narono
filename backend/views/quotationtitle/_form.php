@@ -89,7 +89,6 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-1">ประเภทราคา</div>
             <div class="col-lg-3">
                 <?= $form->field($model, 'price_type_id')->widget(\kartik\select2\Select2::className(), [
                     'data' => \yii\helpers\ArrayHelper::map($price_type_data, 'id', 'name'),
