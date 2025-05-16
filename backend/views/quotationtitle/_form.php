@@ -13,6 +13,7 @@ $model_dropoff = \backend\models\DropoffPlace::find()->all();
 /** @var yii\widgets\ActiveForm $form */
 
 $model_quotation_dropoff = null;
+$selected_dropoff = [];
 
 $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 'name' => 'ราคาเหมา']];
 ?>
@@ -22,6 +23,11 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
         <?php $form = ActiveForm::begin(); ?>
         <?php
         $model_quotation_dropoff = \common\models\QuotationDropoff::find()->select(['dropoff_id'])->where(['quotation_rate_id' => $model->id])->all();
+        if($model_quotation_dropoff != null){
+            foreach ($model_quotation_dropoff as $value) {
+                array_push($selected_dropoff,$value->dropoff_id);
+            }
+        }
         ?>
         <input type="hidden" class="remove-line-list" value="">
         <div class="row">
@@ -71,7 +77,7 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
                 <?php
                 echo \kartik\select2\Select2::widget([
                     'name' => 'drop_off_id',
-                    'value' => $model_quotation_dropoff,
+                    'value' => $selected_dropoff,
                     'data' => \yii\helpers\ArrayHelper::map(\backend\models\DropoffPlace::find()->where(['status' => 1])->all(), 'id', 'name'),
                     'options' => ['placeholder' => 'เลือกจุดขึ้นสินค้า', 'id' => 'drop-off-id'],
                     'pluginOptions' => [
