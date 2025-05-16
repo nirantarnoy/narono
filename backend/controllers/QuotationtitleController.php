@@ -182,10 +182,10 @@ class QuotationtitleController extends Controller
                 if($drop_off_id != null){
                     if($drop_off_id!=null){
                         for($i = 0; $i <= count($drop_off_id)-1; $i++){
-                            $model = new \common\models\QuotationDropoff();
-                            $model->quotation_rate_id = $model->id;
-                            $model->dropoff_id = $drop_off_id[$i];
-                            $model->save(false);
+                            $modelx = new \common\models\QuotationDropoff();
+                            $modelx->quotation_rate_id = $id;
+                            $modelx->dropoff_id = $drop_off_id[$i];
+                            $modelx->save(false);
                         }
                     }
                 }
