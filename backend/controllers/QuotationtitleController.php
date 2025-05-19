@@ -117,8 +117,8 @@ class QuotationtitleController extends Controller
                             $model_line->price_current_rate = $line_quotation_price[$i];
                             $model_line->load_qty = $line_average[$i];
                             $model_line->zone_id = $line_zone_id[$i];
-                            $model_line->price_type_id = $line_quotation_price_type_id[$i];
-                            $model_line->drop_off_id = $line_drop_off_id[$i];
+//                            $model_line->price_type_id = $line_quotation_price_type_id[$i];
+//                            $model_line->drop_off_id = $line_drop_off_id[$i];
                             $model_line->save(false);
                         }
                     }
@@ -174,7 +174,7 @@ class QuotationtitleController extends Controller
                         $model_line->load_qty = $line_average[$i];
                         $model_line->route_code = $line_route[$i];
                         $model_line->zone_id = $line_zone_id[$i];
-                        $model_line->price_type_id = $line_quotation_price_type_id[$i];
+                       // $model_line->price_type_id = $line_quotation_price_type_id[$i];
                       //  $model_line->drop_off_id = $line_drop_off_id[$i];
                         $model_line->save(false);
                     }
