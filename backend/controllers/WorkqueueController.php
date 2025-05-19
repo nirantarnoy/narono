@@ -481,11 +481,11 @@ class WorkqueueController extends Controller
         $data = [];
         if($dropoff_id && $car_id){
             $model_car = \backend\models\Car::find()->select(['car_type_id'])->where(['id'=>$car_id])->one();
-            $model = \common\models\QueryQuotationPricePerTon::find()->where(['dropoff_id'=>$dropoff_id,'car_type_id'=>$model_car->car_type_id])->one();
-            if($model){
-               // array_push($data,['price'=>$model->price_current_rate]);
-            }
+//            $model = \common\models\QueryQuotationPricePerTon::find()->where(['dropoff_id'=>$dropoff_id,'car_type_id'=>$model_car->car_type_id])->one();
+//            if($model){
+//               // array_push($data,['price'=>$model->price_current_rate]);
+//            }
         }
-        return $data;
+        return json_encode($data);
     }
 }
