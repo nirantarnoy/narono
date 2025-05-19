@@ -49,7 +49,7 @@ if (!$model->isNewRecord) {
 //print_r($model->route_plan_id);
 $dropoff_data = \common\models\DropoffPlace::find()->all();
 
-$charter_data = [['id'=>0,'name'=>'No'],['id'=>1,'name'=>'Yes']];
+$charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
 ?>
 
 <div class="workqueue-form">
@@ -86,10 +86,11 @@ $charter_data = [['id'=>0,'name'=>'No'],['id'=>1,'name'=>'Yes']];
             ]) ?>
         </div>
 
-            <div class="col-lg-3">
-                <label for="">ลูกค้าวางบิล</label>
-                <input type="text" class="form-control customer-invoice-name" readonly value="<?=$model->isNewRecord?'':\backend\models\Customer::findCustomerInvoiceName($model->customer_id)?>">
-            </div>
+        <div class="col-lg-3">
+            <label for="">ลูกค้าวางบิล</label>
+            <input type="text" class="form-control customer-invoice-name" readonly
+                   value="<?= $model->isNewRecord ? '' : \backend\models\Customer::findCustomerInvoiceName($model->customer_id) ?>">
+        </div>
 
     </div>
 
@@ -114,6 +115,7 @@ $charter_data = [['id'=>0,'name'=>'No'],['id'=>1,'name'=>'Yes']];
                     return $data->name;
                 }),
                 'options' => [
+                    'id' => 'car-selected-id',
                     'placeholder' => '--รถ--',
                     'onchange' => 'getCarinfo($(this))',
                 ]
@@ -229,22 +231,25 @@ $charter_data = [['id'=>0,'name'=>'No'],['id'=>1,'name'=>'Yes']];
         </div>
         <div class="col-lg-3">
             <label for="">ระยะทางไป-กลับ</label>
-            <input type="text" class="form-control total-distance" name="total_distance" value="<?=$model->total_distance?>" >
+            <input type="text" class="form-control total-distance" name="total_distance"
+                   value="<?= $model->total_distance ?>">
         </div>
 
     </div>
     <div class="row">
         <div class="col-lg-3">
             <label for="">ราคาน้ำมัน</label>
-            <input type="text" class="form-control oil-daily-price" name="oil_daily_price" value="<?=$model->oil_daily_price?>" >
+            <input type="text" class="form-control oil-daily-price" name="oil_daily_price"
+                   value="<?= $model->oil_daily_price ?>">
         </div>
         <div class="col-lg-3">
             <label for="">รวมจำนวน(ลิตร)</label>
-            <input type="text" class="form-control total-lite" name="total_lite" value="<?=$model->total_lite?>">
+            <input type="text" class="form-control total-lite" name="total_lite" value="<?= $model->total_lite ?>">
         </div>
         <div class="col-lg-3">
             <label for="">รวมจำนวน(บาท)</label>
-            <input type="text" class="form-control total-amount" name="total_amount" value="<?=$model->total_amount?>" readonly>
+            <input type="text" class="form-control total-amount" name="total_amount" value="<?= $model->total_amount ?>"
+                   readonly>
         </div>
 
     </div>
@@ -252,15 +257,18 @@ $charter_data = [['id'=>0,'name'=>'No'],['id'=>1,'name'=>'Yes']];
     <div class="row">
         <div class="col-lg-3">
             <label for="">ราคาน้ำมันปั๊มนอก</label>
-            <input type="text" class="form-control oil-out-price" name="oil_out_price" value="<?=$model->oil_out_price?>" >
+            <input type="text" class="form-control oil-out-price" name="oil_out_price"
+                   value="<?= $model->oil_out_price ?>">
         </div>
         <div class="col-lg-3">
             <label for="">รวมจำนวนปั๊มนอก(ลิตร)</label>
-            <input type="text" class="form-control total-out-lite" name="total_out_lite" value="<?=$model->total_out_lite?>" >
+            <input type="text" class="form-control total-out-lite" name="total_out_lite"
+                   value="<?= $model->total_out_lite ?>">
         </div>
         <div class="col-lg-3">
             <label for="">รวมปั๊มนอก(บาท)</label>
-            <input type="text" class="form-control total-amount-2" name="total_amount2" value="<?=$model->total_amount2?>" readonly>
+            <input type="text" class="form-control total-amount-2" name="total_amount2"
+                   value="<?= $model->total_amount2 ?>" readonly>
         </div>
     </div>
     <div style="height: 10px;"></div>
@@ -333,7 +341,7 @@ $charter_data = [['id'=>0,'name'=>'No'],['id'=>1,'name'=>'Yes']];
                 <?php if ($model->isNewRecord): ?>
                     <tr>
                         <td>
-                            <select name="dropoff_id[]" class="form-control dropoff-id" id="" >
+                            <select name="dropoff_id[]" class="form-control dropoff-id" id="">
                                 <option value="0">--สถานที่ชื้นสินค้า--</option>
                                 <?php for ($i = 0; $i <= count($dropoff_data) - 1; $i++) : ?>
                                     <option value="<?= $dropoff_data[$i]['id'] ?>"><?= $dropoff_data[$i]['name'] ?></option>
@@ -350,10 +358,11 @@ $charter_data = [['id'=>0,'name'=>'No'],['id'=>1,'name'=>'Yes']];
                                    class="form-control qty" id="">
                         </td>
                         <td>
-                            <select name="is_charter[]" id="" class="form-control is-charter" onchange="checkcharter($(this))">
-                                <?php for($z=0;$z<=count($charter_data)-1;$z++):?>
-                                <option value="<?=$charter_data[$z]['id']?>"><?=$charter_data[$z]['name']?></option>
-                                <?php endfor;?>
+                            <select name="is_charter[]" id="" class="form-control is-charter"
+                                    onchange="checkcharter($(this))">
+                                <?php for ($z = 0; $z <= count($charter_data) - 1; $z++): ?>
+                                    <option value="<?= $charter_data[$z]['id'] ?>"><?= $charter_data[$z]['name'] ?></option>
+                                <?php endfor; ?>
                             </select>
                         </td>
                         <td>
@@ -362,7 +371,8 @@ $charter_data = [['id'=>0,'name'=>'No'],['id'=>1,'name'=>'Yes']];
                                    class="form-control weight" id="" onchange="calpriceperton($(this))">
                         </td>
                         <td>
-                            <input type="text" class="form-control price-per-ton" name="price_per_ton[]" onchange="calpriceperton($(this))">
+                            <input type="text" class="form-control price-per-ton" name="price_per_ton[]"
+                                   onchange="calpriceperton($(this))">
                         </td>
                         <td>
                             <input type="text" class="form-control price-line-total" name="price_line_total[]" readonly>
@@ -377,7 +387,8 @@ $charter_data = [['id'=>0,'name'=>'No'],['id'=>1,'name'=>'Yes']];
                         <?php foreach ($w_dropoff as $key): ?>
                             <tr data-var="<?= $key->id ?>">
                                 <td>
-                                    <select name="dropoff_id[]" class="form-control dropoff-id" id="">
+                                    <select name="dropoff_id[]" class="form-control dropoff-id" id=""
+                                            onchange="getpricefromquotation($(this))">
                                         <option value="0">--สถานที่ชื้นสินค้า--</option>
                                         <?php for ($i = 0; $i <= count($dropoff_data) - 1; $i++) : ?>
                                             <?php
@@ -402,27 +413,31 @@ $charter_data = [['id'=>0,'name'=>'No'],['id'=>1,'name'=>'Yes']];
                                            value="<?= $key->qty ?>">
                                 </td>
                                 <td>
-                                    <select name="is_charter[]" id="" class="form-control is-charter" onchange="checkcharter($(this))">
-                                        <?php for($z=0;$z<=count($charter_data)-1;$z++):?>
+                                    <select name="is_charter[]" id="" class="form-control is-charter"
+                                            onchange="checkcharter($(this))">
+                                        <?php for ($z = 0; $z <= count($charter_data) - 1; $z++): ?>
                                             <?php
-                                              $selected = $charter_data[$z]['id'] == $key->is_charter ? "selected" : "";
+                                            $selected = $charter_data[$z]['id'] == $key->is_charter ? "selected" : "";
                                             ?>
-                                            <option value="<?=$charter_data[$z]['id']?>" <?=$selected?>><?=$charter_data[$z]['name']?></option>
-                                        <?php endfor;?>
+                                            <option value="<?= $charter_data[$z]['id'] ?>" <?= $selected ?>><?= $charter_data[$z]['name'] ?></option>
+                                        <?php endfor; ?>
                                     </select>
                                 </td>
                                 <td>
                                     <input type="number" name="weight[]"
                                            class="form-control weight" id=""
                                            step="any"
-                                           value="<?= $key->weight ?>" onchange="calpriceperton($(this))" <?=$key->is_charter == 1?'readonly':''?>>
+                                           value="<?= $key->weight ?>"
+                                           onchange="calpriceperton($(this))" <?= $key->is_charter == 1 ? 'readonly' : '' ?>>
                                 </td>
 
                                 <td>
-                                    <input type="text" class="form-control price-per-ton" name="price_per_ton[]" value="<?=$key->price_per_ton?>" onchange="calpriceperton($(this))">
+                                    <input type="text" class="form-control price-per-ton" name="price_per_ton[]"
+                                           value="<?= $key->price_per_ton ?>" onchange="calpriceperton($(this))">
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control price-line-total" name="price_line_total[]" value="<?= $key->price_line_total ?>" readonly>
+                                    <input type="text" class="form-control price-line-total" name="price_line_total[]"
+                                           value="<?= $key->price_line_total ?>" readonly>
                                 </td>
                                 <td>
                                     <div class="btn btn-danger btn-sm" onclick="removeline1($(this))"><i
@@ -451,10 +466,11 @@ $charter_data = [['id'=>0,'name'=>'No'],['id'=>1,'name'=>'Yes']];
                                        id="">
                             </td>
                             <td>
-                                <select name="is_charter[]" id="" class="form-control is-charter" onchange="checkcharter($(this))">
-                                    <?php for($z=0;$z<=count($charter_data)-1;$z++):?>
-                                        <option value="<?=$charter_data[$z]['id']?>"><?=$charter_data[$z]['name']?></option>
-                                    <?php endfor;?>
+                                <select name="is_charter[]" id="" class="form-control is-charter"
+                                        onchange="checkcharter($(this))">
+                                    <?php for ($z = 0; $z <= count($charter_data) - 1; $z++): ?>
+                                        <option value="<?= $charter_data[$z]['id'] ?>"><?= $charter_data[$z]['name'] ?></option>
+                                    <?php endfor; ?>
                                 </select>
                             </td>
                             <td>
@@ -463,10 +479,12 @@ $charter_data = [['id'=>0,'name'=>'No'],['id'=>1,'name'=>'Yes']];
                                        class="form-control weight" id="" onchange="calpriceperton($(this))">
                             </td>
                             <td>
-                                <input type="text" class="form-control price-per-ton" name="price_per_ton[]" onchange="calpriceperton($(this))">
+                                <input type="text" class="form-control price-per-ton" name="price_per_ton[]"
+                                       onchange="calpriceperton($(this))">
                             </td>
                             <td>
-                                <input type="text" class="form-control price-line-total" name="price_line_total[]" readonly>
+                                <input type="text" class="form-control price-line-total" name="price_line_total[]"
+                                       readonly>
                             </td>
                             <td>
                                 <div class="btn btn-danger btn-sm" onclick="removeline1($(this))"><i
@@ -628,7 +646,7 @@ $url_to_getCardata = \yii\helpers\Url::to(['car/getcarinfo'], true);
 $url_to_routeplan = \yii\helpers\Url::to(['car/getrouteplan'], true);
 $url_to_find_item = \yii\helpers\Url::to(['item/finditem'], true);
 $url_to_customer_invoice = \yii\helpers\Url::to(['customer/getcustomerinvoice'], true);
-
+$url_to_getpricefromquotation = \yii\helpers\Url::to(['workqueue/getpricefromquotation'], true);
 $js = <<<JS
 var removelist = [];
 var removelist2 = [];
@@ -1098,6 +1116,27 @@ function calpriceperton(e){
     
     
     e.closest("tr").find(".price-line-total").val(parseFloat(line_total).toFixed(2));
+}
+
+function getpricefromquotation(e){
+    var id = e.val();
+    var car_id = $("#car-selected-id").val();
+    if(id > 0 && car_id > 0){
+        $.ajax({
+            type: 'post',
+            dataType: 'json',
+            url: '$url_to_getpricefromquotation',
+            async: false,
+            data: {'dropoff_id': id,'car_id': car_id},
+            success: function(data){
+                alert(data);
+                if(data){
+                    e.closest("tr").find(".price-per-ton").val(data.price_per_ton);
+                    e.closest("tr").find(".is-charter").val(data.is_charter);
+                }
+            }
+        });
+    }
 }
 JS;
 $this->registerJs($js, static::POS_END);
