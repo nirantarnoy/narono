@@ -1131,10 +1131,10 @@ function getpricefromquotation(e){
             async: false,
             data: {'dropoff_id': id,'car_id': car_id},
             success: function(data){
-                alert(data);
+               // alert(data);
                 if(data){
-                    // e.closest("tr").find(".price-per-ton").val(data.price_per_ton);
-                    // e.closest("tr").find(".is-charter").val(data.is_charter);
+                    e.closest("tr").find(".price-per-ton").val(data.price_per_ton);
+                    e.closest("tr").find(".is-charter").val(data.is_charter);
                 }
             }
         });

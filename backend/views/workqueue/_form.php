@@ -1133,8 +1133,8 @@ function getpricefromquotation(e){
             success: function(data){
                // alert(data);
                 if(data){
-                    e.closest("tr").find(".price-per-ton").val(data.price_per_ton);
-                    e.closest("tr").find(".is-charter").val(data.is_charter);
+                    e.closest("tr").find(".price-per-ton").val(data[0]['price_per_ton']);
+                   // e.closest("tr").find(".is-charter").val(data.is_charter);
                 }
             }
         });
