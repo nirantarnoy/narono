@@ -41,7 +41,7 @@ class CustomergroupController extends Controller
     {
         $pageSize = \Yii::$app->request->post("perpage");
 
-        $searchModelx = new CustomergroupSearch();
+        $searchModel = new CustomergroupSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
         $dataProvider->pagination->pageSize = $pageSize;
