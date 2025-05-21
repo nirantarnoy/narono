@@ -181,7 +181,6 @@ class QuotationtitleController extends Controller
                 }
                 if($drop_off_id != null){
                     if($drop_off_id!=null){
-                        \common\models\QuotationDropoff::deleteAll(['quotation_rate_id'=>$id]);
                         for($i = 0; $i <= count($drop_off_id)-1; $i++){
                             $modelx = new \common\models\QuotationDropoff();
                             $modelx->quotation_rate_id = $id;
