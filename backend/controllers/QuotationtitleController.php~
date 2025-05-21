@@ -342,7 +342,7 @@ class QuotationtitleController extends Controller
     }
 
     public function actionCopyquotation(){
-        $id = \Yii::$app->request->post('id');
+        $id = \Yii::$app->request->post('quotation_id');
         if($id){
             $model = \common\models\Quotationtitle::find()->where(['id'=>$id])->one();
             if($model){
@@ -373,10 +373,12 @@ class QuotationtitleController extends Controller
                             $model_new_quotation_dropoff->save(false);
                         }
                     }
+
+                    return $this->redirect(['update', 'id' => $model_new_quotation->id]);
                 }
 
             }
         }
-
+return $this->redirect(['index']);
     }
 }
