@@ -340,4 +340,43 @@ class QuotationtitleController extends Controller
         }
         echo $html;
     }
+
+    public function actionCopyquotation(){
+        $id = \Yii::$app->request->post('quotation_id');
+        if($id){
+            $model = \common\models\Quotationtitle::find()->where(['id'=>$id])->one();
+            if($model){
+                $model_new_quotation = new \common\models\Quotationtitle();
+                $model_new_quotation->attributes = $model->attributes;
+                $model_new_quotation->isNewRecord = true;
+                $model_new_quotation->id = null;
+                if($model_new_quotation->save(false)){
+                    $quotation_rate = \common\models\QuotationRate::find()->where(['quotation_title_id'=>$id])->all();
+                    if($quotation_rate){
+                        foreach ($quotation_rate as $value){
+                            $model_new_quotation_rate = new \common\models\QuotationRate();
+                            $model_new_quotation_rate->attributes = $value->attributes;
+                            $model_new_quotation_rate->quotation_title_id = $model_new_quotation->id;
+                            $model_new_quotation_rate->isNewRecord = true;
+                            $model_new_quotation_rate->id = null;
+                            $model_new_quotation_rate->save(false);
+                        }
+                    }
+                    $quotation_dropoff = \common\models\QuotationDropoff::find()->where(['quotation_rate_id'=>$id])->all();
+                    if($quotation_dropoff){
+                        foreach ($quotation_dropoff as $value){
+                            $model_new_quotation_dropoff = new \common\models\QuotationDropoff();
+                            $model_new_quotation_dropoff->attributes = $value->attributes;
+                            $model_new_quotation_dropoff->quotation_rate_id = $model_new_quotation->id;
+                            $model_new_quotation_dropoff->isNewRecord = true;
+                            $model_new_quotation_dropoff->id = null;
+                            $model_new_quotation_dropoff->save(false);
+                        }
+                    }
+                }
+
+            }
+        }
+
+    }
 }

@@ -19,6 +19,14 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
 ?>
 
     <div class="quotationtitle-form">
+        <form id="form-copy" action="<?= \yii\helpers\Url::to(['quotationtitle/copyquotation'], true) ?>" method="post">
+            <input type="hidden" name="quotation_id" value="<?= $model->id ?>">
+        </form>
+        <div class="row">
+            <div class="col-lg-3">
+               <div class="btn btn-sm btn-primary" onclick="copythis()"><i class="fa fa-copy"></i> คัดลอก"></div>
+            </div>
+        </div>
 
         <?php $form = ActiveForm::begin(); ?>
         <?php
@@ -518,6 +526,12 @@ function removeline(e) {
      }
      $("#finddropoffModal").modal("show");
      
+ }
+ 
+ function copythis(){
+    if(confirm("ต้องการทำรายการใช่หรือใไม่ ?")){
+        $("form#form-copy").submit();
+    }
  }
 JS;
 $this->registerJs($js, static::POS_END);
