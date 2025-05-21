@@ -155,7 +155,7 @@ class QuotationtitleController extends Controller
             $line_average = \Yii::$app->request->post('line_average');
             $line_quotation_price = \Yii::$app->request->post('line_quotation_price');
             $line_quotation_price_type_id = \Yii::$app->request->post('line_quotation_price_type_id');
-           // $line_drop_off_id = \Yii::$app->request->post('line_drop_off_id');
+            // $line_drop_off_id = \Yii::$app->request->post('line_drop_off_id');
 
             $drop_off_id = \Yii::$app->request->post('drop_off_id');
 
@@ -163,7 +163,7 @@ class QuotationtitleController extends Controller
             // print_r(\Yii::$app->request->post());return;
             if ($model->save(false)) {
                 if ($line_warehouse_id != null) {
-                     \common\models\QuotationRate::deleteAll(['quotation_title_id'=>$id]);
+                    \common\models\QuotationRate::deleteAll(['quotation_title_id' => $id]);
                     for ($i = 0; $i <= count($line_warehouse_id) - 1; $i++) {
                         $model_line = new \common\models\QuotationRate();
                         $model_line->quotation_title_id = $model->id;
@@ -174,15 +174,15 @@ class QuotationtitleController extends Controller
                         $model_line->load_qty = $line_average[$i];
                         $model_line->route_code = $line_route[$i];
                         $model_line->zone_id = $line_zone_id[$i];
-                       // $model_line->price_type_id = $line_quotation_price_type_id[$i];
-                      //  $model_line->drop_off_id = $line_drop_off_id[$i];
+                        // $model_line->price_type_id = $line_quotation_price_type_id[$i];
+                        //  $model_line->drop_off_id = $line_drop_off_id[$i];
                         $model_line->save(false);
                     }
                 }
-                if($drop_off_id != null){
-                    if($drop_off_id!=null){
-                        \common\models\QuotationDropoff::deleteAll(['quotation_rate_id'=>$id]);
-                        for($i = 0; $i <= count($drop_off_id)-1; $i++){
+                if ($drop_off_id != null) {
+                    if ($drop_off_id != null) {
+                        \common\models\QuotationDropoff::deleteAll(['quotation_rate_id' => $id]);
+                        for ($i = 0; $i <= count($drop_off_id) - 1; $i++) {
                             $modelx = new \common\models\QuotationDropoff();
                             $modelx->quotation_rate_id = $id;
                             $modelx->dropoff_id = $drop_off_id[$i];
@@ -252,7 +252,7 @@ class QuotationtitleController extends Controller
         if ($province_id > 0) {
             $model = \backend\models\Cityzone::find()->where(['province_id' => $province_id])->all();
             if ($model) {
-                foreach ($model as $value){
+                foreach ($model as $value) {
                     $detail = $this->getCityzonedetail($value->id);
                     $html .= '<option value="' . $value->id . '">';
                     $html .= $detail;
@@ -282,26 +282,29 @@ class QuotationtitleController extends Controller
         }
         return $name;
     }
-    public function actionGetprovince(){
+
+    public function actionGetprovince()
+    {
         $html = '<option value="-1">----เลือกจังหวัด---</option>';
         $model_province = \backend\models\Province::find()->all();
-        if($model_province){
-            foreach ($model_province as $value){
-                $html.='<option value="'.$value->PROVINCE_ID.'">'.$value->PROVINCE_NAME.'</option>';
+        if ($model_province) {
+            foreach ($model_province as $value) {
+                $html .= '<option value="' . $value->PROVINCE_ID . '">' . $value->PROVINCE_NAME . '</option>';
             }
         }
         echo $html;
     }
 
-    public function actionSavedropoff(){
+    public function actionSavedropoff()
+    {
         $drop_off_id = \Yii::$app->request->post('drop_off_id');
         $quotation_rate_id = \Yii::$app->request->post('quotation_rate_id');
         $quot_id = \Yii::$app->request->post('quotation_id');
 
-        if($quotation_rate_id != null){
-            if($drop_off_id != null){
-                if($drop_off_id!=null){
-                    for($i = 0; $i <= count($drop_off_id)-1; $i++){
+        if ($quotation_rate_id != null) {
+            if ($drop_off_id != null) {
+                if ($drop_off_id != null) {
+                    for ($i = 0; $i <= count($drop_off_id) - 1; $i++) {
                         $model = new \common\models\QuotationDropoff();
                         $model->quotation_rate_id = $quotation_rate_id;
                         $model->dropoff_id = $drop_off_id[$i];
@@ -317,22 +320,22 @@ class QuotationtitleController extends Controller
     {
         $quote_rate_id = \Yii::$app->request->post('quote_rate_id');
         $html = '';
-        if($quote_rate_id != null){
-            $model_dropoff = \common\models\DropoffPlace::find()->where(['status'=>1])->all();
-            if($model_dropoff){
+        if ($quote_rate_id != null) {
+            $model_dropoff = \common\models\DropoffPlace::find()->where(['status' => 1])->all();
+            if ($model_dropoff) {
                 $data = [];
                 $model = \common\models\QuotationDropoff::find()->where(['quotation_rate_id' => $quote_rate_id])->all();
-                if($model){
-                    foreach ($model as $value){
-                        array_push($data,$value->dropoff_id);
+                if ($model) {
+                    foreach ($model as $value) {
+                        array_push($data, $value->dropoff_id);
                     }
                 }
-                foreach ($model_dropoff as $value){
-                    $selected ='';
-                    if(in_array($value->id,$data)){
+                foreach ($model_dropoff as $value) {
+                    $selected = '';
+                    if (in_array($value->id, $data)) {
                         $selected = 'selected';
                     }
-                    $html.='<option value="'.$value->id.'" '.$selected.'>'.$value->name.'</option>';
+                    $html .= '<option value="' . $value->id . '" ' . $selected . '>' . $value->name . '</option>';
                 }
             }
 
@@ -341,19 +344,20 @@ class QuotationtitleController extends Controller
         echo $html;
     }
 
-    public function actionCopyquotation(){
+    public function actionCopyquotation()
+    {
         $id = \Yii::$app->request->post('quotation_id');
-        if($id){
-            $model = \common\models\Quotationtitle::find()->where(['id'=>$id])->one();
-            if($model){
+        if ($id) {
+            $model = \common\models\Quotationtitle::find()->where(['id' => $id])->one();
+            if ($model) {
                 $model_new_quotation = new \common\models\Quotationtitle();
                 $model_new_quotation->attributes = $model->attributes;
                 $model_new_quotation->isNewRecord = true;
                 $model_new_quotation->id = null;
-                if($model_new_quotation->save(false)){
-                    $quotation_rate = \common\models\QuotationRate::find()->where(['quotation_title_id'=>$id])->all();
-                    if($quotation_rate){
-                        foreach ($quotation_rate as $value){
+                if ($model_new_quotation->save(false)) {
+                    $quotation_rate = \common\models\QuotationRate::find()->where(['quotation_title_id' => $id])->all();
+                    if ($quotation_rate) {
+                        foreach ($quotation_rate as $value) {
                             $model_new_quotation_rate = new \common\models\QuotationRate();
                             $model_new_quotation_rate->attributes = $value->attributes;
                             $model_new_quotation_rate->quotation_title_id = $model_new_quotation->id;
@@ -362,9 +366,9 @@ class QuotationtitleController extends Controller
                             $model_new_quotation_rate->save(false);
                         }
                     }
-                    $quotation_dropoff = \common\models\QuotationDropoff::find()->where(['quotation_rate_id'=>$id])->all();
-                    if($quotation_dropoff){
-                        foreach ($quotation_dropoff as $value){
+                    $quotation_dropoff = \common\models\QuotationDropoff::find()->where(['quotation_rate_id' => $id])->all();
+                    if ($quotation_dropoff) {
+                        foreach ($quotation_dropoff as $value) {
                             $model_new_quotation_dropoff = new \common\models\QuotationDropoff();
                             $model_new_quotation_dropoff->attributes = $value->attributes;
                             $model_new_quotation_dropoff->quotation_rate_id = $model_new_quotation->id;
@@ -379,6 +383,6 @@ class QuotationtitleController extends Controller
 
             }
         }
-return $this->redirect(['index']);
+        return $this->redirect(['index']);
     }
 }
