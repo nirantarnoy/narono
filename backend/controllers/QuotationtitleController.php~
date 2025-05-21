@@ -210,6 +210,9 @@ class QuotationtitleController extends Controller
      */
     public function actionDelete($id)
     {
+        \common\models\QuotationDropoff::deleteAll(['quotation_rate_id' => $id]);
+        \common\models\QuotationRate::deleteAll(['quotation_title_id' => $id]);
+        
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
@@ -377,7 +380,7 @@ class QuotationtitleController extends Controller
                             $model_new_quotation_dropoff->save(false);
                         }
                     }
-
+                    \Yii::$app->session->setFlash('success', 'คัดลอกข้อมูลเรียบร้อยแล้ว');
                     return $this->redirect(['update', 'id' => $model_new_quotation->id]);
                 }
 
