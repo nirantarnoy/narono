@@ -27,6 +27,11 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
                <div class="btn btn-sm btn-primary" onclick="copythis()"><i class="fa fa-copy"></i> คัดลอก</div>
             </div>
         </div>
+        <br />
+        <?php if(!empty(\Yii::$app->session->getFlash('success'))):?>
+        <div class="alert alert-success"><i class="fa fa-check"></i> <?=\Yii::$app->session->getFlash('success');?></div>
+        <?php endif; ?>
+        <br />
 
         <?php $form = ActiveForm::begin(); ?>
         <?php

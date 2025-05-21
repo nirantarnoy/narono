@@ -377,7 +377,7 @@ class QuotationtitleController extends Controller
                             $model_new_quotation_dropoff->save(false);
                         }
                     }
-
+                    \Yii::$app->session->setFlash('success', 'คัดลอกข้อมูลเรียบร้อยแล้ว');
                     return $this->redirect(['update', 'id' => $model_new_quotation->id]);
                 }
 

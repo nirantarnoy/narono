@@ -28,6 +28,15 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
             </div>
         </div>
         <br />
+        <?php if(!empty(\Yii::$app->session->getFlash('success'))):?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Success!</strong> <?= \Yii::$app->session->getFlash('success') ?>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <?php endif; ?>
+        <br />
 
         <?php $form = ActiveForm::begin(); ?>
         <?php

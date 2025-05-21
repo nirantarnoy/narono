@@ -348,9 +348,9 @@ class QuotationtitleController extends Controller
     {
         $id = \Yii::$app->request->post('quotation_id');
         if ($id) {
-            $model = \common\models\Quotationtitle::find()->where(['id' => $id])->one();
+            $model = \common\models\QuotationTitle::find()->where(['id' => $id])->one();
             if ($model) {
-                $model_new_quotation = new \common\models\Quotationtitle();
+                $model_new_quotation = new \backend\models\Quotationtitle();
                 $model_new_quotation->attributes = $model->attributes;
                 $model_new_quotation->isNewRecord = true;
                 $model_new_quotation->id = null;
