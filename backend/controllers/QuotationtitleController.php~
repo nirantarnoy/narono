@@ -212,9 +212,8 @@ class QuotationtitleController extends Controller
     {
         \common\models\QuotationDropoff::deleteAll(['quotation_rate_id' => $id]);
         \common\models\QuotationRate::deleteAll(['quotation_title_id' => $id]);
-        
         $this->findModel($id)->delete();
-
+1
         return $this->redirect(['index']);
     }
 
