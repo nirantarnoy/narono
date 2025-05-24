@@ -341,7 +341,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                 <?php if ($model->isNewRecord): ?>
                     <tr>
                         <td>
-                            <select name="dropoff_id[]" class="form-control dropoff-id" id="">
+                            <select name="dropoff_id[]" class="form-control dropoff-id" id="" onchange="getpricefromquotation($(this))">
                                 <option value="0">--สถานที่ชื้นสินค้า--</option>
                                 <?php for ($i = 0; $i <= count($dropoff_data) - 1; $i++) : ?>
                                     <option value="<?= $dropoff_data[$i]['id'] ?>"><?= $dropoff_data[$i]['name'] ?></option>
