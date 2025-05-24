@@ -1122,8 +1122,8 @@ function getpricefromquotation(e){
     var id = e.val();
     var car_id = $("#car-selected-id").val();
     if(id > 0 && car_id > 0){
-        // alert(id);
-        // alert(car_id);
+         alert(id);
+         alert(car_id);
         $.ajax({
             type: 'post',
             dataType: 'json',
