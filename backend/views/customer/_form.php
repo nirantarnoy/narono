@@ -352,8 +352,8 @@ if($model_user_group_list!=null){
                   <tr data-var="<?= $value->id ?>">
                       <td style="text-align: center;"><?=$loopnum?></td>
                       <td>
-                          <input type="hidden" class="line-customer-id" name="line_customer_id[]" value="<?=$value->customer_id?>">
-                          <input type="text" class="form-control line-customer-name" name="line_customer_name[]" value="<?=\backend\models\Customer::findCusName($value->customer_id)?>">
+                          <input type="hidden" class="line-customer-id" name="line_customer_id[]" value="<?=$value->customer_child_id?>">
+                          <input type="text" class="form-control line-customer-name" name="line_customer_name[]" value="<?=\backend\models\Customer::findCusName($value->customer_child_id)?>">
                       </td>
                       <td>
                           <div class="btn btn-danger btn-sm" onclick="removecustomerline($(this))"><i

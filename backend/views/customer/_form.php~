@@ -191,7 +191,7 @@ if($model_user_group_list!=null){
         <div class="col-lg-3">
             <?= $form->field($model, 'is_invoice')->widget(\toxor88\switchery\Switchery::className(), ['options' => ['label' => '', 'class' => 'form-control']])->label() ?>
         </div>
-        <div class="col-lg-3">
+        <div class="col-lg-3" style="display: none;">
             <?= $form->field($model, 'customer_invoice_id')->Widget(\kartik\select2\Select2::className(), [
                 'data' => \yii\helpers\ArrayHelper::map(\backend\models\Customer::find()->where(['status' => 1,'is_invoice'=>1])->all(), 'id', function ($data) {
                     return $data->name;
