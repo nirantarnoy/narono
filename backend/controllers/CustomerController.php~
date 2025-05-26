@@ -345,7 +345,7 @@ class CustomerController extends Controller
                 }
                 if($line_customer_id!=null){
                     if(count($line_customer_id)>0){
-                        print_r($line_customer_id);
+                        print_r($line_customer_id);return;
                         \common\models\CustomerInvoiceChild::deleteAll(['customer_id'=>$model->id]);
                         for ($m = 0; $m <= count($line_customer_id) - 1; $m++) {
                             if($line_customer_id[$m]==0 || $line_customer_id[$m]=='')continue;
