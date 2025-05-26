@@ -511,7 +511,7 @@ class CustomerController extends Controller
         $model = \common\models\Customer::find()->all();
         if($model){
             foreach($model as $value){
-                if($value->customer_child_id){
+                if($value->customer_invoice_id){
                     $model_new = new \common\models\CustomerInvoiceChild();
                     $model_new->customer_id = $value->id;
                     $model_new->customer_child_id = $value->customer_invoice_id;
