@@ -1077,11 +1077,14 @@ function addline1(e){
                     clone.find(".qty").val(0);
                     clone.find(".weight").val(0);
                     clone.find(".price-per-ton").val(0);
+                    clone.find(".price-line-total").val(0);
                    
                     clone.attr("data-var", "");
                     clone.find('.rec-id').val("0");
                    
                     tr.after(clone);
+                    
+                    
     
 }
 function removeline1(e) {
