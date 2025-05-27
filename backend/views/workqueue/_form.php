@@ -1076,6 +1076,7 @@ function addline1(e){
                     clone.find(".dropoff-no").val("");
                     clone.find(".qty").val(0);
                     clone.find(".weight").val(0);
+                    clone.find(".price-per-ton").val(0);
                    
                     clone.attr("data-var", "");
                     clone.find('.rec-id').val("0");
@@ -1134,9 +1135,9 @@ function getpricefromquotation(e){
   //  alert(route_no);
     
     if(dropoff_id > 0 && car_id > 0 && route_no !=''){
-       alert(dropoff_id);
-          alert(car_id);
-          alert(route_no);
+       // alert(dropoff_id);
+       //    alert(car_id);
+       //    alert(route_no);
         $.ajax({
             type: 'post',
             dataType: 'json',
