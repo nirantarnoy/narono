@@ -1132,9 +1132,9 @@ function getpricefromquotation(){
     var route_no = $(".line-route-no").val();
     var car_id = $("#car-selected-id").val();
   //  alert(route_no);
-  //    alert(dropoff_id);
-  //         alert(car_id);
-  //         alert(route_no);
+     alert(dropoff_id);
+          alert(car_id);
+          alert(route_no);
     if(dropoff_id > 0 && car_id > 0 && route_no !=""){
       
         $.ajax({
