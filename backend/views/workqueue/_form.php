@@ -1132,11 +1132,11 @@ function getpricefromquotation(e){
     var route_no = e.closest('tr').find(".line-route-no").val();
     var car_id = $("#car-selected-id").val();
   //  alert(route_no);
-     alert(dropoff_id);
+    
+    if(dropoff_id > 0 && car_id > 0 && route_no !=''){
+       alert(dropoff_id);
           alert(car_id);
           alert(route_no);
-    if(dropoff_id > 0 && car_id > 0 && route_no !=""){
-      
         $.ajax({
             type: 'post',
             dataType: 'json',
@@ -1144,7 +1144,7 @@ function getpricefromquotation(e){
             async: false,
             data: {'dropoff_id': dropoff_id,'car_id': car_id,'route_no': route_no},
             success: function(data){
-               // alert(data[0]['price']);
+                alert(data[0]['price']);
                 if(data){
                     e.closest("tr").find(".price-per-ton").val(data[0]['price']);
                    // e.closest("tr").find(".is-charter").val(data.is_charter);
