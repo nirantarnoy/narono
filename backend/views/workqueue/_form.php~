@@ -405,7 +405,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control line-route-no" name="line_route_no[]" value="<?= $dropoff_data[$i]['quotation_route_no'] ?>" onchange="getpricefromquotation()">
+                                    <input type="text" class="form-control line-route-no" name="line_route_no[]" value="<?= $key->quotation_route_no ?>" onchange="getpricefromquotation()">
                                 </td>
                                 <td>
                                     <input type="text" name="dropoff_no[]"
