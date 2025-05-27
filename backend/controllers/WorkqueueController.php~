@@ -109,7 +109,6 @@ class WorkqueueController extends Controller
                 $price_per_ton = \Yii::$app->request->post('price_per_ton');
                 $price_line_total = \Yii::$app->request->post('price_line_total');
                 $is_charter = \Yii::$app->request->post('is_charter');
-                $route_no = \Yii::$app->request->post('line_route_no');
 
                 $company_id = \backend\models\Customer::findCompanyByCustomer($model->customer_id);
 
@@ -155,7 +154,6 @@ class WorkqueueController extends Controller
                             $model_df = new \common\models\WorkQueueDropoff();
                             $model_df->work_queue_id = $model->id;
                             $model_df->dropoff_id = $dropoff_id[$a];
-                            $model_df->quotation_route_no = $route_no[$a];
                             $model_df->dropoff_no = $dropoff_no[$a];
                             $model_df->qty = $qty[$a];
                             $model_df->weight = $weight[$a];

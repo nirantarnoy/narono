@@ -329,6 +329,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
             <table class="table table-bordered table-striped" id="table-list2">
                 <thead>
                 <th>สถานที่ขึ้นสินค้า</th>
+                <th>RouteNo</th>
                 <th>เลขที่ใบตั้ง</th>
                 <th>จำนวนม้วน</th>
                 <th>เหมา</th>
@@ -347,6 +348,9 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                                     <option value="<?= $dropoff_data[$i]['id'] ?>"><?= $dropoff_data[$i]['name'] ?></option>
                                 <?php endfor; ?>
                             </select>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control line-route-no" name="line_route_no[]" value="" onchange="getpricefromquotation()">
                         </td>
                         <td>
                             <input type="text" name="dropoff_no[]"
@@ -387,8 +391,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                         <?php foreach ($w_dropoff as $key): ?>
                             <tr data-var="<?= $key->id ?>">
                                 <td>
-                                    <select name="dropoff_id[]" class="form-control dropoff-id" id=""
-                                            onchange="getpricefromquotation($(this))">
+                                    <select name="dropoff_id[]" class="form-control dropoff-id" id="" onchange="getpricefromquotation()">
                                         <option value="0">--สถานที่ชื้นสินค้า--</option>
                                         <?php for ($i = 0; $i <= count($dropoff_data) - 1; $i++) : ?>
                                             <?php
@@ -400,6 +403,9 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                                             <option value="<?= $dropoff_data[$i]['id'] ?>" <?= $selected ?>><?= $dropoff_data[$i]['name'] ?></option>
                                         <?php endfor; ?>
                                     </select>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control line-route-no" name="line_route_no[]" value="<?= $key->quotation_route_no ?>" onchange="getpricefromquotation()">
                                 </td>
                                 <td>
                                     <input type="text" name="dropoff_no[]"
@@ -454,6 +460,9 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                                         <option value="<?= $dropoff_data[$i]['id'] ?>"><?= $dropoff_data[$i]['name'] ?></option>
                                     <?php endfor; ?>
                                 </select>
+                            </td>
+                            <td>
+                                <input type="text" class="form-control line-route-no" name="line_route_no[]" value="" onchange="getpricefromquotation()">
                             </td>
                             <td>
                                 <input type="text" name="dropoff_no[]"
@@ -1118,10 +1127,11 @@ function calpriceperton(e){
     e.closest("tr").find(".price-line-total").val(parseFloat(line_total).toFixed(2));
 }
 
-function getpricefromquotation(e){
-    var id = e.val();
+function getpricefromquotation(){
+    var dropoff_id = $("#dropoff-id").val();
+    var route_no = $(".route-no").val();
     var car_id = $("#car-selected-id").val();
-    if(id > 0 && car_id > 0){
+    if(dropoff_id > 0 && car_id > 0 && route_no !=""){
          // alert(id);
          // alert(car_id);
         $.ajax({
@@ -1129,7 +1139,7 @@ function getpricefromquotation(e){
             dataType: 'json',
             url: '$url_to_getpricefromquotation',
             async: false,
-            data: {'dropoff_id': id,'car_id': car_id},
+            data: {'dropoff_id': dropoff_id,'car_id': car_id,'route_no': route_no},
             success: function(data){
                // alert(data[0]['price']);
                 if(data){
