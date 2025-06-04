@@ -1163,7 +1163,7 @@ function getpricefromquotation(e){
             data: {'dropoff_id': dropoff_id,'car_id': car_id,'route_no': route_no},
             success: function(data){
               //  alert(data[0]['price']);
-                if(data){
+                if(data!=null){
                     if(data[0]['price'] == null){
                         e.closest("tr").find(".price-per-ton").val(0);
                     }else{
@@ -1171,6 +1171,8 @@ function getpricefromquotation(e){
                     }
                     
                    // e.closest("tr").find(".is-charter").val(data.is_charter);
+                }else{
+                    e.closest("tr").find(".price-per-ton").val(0);
                 }
             }
         });
