@@ -390,6 +390,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                 <?php else: ?>
                     <?php if (count($w_dropoff)): ?>
                         <?php foreach ($w_dropoff as $key): ?>
+                        <?php $route_no_data = \common\models\QueryQuotationPricePerTon::find()->where(['dropoff_id' => $key->dropoff_id, 'car_type_id' => $current_car_type_id])->all(); ?>
                             <tr data-var="<?= $key->id ?>">
                                 <td>
                                     <select name="dropoff_id[]" class="form-control dropoff-id" id="" onchange="getpriceroutefromquotation($(this))">
@@ -407,6 +408,15 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                                 </td>
                                 <td>
                                     <select class="form-control line-route-no" name="line_route_no[]"  onchange="getpricefromquotation($(this))">
+                                        <?php for ($j = 0; $j <= count($route_no_data) - 1; $j++): ?>
+                                            <?php
+                                            $selected = "";
+                                            if ($route_no_data[$j]['id'] == $key->line_route_no) {
+                                                $selected = 'selected';
+                                            }
+                                            ?>
+                                            <option value="<?= $route_no_data[$j]['id'] ?>" <?= $selected ?>><?= $route_no_data[$j]['route_no'] ?></option>
+                                        <?php endfor; ?>
                                     </select>
                                 </td>
                                 <td>

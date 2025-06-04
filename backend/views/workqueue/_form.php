@@ -411,7 +411,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                                         <?php for ($j = 0; $j <= count($route_no_data) - 1; $j++): ?>
                                             <?php
                                             $selected = "";
-                                            if ($route_no_data[$j]['id'] == $key->line_route_no) {
+                                            if ($route_no_data[$j]['id'] == $key->quotation_route_no) {
                                                 $selected = 'selected';
                                             }
                                             ?>
