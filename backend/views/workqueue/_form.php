@@ -402,7 +402,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
 //                                                $selected = 'selected';
 //                                            }
 //                                            ?>
-<!--                                            <option value="--><?php //= $dropoff_data[$i]['id'] ?><!--" --><?php //= $selected ?><!-->--><?php //= $dropoff_data[$i]['name'] ?><!--</option>-->
+<!--                                            <option value="--><?php //= $dropoff_data[$i]['id'] ?><!--" --><?php //= $selected ?><!--><?php //= $dropoff_data[$i]['name'] ?><!--</option>-->
 <!--                                        --><?php //endfor; ?>
 <!--                                    </select>-->
                                     <?php
@@ -1126,7 +1126,7 @@ function addline1(e) {
    // alert(newId);
 
     // Remove the Select2 wrapper if present
-    //clone.find('span.select2').remove();
+    clone.find('span.select2').remove();
     
     // Reset input values
     clone.find(".dropoff-no").val("");
