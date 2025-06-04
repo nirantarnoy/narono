@@ -1084,7 +1084,12 @@ function removedoc(e){
 function addline1(e) {
     var tr = $("#table-list2 tbody tr:last");
     var clone = tr.clone();
-
+    // Destroy select2 to avoid cloning the internal DOM mess
+    clone.find('.dropoff-id').select2('destroy');
+    
+    // Clear all input/select values
+    clone.find('input, select').val('');
+    
     // Reset input values
     clone.find(".dropoff-no").val("");
     clone.find(".qty").val(0);
@@ -1093,18 +1098,13 @@ function addline1(e) {
     clone.find(".price-line-total").val(0);
     clone.attr("data-var", "");
     clone.find('.rec-id').val("0");
-
-    // Destroy select2 to avoid cloning the internal DOM mess
-   // clone.find('.dropoff-id').select2('destroy');
-
-    // Clear all input/select values
-    clone.find('input, select').val('');
+    
 
     // Insert the cloned row into DOM
     tr.after(clone);
 
-    // Re-initialize select2 AFTER inserting into DOM
-   // clone.find('.dropoff-id').select2();
+  //  Re-initialize select2 AFTER inserting into DOM
+   clone.find('.dropoff-id').select2();
 }
 // function addline1(e){
 //     var tr = $("#table-list2 tbody tr:last");
