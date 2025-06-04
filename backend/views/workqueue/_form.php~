@@ -408,7 +408,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                                     <?php
                                     echo \kartik\select2\Select2::widget([
                                         'name' => 'dropoff_id[]',
-                                        'data' => $dropoff_data,
+                                        'data' => \yii\helpers\ArrayHelper::map($dropoff_data, 'id', 'name'),
                                         'value' => $key->dropoff_id,
                                         'options' => [
                                             'placeholder' => '--สถานที่ชื้นสินค้า--',
