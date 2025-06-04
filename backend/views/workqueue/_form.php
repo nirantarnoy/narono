@@ -1117,16 +1117,16 @@ function addline1(e) {
     var selectx = clone.find('.dropoff-id');
     var oldId = selectx.attr('id');
     
-    alert(oldId);
+   // alert(oldId);
 
     // Generate new unique ID
     var newId = oldId + '_cloned_' + Math.floor(Math.random() * 100000);
     selectx.attr('id', newId);
     
-    alert(newId);
+   // alert(newId);
 
     // Remove the Select2 wrapper if present
-    clone.find('span.select2').remove();
+    //clone.find('span.select2').remove();
     
     // Reset input values
     clone.find(".dropoff-no").val("");

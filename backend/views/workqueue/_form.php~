@@ -707,7 +707,7 @@ var loop3 = 0;
 
 $(function(){
      //alert($("#is-page-new").val());
-     $(".dropoff-id").select2();
+     // $(".dropoff-id").select2();
      $("#customer-selected-id").on('change',function(){
          var customer_id = $(this).val();
          getCustomerInvoiceName(customer_id);
