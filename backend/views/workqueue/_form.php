@@ -1084,11 +1084,17 @@ function removedoc(e){
 function addline1(e) {
     var tr = $("#table-list2 tbody tr:last");
     var clone = tr.clone();
-    // Destroy select2 to avoid cloning the internal DOM mess
-    clone.find('.dropoff-id').select2('destroy');
-    
-    // Clear all input/select values
-    clone.find('input, select').val('');
+
+    // Find original Select2 ID (Kartik uses it like 'w0', 'w1' etc.)
+    var selectx = clone.find('.dropoff-id');
+    var oldId = selectx.attr('id');
+
+    // Generate new unique ID
+    var newId = oldId + '_cloned_' + Math.floor(Math.random() * 100000);
+    selectx.attr('id', newId);
+
+    // Remove the Select2 wrapper if present
+    clone.find('span.select2').remove();
     
     // Reset input values
     clone.find(".dropoff-no").val("");
@@ -1103,8 +1109,8 @@ function addline1(e) {
     // Insert the cloned row into DOM
     tr.after(clone);
 
-  //  Re-initialize select2 AFTER inserting into DOM
-   clone.find('.dropoff-id').select2();
+  // Re-initialize using jQuery directly
+    $('#' + newId).select2();
 }
 // function addline1(e){
 //     var tr = $("#table-list2 tbody tr:last");
