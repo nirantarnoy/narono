@@ -1115,19 +1115,21 @@ function addline1(e) {
 
     // Find original Select2 ID (Kartik uses it like 'w0', 'w1' etc.)
     var selectx = clone.find('.dropoff-id');
-    var oldId = selectx.attr('id');
+    var oldId = selectx.attr('id') || 'dropoff-id';
     
    // alert(oldId);
 
     // Generate new unique ID
     var newId = oldId + '_cloned_' + Math.floor(Math.random() * 100000);
-    selectx.attr('id', newId);
+   
     
    // alert(newId);
 
     // Remove the Select2 wrapper if present
     clone.find('span.select2').remove();
     
+     selectx.attr('id', newId);
+     clone.find('input, select').not(selectx).val('');
     // Reset input values
     clone.find(".dropoff-no").val("");
     clone.find(".qty").val(0);

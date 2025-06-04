@@ -402,7 +402,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
 //                                                $selected = 'selected';
 //                                            }
 //                                            ?>
-<!--                                            <option value="--><?php //= $dropoff_data[$i]['id'] ?><!--" --><?php //= $selected ?><!-->--><?php //= $dropoff_data[$i]['name'] ?><!--</option>-->
+<!--                                            <option value="--><?php //= $dropoff_data[$i]['id'] ?><!--" --><?php //= $selected ?><!--><?php //= $dropoff_data[$i]['name'] ?><!--</option>-->
 <!--                                        --><?php //endfor; ?>
 <!--                                    </select>-->
                                     <?php
@@ -1115,19 +1115,20 @@ function addline1(e) {
 
     // Find original Select2 ID (Kartik uses it like 'w0', 'w1' etc.)
     var selectx = clone.find('.dropoff-id');
-    var oldId = selectx.attr('id');
+    var oldId = selectx.attr('id') || 'dropoff-id';
     
    // alert(oldId);
 
     // Generate new unique ID
     var newId = oldId + '_cloned_' + Math.floor(Math.random() * 100000);
-    selectx.attr('id', newId);
+   
     
    // alert(newId);
 
     // Remove the Select2 wrapper if present
     clone.find('span.select2').remove();
     
+     selectx.attr('id', newId);
     // Reset input values
     clone.find(".dropoff-no").val("");
     clone.find(".qty").val(0);
