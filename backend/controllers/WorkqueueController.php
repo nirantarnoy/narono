@@ -244,8 +244,6 @@ class WorkqueueController extends Controller
             $is_charter = \Yii::$app->request->post('is_charter');
 
 
-
-
 //            print_r($dropoff_id);
 //            print_r($weight);return;
             $model->oil_daily_price = $oil_daily_price;
@@ -471,27 +469,43 @@ class WorkqueueController extends Controller
 
     public function actionCalupdatecompay()
     {
-        $model = \backend\models\Workqueue::find()->where(['company_id'=>0])->all();
+        $model = \backend\models\Workqueue::find()->where(['company_id' => 0])->all();
         foreach ($model as $value) {
-           $model_car = \backend\models\Car::find()->where(['id'=>$value->car_id])->one();
-           if($model_car){
-               \backend\models\Workqueue::updateAll(['company_id'=>$model_car->company_id],['id'=>$value->id]);
-           }
+            $model_car = \backend\models\Car::find()->where(['id' => $value->car_id])->one();
+            if ($model_car) {
+                \backend\models\Workqueue::updateAll(['company_id' => $model_car->company_id], ['id' => $value->id]);
+            }
         }
     }
 
-    public function actionGetpricefromquotation(){
+    public function actionGetpricefromquotation()
+    {
         $dropoff_id = \Yii::$app->request->post('dropoff_id');
         $car_id = \Yii::$app->request->post('car_id');
         $route_no = \Yii::$app->request->post('route_no');
         $data = [];
-        if($dropoff_id && $car_id){
-            $model_car = \backend\models\Car::find()->select(['car_type_id'])->where(['id'=>$car_id])->one();
-            $model = \common\models\QueryQuotationPricePerTon::find()->where(['dropoff_id'=>$dropoff_id,'car_type_id'=>$model_car->car_type_id,'route_no'=>$route_no])->one();
-            if($model){
-                array_push($data,['price'=>$model->price_current_rate]);
+        if ($dropoff_id && $car_id) {
+            $model_car = \backend\models\Car::find()->select(['car_type_id'])->where(['id' => $car_id])->one();
+            $model = \common\models\QueryQuotationPricePerTon::find()->where(['dropoff_id' => $dropoff_id, 'car_type_id' => $model_car->car_type_id, 'route_no' => $route_no])->one();
+            if ($model) {
+                array_push($data, ['price' => $model->price_current_rate]);
             }
         }
         return json_encode($data);
+    }
+
+    public function actionGetquotationrouote()
+    {
+        $dropoff_id = \Yii::$app->request->post('dropoff_id');
+        $car_id = \Yii::$app->request->post('car_id');
+        $html = '';
+        if ($dropoff_id && $car_id) {
+            $model_car = \backend\models\Car::find()->select(['car_type_id'])->where(['id' => $car_id])->one();
+            $model = \common\models\QueryQuotationPricePerTon::find()->where(['dropoff_id' => $dropoff_id, 'car_type_id' => $model_car->car_type_id])->all();
+            foreach ($model as $value) {
+                $html .= '<option value="' . $value->route_no . '">' . $value->route_no . '</option>';
+            }
+        }
+        echo $html;
     }
 }

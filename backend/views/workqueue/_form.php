@@ -342,7 +342,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                 <?php if ($model->isNewRecord): ?>
                     <tr>
                         <td>
-                            <select name="dropoff_id[]" class="form-control dropoff-id" id="" onchange="getpricefromquotation($(this))">
+                            <select name="dropoff_id[]" class="form-control dropoff-id" id="" onchange="getpriceroutefromquotation($(this))">
                                 <option value="0">--สถานที่ชื้นสินค้า--</option>
                                 <?php for ($i = 0; $i <= count($dropoff_data) - 1; $i++) : ?>
                                     <option value="<?= $dropoff_data[$i]['id'] ?>"><?= $dropoff_data[$i]['name'] ?></option>
@@ -350,7 +350,8 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                             </select>
                         </td>
                         <td>
-                            <input type="text" class="form-control line-route-no" name="line_route_no[]" value="" onchange="getpricefromquotation()">
+                            <select class="form-control line-route-no" name="line_route_no[]"  onchange="getpricefromquotation($(this))">
+                            </select>
                         </td>
                         <td>
                             <input type="text" name="dropoff_no[]"
@@ -391,7 +392,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                         <?php foreach ($w_dropoff as $key): ?>
                             <tr data-var="<?= $key->id ?>">
                                 <td>
-                                    <select name="dropoff_id[]" class="form-control dropoff-id" id="" onchange="getpricefromquotation($(this))">
+                                    <select name="dropoff_id[]" class="form-control dropoff-id" id="" onchange="getpriceroutefromquotation($(this))">
                                         <option value="0">--สถานที่ชื้นสินค้า--</option>
                                         <?php for ($i = 0; $i <= count($dropoff_data) - 1; $i++) : ?>
                                             <?php
@@ -405,7 +406,8 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control line-route-no" name="line_route_no[]" value="<?= $key->quotation_route_no ?>" onchange="getpricefromquotation($(this))">
+                                    <select class="form-control line-route-no" name="line_route_no[]"  onchange="getpricefromquotation($(this))">
+                                    </select>
                                 </td>
                                 <td>
                                     <input type="text" name="dropoff_no[]"
@@ -454,7 +456,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                     <?php else: ?>
                         <tr>
                             <td>
-                                <select name="dropoff_id[]" class="form-control dropoff-id" id="">
+                                <select name="dropoff_id[]" class="form-control dropoff-id" id="" onchange="getpriceroutefromquotation($(this))">
                                     <option value="0">--สถานที่ชื้นสินค้า--</option>
                                     <?php for ($i = 0; $i <= count($dropoff_data) - 1; $i++) : ?>
                                         <option value="<?= $dropoff_data[$i]['id'] ?>"><?= $dropoff_data[$i]['name'] ?></option>
@@ -462,7 +464,8 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                                 </select>
                             </td>
                             <td>
-                                <input type="text" class="form-control line-route-no" name="line_route_no[]" value="" onchange="getpricefromquotation($(this))">
+                                <select class="form-control line-route-no" name="line_route_no[]"  onchange="getpricefromquotation($(this))">
+                                </select>
                             </td>
                             <td>
                                 <input type="text" name="dropoff_no[]"
@@ -656,6 +659,7 @@ $url_to_routeplan = \yii\helpers\Url::to(['car/getrouteplan'], true);
 $url_to_find_item = \yii\helpers\Url::to(['item/finditem'], true);
 $url_to_customer_invoice = \yii\helpers\Url::to(['customer/getcustomerinvoice'], true);
 $url_to_getpricefromquotation = \yii\helpers\Url::to(['workqueue/getpricefromquotation'], true);
+$url_to_getquotation_route = \yii\helpers\Url::to(['workqueue/getquotationrouote'], true);
 $js = <<<JS
 var removelist = [];
 var removelist2 = [];
@@ -1158,6 +1162,33 @@ function getpricefromquotation(e){
     }
     calpriceperton(e);
 }
+function getpriceroutefromquotation(e){
+    var dropoff_id = e.closest('tr').find(".dropoff-id").val();
+    var car_id = $("#car-selected-id").val();
+  //  alert(route_no);
+    
+    if(dropoff_id > 0 && car_id > 0 ){
+       // alert(dropoff_id);
+       //    alert(car_id);
+       //    alert(route_no);
+        $.ajax({
+            type: 'post',
+            dataType: 'html',
+            url: '$url_to_getquotation_route',
+            async: false,
+            data: {'dropoff_id': dropoff_id,'car_id': car_id},
+            success: function(data){
+              //  alert(data[0]['price']);
+                if(data){
+                    e.closest("tr").find(".line-route-no").html(data);
+                   // e.closest("tr").find(".is-charter").val(data.is_charter);
+                }
+            }
+        });
+    }
+    calpriceperton(e);
+}
+
 JS;
 $this->registerJs($js, static::POS_END);
 ?>

@@ -109,6 +109,7 @@ class WorkqueueController extends Controller
                 $price_per_ton = \Yii::$app->request->post('price_per_ton');
                 $price_line_total = \Yii::$app->request->post('price_line_total');
                 $is_charter = \Yii::$app->request->post('is_charter');
+                $route_no = \Yii::$app->request->post('line_route_no');
 
                 $company_id = \backend\models\Customer::findCompanyByCustomer($model->customer_id);
 
@@ -154,6 +155,7 @@ class WorkqueueController extends Controller
                             $model_df = new \common\models\WorkQueueDropoff();
                             $model_df->work_queue_id = $model->id;
                             $model_df->dropoff_id = $dropoff_id[$a];
+                            $model_df->quotation_route_no = $route_no[$a];
                             $model_df->dropoff_no = $dropoff_no[$a];
                             $model_df->qty = $qty[$a];
                             $model_df->weight = $weight[$a];
@@ -488,6 +490,20 @@ class WorkqueueController extends Controller
             $model = \common\models\QueryQuotationPricePerTon::find()->where(['dropoff_id'=>$dropoff_id,'car_type_id'=>$model_car->car_type_id,'route_no'=>$route_no])->one();
             if($model){
                 array_push($data,['price'=>$model->price_current_rate]);
+            }
+        }
+        return json_encode($data);
+    }
+
+    public function actionGetquotationrouote(){
+        $dropoff_id = \Yii::$app->request->post('dropoff_id');
+        $car_id = \Yii::$app->request->post('car_id');
+       $html = ''
+        if($dropoff_id && $car_id){
+            $model_car = \backend\models\Car::find()->select(['car_type_id'])->where(['id'=>$car_id])->one();
+            $model = \common\models\QueryQuotationPricePerTon::find()->where(['dropoff_id'=>$dropoff_id,'car_type_id'=>$model_car->car_type_id])->all();
+            foreach ($model as $value) {
+                array_push($data,['route_no'=>$value->route_no]);
             }
         }
         return json_encode($data);
