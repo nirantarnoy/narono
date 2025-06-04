@@ -1098,7 +1098,7 @@ function addline1(e){
                     clone.find('.rec-id').val("0");
                     
                     clone.find('.dropoff-id').select2('destroy');
-                    clone.find('input, select').val('');
+                  //  clone.find('input, select').val('');
                     clone.find('.dropoff-id').select2();
                    
                     tr.after(clone);
