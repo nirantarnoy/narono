@@ -1173,6 +1173,7 @@ function getpricefromquotation(e){
                     
                    // e.closest("tr").find(".is-charter").val(data.is_charter);
                 }else{
+                    alert("no");
                     e.closest("tr").find(".price-per-ton").val(0);
                 }
             }

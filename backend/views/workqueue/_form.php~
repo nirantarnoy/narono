@@ -1152,6 +1152,7 @@ function getpricefromquotation(e){
   //  alert(route_no);
     
     if(dropoff_id > 0 && car_id > 0 && route_no !=''){
+        alert();
        // alert(dropoff_id);
        //    alert(car_id);
        //    alert(route_no);
