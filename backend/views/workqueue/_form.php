@@ -411,6 +411,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                                         'data' => \yii\helpers\ArrayHelper::map($dropoff_data, 'id', 'name'),
                                         'value' => $key->dropoff_id,
                                         'options' => [
+                                            'class' => 'form-control dropoff-id',
                                             'placeholder' => '--สถานที่ชื้นสินค้า--',
                                             'onchange' => 'getpriceroutefromquotation($(this))',
                                         ],
