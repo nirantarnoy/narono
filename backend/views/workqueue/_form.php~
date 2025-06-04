@@ -1087,7 +1087,7 @@ function addline1(e){
                     var clone = tr.clone();
                     //clone.find(":text").val("");
                     // clone.find("td:eq(1)").text("");
-                    clone.find(".dropoff-id").val("");
+                    clone.find(".dropoff-id").val("-1");
                     clone.find(".dropoff-no").val("");
                     clone.find(".qty").val(0);
                     clone.find(".weight").val(0);
@@ -1098,7 +1098,7 @@ function addline1(e){
                     clone.find('.rec-id').val("0");
                     
                     clone.find('.dropoff-id').select2('destroy');
-                    clone.find('input, select').val('');
+                  //  clone.find('input, select').val('');
                     clone.find('.dropoff-id').select2();
                    
                     tr.after(clone);
