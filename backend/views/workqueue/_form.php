@@ -415,7 +415,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                                                 $selected = 'selected';
                                             }
                                             ?>
-                                            <option value="<?= $route_no_data[$j]['id'] ?>" <?= $selected ?>><?= $route_no_data[$j]['route_no'] ?></option>
+                                            <option value="<?= $route_no_data[$j]['route_no'] ?>" <?= $selected ?>><?= $route_no_data[$j]['route_no'] ?></option>
                                         <?php endfor; ?>
                                     </select>
                                 </td>
@@ -1153,9 +1153,9 @@ function getpricefromquotation(e){
     
     if(dropoff_id > 0 && car_id > 0 && route_no !=''){
         //alert();
-        alert(dropoff_id);
-           alert(car_id);
-           alert(route_no);
+        // alert(dropoff_id);
+        //    alert(car_id);
+        //    alert(route_no);
         $.ajax({
             type: 'post',
             dataType: 'json',
@@ -1166,10 +1166,10 @@ function getpricefromquotation(e){
               //  alert(data[0]['price']);
                 if(data!=null){
                     if(data[0]['price'] == null){
-                        alert('null');
+                       // alert('null');
                         e.closest("tr").find(".price-per-ton").val(0);
                     }else{
-                        alert('not null');
+                       // alert('not null');
                         e.closest("tr").find(".price-per-ton").val(data[0]['price']);
                     }
                     
