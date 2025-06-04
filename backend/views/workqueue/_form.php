@@ -1104,7 +1104,7 @@ function addline1(e) {
     tr.after(clone);
 
     // Re-initialize select2 AFTER inserting into DOM
-    clone.find('.dropoff-id').select2();
+   // clone.find('.dropoff-id').select2();
 }
 // function addline1(e){
 //     var tr = $("#table-list2 tbody tr:last");
