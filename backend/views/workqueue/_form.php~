@@ -472,6 +472,19 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                                         <option value="<?= $dropoff_data[$i]['id'] ?>"><?= $dropoff_data[$i]['name'] ?></option>
                                     <?php endfor; ?>
                                 </select>
+                                <?php
+                                 echo \kartik\select2\Select2::widget([
+                                     'name' => 'dropoff_id[]',
+                                     'data' => $dropoff_data,
+                                     'options' => [
+                                         'placeholder' => '--สถานที่ชื้นสินค้า--',
+                                         'onchange' => 'getpriceroutefromquotation($(this))',
+                                     ],
+                                     'pluginOptions' => [
+                                         'allowClear' => true
+                                     ]
+                                     ]);
+                                ?>
                             </td>
                             <td>
                                 <select class="form-control line-route-no" name="line_route_no[]"  onchange="getpricefromquotation($(this))">
@@ -1087,7 +1100,7 @@ function addline1(e) {
 
     // Find original Select2 ID (Kartik uses it like 'w0', 'w1' etc.)
     var selectx = clone.find('.dropoff-id');
-    var oldId = select.attr('id');
+    var oldId = selectx.attr('id');
 
     // Generate new unique ID
     var newId = oldId + '_cloned_' + Math.floor(Math.random() * 100000);

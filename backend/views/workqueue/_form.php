@@ -466,12 +466,25 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                     <?php else: ?>
                         <tr>
                             <td>
-                                <select name="dropoff_id[]" class="form-control dropoff-id" id="" onchange="getpriceroutefromquotation($(this))">
-                                    <option value="0">--สถานที่ชื้นสินค้า--</option>
-                                    <?php for ($i = 0; $i <= count($dropoff_data) - 1; $i++) : ?>
-                                        <option value="<?= $dropoff_data[$i]['id'] ?>"><?= $dropoff_data[$i]['name'] ?></option>
-                                    <?php endfor; ?>
-                                </select>
+<!--                                <select name="dropoff_id[]" class="form-control dropoff-id" id="" onchange="getpriceroutefromquotation($(this))">-->
+<!--                                    <option value="0">--สถานที่ชื้นสินค้า--</option>-->
+<!--                                    --><?php //for ($i = 0; $i <= count($dropoff_data) - 1; $i++) : ?>
+<!--                                        <option value="--><?php //= $dropoff_data[$i]['id'] ?><!--">--><?php //= $dropoff_data[$i]['name'] ?><!--</option>-->
+<!--                                    --><?php //endfor; ?>
+<!--                                </select>-->
+                                <?php
+                                 echo \kartik\select2\Select2::widget([
+                                     'name' => 'dropoff_id[]',
+                                     'data' => $dropoff_data,
+                                     'options' => [
+                                         'placeholder' => '--สถานที่ชื้นสินค้า--',
+                                         'onchange' => 'getpriceroutefromquotation($(this))',
+                                     ],
+                                     'pluginOptions' => [
+                                         'allowClear' => true
+                                     ]
+                                     ]);
+                                ?>
                             </td>
                             <td>
                                 <select class="form-control line-route-no" name="line_route_no[]"  onchange="getpricefromquotation($(this))">
