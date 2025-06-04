@@ -1095,7 +1095,7 @@ function addline1(e) {
     clone.find('.rec-id').val("0");
 
     // Destroy select2 to avoid cloning the internal DOM mess
-    clone.find('.dropoff-id').select2('destroy');
+    //clone.find('.dropoff-id').select2('destroy');
 
     // Clear all input/select values
     clone.find('input, select').val('');
