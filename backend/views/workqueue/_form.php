@@ -1164,7 +1164,12 @@ function getpricefromquotation(e){
             success: function(data){
               //  alert(data[0]['price']);
                 if(data){
-                    e.closest("tr").find(".price-per-ton").val(data[0]['price']);
+                    if(data[0]['price'] == null){
+                        e.closest("tr").find(".price-per-ton").val(0);
+                    }else{
+                        e.closest("tr").find(".price-per-ton").val(data[0]['price']);
+                    }
+                    
                    // e.closest("tr").find(".is-charter").val(data.is_charter);
                 }
             }
