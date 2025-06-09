@@ -1098,67 +1098,67 @@ function removedoc(e){
     }
 }
 
-function addline1(e) {
-    var tr = $("#table-list2 tbody tr:last");
-    var clone = tr.clone();
-
-    // Find original Select2 ID (Kartik uses it like 'w0', 'w1' etc.)
-    var selectx = clone.find('.dropoff-id');
-    var oldId = selectx.attr('id') || 'dropoff-id';
-    
-   // alert(oldId);
-
-    // Generate new unique ID
-    var newId = oldId + '_cloned_' + Math.floor(Math.random() * 100000);
-   
-    
-   // alert(newId);
-
-    // Remove the Select2 wrapper if present
-    clone.find('span.select2').remove();
-    
-     selectx.attr('id', newId);
-     clone.find('input, select').not(selectx).val('');
-    // Reset input values
-    clone.find(".dropoff-no").val("");
-    clone.find(".qty").val(0);
-    clone.find(".weight").val(0);
-    clone.find(".price-per-ton").val(0);
-    clone.find(".price-line-total").val(0);
-    clone.attr("data-var", "");
-    clone.find('.rec-id').val("0");
-    
-
-    // Insert the cloned row into DOM
-    tr.after(clone);
-
-  // Re-initialize using jQuery directly
-    $('#' + newId).select2();
-}
-// function addline1(e){
+// function addline1(e) {
 //     var tr = $("#table-list2 tbody tr:last");
-//                     var clone = tr.clone();
-//                     //clone.find(":text").val("");
-//                     // clone.find("td:eq(1)").text("");
-//                    // clone.find(".dropoff-id").val("");
-//                     clone.find(".dropoff-no").val("");
-//                     clone.find(".qty").val(0);
-//                     clone.find(".weight").val(0);
-//                     clone.find(".price-per-ton").val(0);
-//                     clone.find(".price-line-total").val(0);
-//                   
-//                     clone.attr("data-var", "");
-//                     clone.find('.rec-id').val("0");
-//                    
-//                     clone.find('.dropoff-id').select2('destroy');
-//                     clone.find('input, select').val('');
-//                     clone.find('.dropoff-id').select2();
-//                   
-//                     tr.after(clone);
-//                    
-//                    
+//     var clone = tr.clone();
+//
+//     // Find original Select2 ID (Kartik uses it like 'w0', 'w1' etc.)
+//     var selectx = clone.find('.dropoff-id');
+//     var oldId = selectx.attr('id') || 'dropoff-id';
 //    
+//    // alert(oldId);
+//
+//     // Generate new unique ID
+//     var newId = oldId + '_cloned_' + Math.floor(Math.random() * 100000);
+//   
+//    
+//    // alert(newId);
+//
+//     // Remove the Select2 wrapper if present
+//     clone.find('span.select2').remove();
+//    
+//      selectx.attr('id', newId);
+//      clone.find('input, select').not(selectx).val('');
+//     // Reset input values
+//     clone.find(".dropoff-no").val("");
+//     clone.find(".qty").val(0);
+//     clone.find(".weight").val(0);
+//     clone.find(".price-per-ton").val(0);
+//     clone.find(".price-line-total").val(0);
+//     clone.attr("data-var", "");
+//     clone.find('.rec-id').val("0");
+//    
+//
+//     // Insert the cloned row into DOM
+//     tr.after(clone);
+//
+//   // Re-initialize using jQuery directly
+//     $('#' + newId).select2();
 // }
+function addline1(e){
+    var tr = $("#table-list2 tbody tr:last");
+                    var clone = tr.clone();
+                    //clone.find(":text").val("");
+                    // clone.find("td:eq(1)").text("");
+                   // clone.find(".dropoff-id").val("");
+                    clone.find(".dropoff-no").val("");
+                    clone.find(".qty").val(0);
+                    clone.find(".weight").val(0);
+                    clone.find(".price-per-ton").val(0);
+                    clone.find(".price-line-total").val(0);
+                  
+                    clone.attr("data-var", "");
+                    clone.find('.rec-id').val("0");
+                   
+                    clone.find('.dropoff-id').select2('destroy');
+                    clone.find('input, select').val('');
+                    clone.find('.dropoff-id').select2();
+                  
+                    tr.after(clone);
+                   
+                   
+   
+}
 function removeline1(e) {
         if (confirm("ต้องการลบรายการนี้ใช่หรือไม่?")) {
             if (e.parent().parent().attr("data-var") != '') {
