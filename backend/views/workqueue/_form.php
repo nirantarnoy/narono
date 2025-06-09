@@ -49,6 +49,8 @@ if (!$model->isNewRecord) {
 //print_r($model->route_plan_id);
 $dropoff_data = \common\models\DropoffPlace::find()->all();
 
+print_r($dropoff_data);
+
 $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
 ?>
 
@@ -402,7 +404,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                                                 $selected = 'selected';
                                             }
                                             ?>
-                                            <option value="<?= $dropoff_data[$i]['id'] ?>" <?= $selected ?><!<?= $dropoff_data[$i]['name'] ?></option>
+                                            <option value="<?= $dropoff_data[$i]['id'] ?>" <?= $selected ?><?= $dropoff_data[$i]['name'] ?></option>
                                         <?php endfor; ?>
                                     </select>
                                     <?php
