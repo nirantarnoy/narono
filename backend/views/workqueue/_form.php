@@ -49,7 +49,7 @@ if (!$model->isNewRecord) {
 //print_r($model->route_plan_id);
 $dropoff_data = \common\models\DropoffPlace::find()->all();
 
-print_r($dropoff_data);
+//print_r($dropoff_data);
 
 $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
 ?>
@@ -396,7 +396,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                             <tr data-var="<?= $key->id ?>">
                                 <td>
                                     <select name="dropoff_id[]" class="form-control dropoff-id" id="" onchange="getpriceroutefromquotation($(this))">
-                                        <option value="0">--สถานที่ชื้นสินค้า--</option>
+                                        <option value="0">--สถานที่ชื้นสินค้า2--</option>
                                         <?php for ($i = 0; $i <= count($dropoff_data) - 1; $i++) : ?>
                                             <?php
                                             $selected = "";

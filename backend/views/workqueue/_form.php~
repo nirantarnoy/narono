@@ -49,6 +49,8 @@ if (!$model->isNewRecord) {
 //print_r($model->route_plan_id);
 $dropoff_data = \common\models\DropoffPlace::find()->all();
 
+print_r($dropoff_data);
+
 $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
 ?>
 
