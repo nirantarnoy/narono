@@ -396,7 +396,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                             <tr data-var="<?= $key->id ?>">
                                 <td>
                                     <select name="dropoff_id[]" class="form-control dropoff-id" id="" onchange="getpriceroutefromquotation($(this))">
-                                        <option value="0">--สถานที่ชื้นสินค้า2--</option>
+                                        <option value="0">--สถานที่ชื้นสินค้า--</option>
                                         <?php for ($i = 0; $i <= count($dropoff_data) - 1; $i++) : ?>
                                             <?php
                                             $selected = "";
@@ -404,7 +404,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                                                 $selected = 'selected';
                                             }
                                             ?>
-                                            <option value="<?= $dropoff_data[$i]['id'] ?>" <?= $selected ?><?= $dropoff_data[$i]['name'] ?></option>
+                                            <option value="<?= $dropoff_data[$i]['id'] ?>" <?= $selected ?>><?= $dropoff_data[$i]['name'] ?></option>
                                         <?php endfor; ?>
                                     </select>
                                     <?php
