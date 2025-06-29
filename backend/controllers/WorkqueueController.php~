@@ -489,6 +489,8 @@ class WorkqueueController extends Controller
             $model = \common\models\QueryQuotationPricePerTon::find()->where(['dropoff_id' => $dropoff_id, 'car_type_id' => $model_car->car_type_id, 'route_no' => $route_no])->one();
             if ($model) {
                 array_push($data, ['price' => $model->price_current_rate]);
+            }else{
+                array_push($data, ['price' => 0]);
             }
         }
         return json_encode($data);

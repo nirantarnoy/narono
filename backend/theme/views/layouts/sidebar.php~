@@ -353,7 +353,7 @@
                         <li class="nav-item">
                             <a href="index.php?r=workqueueback/index" class="nav-link workqueueback">
                                 <i class="far fa-circlez nav-icon"></i>
-                                <p>จัดคิวงาน (ของกลับ)</p>
+                                <p>จัดคิวงาน</p>
                             </a>
                         </li>
 

@@ -1,0 +1,39 @@
+<?php
+
+use yii\db\Migration;
+
+/**
+ * Handles the creation of table `{{%work_queue_back_dropoff}}`.
+ */
+class m250629_081745_create_work_queue_back_dropoff_table extends Migration
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function safeUp()
+    {
+        $this->createTable('{{%work_queue_back_dropoff}}', [
+            'id' => $this->primaryKey(),
+            'work_queue_back_id' => $this->integer(),
+            'dropoff_id' => $this->integer(),
+            'dropoff_no' => $this->string(),
+            'qty' => $this->float(),
+            'weight' => $this->float(),
+            'price_per_ton' => $this->float(),
+            'price_line_total' => $this->float(),
+            'is_charter' => $this->integer(),
+            'is_invoice' => $this->integer(),
+            'quotation_route_no' => $this->string(),
+
+
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function safeDown()
+    {
+        $this->dropTable('{{%work_queue_back_dropoff}}');
+    }
+}

@@ -56,7 +56,7 @@ class QuotationTitle extends \yii\db\ActiveRecord
             'created_by' => 'Created By',
             'updated_at' => 'Updated At',
             'updated_by' => 'Updated By',
-            'haul_id'=>'ประเภทงาน',
+            'haul_id'=>'ระยะทาง',
         ];
     }
 }

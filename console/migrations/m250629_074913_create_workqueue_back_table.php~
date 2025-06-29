@@ -1,0 +1,74 @@
+<?php
+
+use yii\db\Migration;
+
+/**
+ * Handles the creation of table `{{%workqueue_back}}`.
+ */
+class m250629_074913_create_work_queue_back_table extends Migration
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function safeUp()
+    {
+        $this->createTable('{{%work_queue_back}}', [
+            'id' => $this->primaryKey(),
+            'work_queue_no' => $this->string(),
+            'work_queue_date' => $this->datetime(),
+            'customer_id' => $this->integer(),
+            'emp_assign' => $this->integer(),
+            'route_plan_id' => $this->integer(),
+            'car_id' => $this->integer(),
+            'tail_id'=> $this->integer(),
+            'weight_on_go' => $this->float(),
+            'weight_on_back' => $this->float(),
+            'weight_go_deduct' => $this->float(),
+            'go_deduct_reason' => $this->string(),
+            'back_deduct' => $this->float(),
+            'back_reason' => $this->string(),
+            'tail_back_id' => $this->integer(),
+            'approve_status' => $this->integer(),
+            'approve_by' => $this->integer(),
+            'dp_no' => $this->string(),
+            'is_labur' => $this->integer(),
+            'is_invoice' => $this->integer(),
+            'is_express_road' => $this->integer(),
+            'labour_price' => $this->float(),
+            'express_road_price' => $this->float(),
+            'destination_id' => $this->integer(),
+            'cover_sheet_price' => $this->float(),
+            'overnight_price' => $this->float(),
+            'warehouse_plus_price' => $this->float(),
+            'other_price' => $this->float(),
+            'is_other' => $this->integer(),
+            'test_price' => $this->float(),
+            'damaged_price' => $this->float(),
+            'work_option_type_id' => $this->integer(),
+            'oil_daily_price' => $this->float(),
+            'total_lite' => $this->float(),
+            'total_distance' => $this->float(),
+            'total_amount' => $this->float(),
+            'deduct_other_price' => $this->float(),
+            'work_double_price' => $this->float(),
+            'oil_out_price' => $this->float(),
+            'total_amount2' => $this->float(),
+            'towing_price' => $this->float(),
+            'total_out_lite' => $this->float(),
+            'other_amt' => $this->float(),
+            'status' => $this->integer(),
+            'create_at' => $this->integer(),
+            'created_by' => $this->integer(),
+            'updated_at' => $this->integer(),
+            'updated_by' => $this->integer(),
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function safeDown()
+    {
+        $this->dropTable('{{%workqueue_back}}');
+    }
+}

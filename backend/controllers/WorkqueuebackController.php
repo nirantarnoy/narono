@@ -4,6 +4,8 @@ namespace backend\controllers;
 date_default_timezone_set('Asia/Bangkok');
 
 use backend\models\Workqueue;
+use backend\models\Workqueueback;
+use backend\models\WorkqueuebackSearch;
 use backend\models\WorkqueueSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -13,7 +15,7 @@ use yii\web\UploadedFile;
 /**
  * WorkqueueController implements the CRUD actions for Workqueue model.
  */
-class WorkqueueController extends Controller
+class WorkqueuebackController extends Controller
 {
     public $enableCsrfValidation = false;
 
@@ -45,7 +47,7 @@ class WorkqueueController extends Controller
         //echo date('d-m-Y H:i:s');
         $pageSize = \Yii::$app->request->post("perpage");
 
-        $searchModel = new WorkqueueSearch();
+        $searchModel = new WorkqueuebackSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
         $dataProvider->query->orderBy(['id' => SORT_DESC]);
         $dataProvider->pagination->pageSize = $pageSize;
@@ -77,7 +79,7 @@ class WorkqueueController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Workqueue();
+        $model = new Workqueueback();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
@@ -152,7 +154,7 @@ class WorkqueueController extends Controller
 
                     if ($dropoff_id != null) {
                         for ($a = 0; $a <= count($dropoff_id) - 1; $a++) {
-                            $model_df = new \common\models\WorkQueueDropoff();
+                            $model_df = new \common\models\WorkQueueBackDropoff();
                             $model_df->work_queue_id = $model->id;
                             $model_df->dropoff_id = $dropoff_id[$a];
                             $model_df->quotation_route_no = $route_no[$a];
@@ -210,8 +212,8 @@ class WorkqueueController extends Controller
     {
         $model = $this->findModel($id);
 
-        $model_line_doc = \common\models\WorkQueueLine::find()->where(['work_queue_id' => $id])->all();
-        $w_dropoff = \common\models\WorkQueueDropoff::find()->where(['work_queue_id' => $id])->all();
+        $model_line_doc = \common\models\WorkQueueBackLine::find()->where(['work_queue_id' => $id])->all();
+        $w_dropoff = \common\models\WorkQueueBackDropoff::find()->where(['work_queue_id' => $id])->all();
         $w_itemback = \common\models\WorkQueueItemback::find()->where(['work_queue_id' => $id])->all();
 
 
@@ -258,7 +260,7 @@ class WorkqueueController extends Controller
                 if ($line_id != null) {
                     // echo count($uploaded);return;
                     for ($i = 0; $i <= count($line_id) - 1; $i++) {
-                        $model_check = \common\models\WorkQueueLine::find()->where(['id' => $line_id[$i]])->one();
+                        $model_check = \common\models\WorkQueueBackLine::find()->where(['id' => $line_id[$i]])->one();
                         if ($model_check) {
                             $model_check->description = $line_doc_name[$i];
                             $model_check->save(false);
@@ -269,7 +271,7 @@ class WorkqueueController extends Controller
                                     $upfiles = time() + 2 . "." . $value->getExtension();
                                     // if ($uploaded->saveAs(Yii::$app->request->baseUrl . '/uploads/files/' . $upfiles)) {
                                     if ($value->saveAs('../web/uploads/workqueue_doc/' . $upfiles)) {
-                                        $model_doc = new \common\models\WorkQueueLine();
+                                        $model_doc = new \common\models\WorkQueueBackLine();
                                         $model_doc->work_queue_id = $model->id;
                                         $model_doc->doc = $upfiles;
                                         $model_doc->description = $line_doc_name[$i];
@@ -282,9 +284,9 @@ class WorkqueueController extends Controller
                 }
 
                 if ($dropoff_id != null) {
-                    \common\models\WorkQueueDropoff::deleteAll(['work_queue_id' => $model->id]);
+                    \common\models\WorkQueueBackDropoff::deleteAll(['work_queue_id' => $model->id]);
                     for ($a = 0; $a <= count($dropoff_id) - 1; $a++) {
-                        $model_test = \common\models\WorkQueueDropoff::find()->where(['work_queue_id' => $model->id, 'dropoff_id' => $dropoff_id[$a], 'dropoff_no' => $dropoff_no[$a]])->one();
+                        $model_test = \common\models\WorkQueueBackDropoff::find()->where(['work_queue_id' => $model->id, 'dropoff_id' => $dropoff_id[$a], 'dropoff_no' => $dropoff_no[$a]])->one();
                         if ($model_test) {
                             $model_test->dropoff_id = $dropoff_id[$a];
                             $model_test->quotation_route_no = $route_no[$a];
@@ -296,7 +298,7 @@ class WorkqueueController extends Controller
                             $model_test->is_charter = $is_charter[$a];
                             $model_test->save(false);
                         } else {
-                            $model_do = new \common\models\WorkQueueDropoff();
+                            $model_do = new \common\models\WorkQueueBackDropoff();
                             $model_do->work_queue_id = $model->id;
                             $model_do->dropoff_id = $dropoff_id[$a];
                             $model_do->quotation_route_no = $route_no[$a];
@@ -313,11 +315,11 @@ class WorkqueueController extends Controller
 
                 $delete_rec = explode(",", $removelist);
                 if (count($delete_rec)) {
-                    $model_find_doc_delete = \common\models\WorkQueueLine::find()->where(['id' => $delete_rec])->one();
+                    $model_find_doc_delete = \common\models\WorkQueueBackLine::find()->where(['id' => $delete_rec])->one();
                     if ($model_find_doc_delete) {
                         if (file_exists(\Yii::getAlias('@backend') . '/web/uploads/workqueue_doc/' . $model_find_doc_delete->doc)) {
                             if (unlink(\Yii::getAlias('@backend') . '/web/uploads/workqueue_doc/' . $model_find_doc_delete->doc)) {
-                                \common\models\WorkQueueLine::deleteAll(['id' => $delete_rec]);
+                                \common\models\WorkQueueBackLine::deleteAll(['id' => $delete_rec]);
                             }
                         }
                     }
@@ -326,7 +328,7 @@ class WorkqueueController extends Controller
 
                 $delete_rec2 = explode(",", $removelist2);
                 if (count($delete_rec)) {
-                    \common\models\WorkQueueDropoff::deleteAll(['id' => $delete_rec2]);
+                    \common\models\WorkQueueBackDropoff::deleteAll(['id' => $delete_rec2]);
 
                 }
 
@@ -387,7 +389,7 @@ class WorkqueueController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Workqueue::findOne(['id' => $id])) !== null) {
+        if (($model = Workqueueback::findOne(['id' => $id])) !== null) {
             return $model;
         }
 
@@ -397,8 +399,8 @@ class WorkqueueController extends Controller
     public function actionPrintdocx($id)
     {
         if ($id) {
-            $model = \backend\models\Workqueue::find()->where(['id' => $id])->one();
-            $modelline = \common\models\WorkQueueLine::find()->where(['work_queue_id' => $id])->all();
+            $model = \backend\models\Workqueueback::find()->where(['id' => $id])->one();
+            $modelline = \common\models\WorkQueueBackLine::find()->where(['work_queue_id' => $id])->all();
             return $this->render('_printdocx', [
                 'model' => $model,
                 'modelline' => $modelline,
@@ -410,8 +412,8 @@ class WorkqueueController extends Controller
     public function actionExportdoc($id)
     {
         if ($id) {
-            $model = \backend\models\Workqueue::find()->where(['id' => $id])->one();
-            $modelline = \common\models\WorkQueueLine::find()->where(['work_queue_id' => $id])->all();
+            $model = \backend\models\Workqueueback::find()->where(['id' => $id])->one();
+            $modelline = \common\models\WorkQueueBackLine::find()->where(['work_queue_id' => $id])->all();
             return $this->render('_printdocx', [
                 'model' => $model,
                 'modelline' => $modelline,
@@ -427,7 +429,7 @@ class WorkqueueController extends Controller
         $user_approve = $approve_id;
         $res = 0;
         if ($work_id && $user_approve) {
-            $model = \backend\models\Workqueue::find()->where(['id' => $work_id])->one();
+            $model = \backend\models\Workqueueback::find()->where(['id' => $work_id])->one();
             if ($model) {
                 $model->approve_status = 1;
                 $model->approve_by = $user_approve;
@@ -465,16 +467,16 @@ class WorkqueueController extends Controller
             echo "no";
             return;
         }
-        return $this->redirect(['workqueue/update', 'id' => $workqueue_id]);
+        return $this->redirect(['workqueueback/update', 'id' => $workqueue_id]);
     }
 
     public function actionCalupdatecompay()
     {
-        $model = \backend\models\Workqueue::find()->where(['company_id' => 0])->all();
+        $model = \backend\models\Workqueueback::find()->where(['company_id' => 0])->all();
         foreach ($model as $value) {
             $model_car = \backend\models\Car::find()->where(['id' => $value->car_id])->one();
             if ($model_car) {
-                \backend\models\Workqueue::updateAll(['company_id' => $model_car->company_id], ['id' => $value->id]);
+                \backend\models\Workqueueback::updateAll(['company_id' => $model_car->company_id], ['id' => $value->id]);
             }
         }
     }

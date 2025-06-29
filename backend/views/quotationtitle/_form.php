@@ -16,6 +16,7 @@ $model_quotation_dropoff = null;
 $selected_dropoff = [];
 
 $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 'name' => 'ราคาเหมา']];
+$haul_data = \common\models\Haul::find()->orderBy(['id'=>SORT_ASC])->all();
 ?>
 
     <div class="quotationtitle-form">
@@ -112,6 +113,18 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
                     'data' => \yii\helpers\ArrayHelper::map($price_type_data, 'id', 'name'),
                     'options' => [
                         'placeholder' => '--เลือกประเภทราคา--'
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                    ]
+
+                ]) ?>
+            </div>
+            <div class="col-lg-3">
+                <?= $form->field($model, 'haul_id')->widget(\kartik\select2\Select2::className(), [
+                    'data' => \yii\helpers\ArrayHelper::map($haul_data, 'id', 'name'),
+                    'options' => [
+                        'placeholder' => '--เลือกระยะทาง--'
                     ],
                     'pluginOptions' => [
                         'allowClear' => true,

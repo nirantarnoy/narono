@@ -16,6 +16,7 @@ $model_quotation_dropoff = null;
 $selected_dropoff = [];
 
 $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 'name' => 'ราคาเหมา']];
+$haul_data = \common\models\Haul::find()->orderBy(['id'=>SORT_ASC])->all();
 ?>
 
     <div class="quotationtitle-form">
@@ -29,7 +30,12 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
         </div>
         <br />
         <?php if(!empty(\Yii::$app->session->getFlash('success'))):?>
-        <div class="alert alert-success"><i class="fa fa-check"></i> <?=\Yii::$app->session->getFlash('success');?></div>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Success!</strong> <?= \Yii::$app->session->getFlash('success') ?>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
         <?php endif; ?>
         <br />
 
@@ -105,6 +111,18 @@ $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 
             <div class="col-lg-3">
                 <?= $form->field($model, 'price_type_id')->widget(\kartik\select2\Select2::className(), [
                     'data' => \yii\helpers\ArrayHelper::map($price_type_data, 'id', 'name'),
+                    'options' => [
+                        'placeholder' => '--เลือกประเภทราคา--'
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                    ]
+
+                ]) ?>
+            </div>
+            <div class="col-lg-3">
+                <?= $form->field($model, 'haul_id')->widget(\kartik\select2\Select2::className(), [
+                    'data' => \yii\helpers\ArrayHelper::map($haul_data, 'id', 'name'),
                     'options' => [
                         'placeholder' => '--เลือกประเภทราคา--'
                     ],
