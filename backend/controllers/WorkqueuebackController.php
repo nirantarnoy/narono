@@ -442,9 +442,9 @@ class WorkqueuebackController extends Controller
 
         }
         if ($res > 0) {
-            $this->redirect(['workqueue/index']);
+            $this->redirect(['workqueueback/index']);
         } else {
-            $this->redirect(['workqueue/index']);
+            $this->redirect(['workqueueback/index']);
         }
     }
 

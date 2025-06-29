@@ -344,11 +344,12 @@ class WorkqueueController extends Controller
 //                }
                 if ($model->item_back_id != null) {
                     if (count($model->item_back_id) > 0) {
-                        \common\models\WorkQueueItemback::deleteAll(['work_queue_id' => $model->id]);
+                        \common\models\WorkQueueItemback::deleteAll(['work_queue_id' => $model->id,'work_queue_type'=>1]);
                         for ($x = 0; $x <= count($model->item_back_id) - 1; $x++) {
                             $w_itemback_new = new \common\models\WorkQueueItemback();
                             $w_itemback_new->work_queue_id = $model->id;
                             $w_itemback_new->item_back_id = $model->item_back_id[$x];
+                            $w_itemback_new->work_queue_type = 1;
                             $w_itemback_new->save(false);
                         }
                     }
@@ -428,7 +429,7 @@ class WorkqueueController extends Controller
         $user_approve = $approve_id;
         $res = 0;
         if ($work_id && $user_approve) {
-            $model = \backend\models\Workqueue::find()->where(['id' => $work_id])->one();
+            $model = \backend\models\Workqueueback::find()->where(['id' => $work_id])->one();
             if ($model) {
                 $model->approve_status = 1;
                 $model->approve_by = $user_approve;

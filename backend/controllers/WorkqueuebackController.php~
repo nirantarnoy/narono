@@ -346,7 +346,7 @@ class WorkqueuebackController extends Controller
 //                }
                 if ($model->item_back_id != null) {
                     if (count($model->item_back_id) > 0) {
-                        \common\models\WorkQueueItemback::deleteAll(['work_queue_id' => $model->id]);
+                        \common\models\WorkQueueItemback::deleteAll(['work_queue_id' => $model->id,'work_queue_type' => 2]);
                         for ($x = 0; $x <= count($model->item_back_id) - 1; $x++) {
                             $w_itemback_new = new \common\models\WorkQueueItemback();
                             $w_itemback_new->work_queue_id = $model->id;
