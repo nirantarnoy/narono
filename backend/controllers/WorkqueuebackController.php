@@ -184,6 +184,7 @@ class WorkqueuebackController extends Controller
                                 $w_itemback = new \common\models\WorkQueueItemback();
                                 $w_itemback->work_queue_id = $model->id;
                                 $w_itemback->item_back_id = $model->item_back_id[$x];
+                                $w_itemback->work_queue_type = 2;
                                 $w_itemback->save(false);
                             }
                         }
@@ -214,7 +215,7 @@ class WorkqueuebackController extends Controller
 
         $model_line_doc = \common\models\WorkQueueBackLine::find()->where(['work_queue_back_id' => $id])->all();
         $w_dropoff = \common\models\WorkQueueBackDropoff::find()->where(['work_queue_back_id' => $id])->all();
-        $w_itemback = \common\models\WorkQueueItemback::find()->where(['work_queue_back_id' => $id])->all();
+        $w_itemback = \common\models\WorkQueueItemback::find()->where(['work_queue_id' => $id,'work_queue_type' => 2])->all();
 
 
         if ($this->request->isPost && $model->load($this->request->post())) {
@@ -345,11 +346,12 @@ class WorkqueuebackController extends Controller
 //                }
                 if ($model->item_back_id != null) {
                     if (count($model->item_back_id) > 0) {
-                        \common\models\WorkQueueItemback::deleteAll(['work_queue_id' => $model->id]);
+                        \common\models\WorkQueueItemback::deleteAll(['work_queue_id' => $model->id,'work_queue_type' => 2]);
                         for ($x = 0; $x <= count($model->item_back_id) - 1; $x++) {
                             $w_itemback_new = new \common\models\WorkQueueItemback();
                             $w_itemback_new->work_queue_id = $model->id;
                             $w_itemback_new->item_back_id = $model->item_back_id[$x];
+                            $w_itemback_new->work_queue_type = 2;
                             $w_itemback_new->save(false);
                         }
                     }

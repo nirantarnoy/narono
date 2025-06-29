@@ -27,7 +27,8 @@ class WorkQueueItemback extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['work_queue_id', 'item_back_id'], 'integer'],
+            [['work_queue_id', 'item_back_id','work_queue_type'], 'integer'],
+
 
         ];
     }
@@ -41,6 +42,7 @@ class WorkQueueItemback extends \yii\db\ActiveRecord
             'id' => 'ID',
             'work_queue_id' => 'Work Queue ID',
             'item_back_id' => 'Item Back ID',
+            'work_queue_type' => 'Work Queue Type',
         ];
     }
 }
