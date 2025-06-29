@@ -157,7 +157,7 @@ class WorkqueuebackController extends Controller
                             $model_df = new \common\models\WorkQueueBackDropoff();
                             $model_df->work_queue_back_id = $model->id;
                             $model_df->dropoff_id = $dropoff_id[$a];
-                            $model_df->quotation_route_no = $route_no[$a];
+                            $model_df->quotation_route_no = $route_no!=null?$route_no[$a]:'';
                             $model_df->dropoff_no = $dropoff_no[$a];
                             $model_df->qty = $qty[$a];
                             $model_df->weight = $weight[$a];

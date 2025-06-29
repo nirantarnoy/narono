@@ -157,7 +157,7 @@ class WorkqueuebackController extends Controller
                             $model_df = new \common\models\WorkQueueBackDropoff();
                             $model_df->work_queue_back_id = $model->id;
                             $model_df->dropoff_id = $dropoff_id[$a];
-                            $model_df->quotation_route_no = $route_no[$a];
+                            $model_df->quotation_route_no = $route_no!=null?$route_no[$a]:null;
                             $model_df->dropoff_no = $dropoff_no[$a];
                             $model_df->qty = $qty[$a];
                             $model_df->weight = $weight[$a];
@@ -286,7 +286,7 @@ class WorkqueuebackController extends Controller
                 if ($dropoff_id != null) {
                     \common\models\WorkQueueBackDropoff::deleteAll(['work_queue_id' => $model->id]);
                     for ($a = 0; $a <= count($dropoff_id) - 1; $a++) {
-                        $model_test = \common\models\WorkQueueBackDropoff::find()->where(['work_queue_id' => $model->id, 'dropoff_id' => $dropoff_id[$a], 'dropoff_no' => $dropoff_no[$a]])->one();
+                        $model_test = \common\models\WorkQueueBackDropoff::find()->where(['work_queue_back_id' => $model->id, 'dropoff_id' => $dropoff_id[$a], 'dropoff_no' => $dropoff_no[$a]])->one();
                         if ($model_test) {
                             $model_test->dropoff_id = $dropoff_id[$a];
                             $model_test->quotation_route_no = $route_no[$a];
