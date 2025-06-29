@@ -125,7 +125,7 @@ class WorkQueueBack extends \yii\db\ActiveRecord
             'total_out_lite' => 'รวมจำนวนปั๊มนอก(ลิตร)',
             'item_back_id'=> 'ประเภทของกลับ',
             'paper_type_name'=>'ประเภทเศษกระดาษ',
-            'drop_place'=>'สถานที่ของกลับ',
+            'drop_place'=>'สถานที่ลงของ',
             'other_amt' => 'อื่นๆ',
             'create_at' => 'Create At',
             'created_by' => 'Created By',

@@ -73,7 +73,7 @@ class WorkQueueBack extends \yii\db\ActiveRecord
     {
         return [
             [['work_queue_date'], 'safe'],
-            [['customer_id', 'emp_assign', 'route_plan_id', 'car_id', 'tail_id', 'tail_back_id', 'approve_status', 'approve_by', 'is_labur', 'is_invoice', 'is_express_road', 'destination_id', 'is_other', 'work_option_type_id', 'status', 'create_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
+            [['customer_id','company_id', 'emp_assign', 'route_plan_id', 'car_id', 'tail_id', 'tail_back_id', 'approve_status', 'approve_by', 'is_labur', 'is_invoice', 'is_express_road', 'destination_id', 'is_other', 'work_option_type_id', 'status', 'create_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
             [['weight_on_go', 'weight_on_back', 'weight_go_deduct', 'back_deduct', 'labour_price', 'express_road_price', 'cover_sheet_price', 'overnight_price', 'warehouse_plus_price', 'other_price', 'test_price', 'damaged_price', 'oil_daily_price', 'total_lite', 'total_distance', 'total_amount', 'deduct_other_price', 'work_double_price', 'oil_out_price', 'total_amount2', 'towing_price', 'total_out_lite', 'other_amt'], 'number'],
             [['work_queue_no', 'go_deduct_reason', 'back_reason', 'dp_no'], 'string', 'max' => 255],
             [['item_back_id','paper_type_name','drop_place'],'safe'],
