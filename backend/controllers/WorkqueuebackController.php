@@ -138,8 +138,8 @@ class WorkqueuebackController extends Controller
                                         $upfiles = time() . "." . $value->getExtension();
                                         // if ($uploaded->saveAs(Yii::$app->request->baseUrl . '/uploads/files/' . $upfiles)) {
                                         if ($value->saveAs('../web/uploads/workqueue_doc/' . $upfiles)) {
-                                            $model_doc = new \common\models\WorkQueueLine();
-                                            $model_doc->work_queue_id = $model->id;
+                                            $model_doc = new \common\models\WorkQueueBackLine();
+                                            $model_doc->work_queue_back_id = $model->id;
                                             $model_doc->doc = $upfiles;
                                             $model_doc->description = $line_doc_name[$i];
                                             $model_doc->save(false);
@@ -272,7 +272,7 @@ class WorkqueuebackController extends Controller
                                     // if ($uploaded->saveAs(Yii::$app->request->baseUrl . '/uploads/files/' . $upfiles)) {
                                     if ($value->saveAs('../web/uploads/workqueue_doc/' . $upfiles)) {
                                         $model_doc = new \common\models\WorkQueueBackLine();
-                                        $model_doc->work_queue_id = $model->id;
+                                        $model_doc->work_queue_back_id = $model->id;
                                         $model_doc->doc = $upfiles;
                                         $model_doc->description = $line_doc_name[$i];
                                         $model_doc->save(false);
@@ -299,7 +299,7 @@ class WorkqueuebackController extends Controller
                             $model_test->save(false);
                         } else {
                             $model_do = new \common\models\WorkQueueBackDropoff();
-                            $model_do->work_queue_id = $model->id;
+                            $model_do->work_queue_back_id = $model->id;
                             $model_do->dropoff_id = $dropoff_id[$a];
                             $model_do->quotation_route_no = $route_no[$a];
                             $model_do->dropoff_no = $dropoff_no[$a];

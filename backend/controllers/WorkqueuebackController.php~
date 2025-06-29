@@ -138,8 +138,8 @@ class WorkqueuebackController extends Controller
                                         $upfiles = time() . "." . $value->getExtension();
                                         // if ($uploaded->saveAs(Yii::$app->request->baseUrl . '/uploads/files/' . $upfiles)) {
                                         if ($value->saveAs('../web/uploads/workqueue_doc/' . $upfiles)) {
-                                            $model_doc = new \common\models\WorkQueueLine();
-                                            $model_doc->work_queue_id = $model->id;
+                                            $model_doc = new \common\models\WorkQueueBackLine();
+                                            $model_doc->work_queue_back_id = $model->id;
                                             $model_doc->doc = $upfiles;
                                             $model_doc->description = $line_doc_name[$i];
                                             $model_doc->save(false);
@@ -272,7 +272,7 @@ class WorkqueuebackController extends Controller
                                     // if ($uploaded->saveAs(Yii::$app->request->baseUrl . '/uploads/files/' . $upfiles)) {
                                     if ($value->saveAs('../web/uploads/workqueue_doc/' . $upfiles)) {
                                         $model_doc = new \common\models\WorkQueueBackLine();
-                                        $model_doc->work_queue_id = $model->id;
+                                        $model_doc->work_queue_back_id = $model->id;
                                         $model_doc->doc = $upfiles;
                                         $model_doc->description = $line_doc_name[$i];
                                         $model_doc->save(false);
@@ -472,11 +472,11 @@ class WorkqueuebackController extends Controller
 
     public function actionCalupdatecompay()
     {
-        $model = \backend\models\Workqueue::find()->where(['company_id' => 0])->all();
+        $model = \backend\models\Workqueueback::find()->where(['company_id' => 0])->all();
         foreach ($model as $value) {
             $model_car = \backend\models\Car::find()->where(['id' => $value->car_id])->one();
             if ($model_car) {
-                \backend\models\Workqueue::updateAll(['company_id' => $model_car->company_id], ['id' => $value->id]);
+                \backend\models\Workqueueback::updateAll(['company_id' => $model_car->company_id], ['id' => $value->id]);
             }
         }
     }
