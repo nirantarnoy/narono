@@ -184,8 +184,9 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
             ]) ?>
         </div>
         <div class="col-lg-4">
-            <label for="">ทะเบียน</label>
-            <input type="text" class="form-control tail-plate-no" value="<?= $t_plate ?>" readonly>
+            <?= $form->field($model,'drop_place')->textInput(['maxlength' => true]) ?>
+<!--            <label for="">ทะเบียน</label>-->
+<!--            <input type="text" class="form-control tail-plate-no" value="--><?php //= $t_plate ?><!--" readonly>-->
         </div>
         <div class="col-lg-4"></div>
     </div>
