@@ -44,7 +44,7 @@ class WorkqueuebackSearch extends Workqueueback
      */
     public function search($params)
     {
-        $query = Workqueueback::find()->leftJoin('customer','work_queue.customer_id = customer.id')->leftJoin('employee','work_queue.emp_assign=employee.id');
+        $query = Workqueueback::find()->leftJoin('customer','work_queue_back.customer_id = customer.id')->leftJoin('employee','work_queue_back.emp_assign=employee.id');
 
         // add conditions that should always apply here
 
