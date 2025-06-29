@@ -212,9 +212,9 @@ class WorkqueuebackController extends Controller
     {
         $model = $this->findModel($id);
 
-        $model_line_doc = \common\models\WorkQueueBackLine::find()->where(['work_queue_id' => $id])->all();
-        $w_dropoff = \common\models\WorkQueueBackDropoff::find()->where(['work_queue_id' => $id])->all();
-        $w_itemback = \common\models\WorkQueueItemback::find()->where(['work_queue_id' => $id])->all();
+        $model_line_doc = \common\models\WorkQueueBackLine::find()->where(['work_queue_back_id' => $id])->all();
+        $w_dropoff = \common\models\WorkQueueBackDropoff::find()->where(['work_queue_back_id' => $id])->all();
+        $w_itemback = \common\models\WorkQueueItemback::find()->where(['work_queue_back_id' => $id])->all();
 
 
         if ($this->request->isPost && $model->load($this->request->post())) {
@@ -284,7 +284,7 @@ class WorkqueuebackController extends Controller
                 }
 
                 if ($dropoff_id != null) {
-                    \common\models\WorkQueueBackDropoff::deleteAll(['work_queue_id' => $model->id]);
+                    \common\models\WorkQueueBackDropoff::deleteAll(['work_queue_back_id' => $model->id]);
                     for ($a = 0; $a <= count($dropoff_id) - 1; $a++) {
                         $model_test = \common\models\WorkQueueBackDropoff::find()->where(['work_queue_back_id' => $model->id, 'dropoff_id' => $dropoff_id[$a], 'dropoff_no' => $dropoff_no[$a]])->one();
                         if ($model_test) {

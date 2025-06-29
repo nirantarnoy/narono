@@ -157,7 +157,7 @@ class WorkqueuebackController extends Controller
                             $model_df = new \common\models\WorkQueueBackDropoff();
                             $model_df->work_queue_back_id = $model->id;
                             $model_df->dropoff_id = $dropoff_id[$a];
-                            $model_df->quotation_route_no = $route_no!=null?$route_no[$a]:null;
+                            $model_df->quotation_route_no = $route_no!=null?$route_no[$a]:'';
                             $model_df->dropoff_no = $dropoff_no[$a];
                             $model_df->qty = $qty[$a];
                             $model_df->weight = $weight[$a];
@@ -212,9 +212,9 @@ class WorkqueuebackController extends Controller
     {
         $model = $this->findModel($id);
 
-        $model_line_doc = \common\models\WorkQueueBackLine::find()->where(['work_queue_id' => $id])->all();
-        $w_dropoff = \common\models\WorkQueueBackDropoff::find()->where(['work_queue_id' => $id])->all();
-        $w_itemback = \common\models\WorkQueueItemback::find()->where(['work_queue_id' => $id])->all();
+        $model_line_doc = \common\models\WorkQueueBackLine::find()->where(['work_queue_back_id' => $id])->all();
+        $w_dropoff = \common\models\WorkQueueBackDropoff::find()->where(['work_queue_back_id' => $id])->all();
+        $w_itemback = \common\models\WorkQueueItemback::find()->where(['work_queue_back_id' => $id])->all();
 
 
         if ($this->request->isPost && $model->load($this->request->post())) {
