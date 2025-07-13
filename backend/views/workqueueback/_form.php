@@ -639,16 +639,16 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                 <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
                 <?php if (!$model->isNewRecord && $model->approve_status != 1): ?>
                     <a class="btn btn-primary"
-                       href="<?= \yii\helpers\Url::to(['workqueue/approvejob', 'id' => $model->id, 'approve_id' => 1], true) ?>">อนุมัติจำนวน</a>
+                       href="<?= \yii\helpers\Url::to(['workqueueback/approvejob', 'id' => $model->id, 'approve_id' => 1], true) ?>">อนุมัติจำนวน</a>
                 <?php endif; ?>
             </div>
         </div>
         <div class="col-lg-6" style="text-align: right">
             <?php if (!$model->isNewRecord): ?>
                 <div class="btn-group">
-                    <a href="<?= \yii\helpers\Url::to(['workqueue/exportdoc', 'id' => $model->id], true) ?>"
+                    <a href="<?= \yii\helpers\Url::to(['workqueueback/exportdoc', 'id' => $model->id], true) ?>"
                        class="btn btn-default">Export</a>
-                    <a href="<?= \yii\helpers\Url::to(['workqueue/printdocx', 'id' => $model->id], true) ?>"
+                    <a href="<?= \yii\helpers\Url::to(['workqueueback/printdocx', 'id' => $model->id], true) ?>"
                        class="btn btn-warning">พิมพ์</a>
                 </div>
 
@@ -662,7 +662,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
 
 </div>
 
-<form id="form-delete-doc" action="<?= \yii\helpers\Url::to(['workqueue/removedoc'], true) ?>" method="post">
+<form id="form-delete-doc" action="<?= \yii\helpers\Url::to(['workqueueback/removedoc'], true) ?>" method="post">
     <input type="hidden" name="work_queue_id" value="<?= $model->id ?>">
     <input type="hidden" class="work-queue-doc-delete" name="doc_name" value="">
 </form>
@@ -686,8 +686,8 @@ $url_to_getCardata = \yii\helpers\Url::to(['car/getcarinfo'], true);
 $url_to_routeplan = \yii\helpers\Url::to(['car/getrouteplan'], true);
 $url_to_find_item = \yii\helpers\Url::to(['item/finditem'], true);
 $url_to_customer_invoice = \yii\helpers\Url::to(['customer/getcustomerinvoice'], true);
-$url_to_getpricefromquotation = \yii\helpers\Url::to(['workqueue/getpricefromquotation'], true);
-$url_to_getquotation_route = \yii\helpers\Url::to(['workqueue/getquotationrouote'], true);
+$url_to_getpricefromquotation = \yii\helpers\Url::to(['workqueueback/getpricefromquotation'], true);
+$url_to_getquotation_route = \yii\helpers\Url::to(['workqueueback/getquotationrouote'], true);
 $js = <<<JS
 var removelist = [];
 var removelist2 = [];
