@@ -148,7 +148,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                         'placeholder' => '--เลือกประเภทคิวงาน--',
                     ],
                     'pluginOptions' => [
-                        'multiple' => true,
+                        'multiple' => false,
                     ]
 
                 ])->label() ?>
