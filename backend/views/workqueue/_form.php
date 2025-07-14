@@ -140,7 +140,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
 
         </div>
         <div class="col-lg-3">
-            <div class="col-lg-3">
+
                 <?php $model->item_back_id = !$model->isNewRecord ? $itemback_list : null ?>
                 <?= $form->field($model, 'work_queue_type')->Widget(\kartik\select2\Select2::className(), [
                     'data' => \yii\helpers\ArrayHelper::map(\backend\helpers\WorkQueueType::asArrayObject(), 'id', 'name'),
@@ -152,7 +152,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                     ]
 
                 ])->label() ?>
-        </div>
+
     </div>
 
     <div class="row">
