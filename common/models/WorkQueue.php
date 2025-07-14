@@ -35,8 +35,9 @@ class WorkQueue extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['work_queue_type'], 'required'],
             [['work_queue_date'], 'safe'],
-            [['customer_id', 'emp_assign', 'status', 'create_at', 'created_by', 'updated_at', 'updated_by','route_plan_id','tail_id','car_id','tail_back_id','approve_status','approve_by','is_labur','is_express_road','is_other','work_option_type_id','is_invoice','company_id'], 'integer'],
+            [['customer_id', 'emp_assign', 'status', 'create_at', 'created_by', 'updated_at', 'updated_by','route_plan_id','tail_id','car_id','tail_back_id','approve_status','approve_by','is_labur','is_express_road','is_other','work_option_type_id','is_invoice','company_id','work_queue_type'], 'integer'],
             [['work_queue_no','go_deduct_reason','back_reason','dp_no'], 'string', 'max' => 255],
             [['weight_on_go','weight_on_back','weight_go_deduct','back_deduct','labour_price','express_road_price','other_price','test_price','damaged_price','total_lite','total_distance','total_amount'], 'double'],
             [['cover_sheet_price','overnight_price','warehouse_plus_price','deduct_other_price','work_double_price','total_amount2','towing_price','other_amt'], 'double'],
@@ -93,6 +94,7 @@ class WorkQueue extends \yii\db\ActiveRecord
             'created_by' => 'Created By',
             'updated_at' => 'Updated At',
             'updated_by' => 'Updated By',
+            'work_queue_type' => 'ประเภทคิวงาน',
         ];
     }
 }
