@@ -228,7 +228,7 @@ class QuotationtitleController extends Controller
                 $model_quotation_rate = \common\models\QuotationRate::find()->where(['quotation_title_id' => $quotation_title_id])->all();
                 if($model_quotation_rate){
                     foreach ($model_quotation_rate as $keyx => $valuex) {
-                        $model = \common\models\QuotationRateHistory::find()->where(['quotation_title_id' => $quotation_title_id,'quotation_rate_id' => $valuex->id])->one();
+                        $model = \common\models\QuotationRateHistory::find()->where(['quotation_title_id' => $quotation_title_id,'quotation_rate_id' => $valuex->id])->orderBy(['id' => SORT_DESC])->one();
                         if ($model) { // has record
                             $new_current_rate = 0;
                             if($curren_oil_price->price > $model->oil_price){ // current oil price is higher than history
@@ -264,6 +264,15 @@ class QuotationtitleController extends Controller
                 }
                 \common\models\QuotationTitle::updateAll(['fuel_rate' => $curren_oil_price->price], ['id' => $quotation_title_id]);
 
+            }
+        }
+    }
+
+    public function actionReturnhistory(){
+        $model = \common\models\QuotationRateHistory::find()->where(['quotation_rate_id' => 8,'oil_price' => 30.94])->all();
+        if($model){
+            foreach ($model as $key => $value) {
+                \common\models\QuotationRate::updateAll(['price_current_rate' => $value->rate_amount, 'oil_price' => $value->oil_price], ['id' => $value->quotation_rate_id]);
             }
         }
     }
