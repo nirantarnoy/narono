@@ -241,14 +241,16 @@ class QuotationtitleController extends Controller
 
                             $res = \common\models\QuotationRate::updateAll(['price_current_rate' => $new_current_rate, 'oil_price' => $curren_oil_price->price], ['id' => $valuex->id]); // update line price and oil price
                             if($res){
-                                $model_new_history = new \common\models\QuotationRateHistory();
-                                $model_new_history->quotation_title_id = $quotation_title_id;
-                                $model_new_history->quotation_rate_id = $valuex->id;
-                                $model_new_history->oil_price = $valuex->oil_price == null ? $curren_oil_price->price : $valuex->oil_price;
-                                $model_new_history->rate_amount = round($valuex->price_current_rate);
-                                $model_new_history->created_at = time();
-                                $model_new_history->created_by = \Yii::$app->user->id;
-                                $model_new_history->save(false);
+                                if($curren_oil_price->price != $model->oil_price) {
+                                    $model_new_history = new \common\models\QuotationRateHistory();
+                                    $model_new_history->quotation_title_id = $quotation_title_id;
+                                    $model_new_history->quotation_rate_id = $valuex->id;
+                                    $model_new_history->oil_price = $valuex->oil_price == null ? $curren_oil_price->price : $valuex->oil_price;
+                                    $model_new_history->rate_amount = round($valuex->price_current_rate);
+                                    $model_new_history->created_at = time();
+                                    $model_new_history->created_by = \Yii::$app->user->id;
+                                    $model_new_history->save(false);
+                                }
                             }
                         }else{ // no record
                             $model_new_history = new \common\models\QuotationRateHistory();
@@ -274,6 +276,23 @@ class QuotationtitleController extends Controller
         if($model){
             foreach ($model as $key => $value) {
                 \common\models\QuotationRate::updateAll(['price_current_rate' => $value->rate_amount, 'oil_price' => $value->oil_price], ['id' => $value->quotation_rate_id]);
+            }
+        }
+    }
+
+    public function actionCalrateinit(){
+        $model = \common\models\QuotationTitle::find()->where(['id' => 8])->all();
+      //  $rate_up = 2.02;
+        $rate_up = 1.01;
+        if($model){
+            foreach ($model as $key => $value) {
+                $model_line = \common\models\QuotationRate::find()->where(['quotation_title_id' => $value->id])->all();
+                if($model_line){
+                    foreach ($model_line as $keyx => $valuex) {
+                        $new_current_rate = round($valuex->price_current_rate * $rate_up);
+                        \common\models\QuotationRate::updateAll(['price_current_rate' => $new_current_rate], ['id' => $valuex->id]);
+                    }
+                }
             }
         }
     }
