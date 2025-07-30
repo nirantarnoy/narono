@@ -149,7 +149,6 @@ class FuelController extends Controller
             for ($i = 0; $i <= count($fuel_name) - 1; $i++) {
                 $fuel_id = \backend\models\Fuel::findId($fuel_name[$i]);
                 if($fuel_id){
-
                     $model_check = \common\models\FuelPrice::find()->where(['fuel_id'=>$fuel_id])->andFilterWhere(['date(price_date)'=>date('Y-m-d')])->one();
                     if($model_check)continue;
                     $model = new \common\models\FuelPrice();

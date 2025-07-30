@@ -156,6 +156,7 @@ class QuotationtitleController extends Controller
             $line_quotation_price = \Yii::$app->request->post('line_quotation_price');
             $line_quotation_price_type_id = \Yii::$app->request->post('line_quotation_price_type_id');
             // $line_drop_off_id = \Yii::$app->request->post('line_drop_off_id');
+            $line_rec_id = \Yii::$app->request->post('line_rec_id');
 
             $drop_off_id = \Yii::$app->request->post('drop_off_id');
 
@@ -163,20 +164,36 @@ class QuotationtitleController extends Controller
             // print_r(\Yii::$app->request->post());return;
             if ($model->save(false)) {
                 if ($line_warehouse_id != null) {
-                    \common\models\QuotationRate::deleteAll(['quotation_title_id' => $id]);
+                   // \common\models\QuotationRate::deleteAll(['quotation_title_id' => $id]);
                     for ($i = 0; $i <= count($line_warehouse_id) - 1; $i++) {
-                        $model_line = new \common\models\QuotationRate();
-                        $model_line->quotation_title_id = $model->id;
-                        $model_line->province_id = $line_warehouse_id[$i];
-                        $model_line->car_type_id = $model->car_type_id;
-                        $model_line->distance = $line_distance[$i];
-                        $model_line->price_current_rate = $line_quotation_price[$i];
-                        $model_line->load_qty = $line_average[$i];
-                        $model_line->route_code = $line_route[$i];
-                        $model_line->zone_id = $line_zone_id[$i];
-                        // $model_line->price_type_id = $line_quotation_price_type_id[$i];
-                        //  $model_line->drop_off_id = $line_drop_off_id[$i];
-                        $model_line->save(false);
+                        $model_old = \common\models\QuotationRate::find()->where(['id' => $line_rec_id[$i]])->one();
+                        if ($model_old != null) {
+                            $model_old->quotation_title_id = $model->id;
+                            $model_old->province_id = $line_warehouse_id[$i];
+                            $model_old->car_type_id = $model->car_type_id;
+                            $model_old->distance = $line_distance[$i];
+                            $model_old->price_current_rate = $line_quotation_price[$i];
+                            $model_old->load_qty = $line_average[$i];
+                            $model_old->route_code = $line_route[$i];
+                            $model_old->zone_id = $line_zone_id[$i];
+                            // $model_old->price_type_id = $line_quotation_price_type_id[$i];
+                            //  $model_old->drop_off_id = $line_drop_off_id[$i];
+                            $model_old->save(false);
+                        }else{
+                            $model_line = new \common\models\QuotationRate();
+                            $model_line->quotation_title_id = $model->id;
+                            $model_line->province_id = $line_warehouse_id[$i];
+                            $model_line->car_type_id = $model->car_type_id;
+                            $model_line->distance = $line_distance[$i];
+                            $model_line->price_current_rate = $line_quotation_price[$i];
+                            $model_line->load_qty = $line_average[$i];
+                            $model_line->route_code = $line_route[$i];
+                            $model_line->zone_id = $line_zone_id[$i];
+                            // $model_line->price_type_id = $line_quotation_price_type_id[$i];
+                            //  $model_line->drop_off_id = $line_drop_off_id[$i];
+                            $model_line->save(false);
+                        }
+
                     }
                 }
                 if ($drop_off_id != null) {
@@ -190,6 +207,7 @@ class QuotationtitleController extends Controller
                         }
                     }
                 }
+                $this->calRatehistory($model->id);
                 return $this->redirect(['view', 'id' => $model->id]);
             }
 
@@ -199,6 +217,55 @@ class QuotationtitleController extends Controller
             'model' => $model,
             'model_line' => $model_line,
         ]);
+    }
+
+    public function calRatehistory($quotation_title_id){
+        if($quotation_title_id) {
+            $factor_up = 1.01;
+            $factor_down = 0.99;
+            $curren_oil_price = \common\models\FuelPrice::find()->where(['fuel_id' => 1])->orderBy(['price_date' => SORT_DESC])->one();
+            if ($curren_oil_price) {
+                $model_quotation_rate = \common\models\QuotationRate::find()->where(['quotation_title_id' => $quotation_title_id])->all();
+                if($model_quotation_rate){
+                    foreach ($model_quotation_rate as $keyx => $valuex) {
+                        $model = \common\models\QuotationRateHistory::find()->where(['quotation_title_id' => $quotation_title_id,'quotation_rate_id' => $valuex->id])->one();
+                        if ($model) { // has record
+                            $new_current_rate = 0;
+                            if($curren_oil_price->price > $model->oil_price){ // current oil price is higher than history
+                                $new_current_rate = $valuex->price_current_rate * $factor_up;
+                            }elseif($curren_oil_price->price < $model->oil_price){ // current oil price is lower than history
+                                $new_current_rate = $valuex->price_current_rate * $factor_down;
+                            }else{
+                                continue;
+                            }
+
+                            $res = \common\models\QuotationRate::updateAll(['price_current_rate' => $new_current_rate, 'oil_price' => $curren_oil_price->price], ['id' => $valuex->id]); // update line price and oil price
+                            if($res){
+                                $model_new_history = new \common\models\QuotationRateHistory();
+                                $model_new_history->quotation_title_id = $quotation_title_id;
+                                $model_new_history->quotation_rate_id = $valuex->id;
+                                $model_new_history->oil_price = $valuex->oil_price == null ? $curren_oil_price->price : $valuex->oil_price;
+                                $model_new_history->rate_amount = $valuex->price_current_rate;
+                                $model_new_history->created_at = time();
+                                $model_new_history->created_by = \Yii::$app->user->id;
+                                $model_new_history->save(false);
+                            }
+                        }else{ // no record
+                            $model_new_history = new \common\models\QuotationRateHistory();
+                            $model_new_history->quotation_title_id = $quotation_title_id;
+                            $model_new_history->quotation_rate_id = $valuex->id;
+                            $model_new_history->oil_price = $valuex->oil_price == null ? $curren_oil_price->price : $valuex->oil_price;
+                            $model_new_history->rate_amount = $valuex->price_current_rate;
+                            $model_new_history->created_at = time();
+                            $model_new_history->created_by = \Yii::$app->user->id;
+                            $model_new_history->save(false);
+                        }
+                    }
+                }
+                \common\models\QuotationTitle::updateAll(['fuel_rate' => $curren_oil_price->price], ['id' => $quotation_title_id]);
+
+            }
+        }
     }
 
     /**

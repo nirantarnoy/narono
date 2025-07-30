@@ -222,7 +222,7 @@ $haul_data = \common\models\Haul::find()->orderBy(['id'=>SORT_ASC])->all();
                             <?php foreach ($model_line as $value): ?>
                                 <tr data-var="<?= $value->id ?>">
                                     <td>
-                                        <input type="hidden" class="line-rec-id" value="<?= $value->id ?>">
+                                        <input type="hidden" class="line-rec-id" name="line_rec_id[]" value="<?= $value->id ?>">
                                         <select name="line_warehouse_id[]" class="form-control line-warehouse-id" id=""
                                                 onchange="updatevalidate($(this))">
                                             <option value="-1">--เลือกจังหวัด--</option>
