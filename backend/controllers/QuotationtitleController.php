@@ -269,7 +269,7 @@ class QuotationtitleController extends Controller
     }
 
     public function actionReturnhistory(){
-        $model = \common\models\QuotationRateHistory::find()->where(['quotation_title_id' => 8,'oil_price' => 30.94])->all();
+        $model = \common\models\QuotationRateHistory::find()->where(['quotation_title_id' => 8])->all();
         print_r($model);return;
         if($model){
             foreach ($model as $key => $value) {
