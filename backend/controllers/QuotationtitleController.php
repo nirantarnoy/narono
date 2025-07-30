@@ -270,7 +270,7 @@ class QuotationtitleController extends Controller
 
     public function actionReturnhistory(){
         $model = \common\models\QuotationRateHistory::find()->where(['quotation_title_id' => 8])->andFilterWhere(['<','oil_price',31])->all();
-        print_r($model);return;
+       // print_r($model);return;
         if($model){
             foreach ($model as $key => $value) {
                 \common\models\QuotationRate::updateAll(['price_current_rate' => $value->rate_amount, 'oil_price' => $value->oil_price], ['id' => $value->quotation_rate_id]);
