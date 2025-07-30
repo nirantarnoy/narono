@@ -232,9 +232,9 @@ class QuotationtitleController extends Controller
                         if ($model) { // has record
                             $new_current_rate = 0;
                             if($curren_oil_price->price > $model->oil_price){ // current oil price is higher than history
-                                $new_current_rate = $valuex->price_current_rate * $factor_up;
+                                $new_current_rate = round($valuex->price_current_rate * $factor_up);
                             }elseif($curren_oil_price->price < $model->oil_price){ // current oil price is lower than history
-                                $new_current_rate = $valuex->price_current_rate * $factor_down;
+                                $new_current_rate = round($valuex->price_current_rate * $factor_down);
                             }else{
                                 continue;
                             }
@@ -245,7 +245,7 @@ class QuotationtitleController extends Controller
                                 $model_new_history->quotation_title_id = $quotation_title_id;
                                 $model_new_history->quotation_rate_id = $valuex->id;
                                 $model_new_history->oil_price = $valuex->oil_price == null ? $curren_oil_price->price : $valuex->oil_price;
-                                $model_new_history->rate_amount = $valuex->price_current_rate;
+                                $model_new_history->rate_amount = round($valuex->price_current_rate);
                                 $model_new_history->created_at = time();
                                 $model_new_history->created_by = \Yii::$app->user->id;
                                 $model_new_history->save(false);
@@ -255,7 +255,7 @@ class QuotationtitleController extends Controller
                             $model_new_history->quotation_title_id = $quotation_title_id;
                             $model_new_history->quotation_rate_id = $valuex->id;
                             $model_new_history->oil_price = $valuex->oil_price == null ? $curren_oil_price->price : $valuex->oil_price;
-                            $model_new_history->rate_amount = $valuex->price_current_rate;
+                            $model_new_history->rate_amount = round($valuex->price_current_rate);
                             $model_new_history->created_at = time();
                             $model_new_history->created_by = \Yii::$app->user->id;
                             $model_new_history->save(false);
