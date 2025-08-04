@@ -232,9 +232,9 @@ class QuotationtitleController extends Controller
                         if ($model) { // has record
                             $new_current_rate = 0;
                             if($curren_oil_price->price > $model->oil_price){ // current oil price is higher than history
-                                $new_current_rate = round($valuex->price_current_rate * $factor_up);
+                                $new_current_rate = round($valuex->price_current_rate) * round($factor_up);
                             }elseif($curren_oil_price->price < $model->oil_price){ // current oil price is lower than history
-                                $new_current_rate = round($valuex->price_current_rate * $factor_down);
+                                $new_current_rate = round($valuex->price_current_rate) * round( $factor_down);
                             }else{
                                 continue;
                             }
