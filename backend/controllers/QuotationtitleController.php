@@ -232,14 +232,14 @@ class QuotationtitleController extends Controller
                         if ($model) { // has record
                             $new_current_rate = 0;
                             if($curren_oil_price->price > $model->oil_price){ // current oil price is higher than history
-                                $new_current_rate = round($valuex->price_current_rate) * round($factor_up);
+                                $new_current_rate = round($valuex->price_current_rate * $factor_up);
                             }elseif($curren_oil_price->price < $model->oil_price){ // current oil price is lower than history
-                                $new_current_rate = round($valuex->price_current_rate) * round( $factor_down);
+                                $new_current_rate = round($valuex->price_current_rate * $factor_down);
                             }else{
                                 continue;
                             }
 
-                            $res = \common\models\QuotationRate::updateAll(['price_current_rate' => $new_current_rate, 'oil_price' => $curren_oil_price->price], ['id' => $valuex->id]); // update line price and oil price
+                            $res = \common\models\QuotationRate::updateAll(['price_current_rate' => round($new_current_rate), 'oil_price' => $curren_oil_price->price], ['id' => $valuex->id]); // update line price and oil price
                             if($res){
                                 if($curren_oil_price->price != $model->oil_price) {
                                     $model_new_history = new \common\models\QuotationRateHistory();
