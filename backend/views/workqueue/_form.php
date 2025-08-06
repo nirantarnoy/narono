@@ -356,6 +356,10 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                 <th></th>
                 </thead>
                 <tbody>
+                <?php
+                   $sum_total_weight = 0;
+                   $sum_total_amount = 0;
+                ?>
                 <?php if ($model->isNewRecord): ?>
                     <tr>
                         <td>
@@ -407,6 +411,10 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                 <?php else: ?>
                     <?php if (count($w_dropoff)): ?>
                         <?php foreach ($w_dropoff as $key): ?>
+                            <?php
+                                $sum_total_weight += $key->weight;
+                                $sum_total_amount += $key->price_line_total;
+                            ?>
                         <?php $route_no_data = \common\models\QueryQuotationPricePerTon::find()->where(['dropoff_id' => $key->dropoff_id, 'car_type_id' => $current_car_type_id])->all(); ?>
                             <tr data-var="<?= $key->id ?>">
                                 <td>
@@ -557,6 +565,10 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                             <i class="fa fa-plus-circle"></i>
                         </div>
                     </td>
+                    <td></td>
+                    <td><b><?= number_format($sum_total_weight, 2) ?></b></td>
+                    <td></td>
+                    <td><b><?= number_format($sum_total_amount, 2) ?></b></td>
                 </tr>
                 </tfoot>
             </table>
