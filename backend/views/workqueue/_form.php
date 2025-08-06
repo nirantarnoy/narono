@@ -566,9 +566,9 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                         </div>
                     </td>
                     <td></td>
-                    <td><b><?= number_format($sum_total_weight, 2) ?></b></td>
+                    <td><b><span class="sum-total-weight"><?= number_format($sum_total_weight, 2) ?></span></b></td>
                     <td></td>
-                    <td><b><?= number_format($sum_total_amount, 2) ?></b></td>
+                    <td><b><span class="sum-total-amount"><?= number_format($sum_total_amount, 2) ?></span></b></td>
                 </tr>
                 </tfoot>
             </table>
@@ -1228,8 +1228,25 @@ function calpriceperton(e){
     
     
     e.closest("tr").find(".price-line-total").val(parseFloat(line_total).toFixed(2));
+    cal_all();
 }
 
+function cal_all(){
+    var total_weight = 0;
+    var total_amount = 0;
+    
+    $("#table-list2 tbody tr").each(function () {
+        var line_w = $(this).find(".weight").val();
+        var line_amount = $(this).find(".price-line-total").val();
+        
+        total_weight = parseFloat(total_weight) + parseFloat(line_w);
+        total_amount = parseFloat(total_amount) + parseFloat(line_amount);
+    } );
+    
+    $(".sum-total-weight").text(parseFloat(total_weight).toFixed(2));
+    $(".sum-total-amount").text(parseFloat(total_amount).toFixed(2));
+   
+}
 function getpricefromquotation(e){
     var dropoff_id = e.closest('tr').find(".dropoff-id").val();
     var route_no = e.closest('tr').find(".line-route-no").val();
