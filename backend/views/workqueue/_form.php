@@ -566,7 +566,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                         </div>
                     </td>
                     <td></td>
-                    <td><b><span class="sum-total-weight"><?= number_format($sum_total_weight, 2) ?></span></b></td>
+                    <td><b><span class="sum-total-weight"><?= number_format($sum_total_weight, 3) ?></span></b></td>
                     <td></td>
                     <td><b><span class="sum-total-amount"><?= number_format($sum_total_amount, 2) ?></span></b></td>
                 </tr>
@@ -1243,7 +1243,7 @@ function cal_all(){
         total_amount = parseFloat(total_amount) + parseFloat(line_amount);
     } );
     
-    $(".sum-total-weight").text(parseFloat(total_weight).toFixed(2));
+    $(".sum-total-weight").text(parseFloat(total_weight).toFixed(3));
     $(".sum-total-amount").text(parseFloat(total_amount).toFixed(2));
    
 }
