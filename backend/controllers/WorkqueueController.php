@@ -111,6 +111,15 @@ class WorkqueueController extends Controller
                 $is_charter = \Yii::$app->request->post('is_charter');
                 $route_no = \Yii::$app->request->post('line_route_no');
 
+                // add new
+
+                $oil_out_price_2 = \Yii::$app->request->post('oil_out_price_2');
+                $total_out_lite_2 = \Yii::$app->request->post('total_out_lite_2');
+                $total_amount3 = \Yii::$app->request->post('total_amount3');
+                $oil_out_price_3 = \Yii::$app->request->post('oil_out_price_3');
+                $total_out_lite_3 = \Yii::$app->request->post('total_out_lite_3');
+                $total_amount4 = \Yii::$app->request->post('total_amount4');
+
                 $company_id = \backend\models\Customer::findCompanyByCustomer($model->customer_id);
 
                 //   print_r($weight); return ;
@@ -123,6 +132,12 @@ class WorkqueueController extends Controller
                 $model->total_amount = $total_amount;
                 $model->total_amount2 = $total_amount2;
                 $model->company_id = $company_id;
+                $model->oil_out_price_2 = $oil_out_price_2;
+                $model->total_out_lite_2 = $total_out_lite_2;
+                $model->total_amount3 = $total_amount3;
+                $model->oil_out_price_3 = $oil_out_price_3;
+                $model->total_out_lite_3 = $total_out_lite_3;
+                $model->total_amount4 = $total_amount4;
                 if ($model->save(false)) {
 
 //                    echo '123'; return ;
@@ -244,6 +259,15 @@ class WorkqueueController extends Controller
 
             $is_charter = \Yii::$app->request->post('is_charter');
 
+            // add new
+
+            $oil_out_price_2 = \Yii::$app->request->post('oil_out_price_2');
+            $total_out_lite_2 = \Yii::$app->request->post('total_out_lite_2');
+            $total_amount3 = \Yii::$app->request->post('total_amount3');
+            $oil_out_price_3 = \Yii::$app->request->post('oil_out_price_3');
+            $total_out_lite_3 = \Yii::$app->request->post('total_out_lite_3');
+            $total_amount4 = \Yii::$app->request->post('total_amount4');
+
 
 //            print_r($dropoff_id);
 //            print_r($weight);return;
@@ -254,6 +278,12 @@ class WorkqueueController extends Controller
             $model->total_out_lite = $total_out_lite;
             $model->total_amount = $total_amount;
             $model->total_amount2 = $total_amount2;
+            $model->oil_out_price_2 = $oil_out_price_2;
+            $model->total_out_lite_2 = $total_out_lite_2;
+            $model->total_amount3 = $total_amount3;
+            $model->oil_out_price_3 = $oil_out_price_3;
+            $model->total_out_lite_3 = $total_out_lite_3;
+            $model->total_amount4 = $total_amount4;
 
             if ($model->save(false)) {
                 if ($line_id != null) {

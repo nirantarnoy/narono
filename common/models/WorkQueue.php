@@ -41,7 +41,7 @@ class WorkQueue extends \yii\db\ActiveRecord
             [['work_queue_no','go_deduct_reason','back_reason','dp_no'], 'string', 'max' => 255],
             [['weight_on_go','weight_on_back','weight_go_deduct','back_deduct','labour_price','express_road_price','other_price','test_price','damaged_price','total_lite','total_distance','total_amount'], 'double'],
             [['cover_sheet_price','overnight_price','warehouse_plus_price','deduct_other_price','work_double_price','total_amount2','towing_price','other_amt'], 'double'],
-            [['oil_daily_price','oil_out_price','total_out_lite'],'safe'],
+            [['oil_daily_price','oil_out_price','total_out_lite','oil_out_price_2','oil_out_price_3','total_amount3','total_amount4','total_out_lite_2','total_out_lite_3'],'safe'],
             [['item_back_id'],'safe'],
         ];
     }

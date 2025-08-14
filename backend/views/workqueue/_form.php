@@ -271,24 +271,58 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
 
     </div>
     <div style="height: 10px;"></div>
-    <div class="row">
-        <div class="col-lg-3">
-            <label for="">ราคาน้ำมันปั๊มนอก</label>
-            <input type="text" class="form-control oil-out-price" name="oil_out_price"
-                   value="<?= $model->oil_out_price ?>">
+        <div class="row">
+            <div class="col-lg-3">
+                <label for="">ราคาน้ำมันปั๊มนอก</label>
+                <input type="text" class="form-control oil-out-price" name="oil_out_price"
+                       value="<?= $model->oil_out_price ?>">
+            </div>
+            <div class="col-lg-3">
+                <label for="">รวมจำนวนปั๊มนอก(ลิตร)</label>
+                <input type="text" class="form-control total-out-lite" name="total_out_lite"
+                       value="<?= $model->total_out_lite ?>">
+            </div>
+            <div class="col-lg-3">
+                <label for="">รวมปั๊มนอก(บาท)</label>
+                <input type="text" class="form-control total-amount-2" name="total_amount2"
+                       value="<?= $model->total_amount2 ?>" readonly>
+            </div>
         </div>
-        <div class="col-lg-3">
-            <label for="">รวมจำนวนปั๊มนอก(ลิตร)</label>
-            <input type="text" class="form-control total-out-lite" name="total_out_lite"
-                   value="<?= $model->total_out_lite ?>">
+        <div class="row">
+            <div class="col-lg-3">
+                <label for="">ราคาน้ำมันปั๊มนอก</label>
+                <input type="text" class="form-control oil-out-price-2" name="oil_out_price_2"
+                       value="<?= $model->oil_out_price_2 ?>">
+            </div>
+            <div class="col-lg-3">
+                <label for="">รวมจำนวนปั๊มนอก(ลิตร)</label>
+                <input type="text" class="form-control total-out-lite-2" name="total_out_lite_2"
+                       value="<?= $model->total_out_lite_2 ?>">
+            </div>
+            <div class="col-lg-3">
+                <label for="">รวมปั๊มนอก(บาท)</label>
+                <input type="text" class="form-control total-amount-3" name="total_amount3"
+                       value="<?= $model->total_amount3 ?>" readonly>
+            </div>
         </div>
-        <div class="col-lg-3">
-            <label for="">รวมปั๊มนอก(บาท)</label>
-            <input type="text" class="form-control total-amount-2" name="total_amount2"
-                   value="<?= $model->total_amount2 ?>" readonly>
+        <div class="row">
+            <div class="col-lg-3">
+                <label for="">ราคาน้ำมันปั๊มนอก</label>
+                <input type="text" class="form-control oil-out-price-3" name="oil_out_price_3"
+                       value="<?= $model->oil_out_price_3 ?>">
+            </div>
+            <div class="col-lg-3">
+                <label for="">รวมจำนวนปั๊มนอก(ลิตร)</label>
+                <input type="text" class="form-control total-out-lite-3" name="total_out_lite_3"
+                       value="<?= $model->total_out_lite_3 ?>">
+            </div>
+            <div class="col-lg-3">
+                <label for="">รวมปั๊มนอก(บาท)</label>
+                <input type="text" class="form-control total-amount-4" name="total_amount4"
+                       value="<?= $model->total_amount4 ?>" readonly>
+            </div>
         </div>
-    </div>
-    <div style="height: 10px;"></div>
+        <div style="height: 10px;"></div>
     <div class="row">
         <div class="col-lg-3">
             <?php echo $form->field($model, 'status')->widget(\toxor88\switchery\Switchery::className(), ['options' => ['label' => '', 'class' => 'form-control']])->label() ?>
@@ -767,6 +801,40 @@ $(function(){
         var total_amount = oil_price * oil_total;
         $(".total-amount-2").val(parseFloat(total_amount).toFixed(2));
     });
+    
+    
+    
+    // add new
+    
+    $(".oil-out-price-2").change(function(){
+        var oil_price = parseFloat($(this).val()).toFixed(2);
+        var oil_total = parseFloat($(".total-out-lite-2").val()).toFixed(2);
+        var total_amount = oil_price * oil_total;
+        $(".total-amount-3").val(parseFloat(total_amount).toFixed(2));
+    });
+    
+    $(".oil-out-price-3").change(function(){
+        var oil_price = parseFloat($(this).val()).toFixed(2);
+        var oil_total = parseFloat($(".total-out-lite-3").val()).toFixed(2);
+        var total_amount = oil_price * oil_total;
+        $(".total-amount-4").val(parseFloat(total_amount).toFixed(2));
+    });
+    
+    $(".total-out-lite-2").change(function(){
+        var oil_total = parseFloat($(this).val()).toFixed(2);
+        var oil_price = parseFloat($(".oil-out-price-2").val()).toFixed(2);
+        var total_amount = oil_price * oil_total;
+        $(".total-amount-3").val(parseFloat(total_amount).toFixed(2));
+        
+    });
+    
+    $(".total-out-lite-3").change(function(){
+        var oil_total = parseFloat($(this).val()).toFixed(2);
+        var oil_price = parseFloat($(".oil-out-price-3").val()).toFixed(2);
+        var total_amount = oil_price * oil_total;
+        $(".total-amount-4").val(parseFloat(total_amount).toFixed(2));
+    });
+    
 });
 
 function checkcharter(e){
