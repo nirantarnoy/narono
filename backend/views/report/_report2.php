@@ -63,7 +63,7 @@ if($car_search != null){
 <div id="print-area">
     <div class="row">
         <div class="col-lg-12">
-            <table id="table-data" class="table table-bordered">
+            <table id="table-data" class="table table-bordered" style="overflow: scroll">
                 <thead>
                 <tr>
                     <th rowspan="2" style="text-align: center;vertical-align: middle;">วันที่</th>
@@ -72,9 +72,15 @@ if($car_search != null){
                     <th rowspan="2" style="text-align: center;vertical-align: middle;">ชื่อลูกค้า</th>
                     <th colspan="2" style="text-align: center;">ปั้มใน</th>
                     <th colspan="2" style="text-align: center;">ปั๊มนอก</th>
+                    <th colspan="2" style="text-align: center;">ปั๊มนอก2</th>
+                    <th colspan="2" style="text-align: center;">ปั๊มนอก3</th>
                     <th colspan="2" style="text-align: center;">รวมน้ำมันทั้งหมด</th>
                 </tr>
                 <tr>
+                    <td style="text-align: center;"><b>จำนวนลิตร</b></td>
+                    <td style="text-align: center;"><b>จำนวนบาท</b></td>
+                    <td style="text-align: center;"><b>จำนวนลิตร</b></td>
+                    <td style="text-align: center;"><b>จำนวนบาท</b></td>
                     <td style="text-align: center;"><b>จำนวนลิตร</b></td>
                     <td style="text-align: center;"><b>จำนวนบาท</b></td>
                     <td style="text-align: center;"><b>จำนวนลิตร</b></td>
@@ -89,6 +95,10 @@ if($car_search != null){
                 $total_lite_amount = 0;
                 $total_out_lite_all = 0;
                 $total_out_lite_amount = 0;
+                $total_out_lite_all_2 = 0;
+                $total_out_lite_amount_2 = 0;
+                $total_out_lite_all_3 = 0;
+                $total_out_lite_amount_3 = 0;
 
                 $lint_total_lite_all = 0;
                 $lint_total_price_amount = 0;
@@ -106,6 +116,13 @@ if($car_search != null){
                         $total_out_lite_all += $value->total_out_lite;
                         $total_out_lite_amount += ($value->total_out_lite * $value->oil_out_price);
 
+                        $total_out_lite_all_2 += $value->total_out_lite_2;
+                        $total_out_lite_amount_2 += ($value->total_out_lite_2 * $value->oil_out_price_2);
+
+                        $total_out_lite_all_3 += $value->total_out_lite_3;
+                        $total_out_lite_amount_3 += ($value->total_out_lite_3 * $value->oil_out_price_3);
+
+
                         $lint_total_lite_all += $line_litre;
                         $lint_total_price_amount += $line_oil_amount;
                         ?>
@@ -118,6 +135,10 @@ if($car_search != null){
                             <td style="text-align: right;"><?= number_format(($value->total_lite * $value->oil_daily_price), 2) ?></td>
                             <td style="text-align: right;"><?= number_format($value->total_out_lite, 2) ?></td>
                             <td style="text-align: right;"><?= number_format(( $value->total_out_lite * $value->oil_out_price), 2) ?></td>
+                            <td style="text-align: right;"><?= number_format($value->total_out_lite_2, 2) ?></td>
+                            <td style="text-align: right;"><?= number_format(( $value->total_out_lite_2 * $value->oil_out_price_2), 2) ?></td>
+                            <td style="text-align: right;"><?= number_format($value->total_out_lite_3, 2) ?></td>
+                            <td style="text-align: right;"><?= number_format(( $value->total_out_lite_3 * $value->oil_out_price_3), 2) ?></td>
                             <td style="text-align: right;"><?= number_format($line_litre, 2) ?></td>
                             <td style="text-align: right;"><?= number_format($line_oil_amount, 2) ?></td>
                         </tr>
@@ -134,6 +155,10 @@ if($car_search != null){
                     <td style="text-align: right;"><b><?= number_format($total_lite_amount, 2) ?></b></td>
                     <td style="text-align: right;"><b><?= number_format($total_out_lite_all, 2) ?></b></td>
                     <td style="text-align: right;"><b><?= number_format($total_out_lite_amount, 2) ?></b></td>
+                    <td style="text-align: right;"><b><?= number_format($total_out_lite_all_2, 2) ?></b></td>
+                    <td style="text-align: right;"><b><?= number_format($total_out_lite_amount_2, 2) ?></b></td>
+                    <td style="text-align: right;"><b><?= number_format($total_out_lite_all_3, 2) ?></b></td>
+                    <td style="text-align: right;"><b><?= number_format($total_out_lite_amount_3, 2) ?></b></td>
                     <td style="text-align: right;"><b><?= number_format($lint_total_lite_all, 2) ?></b></td>
                     <td style="text-align: right;"><b><?= number_format($lint_total_price_amount, 2) ?></b></td>
                 </tr>
