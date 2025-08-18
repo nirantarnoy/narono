@@ -2,6 +2,99 @@
 
 use kartik\date\DatePicker;
 
+// เพิ่ม CSS สำหรับการพิมพ์
+$this->registerCss("
+@media print {
+    @page {
+        size: A4 landscape;
+        margin: 0.5cm;
+    }
+    
+    body {
+        font-size: 12px;
+        margin: 0;
+        padding: 0;
+        line-height: 1.2;
+    }
+    
+    #print-area {
+        width: 100%;
+        max-width: none;
+    }
+    
+    #table-data {
+        width: 100% !important;
+        font-size: 10px;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+    
+    #table-data th,
+    #table-data td {
+        padding: 2px 4px;
+        border: 1px solid #000;
+        font-size: 9px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    #table-data th {
+        background-color: #f5f5f5 !important;
+        -webkit-print-color-adjust: exact;
+        color-adjust: exact;
+        font-weight: bold;
+    }
+    
+    /* ซ่อนฟอร์มและปุ่มตอนพิมพ์ */
+    form, .btn, .row:last-child {
+        display: none !important;
+    }
+    
+    /* ปรับขนาดคอลัมน์ให้พอดีกับกระดาษ */
+    #table-data th:nth-child(1), #table-data td:nth-child(1) { width: 4%; }
+    #table-data th:nth-child(2), #table-data td:nth-child(2) { width: 6%; }
+    #table-data th:nth-child(3), #table-data td:nth-child(3) { width: 7%; }
+    #table-data th:nth-child(4), #table-data td:nth-child(4) { width: 7%; }
+    #table-data th:nth-child(5), #table-data td:nth-child(5) { width: 7%; }
+    #table-data th:nth-child(6), #table-data td:nth-child(6) { width: 8%; }
+    #table-data th:nth-child(7), #table-data td:nth-child(7) { width: 7%; }
+    #table-data th:nth-child(8), #table-data td:nth-child(8) { width: 6%; }
+    #table-data th:nth-child(9), #table-data td:nth-child(9) { width: 12%; }
+    #table-data th:nth-child(10), #table-data td:nth-child(10) { width: 7%; }
+    #table-data th:nth-child(11), #table-data td:nth-child(11) { width: 7%; }
+    #table-data th:nth-child(12), #table-data td:nth-child(12) { width: 6%; }
+    #table-data th:nth-child(13), #table-data td:nth-child(13) { width: 8%; }
+    #table-data th:nth-child(14), #table-data td:nth-child(14) { width: 12%; }
+    
+    /* ปรับหัวรายงาน */
+    .print-header h3 {
+        font-size: 16px;
+        margin: 0 0 5px 0;
+    }
+    
+    .print-header p {
+        font-size: 12px;
+        margin: 2px 0;
+    }
+    
+    /* ปรับ footer */
+    tfoot td {
+        font-weight: bold;
+        background-color: #f0f0f0 !important;
+        -webkit-print-color-adjust: exact;
+        color-adjust: exact;
+    }
+}
+
+/* CSS สำหรับหน้าจอปกติ */
+@media screen {
+    #table-data {
+        font-size: 14px;
+    }
+}
+");
+
 $display_date = date('d-m-Y');
 $display_to_date = date('d-m-Y');
 $find_date = date('Y-m-d');
@@ -162,16 +255,31 @@ if ($search_car_type != null) {
     </form>
     <br/>
     <div id="print-area">
-        <table style="width: 100%;">
-            <tr>
-                <td style="text-align: center;"><h3><b>รายงานประจำวัน</b></h3></td>
-            </tr>
-            <tr>
-                <td style="text-align: center;"><b>ตั้งแต่วันที่ <?= date('d/m/Y', strtotime($find_date)); ?>
-                        ถึง <?= date('d/m/Y', strtotime($find_to_date)); ?></b></td>
-            </tr>
-        </table>
-        <br>
+        <!-- เพิ่มหัวรายงานสำหรับการพิมพ์ -->
+        <div class="print-header" style="text-align: center; margin-bottom: 15px;">
+            <h3 style="margin: 0;"><b>รายงานประจำวัน</b></h3>
+            <p style="margin: 5px 0;"><b>ตั้งแต่วันที่ <?= date('d/m/Y', strtotime($find_date)); ?>
+                    ถึง <?= date('d/m/Y', strtotime($find_to_date)); ?></b></p>
+
+            <!-- แสดงเงื่อนไขการค้นหา -->
+            <?php if($search_car_type || $search_company_id || $search_car_id || $search_emp_id): ?>
+                <div style="font-size: 12px; margin-top: 5px;">
+                    <?php if($search_car_type): ?>
+                        <span>ประเภทรถ: <?= \backend\models\CarType::findOne($search_car_type)->name ?> | </span>
+                    <?php endif; ?>
+                    <?php if($search_company_id): ?>
+                        <span>บริษัท: <?= \backend\models\Company::findOne($search_company_id)->name ?> | </span>
+                    <?php endif; ?>
+                    <?php if($search_car_id): ?>
+                        <span>ทะเบียน: <?= \backend\models\Car::findOne($search_car_id)->plate_no ?> | </span>
+                    <?php endif; ?>
+                    <?php if($search_emp_id): ?>
+                        <span>พขร: <?= \backend\models\Employee::findOne($search_emp_id)->fname . ' ' . \backend\models\Employee::findOne($search_emp_id)->lname ?></span>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+
         <table class="table table-bordered" id="table-data">
             <thead>
             <tr>
@@ -204,11 +312,9 @@ if ($search_car_type != null) {
                         $line_num += 1;
                     }
 
-
-                   // $line_price_per_ton = getDropoffPriceperton($value->id);
-                //    $line_weight_ton = getDropoffWeightton($value->id);
-                //    $line_dp = getDropoffDP($value->id);
-
+                    // $line_price_per_ton = getDropoffPriceperton($value->id);
+                    //    $line_weight_ton = getDropoffWeightton($value->id);
+                    //    $line_dp = getDropoffDP($value->id);
 
                     ?>
                     <?php
@@ -254,7 +360,7 @@ if ($search_car_type != null) {
             <?php endif; ?>
             </tbody>
             <tfoot>
-            <tr>
+            <tr style="font-weight: bold; background-color: #f0f0f0;">
                 <td colspan="10" style="width: 8%;text-align: right;"><b>รวม</b></td>
                 <td style="width: 8%;text-align: center;"><b><?= number_format($total_weight, 3) ?></b></td>
                 <td style="width: 8%;text-align: center;"><b></b></td>
@@ -358,17 +464,123 @@ $("#btn-export-excel").click(function(){
   $("#table-data").table2excel({
     // exclude CSS class
     exclude: ".noExl",
-    name: "Excel Document Name"
+    name: "รายงานประจำวัน"
   });
 });
-function printContent(el)
-      {
-         var restorepage = document.body.innerHTML;
-         var printcontent = document.getElementById(el).innerHTML;
-         document.body.innerHTML = printcontent;
-         window.print();
-         document.body.innerHTML = restorepage;
-     }
+
+function printContent(el) {
+    // เปิด window ใหม่สำหรับการพิมพ์
+    var printWindow = window.open('', '_blank');
+    var printcontent = document.getElementById(el).innerHTML;
+    
+    printWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="utf-8">
+            <title>รายงานประจำวัน</title>
+            <style>
+                @page {
+                    size: A4 landscape;
+                    margin: 0.4cm;
+                }
+                
+                body {
+                    font-family: 'TH Sarabun New', Arial, sans-serif;
+                    font-size: 12px;
+                    margin: 0;
+                    padding: 0;
+                    line-height: 1.1;
+                }
+                
+                .print-header h3 {
+                    font-size: 16px;
+                    font-weight: bold;
+                    margin: 0 0 8px 0;
+                    text-align: center;
+                }
+                
+                .print-header p {
+                    font-size: 12px;
+                    margin: 3px 0;
+                    text-align: center;
+                }
+                
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-size: 9px;
+                    margin-top: 8px;
+                }
+                
+                th, td {
+                    border: 1px solid #000;
+                    padding: 2px 3px;
+                    font-size: 8px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+                
+                th {
+                    background-color: #f5f5f5;
+                    font-weight: bold;
+                    text-align: center;
+                    vertical-align: middle;
+                }
+                
+                .text-center { text-align: center; }
+                .text-right { text-align: right; }
+                
+                /* กำหนดความกว้างคอลัมน์เฉพาะ */
+                th:nth-child(1), td:nth-child(1) { width: 4%; text-align: center; }
+                th:nth-child(2), td:nth-child(2) { width: 6%; text-align: center; }
+                th:nth-child(3), td:nth-child(3) { width: 7%; text-align: center; }
+                th:nth-child(4), td:nth-child(4) { width: 7%; text-align: center; }
+                th:nth-child(5), td:nth-child(5) { width: 7%; text-align: center; }
+                th:nth-child(6), td:nth-child(6) { width: 8%; text-align: center; }
+                th:nth-child(7), td:nth-child(7) { width: 7%; text-align: center; }
+                th:nth-child(8), td:nth-child(8) { width: 6%; text-align: center; }
+                th:nth-child(9), td:nth-child(9) { width: 12%; text-align: center; }
+                th:nth-child(10), td:nth-child(10) { width: 7%; text-align: center; }
+                th:nth-child(11), td:nth-child(11) { width: 7%; text-align: right; }
+                th:nth-child(12), td:nth-child(12) { width: 6%; text-align: right; }
+                th:nth-child(13), td:nth-child(13) { width: 8%; text-align: right; }
+                th:nth-child(14), td:nth-child(14) { width: 12%; }
+                
+                /* จัดรูปแบบ footer */
+                tfoot td {
+                    font-weight: bold;
+                    background-color: #f0f0f0;
+                }
+                
+                /* ปรับขนาดฟอนต์ในหัวรายงาน */
+                .print-header {
+                    margin-bottom: 10px;
+                }
+                
+                .print-header div {
+                    font-size: 10px;
+                    text-align: center;
+                    margin-top: 3px;
+                }
+            </style>
+        </head>
+        <body>
+            ` + printcontent + `
+        </body>
+        </html>
+    `);
+    
+    printWindow.document.close();
+    printWindow.focus();
+    
+    // รอให้โหลดเสร็จแล้วค่อยพิมพ์
+    printWindow.onload = function() {
+        printWindow.print();
+        printWindow.close();
+    };
+}
 JS;
 $this->registerJs($js, static::POS_END);
 ?>
