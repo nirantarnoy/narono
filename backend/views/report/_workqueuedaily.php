@@ -217,6 +217,7 @@ $this->registerCss("
 // เพิ่ม company และ employee filters
     if ($search_company_id != null) $conditions['company_id'] = $search_company_id;
     if ($search_emp_id != null) $conditions['emp_assign'] = $search_emp_id;
+    if ($search_work_type_id != null) $conditions['work_option_type_id'] = $search_work_type_id;
 
 // Apply conditions และ date range
     $query->andFilterWhere($conditions)
@@ -302,7 +303,7 @@ $this->registerCss("
                         ]
                     ]);
                     echo \kartik\select2\Select2::widget([
-                        'name' => 'search_emp_id',
+                        'name' => 'search_work_type_id',
                         'data' => \yii\helpers\ArrayHelper::map(\backend\models\WorkOptionType::find()->all(), 'id','name'),
                         'value' => $search_work_type_id,
                         'options' => [
