@@ -67,6 +67,7 @@ class ReportController extends Controller
         $search_car_type = \Yii::$app->request->post('search_car_type');
         $search_car_id = \Yii::$app->request->post('search_car_id');
         $search_emp_id  = \Yii::$app->request->post('search_emp_id');
+        $search_work_type_id = \Yii::$app->request->post('search_work_type_id');
         return $this->render('_workqueuedaily',[
             'search_date' => $search_date,
             'search_car_type' => $search_car_type,
@@ -74,6 +75,7 @@ class ReportController extends Controller
             'search_company_id' => $search_company_id,
             'search_car_id' => $search_car_id,
             'search_emp_id' => $search_emp_id,
+            'search_work_type_id' => $search_work_type_id,
         ]);
     }
     public function actionReportcashrecord(){
