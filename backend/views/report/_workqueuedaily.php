@@ -191,7 +191,9 @@ $this->registerCss("
     $model = null;
 
 // สร้าง query builder และเพิ่ม conditions
-    $query = \backend\models\Workqueue::find();
+    $query = \backend\models\Workqueue::find()
+        ->alias('w')
+        ->joinWith(['customer c']);
     $conditions = [];
 
 // จัดการ car_type filter
@@ -217,7 +219,10 @@ $this->registerCss("
 // เพิ่ม company และ employee filters
     if ($search_company_id != null) $conditions['company_id'] = $search_company_id;
     if ($search_emp_id != null) $conditions['emp_assign'] = $search_emp_id;
-    if ($search_work_type_id != null) $conditions['work_option_type_id'] = $search_work_type_id;
+    if ($search_work_type_id != null)
+    {
+        $conditions['c.work_type_id'] = $search_work_type_id;
+    }
 
 // Apply conditions และ date range
     $query->andFilterWhere($conditions)

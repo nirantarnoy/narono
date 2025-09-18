@@ -135,4 +135,8 @@ class Customer extends \common\models\Customer
         $model = Customer::find()->where(['id' => $id])->one();
         return $model != null ? $model->name : '';
     }
+
+    public function getWorkOptionType(){
+        return $this->hasOne(\common\models\WorkOptionType::class,['id'=>'work_type_id']);
+    }
 }
