@@ -121,6 +121,6 @@ class Workqueue extends \common\models\WorkQueue
 
     public function getCustomer()
     {
-        return $this->hasOne(Customer::className(), ['customer_id' => 'id']);
+        return $this->hasOne(Customer::className(), ['id' => 'customer_id']);
     }
 }
