@@ -176,6 +176,7 @@ class CustomerPo extends ActiveRecord
             // Calculate remaining amount
             $this->remaining_amount = $this->po_amount - $this->billed_amount;
 
+
             return true;
         }
         return false;
