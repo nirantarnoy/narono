@@ -103,7 +103,7 @@ class CustomerPoController extends Controller
                 $model->po_file_upload = UploadedFile::getInstance($model, 'po_file_upload');
                 $model->created_at = date('Y-m-d H:i:s');
                 $model->updated_at = date('Y-m-d H:i:s');
-                if ($model->save()) {
+                if ($model->save(false)) {
                     Yii::$app->session->setFlash('success', 'สร้าง PO เรียบร้อยแล้ว');
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
