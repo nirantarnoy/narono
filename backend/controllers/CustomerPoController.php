@@ -6,7 +6,7 @@ use Yii;
 use backend\models\CustomerPo;
 use backend\models\CustomerPoSearch;
 use backend\models\CustomerPoInvoice;
-use backend\models\CustomerInvoice;
+use backend\models\Customerinvoice;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
