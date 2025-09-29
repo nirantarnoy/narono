@@ -76,7 +76,7 @@ class CustomerPoController extends Controller
         $model = $this->findModel($id);
 
         // Get linked invoices
-        $linkedInvoices = CustomerInvoice::find()
+        $linkedInvoices = Customerinvoice::find()
             ->joinWith('poInvoices')
             ->where(['customer_po_invoices.po_id' => $id])
             ->all();
