@@ -100,6 +100,7 @@ class CustomerPoController extends Controller
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
+                print_r($this->request->post());return;
                 $model->po_file_upload = UploadedFile::getInstance($model, 'po_file_upload');
                 $model->created_at = date('Y-m-d H:i:s');
                 $model->updated_at = date('Y-m-d H:i:s');
