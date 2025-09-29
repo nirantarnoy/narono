@@ -2,6 +2,11 @@
 namespace backend\models;
 use Yii;
 use yii\db\ActiveRecord;
+use common\models\Customer;
+use backend\models\CustomerPo;
+use backend\models\CustomerPoInvoice;
+
+
 date_default_timezone_set('Asia/Bangkok');
 
 class Customerinvoice extends \common\models\CustomerInvoice
@@ -87,6 +92,25 @@ class Customerinvoice extends \common\models\CustomerInvoice
             $prefix = $pre . '-' . substr(date("Y"), 2, 2);
             return $prefix . '00001';
         }
+    }
+
+    /**
+     * Relations
+     */
+    public function getCustomer()
+    {
+        return $this->hasOne(Customer::class, ['id' => 'customer_id']);
+    }
+
+    public function getPoInvoices()
+    {
+        return $this->hasMany(CustomerPoInvoice::class, ['invoice_id' => 'id']);
+    }
+
+    public function getCustomerPos()
+    {
+        return $this->hasMany(CustomerPo::class, ['id' => 'po_id'])
+            ->via('poInvoices');
     }
 
 }

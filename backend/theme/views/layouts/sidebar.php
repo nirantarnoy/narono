@@ -326,6 +326,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="index.php?r=customer-po/index" class="nav-link customer-po">
+                                <i class="far fa-circlez nav-icon"></i>
+                                <p>PO ลูกค้า</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="index.php?r=workqueue/index" class="nav-link workqueue">
                                 <i class="far fa-circlez nav-icon"></i>
                                 <p>จัดคิวงาน</p>

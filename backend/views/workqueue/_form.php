@@ -202,7 +202,17 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
             <label for="">ทะเบียน</label>
             <input type="text" class="form-control tail-plate-no" value="<?= $t_plate ?>" readonly>
         </div>
-        <div class="col-lg-4"></div>
+        <div class="col-lg-4">
+            <?= $form->field($model, 'cus_po_id')->Widget(\kartik\select2\Select2::className(), [
+                'data' => \yii\helpers\ArrayHelper::map(\backend\models\CustomerPo::find()->all(), 'id', function ($data) {
+                    return $data->po_number;
+                }),
+                'options' => [
+                    'id'=>'cus-po-id',
+                    'placeholder' => '--PO ลูกค้า--',
+                ]
+            ]) ?>
+        </div>
     </div>
 
     <div class="row">

@@ -64,7 +64,7 @@ class Workqueue extends \common\models\WorkQueue
         ];
     }
 
-    public function findNo($id){
+    public static function findNo($id){
         $model = Workqueue::find()->where(['id'=>$id])->one();
         return $model != null ?$model->work_queue_no:'';
     }
