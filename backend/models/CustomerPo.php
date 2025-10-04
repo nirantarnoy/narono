@@ -1,6 +1,7 @@
 <?php
 namespace backend\models;
 
+use common\models\CustomerInvoiceLine;
 use Yii;
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
@@ -174,7 +175,9 @@ class CustomerPo extends ActiveRecord
             }
 
             // Calculate remaining amount
-            $this->remaining_amount = $this->po_amount - $this->billed_amount;
+//            $this->po_amount = 0;
+//            $this->billed_amount = 0;
+            $this->remaining_amount = 0; // (($this->po_amount) - ($this->billed_amount))??0;
 
 
             return true;
@@ -234,13 +237,13 @@ class CustomerPo extends ActiveRecord
      */
     public function updateBilledAmount()
     {
-        $totalBilled = CustomerPoInvoice::find()
-            ->where(['po_id' => $this->id])
-            ->sum('amount') ?? 0;
+        $totalBilled = CustomerInvoiceLine::find()
+            ->where(['cus_po_id' => $this->id])
+            ->sum('line_total') ?? 0;
 
         $this->updateAttributes([
             'billed_amount' => $totalBilled,
-            'remaining_amount' => $this->po_amount - $totalBilled
+            'remaining_amount' => ($this->po_amount) - ($totalBilled)
         ]);
 
         // Update status based on remaining amount
@@ -303,8 +306,7 @@ class CustomerPo extends ActiveRecord
         $total = CustomerPoLine::find()
             ->where(['po_id' => $this->id])
             ->sum('line_total');
-
-        $this->po_amount = $total ?: 0;
+        $this->po_amount = $total ?: 10;
         return $this->save(false, ['po_amount']);
     }
 

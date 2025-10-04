@@ -50,6 +50,7 @@ class CustomerInvoice extends \yii\db\ActiveRecord
             [['sale_id', 'customer_id', 'create_at', 'created_by', 'updated_at', 'updated_by', 'status'], 'integer'],
             [['total_amount', 'vat_amount', 'vat_per', 'total_all_amount','final_amount'], 'number'],
             [['invoice_no', 'work_name', 'total_text', 'remark', 'remark2', 'customer_extend_remark', 'company_extend_remark'], 'string', 'max' => 255],
+            [['cus_po_id'],'safe'],
         ];
     }
 

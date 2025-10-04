@@ -192,6 +192,7 @@ class CustomerPoController extends Controller
                // echo "ok";return;
                 $transaction = Yii::$app->db->beginTransaction();
                 try {
+                    $total_po_amount = 0;
                     if ($flag = $model->save(false)) {
 
                         // บันทึกไฟล์ (ถ้ามี)
@@ -215,25 +216,29 @@ class CustomerPoController extends Controller
                                 Yii::$app->session->setFlash('error', 'เกิดข้อผิดพลาด: ' . print_r($modelLine->getErrors(), true));
                                 break;
                             }
+                            $total_po_amount += $modelLine->line_total;
                         }
                     }
 
                     if ($flag) {
-                        $model->updatePoAmountFromLines();
+                        //echo "no";return;
+//                        $model->updatePoAmountFromLines();
+                        $model->po_amount = $total_po_amount;
+                        $model->save(false);
                         $transaction->commit();
                         Yii::$app->session->setFlash('success', 'สร้าง PO พร้อมรายละเอียดเรียบร้อยแล้ว');
                         return $this->redirect(['view', 'id' => $model->id]);
                     }else{
                         $transaction->rollBack();
-                        Yii::$app->session->setFlash('error', 'เกิดข้อผิดพลาด: ' . $model->getMessage());
+                        Yii::$app->session->setFlash('error', 'เกิดข้อผิดพลาด1: ' . $model->getMessage());
                     }
                 } catch (\Throwable $e) {
                     $transaction->rollBack();
                     Yii::error($e->getMessage(), __METHOD__);
-                    Yii::$app->session->setFlash('error', 'เกิดข้อผิดพลาด: ' . $e->getMessage());
+                    Yii::$app->session->setFlash('error', 'เกิดข้อผิดพลาด2: ' . $e->getMessage());
                 }
             }else{
-                Yii::$app->session->setFlash('error', 'เกิดข้อผิดพลาด: ' . print_r($model->getErrors(), true));
+                Yii::$app->session->setFlash('error', 'เกิดข้อผิดพลาด3: ' . print_r($model->getErrors(), true));
             }
         }
 
@@ -273,6 +278,7 @@ class CustomerPoController extends Controller
             if ($valid) {
                 $transaction = Yii::$app->db->beginTransaction();
                 try {
+                    $total_po_amount = 0;
                     if ($flag = $model->save(false)) {
 
                         // ลบรายการที่ถูกลบ
@@ -307,20 +313,25 @@ class CustomerPoController extends Controller
 
                         // บันทึก PO Line
                         foreach ($modelsLine as $i => $modelLine) {
+                           // echo 'xx'.($modelLine->qty) * ($modelLine->price);return;
                             $modelLine->po_id = $model->id;
                             $modelLine->sort_order = $i + 1;
                             $modelLine->status = 0;
-                            $modelLine->line_total = $modelLine->qty * $modelLine->price;
+                            $modelLine->line_total = ($modelLine->qty) * ($modelLine->price);
 
                             if (!($flag = $modelLine->save(false))) {
                                 $transaction->rollBack();
                                 break;
                             }
+                            $total_po_amount += ($modelLine->line_total);
                         }
                     }
 
                     if ($flag) {
-                        $model->updatePoAmountFromLines();
+                       // $model->updatePoAmountFromLines();
+                       // echo $total_po_amount;return;
+                        $model->po_amount = $total_po_amount;
+                        $model->save(false);
                         $transaction->commit();
                         Yii::$app->session->setFlash('success', 'อัพเดต PO พร้อมรายละเอียดเรียบร้อยแล้ว');
                         return $this->redirect(['view', 'id' => $model->id]);

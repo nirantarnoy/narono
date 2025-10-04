@@ -34,6 +34,7 @@ class CustomerInvoiceLine extends \yii\db\ActiveRecord
             [['invoice_id', 'status','item_work_id'], 'integer'],
             [['qty', 'price', 'line_total'], 'number'],
             [['item_name'], 'string', 'max' => 255],
+            [['cus_po_id'],'safe'],
         ];
     }
 

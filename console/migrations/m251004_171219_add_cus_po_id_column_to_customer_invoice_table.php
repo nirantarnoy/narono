@@ -1,0 +1,25 @@
+<?php
+
+use yii\db\Migration;
+
+/**
+ * Handles adding columns to table `{{%customer_invoice}}`.
+ */
+class m251004_171219_add_cus_po_id_column_to_customer_invoice_table extends Migration
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function safeUp()
+    {
+        $this->addColumn('{{%customer_invoice}}', 'cus_po_id', $this->integer());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function safeDown()
+    {
+        $this->dropColumn('{{%customer_invoice}}', 'cus_po_id');
+    }
+}

@@ -78,6 +78,9 @@ class CustomerinvoiceController extends Controller
                 $line_text = \Yii::$app->request->post('line_text');
                 $line_price = \Yii::$app->request->post('line_price');
                 $line_qty = \Yii::$app->request->post('line_qty');
+             //   $line_cus_po_id = \Yii::$app->request->post('line_cus_po_id');
+
+                $line_cus_po_id = $this->getPoId($line_order_id); // get po id from preinvoice id
 
                 $invoice_date = date('Y-m-d');
                 $invoice_target_date = date('Y-m-d');
@@ -98,9 +101,13 @@ class CustomerinvoiceController extends Controller
                 $model->invoice_target_date = date('Y-m-d',strtotime($invoice_target_date));
                 $model->invoice_no = Customerinvoice::getLastNo();
                 $model->total_text = $total_text;
+               // $model->po_amount = $final_amount;
+                //$model->cus_po_id = $line_cus_po_id;
                 if ($model->save(false)) {
                     if($line_order_id!=null){
+                        $total_invoice_amount = 0;
                         for($i=0;$i<=count($line_order_id)-1;$i++){
+                            $total_invoice_amount += ($line_price[$i] * $line_qty[$i]);
                             $modelline = new \common\models\CustomerInvoiceLine();
                             $modelline->invoice_id = $model->id;
                             $modelline->item_work_id = $line_order_id[$i];
@@ -108,6 +115,7 @@ class CustomerinvoiceController extends Controller
                             $modelline->price = $line_price[$i];
                             $modelline->qty = $line_qty[$i];
                             $modelline->line_total = ($line_price[$i] * $line_qty[$i]);
+                            $modelline->cus_po_id = $line_cus_po_id;
                             if($modelline->save(false)){
                                 $model_preinvoiceline = \common\models\PreinvoiceLine::find()->where(['preinvoice_id'=>$line_order_id[$i]])->all();
                                 if($model_preinvoiceline){
@@ -117,6 +125,13 @@ class CustomerinvoiceController extends Controller
                                 }
                                 \backend\models\Preinvoice::updateAll(['status'=>2],['id'=>$line_order_id[$i]]);
 
+                            }
+                        }
+
+                        if($total_invoice_amount > 0){
+                            $model_customerpo = \backend\models\CustomerPo::find()->where(['id'=>$line_cus_po_id])->one();
+                            if($model_customerpo){
+                                $model_customerpo->updateBilledAmount();
                             }
                         }
                     }
@@ -203,6 +218,18 @@ class CustomerinvoiceController extends Controller
         ]);
     }
 
+    public function getPoId($id){
+        $po_id = 0;
+        $sql = "SELECT wq.cus_po_id as po_id FROM preinvoice_line pl INNER JOIN work_queue wq ON pl.work_queue_id = wq.id WHERE preinvoice_id =" + $id;
+        $query = \Yii::$app->db->createCommand($sql)->queryAll();
+        if($query){
+            foreach($query as $value){
+                $po_id = $value['po_id'];
+            }
+        }
+        return $po_id;
+    }
+
     /**
      * Deletes an existing Customerinvoice model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -280,6 +307,7 @@ class CustomerinvoiceController extends Controller
                             <input type="hidden" class="line-find-price" value="' . $value->total_amount . '">
                             <input type="hidden" class="line-find-work-type-name" value="' . $work_type_name . '">
                            <input type="hidden" class="line-find-order-no" value="' . $value->journal_no . '">
+                           <input type="hidden" class="line-find-cus-po-id" value="' . $value->journal_no . '">
                            </td>';
                     $html .= '<td style="text-align: left">' . $value->journal_no . '</td>';
                     $html .= '<td style="text-align: left">' . date('d-m-Y', strtotime($value->journal_date)) . '</td>';
