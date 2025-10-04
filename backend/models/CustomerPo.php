@@ -61,7 +61,7 @@ class CustomerPo extends ActiveRecord
     public function rules()
     {
         return [
-            [['po_number', 'po_date', 'po_target_date', 'customer_id', 'work_name', 'po_amount'], 'required'],
+            [['po_number', 'po_date', 'po_target_date', 'customer_id', 'work_name'], 'required'],
             [['po_date', 'po_target_date'], 'date', 'format' => 'php:Y-m-d'],
             [['customer_id', 'created_by', 'updated_by'], 'integer'],
             [['po_amount', 'billed_amount', 'remaining_amount'], 'number', 'min' => 0],
@@ -291,5 +291,29 @@ class CustomerPo extends ActiveRecord
     public function getFormattedRemainingAmount()
     {
         return number_format($this->remaining_amount, 2);
+    }
+
+    // ใน backend/models/CustomerPo.php
+
+    /**
+     * Update PO amount from lines
+     */
+    public function updatePoAmountFromLines()
+    {
+        $total = CustomerPoLine::find()
+            ->where(['po_id' => $this->id])
+            ->sum('line_total');
+
+        $this->po_amount = $total ?: 0;
+        return $this->save(false, ['po_amount']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCustomerPoLines()
+    {
+        return $this->hasMany(CustomerPoLine::class, ['po_id' => 'id'])
+            ->orderBy(['sort_order' => SORT_ASC]);
     }
 }

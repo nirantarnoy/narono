@@ -7,36 +7,65 @@ use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
 use backend\models\Customer;
 use backend\models\CustomerPo;
+use wbraganca\dynamicform\DynamicFormWidget;
 
 /** @var yii\web\View $this */
 /** @var backend\models\CustomerPo $model */
+/** @var backend\models\CustomerPoLine[] $modelsLine */
 /** @var yii\widgets\ActiveForm $form */
-?>
 
+// ตรวจสอบว่า modelsLine มีค่าหรือไม่
+if (empty($modelsLine)) {
+    $modelsLine = [new \backend\models\CustomerPoLine()];
+}
+
+$this->registerCss("
+.dynamicform_wrapper .item { background-color: #f9f9f9; }
+.table-responsive { overflow-x: auto; }
+.dynamicform_wrapper .panel-heading {
+    background: #fff;
+}
+");
+?>
+    <!-- Flash Messages -->
+<?php if (\Yii::$app->session->hasFlash('success')): ?>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle me-2"></i>
+        <?= \Yii::$app->session->getFlash('success') ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<?php endif; ?>
+
+<?php if (\Yii::$app->session->hasFlash('error')): ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-circle me-2"></i>
+        <?= \Yii::$app->session->getFlash('error') ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<?php endif; ?>
     <div class="customer-po-form">
 
         <?php $form = ActiveForm::begin([
+            'id' => 'dynamic-form',
             'options' => ['enctype' => 'multipart/form-data'],
-            'fieldConfig' => [
-                'template' => "{label}\n<div class=\"input-group\">{input}\n{error}</div>\n{hint}",
-            ],
         ]); ?>
 
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">ข้อมูลพื้นฐาน PO</h3>
                     </div>
                     <div class="card-body">
 
-                        <?= $form->field($model, 'po_number')->textInput([
-                            'maxlength' => true,
-                            'placeholder' => 'กรอกเลขที่ PO'
-                        ]) ?>
-
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-3">
+                                <?= $form->field($model, 'po_number')->textInput([
+                                    'maxlength' => true,
+                                    'placeholder' => 'กรอกเลขที่ PO'
+                                ]) ?>
+                            </div>
+                            <div class="col-md-3">
                                 <?= $form->field($model, 'po_date')->widget(DatePicker::class, [
                                     'options' => ['placeholder' => 'เลือกวันที่สร้าง PO'],
                                     'pluginOptions' => [
@@ -46,7 +75,7 @@ use backend\models\CustomerPo;
                                     ]
                                 ]) ?>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <?= $form->field($model, 'po_target_date')->widget(DatePicker::class, [
                                     'options' => ['placeholder' => 'เลือกวันที่หมดอายุ'],
                                     'pluginOptions' => [
@@ -57,108 +86,259 @@ use backend\models\CustomerPo;
                                     ]
                                 ]) ?>
                             </div>
+                            <div class="col-md-3">
+                                <?= $form->field($model, 'status')->dropDownList(
+                                    CustomerPo::getStatusOptions(),
+                                    ['prompt' => 'เลือกสถานะ...']
+                                ) ?>
+                            </div>
                         </div>
-
-                        <?= $form->field($model, 'customer_id')->widget(Select2::class, [
-                            'data' => ArrayHelper::map(Customer::find()->orderBy('name')->all(), 'id', 'name'),
-                            'options' => [
-                                'placeholder' => 'เลือกลูกค้า...',
-                                'id' => 'customerpo-customer_id'
-                            ],
-                            'pluginOptions' => [
-                                'allowClear' => true,
-                                'escapeMarkup' => new \yii\web\JsExpression('function (markup) { return markup; }'),
-                            ],
-                        ]) ?>
-
-                        <?= $form->field($model, 'work_name')->textarea([
-                            'rows' => 4,
-                            'placeholder' => 'รายละเอียดงาน...'
-                        ]) ?>
-
-                        <?= $form->field($model, 'status')->dropDownList(
-                            CustomerPo::getStatusOptions(),
-                            ['prompt' => 'เลือกสถานะ...']
-                        ) ?>
-
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">ข้อมูลมูลค่าและไฟล์แนบ</h3>
-                    </div>
-                    <div class="card-body">
-
-                        <?= $form->field($model, 'po_amount')->textInput([
-                            'type' => 'number',
-                            'step' => '0.01',
-                            'min' => '0',
-                            'placeholder' => '0.00',
-                            'id' => 'po-amount',
-                            'style' => 'text-align: right;'
-                        ]) ?>
 
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="control-label">ยอดวางบิล</label>
-                                    <input type="text" class="form-control"
-                                           value="<?= number_format($model->billed_amount, 2) ?>"
-                                           readonly style="text-align: right; background-color: #f8f9fa;">
-                                    <small class="text-muted">คำนวณอัตโนมัติจากใบวางบิลที่เชื่อมโยง</small>
-                                </div>
+                                <?= $form->field($model, 'customer_id')->widget(Select2::class, [
+                                    'data' => ArrayHelper::map(Customer::find()->orderBy('name')->all(), 'id', 'name'),
+                                    'options' => [
+                                        'placeholder' => 'เลือกลูกค้า...',
+                                    ],
+                                    'pluginOptions' => [
+                                        'allowClear' => true,
+                                    ],
+                                ]) ?>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="control-label">คงเหลือ</label>
-                                    <input type="text" class="form-control"
-                                           value="<?= number_format($model->remaining_amount, 2) ?>"
-                                           readonly style="text-align: right; background-color: #f8f9fa;"
-                                           id="remaining-amount">
-                                    <small class="text-muted">คำนวณอัตโนมัติ (มูลค่างาน - ยอดวางบิล)</small>
-                                </div>
+                                <?= $form->field($model, 'work_name')->textInput([
+                                    'placeholder' => 'ชื่องาน...'
+                                ]) ?>
                             </div>
                         </div>
 
-                        <?= $form->field($model, 'po_file_upload')->fileInput([
-                            'accept' => '.pdf,.doc,.docx,.jpg,.jpeg,.png',
-                            'id' => 'po-file-input'
-                        ])->hint('ไฟล์ที่รองรับ: PDF, DOC, DOCX, JPG, PNG (ไม่เกิน 10MB)') ?>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <?= $form->field($model, 'po_file_upload')->fileInput([
+                                    'accept' => '.pdf,.doc,.docx,.jpg,.jpeg,.png',
+                                ])->hint('ไฟล์ที่รองรับ: PDF, DOC, DOCX, JPG, PNG (ไม่เกิน 10MB)') ?>
 
-                        <?php if ($model->po_file): ?>
-                            <div class="alert alert-info">
-                                <strong>ไฟล์ปัจจุบัน:</strong>
-                                <?= Html::a($model->po_file, ['download', 'id' => $model->id], [
-                                    'class' => 'btn btn-sm btn-outline-primary ml-2',
-                                    'target' => '_blank'
+                                <?php if ($model->po_file): ?>
+                                    <div class="alert alert-info">
+                                        <strong>ไฟล์ปัจจุบัน:</strong>
+                                        <?= Html::a($model->po_file, ['download', 'id' => $model->id], [
+                                            'class' => 'btn btn-sm btn-outline-primary ml-2',
+                                            'target' => '_blank'
+                                        ]) ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                            <div class="col-md-6">
+                                <?= $form->field($model, 'remark')->textarea([
+                                    'rows' => 3,
+                                    'placeholder' => 'หมายเหตุเพิ่มเติม...'
                                 ]) ?>
                             </div>
-                        <?php endif; ?>
-
-                        <?= $form->field($model, 'remark')->textarea([
-                            'rows' => 3,
-                            'placeholder' => 'หมายเหตุเพิ่มเติม...'
-                        ]) ?>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <?= $form->field($model, 'po_amount')->textInput([
+                                    'placeholder' => '0',
+                                    'readonly'=> true,
+                                ]) ?>
+                            </div>
+                            <div class="col-lg-3">
+                                <?= $form->field($model, 'billed_amount')->textInput([
+                                    'placeholder' => '0',
+                                    'readonly'=> true,
+                                ]) ?>
+                            </div>
+                            <div class="col-lg-3">
+                                <?= $form->field($model, 'remaining_amount')->textInput([
+                                    'placeholder' => '0',
+                                    'readonly'=> true,
+                                ]) ?>
+                            </div>
+                            <div class="col-lg-3"></div>
+                        </div>
 
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- PO Lines -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">รายละเอียด PO</h3>
+                    </div>
+                    <div class="card-body">
+
+                        <?php DynamicFormWidget::begin([
+                            'widgetContainer' => 'dynamicform_wrapper',
+                            'widgetBody' => '.container-items',
+                            'widgetItem' => '.item',
+                            'limit' => 50,
+                            'min' => 1,
+                            'insertButton' => '.add-item',
+                            'deleteButton' => '.remove-item',
+                            'model' => $modelsLine[0],
+                            'formId' => 'dynamic-form',
+                            'formFields' => [
+                                'item_name',
+                                'description',
+                                'qty',
+                                'unit',
+                                'price',
+                            ],
+                        ]); ?>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th style="width: 50px;">ลำดับ</th>
+                                    <th style="width: 200px;">ชื่องาน <span class="text-danger">*</span></th>
+                                    <th>รายละเอียดงาน</th>
+                                    <th style="width: 100px;">จำนวน <span class="text-danger">*</span></th>
+                                    <th style="width: 100px;">หน่วยนับ</th>
+                                    <th style="width: 120px;">ราคา/หน่วย <span class="text-danger">*</span></th>
+                                    <th style="width: 130px;">รวม</th>
+                                    <th style="width: 50px;">
+                                        <button type="button" class="btn btn-success btn-sm add-item">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody class="container-items">
+                                <?php foreach ($modelsLine as $i => $modelLine): ?>
+                                    <tr class="item">
+                                        <td class="text-center align-middle">
+                                            <span class="line-number"><?= ($i + 1) ?></span>
+                                            <?php
+                                            // necessary for update action.
+                                            if (!$modelLine->isNewRecord) {
+                                                echo Html::activeHiddenInput($modelLine, "[{$i}]id");
+                                            }
+                                            ?>
+                                        </td>
+                                        <td>
+                                            <?= $form->field($modelLine, "[{$i}]item_name", [
+                                                'template' => '{input}{error}',
+                                            ])->textInput([
+                                                'maxlength' => true,
+                                                'placeholder' => 'ชื่องาน',
+                                                'class' => 'form-control item-name'
+                                            ]) ?>
+                                        </td>
+                                        <td>
+                                            <?= $form->field($modelLine, "[{$i}]description", [
+                                                'template' => '{input}{error}',
+                                            ])->textarea([
+                                                'rows' => 2,
+                                                'placeholder' => 'รายละเอียด',
+                                                'class' => 'form-control'
+                                            ]) ?>
+                                        </td>
+                                        <td>
+                                            <?= $form->field($modelLine, "[{$i}]qty", [
+                                                'template' => '{input}{error}',
+                                            ])->textInput([
+                                                'type' => 'number',
+                                                'step' => '0.01',
+                                                'min' => '0',
+                                                'value' => $modelLine->qty ?: 1,
+                                                'placeholder' => '0.00',
+                                                'class' => 'form-control text-right line-qty',
+                                                'data-index' => $i
+                                            ]) ?>
+                                        </td>
+                                        <td>
+                                            <?= $form->field($modelLine, "[{$i}]unit", [
+                                                'template' => '{input}{error}',
+                                            ])->textInput([
+                                                'maxlength' => true,
+                                                'placeholder' => 'หน่วย',
+                                                'class' => 'form-control'
+                                            ]) ?>
+                                        </td>
+                                        <td>
+                                            <?= $form->field($modelLine, "[{$i}]price", [
+                                                'template' => '{input}{error}',
+                                            ])->textInput([
+                                                'type' => 'number',
+                                                'step' => '0.01',
+                                                'min' => '0',
+                                                'placeholder' => '0.00',
+                                                'class' => 'form-control text-right line-price',
+                                                'data-index' => $i
+                                            ]) ?>
+                                        </td>
+                                        <td>
+                                            <input type="text"
+                                                   class="form-control text-right line-total"
+                                                   id="line-total-<?= $i ?>"
+                                                   value="<?= number_format($modelLine->qty * $modelLine->price, 2) ?>"
+                                                   readonly
+                                                   style="background-color: #e9ecef;">
+                                        </td>
+                                        <td class="text-center align-middle">
+                                            <button type="button" class="btn btn-danger btn-sm remove-item">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td colspan="6" class="text-right"><strong>มูลค่ารวมทั้งหมด:</strong></td>
+                                    <td>
+                                        <input type="text"
+                                               id="grand-total"
+                                               class="form-control text-right font-weight-bold"
+                                               value="0.00"
+                                               readonly
+                                               style="background-color: #fff3cd; font-size: 1.1em;">
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+
+                        <?php DynamicFormWidget::end(); ?>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary and Submit -->
         <div class="row mt-3">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-body text-center">
-                        <?= Html::submitButton($model->isNewRecord ? '<i class="fas fa-save"></i> บันทึก' : '<i class="fas fa-save"></i> อัพเดต', [
-                            'class' => $model->isNewRecord ? 'btn btn-success btn-lg' : 'btn btn-primary btn-lg',
-                            'id' => 'submit-btn'
-                        ]) ?>
-                        <?= Html::a('<i class="fas fa-arrow-left"></i> กลับ', ['index'], [
-                            'class' => 'btn btn-secondary btn-lg ml-2'
-                        ]) ?>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="alert alert-info">
+                                    <strong>หมายเหตุ:</strong>
+                                    <ul class="mb-0">
+                                        <li>มูลค่างาน PO จะคำนวณอัตโนมัติจากรายละเอียดที่เพิ่ม</li>
+                                        <li>กรอกข้อมูลให้ครบถ้วนในแต่ละรายการ</li>
+                                        <li>สามารถเพิ่มรายการได้สูงสุด 50 รายการ</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <?= Html::submitButton($model->isNewRecord ? '<i class="fas fa-save"></i> บันทึก' : '<i class="fas fa-save"></i> อัพเดต', [
+                                    'class' => $model->isNewRecord ? 'btn btn-success btn-lg btn-block' : 'btn btn-primary btn-lg btn-block',
+                                    'id' => 'submit-btn'
+                                ]) ?>
+                                <?= Html::a('<i class="fas fa-arrow-left"></i> กลับ', ['index'], [
+                                    'class' => 'btn btn-secondary btn-lg btn-block mt-2'
+                                ]) ?>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -169,76 +349,93 @@ use backend\models\CustomerPo;
     </div>
 
 <?php
-$this->registerJs("
-// Auto calculate remaining amount when po_amount changes
-$('#po-amount').on('input', function() {
-    var poAmount = parseFloat($(this).val()) || 0;
-    var billedAmount = " . ($model->billed_amount ?? 0) . ";
-    var remaining = poAmount - billedAmount;
+// JavaScript แยกออกมา register ทีหลัง
+$js = <<<JS
+
+// ฟังก์ชันคำนวณ
+function calculateLineTotal(index) {
+    var qty = parseFloat($('.line-qty[data-index="' + index + '"]').val()) || 0;
+    var price = parseFloat($('.line-price[data-index="' + index + '"]').val()) || 0;
+    var total = qty * price;
     
-    $('#remaining-amount').val(remaining.toLocaleString('en-US', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    }));
+    $('#line-total-' + index).val(total.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
     
-    // Change color based on remaining amount
-    if (remaining < 0) {
-        $('#remaining-amount').addClass('text-danger').removeClass('text-success');
-    } else if (remaining === 0) {
-        $('#remaining-amount').addClass('text-success').removeClass('text-danger');
-    } else {
-        $('#remaining-amount').removeClass('text-danger text-success');
-    }
+    calculateGrandTotal();
+}
+
+function calculateGrandTotal() {
+    var grandTotal = 0;
+    $('.line-total').each(function() {
+        var value = parseFloat($(this).val().replace(/,/g, '')) || 0;
+        grandTotal += value;
+    });
+    
+    $('#grand-total').val(grandTotal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+}
+
+function updateLineNumbers() {
+    $('.line-number').each(function(index) {
+        $(this).text(index + 1);
+    });
+}
+
+// Document Ready
+$(document).ready(function() {
+    
+    // Event handlers for dynamicform
+    $(".dynamicform_wrapper").on("afterInsert", function(e, item) {
+        var lastIndex = $('.item').length - 1;
+        
+        // Update attributes for new row
+        $(item).find('.line-qty').attr('data-index', lastIndex).val(1);
+        $(item).find('.line-price').attr('data-index', lastIndex).val(0);
+        $(item).find('.line-total').attr('id', 'line-total-' + lastIndex).val('0.00');
+        
+        updateLineNumbers();
+        calculateGrandTotal();
+    });
+
+    $(".dynamicform_wrapper").on("afterDelete", function(e) {
+        // Re-index all rows
+        $('.item').each(function(index) {
+            $(this).find('.line-qty').attr('data-index', index);
+            $(this).find('.line-price').attr('data-index', index);
+            $(this).find('.line-total').attr('id', 'line-total-' + index);
+        });
+        
+        updateLineNumbers();
+        calculateGrandTotal();
+    });
+    
+    $(".dynamicform_wrapper").on("limitReached", function(e, item) {
+        alert("ถึงจำนวนสูงสุดแล้ว (50 รายการ)");
+    });
+
+    // Handle input changes
+    $(document).on('input', '.line-qty, .line-price', function() {
+        var index = $(this).data('index');
+        calculateLineTotal(index);
+    });
+
+    // Initialize calculations
+    $('.item').each(function(index) {
+        $(this).find('.line-qty').attr('data-index', index);
+        $(this).find('.line-price').attr('data-index', index);
+        $(this).find('.line-total').attr('id', 'line-total-' + index);
+        calculateLineTotal(index);
+    });
+    
+    calculateGrandTotal();
 });
 
-// File upload validation
-$('#po-file-input').on('change', function() {
-    var file = this.files[0];
-    var maxSize = 10 * 1024 * 1024; // 10MB
-    var allowedTypes = ['application/pdf', 'application/msword', 
-                        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                        'image/jpeg', 'image/jpg', 'image/png'];
-    
-    if (file) {
-        if (file.size > maxSize) {
-            alert('ไฟล์มีขนาดใหญ่เกิน 10MB');
-            $(this).val('');
-            return;
-        }
-        
-        if (allowedTypes.indexOf(file.type) === -1) {
-            alert('ประเภทไฟล์ไม่รองรับ กรุณาเลือกไฟล์ PDF, DOC, DOCX, JPG หรือ PNG');
-            $(this).val('');
-            return;
-        }
-        
-        // Show file name
-        var fileName = file.name;
-        if (fileName.length > 30) {
-            fileName = fileName.substring(0, 27) + '...';
-        }
-        $(this).next('.custom-file-label').text(fileName);
-    }
-});
-
-// Form validation before submit
-$('#submit-btn').click(function(e) {
+// Form validation
+$('#dynamic-form').on('beforeSubmit', function(e) {
     var isValid = true;
     var errorMessages = [];
     
-    // Validate required fields
-    if (!$('#customerpo-po_number').val().trim()) {
+    // Validate PO fields
+    if (!$('#customerpo-po_number').val() || $('#customerpo-po_number').val().trim() === '') {
         errorMessages.push('- กรุณากรอกเลขที่ PO');
-        isValid = false;
-    }
-    
-    if (!$('#customerpo-po_date').val()) {
-        errorMessages.push('- กรุณาเลือกวันที่สร้าง PO');
-        isValid = false;
-    }
-    
-    if (!$('#customerpo-po_target_date').val()) {
-        errorMessages.push('- กรุณาเลือกวันที่หมดอายุ');
         isValid = false;
     }
     
@@ -247,25 +444,33 @@ $('#submit-btn').click(function(e) {
         isValid = false;
     }
     
-    if (!$('#customerpo-work_name').val().trim()) {
-        errorMessages.push('- กรุณากรอกรายละเอียดงาน');
+    // Check if at least one line exists
+    if ($('.item').length === 0) {
+        errorMessages.push('- กรุณาเพิ่มรายละเอียด PO อย่างน้อย 1 รายการ');
         isValid = false;
     }
     
-    var poAmount = parseFloat($('#po-amount').val()) || 0;
-    if (poAmount <= 0) {
-        errorMessages.push('- กรุณากรอกมูลค่างานที่ถูกต้อง');
-        isValid = false;
-    }
-    
-    // Validate date range
-    var poDate = new Date($('#customerpo-po_date').val());
-    var targetDate = new Date($('#customerpo-po_target_date').val());
-    
-    if (targetDate < poDate) {
-        errorMessages.push('- วันที่หมดอายุต้องมากกว่าหรือเท่ากับวันที่สร้าง PO');
-        isValid = false;
-    }
+    // Validate each line
+    $('.item').each(function(index) {
+        var itemName = $(this).find('[name*="[item_name]"]').val();
+        var qty = parseFloat($(this).find('[name*="[qty]"]').val()) || 0;
+        var price = parseFloat($(this).find('[name*="[price]"]').val()) || 0;
+        
+        // if (!itemName || itemName.trim() === '') {
+        //     errorMessages.push('- รายการที่ ' + (index + 1) + ': กรุณากรอกชื่องาน');
+        //     isValid = false;
+        // }
+        //
+        // if (qty <= 0) {
+        //     errorMessages.push('- รายการที่ ' + (index + 1) + ': จำนวนต้องมากกว่า 0');
+        //     isValid = false;
+        // }
+        //
+        // if (price < 0) {
+        //     errorMessages.push('- รายการที่ ' + (index + 1) + ': ราคาต้องไม่ติดลบ');
+        //     isValid = false;
+        // }
+    });
     
     if (!isValid) {
         e.preventDefault();
@@ -273,13 +478,12 @@ $('#submit-btn').click(function(e) {
         return false;
     }
     
-    // Show loading state
-  //  $(this).prop('disabled', true).html('<i class=\"fas fa-spinner fa-spin\"></i> กำลังบันทึก...');
+    $('#submit-btn').prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> กำลังบันทึก...');
+    
+    return true;
 });
 
-// Format number input
-$('#po-amount').on('blur', function() {
-    var value = parseFloat($(this).val()) || 0;
-    $(this).val(value.toFixed(2));
-});
-");
+JS;
+
+$this->registerJs($js, \yii\web\View::POS_READY);
+?>

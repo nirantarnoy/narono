@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\models\CustomerPoLine;
 use Yii;
 use backend\models\CustomerPo;
 use backend\models\CustomerPoSearch;
@@ -14,6 +15,7 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\helpers\Json;
 use yii\helpers\ArrayHelper;
+use backend\helpers\Model;
 
 /**
  * CustomerPoController implements the CRUD actions for CustomerPo model.
@@ -92,61 +94,253 @@ class CustomerPoController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
+//    public function actionCreate()
+//    {
+//        $model = new CustomerPo();
+//        $model->status = CustomerPo::STATUS_ACTIVE;
+//        $model->po_date = date('Y-m-d');
+//
+//        if ($this->request->isPost) {
+//            if ($model->load($this->request->post())) {
+//              //  print_r($this->request->post());return;
+//                $model->po_file_upload = UploadedFile::getInstance($model, 'po_file_upload');
+//                if ($model->save(false)) {
+//                    Yii::$app->session->setFlash('success', 'สร้าง PO เรียบร้อยแล้ว');
+//                    return $this->redirect(['view', 'id' => $model->id]);
+//                }
+//            }
+//        }
+//
+//        return $this->render('create', [
+//            'model' => $model,
+//        ]);
+//    }
+//
+//    /**
+//     * Updates an existing CustomerPo model.
+//     * If update is successful, the browser will be redirected to the 'view' page.
+//     * @param int $id ID
+//     * @return string|\yii\web\Response
+//     * @throws NotFoundHttpException if the model cannot be found
+//     */
+//    public function actionUpdate($id)
+//    {
+//        $model = $this->findModel($id);
+//
+//        if ($this->request->isPost) {
+//            if ($model->load($this->request->post())) {
+//                $model->po_file_upload = UploadedFile::getInstance($model, 'po_file_upload');
+//
+//                if ($model->save()) {
+//                    Yii::$app->session->setFlash('success', 'แก้ไข PO เรียบร้อยแล้ว');
+//                    return $this->redirect(['view', 'id' => $model->id]);
+//                }
+//            }
+//        }
+//
+//        return $this->render('update', [
+//            'model' => $model,
+//        ]);
+//    }
+//
+//    /**
+//     * Deletes an existing CustomerPo model.
+//     * If deletion is successful, the browser will be redirected to the 'index' page.
+//     * @param int $id ID
+//     * @return \yii\web\Response
+//     * @throws NotFoundHttpException if the model cannot be found
+//     */
+//    public function actionDelete($id)
+//    {
+//        $model = $this->findModel($id);
+//
+//        // Check if PO has linked invoices
+//        if (CustomerPoInvoice::find()->where(['po_id' => $id])->exists()) {
+//            Yii::$app->session->setFlash('error', 'ไม่สามารถลบ PO ที่มีการเชื่อมโยงกับใบวางบิลได้');
+//            return $this->redirect(['index']);
+//        }
+//
+//        $model->delete();
+//        Yii::$app->session->setFlash('success', 'ลบ PO เรียบร้อยแล้ว');
+//
+//        return $this->redirect(['index']);
+//    }
+
+    /**
+     * Creates a new CustomerPo model with lines.
+     */
     public function actionCreate()
     {
         $model = new CustomerPo();
         $model->status = CustomerPo::STATUS_ACTIVE;
         $model->po_date = date('Y-m-d');
+        $modelsLine = [new CustomerPoLine()];
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post())) {
-              //  print_r($this->request->post());return;
-                $model->po_file_upload = UploadedFile::getInstance($model, 'po_file_upload');
-                if ($model->save(false)) {
-                    Yii::$app->session->setFlash('success', 'สร้าง PO เรียบร้อยแล้ว');
-                    return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+
+            $modelsLine = Model::createMultiple(CustomerPoLine::class);
+            Model::loadMultiple($modelsLine, Yii::$app->request->post());
+
+            // รับไฟล์
+            $model->po_file_upload = UploadedFile::getInstance($model, 'po_file_upload');
+
+            // ตรวจสอบ
+            $valid = $model->validate();
+        //    $valid = Model::validateMultiple($modelsLine) && $valid;
+
+            if ($valid) {
+               // echo "ok";return;
+                $transaction = Yii::$app->db->beginTransaction();
+                try {
+                    if ($flag = $model->save(false)) {
+
+                        // บันทึกไฟล์ (ถ้ามี)
+                        if ($model->po_file_upload) {
+                            $filename = 'PO_' . $model->id . '_' . time() . '.' . $model->po_file_upload->extension;
+                            $uploadPath = Yii::getAlias('@webroot/uploads/po/' . $filename);
+                            if ($model->po_file_upload->saveAs($uploadPath)) {
+                                $model->po_file_upload = $filename;
+                                $model->save(false, ['po_file_upload']);
+                            }
+                        }
+
+                        // บันทึก PO Line
+                        foreach ($modelsLine as $i => $modelLine) {
+                            $modelLine->po_id = $model->id;
+                            $modelLine->sort_order = $i + 1;
+                            $modelLine->status = 0;
+                            $modelLine->line_total = ($modelLine->qty * $modelLine->price);
+                            if (!($flag = $modelLine->save(false))) {
+                                $transaction->rollBack();
+                                Yii::$app->session->setFlash('error', 'เกิดข้อผิดพลาด: ' . print_r($modelLine->getErrors(), true));
+                                break;
+                            }
+                        }
+                    }
+
+                    if ($flag) {
+                        $model->updatePoAmountFromLines();
+                        $transaction->commit();
+                        Yii::$app->session->setFlash('success', 'สร้าง PO พร้อมรายละเอียดเรียบร้อยแล้ว');
+                        return $this->redirect(['view', 'id' => $model->id]);
+                    }else{
+                        $transaction->rollBack();
+                        Yii::$app->session->setFlash('error', 'เกิดข้อผิดพลาด: ' . $model->getMessage());
+                    }
+                } catch (\Throwable $e) {
+                    $transaction->rollBack();
+                    Yii::error($e->getMessage(), __METHOD__);
+                    Yii::$app->session->setFlash('error', 'เกิดข้อผิดพลาด: ' . $e->getMessage());
                 }
+            }else{
+                Yii::$app->session->setFlash('error', 'เกิดข้อผิดพลาด: ' . print_r($model->getErrors(), true));
             }
         }
 
         return $this->render('create', [
             'model' => $model,
+            'modelsLine' => (empty($modelsLine)) ? [new CustomerPoLine] : $modelsLine
         ]);
     }
 
+
     /**
-     * Updates an existing CustomerPo model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id ID
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
+     * Updates an existing CustomerPo model with lines.
      */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $modelsLine = $model->customerPoLines;
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post())) {
-                $model->po_file_upload = UploadedFile::getInstance($model, 'po_file_upload');
+        if (empty($modelsLine)) {
+            $modelsLine = [new CustomerPoLine];
+        }
 
-                if ($model->save()) {
-                    Yii::$app->session->setFlash('success', 'แก้ไข PO เรียบร้อยแล้ว');
-                    return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+
+            $oldIDs = ArrayHelper::map($modelsLine, 'id', 'id');
+            $modelsLine = Model::createMultiple(CustomerPoLine::class, $modelsLine);
+            Model::loadMultiple($modelsLine, Yii::$app->request->post());
+            $deletedIDs = array_diff($oldIDs, array_filter(ArrayHelper::map($modelsLine, 'id', 'id')));
+
+            // รับไฟล์ใหม่
+            $model->po_file_upload = UploadedFile::getInstance($model, 'po_file_upload');
+
+            // ตรวจสอบ
+            $valid = $model->validate();
+            $valid = Model::validateMultiple($modelsLine) && $valid;
+
+            if ($valid) {
+                $transaction = Yii::$app->db->beginTransaction();
+                try {
+                    if ($flag = $model->save(false)) {
+
+                        // ลบรายการที่ถูกลบ
+                        if (!empty($deletedIDs)) {
+                            CustomerPoLine::deleteAll(['id' => $deletedIDs]);
+                        }
+
+                        // บันทึกไฟล์ใหม่ (ถ้ามี)
+                        if ($model->po_file_upload) {
+                            // ลบไฟล์เก่า
+                            if ($model->po_file) {
+                                $oldFile = Yii::getAlias('@webroot/uploads/po/' . $model->po_file);
+                                if (file_exists($oldFile)) {
+                                    unlink($oldFile);
+                                }
+                            }
+
+                            // สร้างโฟลเดอร์ถ้ายังไม่มี
+                            $uploadDir = Yii::getAlias('@webroot/uploads/po');
+                            if (!is_dir($uploadDir)) {
+                                mkdir($uploadDir, 0777, true);
+                            }
+
+                            $filename = 'PO_' . $model->id . '_' . time() . '.' . $model->po_file_upload->extension;
+                            $uploadPath = $uploadDir . '/' . $filename;
+
+                            if ($model->po_file_upload->saveAs($uploadPath)) {
+                                $model->po_file = $filename;
+                                $model->save(false, ['po_file']);
+                            }
+                        }
+
+                        // บันทึก PO Line
+                        foreach ($modelsLine as $i => $modelLine) {
+                            $modelLine->po_id = $model->id;
+                            $modelLine->sort_order = $i + 1;
+                            $modelLine->status = 0;
+                            $modelLine->line_total = $modelLine->qty * $modelLine->price;
+
+                            if (!($flag = $modelLine->save(false))) {
+                                $transaction->rollBack();
+                                break;
+                            }
+                        }
+                    }
+
+                    if ($flag) {
+                        $model->updatePoAmountFromLines();
+                        $transaction->commit();
+                        Yii::$app->session->setFlash('success', 'อัพเดต PO พร้อมรายละเอียดเรียบร้อยแล้ว');
+                        return $this->redirect(['view', 'id' => $model->id]);
+                    }
+                } catch (\Exception $e) {
+                    $transaction->rollBack();
+                    Yii::error($e->getMessage(), __METHOD__);
+                    Yii::$app->session->setFlash('error', 'เกิดข้อผิดพลาด: ' . $e->getMessage());
                 }
             }
         }
 
         return $this->render('update', [
             'model' => $model,
+            'modelsLine' => (empty($modelsLine)) ? [new CustomerPoLine] : $modelsLine
         ]);
     }
 
     /**
      * Deletes an existing CustomerPo model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id ID
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
     {
@@ -158,8 +352,19 @@ class CustomerPoController extends Controller
             return $this->redirect(['index']);
         }
 
-        $model->delete();
-        Yii::$app->session->setFlash('success', 'ลบ PO เรียบร้อยแล้ว');
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            // Delete lines first
+            CustomerPoLine::deleteAll(['po_id' => $id]);
+            // Delete PO
+            $model->delete();
+
+            $transaction->commit();
+            Yii::$app->session->setFlash('success', 'ลบ PO เรียบร้อยแล้ว');
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            Yii::$app->session->setFlash('error', 'เกิดข้อผิดพลาด: ' . $e->getMessage());
+        }
 
         return $this->redirect(['index']);
     }
