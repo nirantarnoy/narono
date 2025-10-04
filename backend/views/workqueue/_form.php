@@ -141,146 +141,161 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
         </div>
         <div class="col-lg-3">
 
-                <?php $model->item_back_id = !$model->isNewRecord ? $itemback_list : null ?>
-                <?= $form->field($model, 'work_queue_type')->Widget(\kartik\select2\Select2::className(), [
-                    'data' => \yii\helpers\ArrayHelper::map(\backend\helpers\WorkQueueType::asArrayObject(), 'id', 'name'),
+            <?php $model->item_back_id = !$model->isNewRecord ? $itemback_list : null ?>
+            <?= $form->field($model, 'work_queue_type')->Widget(\kartik\select2\Select2::className(), [
+                'data' => \yii\helpers\ArrayHelper::map(\backend\helpers\WorkQueueType::asArrayObject(), 'id', 'name'),
+                'options' => [
+                    'placeholder' => '--เลือกประเภทคิวงาน--',
+                ],
+                'pluginOptions' => [
+                    'multiple' => false,
+                ]
+
+            ])->label() ?>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-lg-3">
+                <label for="">ทะเบียน</label>
+                <input type="text" class="form-control car-plate-no" value="<?= $plate_no ?>" readonly>
+            </div>
+            <div class="col-lg-3">
+                <label for="">ประเภทรถ</label>
+                <input type="text" class="form-control car-type" value="<?= $car_type ?>" readonly>
+            </div>
+            <div class="col-lg-3">
+                <label for="">แรงม้า</label>
+                <input type="text" class="form-control hp" value="<?= $hp ?>" readonly>
+            </div>
+            <div class="col-lg-3">
+                <label for="">พนักงานขับรถ</label>
+                <input type="text" class="form-control emp-assign-driver-id" value="<?= $driver_name ?>" readonly>
+                <?= $form->field($model, 'emp_assign')->hiddenInput(['id' => 'emp-assign', 'value' => $driver_id])->label(false) ?>
+
+                <?php //echo $form->field($model, 'emp_assign')->Widget(\kartik\select2\Select2::className(), [
+                //                'data' => \yii\helpers\ArrayHelper::map(\backend\models\Employee::find()->all(), 'id', function ($data) {
+                //                    return $data->fname . ' ' . $data->lname;
+                //                }),
+                //                'options' => [
+                //                    'id' => 'driver-id',
+                //                    'readonly'=> true,
+                //                    'placeholder' => '--พนักงาน--'
+                //                ]
+                //            ]) ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-3">
+                <?= $form->field($model, 'tail_id')->Widget(\kartik\select2\Select2::className(), [
+                    'data' => \yii\helpers\ArrayHelper::map(\backend\models\Car::find()->where(['type_id' => '2'])->all(), 'id', function ($data) {
+                        return $data->name;
+                    }),
                     'options' => [
-                        'placeholder' => '--เลือกประเภทคิวงาน--',
+                        'placeholder' => '--พ่วง--',
+                        'onchange' => 'getTailinfo($(this))',
+                    ]
+                ]) ?>
+            </div>
+            <div class="col-lg-3">
+                <label for="">ทะเบียน</label>
+                <input type="text" class="form-control tail-plate-no" value="<?= $t_plate ?>" readonly>
+            </div>
+            <div class="col-lg-3">
+                <?= $form->field($model, 'cus_po_id')->Widget(\kartik\select2\Select2::className(), [
+                    'data' => \yii\helpers\ArrayHelper::map(\backend\models\CustomerPo::find()->all(), 'id', function ($data) {
+                        return $data->po_number;
+                    }),
+                    'options' => [
+                        'id' => 'cus-po-id',
+                        'placeholder' => '--PO ลูกค้า--',
+                        'onchange'=>'getPoItem($(this))'
+                    ],
+                ]) ?>
+            </div>
+            <div class="col-lg-3">
+                <?= $form->field($model, 'cus_po_name_id')->widget(\kartik\select2\Select2::className(), [
+                    'data' => null,
+                    'options' => [
+                        'id' => 'cus-po-name-id',
+                        'placeholder' => 'เลือกชื่องาน',
                     ],
                     'pluginOptions' => [
-                        'multiple' => false,
+                        'allowClear' => true,
+                        'multiple' => true,
                     ]
-
-                ])->label() ?>
-
-    </div>
-
-    <div class="row">
-
-        <div class="col-lg-3">
-            <label for="">ทะเบียน</label>
-            <input type="text" class="form-control car-plate-no" value="<?= $plate_no ?>" readonly>
-        </div>
-        <div class="col-lg-3">
-            <label for="">ประเภทรถ</label>
-            <input type="text" class="form-control car-type" value="<?= $car_type ?>" readonly>
-        </div>
-        <div class="col-lg-3">
-            <label for="">แรงม้า</label>
-            <input type="text" class="form-control hp" value="<?= $hp ?>" readonly>
-        </div>
-        <div class="col-lg-3">
-            <label for="">พนักงานขับรถ</label>
-            <input type="text" class="form-control emp-assign-driver-id" value="<?= $driver_name ?>" readonly>
-            <?= $form->field($model, 'emp_assign')->hiddenInput(['id' => 'emp-assign', 'value' => $driver_id])->label(false) ?>
-
-            <?php //echo $form->field($model, 'emp_assign')->Widget(\kartik\select2\Select2::className(), [
-            //                'data' => \yii\helpers\ArrayHelper::map(\backend\models\Employee::find()->all(), 'id', function ($data) {
-            //                    return $data->fname . ' ' . $data->lname;
-            //                }),
-            //                'options' => [
-            //                    'id' => 'driver-id',
-            //                    'readonly'=> true,
-            //                    'placeholder' => '--พนักงาน--'
-            //                ]
-            //            ]) ?>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-4">
-            <?= $form->field($model, 'tail_id')->Widget(\kartik\select2\Select2::className(), [
-                'data' => \yii\helpers\ArrayHelper::map(\backend\models\Car::find()->where(['type_id' => '2'])->all(), 'id', function ($data) {
-                    return $data->name;
-                }),
-                'options' => [
-                    'placeholder' => '--พ่วง--',
-                    'onchange' => 'getTailinfo($(this))',
-                ]
-            ]) ?>
-        </div>
-        <div class="col-lg-4">
-            <label for="">ทะเบียน</label>
-            <input type="text" class="form-control tail-plate-no" value="<?= $t_plate ?>" readonly>
-        </div>
-        <div class="col-lg-4">
-            <?= $form->field($model, 'cus_po_id')->Widget(\kartik\select2\Select2::className(), [
-                'data' => \yii\helpers\ArrayHelper::map(\backend\models\CustomerPo::find()->all(), 'id', function ($data) {
-                    return $data->po_number;
-                }),
-                'options' => [
-                    'id'=>'cus-po-id',
-                    'placeholder' => '--PO ลูกค้า--',
-                ]
-            ]) ?>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-4">
-            <?= $form->field($model, 'weight_on_go')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="col-lg-4">
-            <?= $form->field($model, 'weight_go_deduct')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="col-lg-4">
-            <?= $form->field($model, 'go_deduct_reason')->textarea(['maxlength' => true]) ?>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-4">
-            <?= $form->field($model, 'weight_on_back')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="col-lg-4">
-            <?= $form->field($model, 'back_deduct')->textInput(['maxlength' => true]) ?>
-        </div>
-        <div class="col-lg-4">
-            <?= $form->field($model, 'back_reason')->textarea(['maxlength' => true]) ?>
-        </div>
-    </div>
-
-
-    <div class="row">
-        <div class="col-lg-3">
-            <?= $form->field($model, 'tail_back_id')->Widget(\kartik\select2\Select2::className(), [
-                'data' => \yii\helpers\ArrayHelper::map(\backend\models\Car::find()->where(['type_id' => '2'])->all(), 'id', function ($data) {
-                    return $data->name;
-                }),
-                'options' => [
-                    'placeholder' => '--พ่วง--',
-                    'onchange' => 'getTailinfo1($(this))',
-                ]
-            ]) ?>
-        </div>
-        <div class="col-lg-3">
-            <label for="">ทะเบียน</label>
-            <input type="text" class="form-control tail-back-plate-no" value="<?= $t_back_plate ?>" readonly>
-        </div>
-        <div class="col-lg-3">
-            <label for="">ระยะทางไป-กลับ</label>
-            <input type="text" class="form-control total-distance" name="total_distance"
-                   value="<?= $model->total_distance ?>">
+                ]); ?>
+            </div>
         </div>
 
-    </div>
-    <div class="row">
-        <div class="col-lg-3">
-            <label for="">ราคาน้ำมัน</label>
-            <input type="text" class="form-control oil-daily-price" name="oil_daily_price"
-                   value="<?= $model->oil_daily_price ?>">
-        </div>
-        <div class="col-lg-3">
-            <label for="">รวมจำนวน(ลิตร)</label>
-            <input type="text" class="form-control total-lite" name="total_lite" value="<?= $model->total_lite ?>">
-        </div>
-        <div class="col-lg-3">
-            <label for="">รวมจำนวน(บาท)</label>
-            <input type="text" class="form-control total-amount" name="total_amount" value="<?= $model->total_amount ?>"
-                   readonly>
+        <div class="row">
+            <div class="col-lg-4">
+                <?= $form->field($model, 'weight_on_go')->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-lg-4">
+                <?= $form->field($model, 'weight_go_deduct')->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-lg-4">
+                <?= $form->field($model, 'go_deduct_reason')->textarea(['maxlength' => true]) ?>
+            </div>
         </div>
 
-    </div>
-    <div style="height: 10px;"></div>
+        <div class="row">
+            <div class="col-lg-4">
+                <?= $form->field($model, 'weight_on_back')->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-lg-4">
+                <?= $form->field($model, 'back_deduct')->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-lg-4">
+                <?= $form->field($model, 'back_reason')->textarea(['maxlength' => true]) ?>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-lg-3">
+                <?= $form->field($model, 'tail_back_id')->Widget(\kartik\select2\Select2::className(), [
+                    'data' => \yii\helpers\ArrayHelper::map(\backend\models\Car::find()->where(['type_id' => '2'])->all(), 'id', function ($data) {
+                        return $data->name;
+                    }),
+                    'options' => [
+                        'placeholder' => '--พ่วง--',
+                        'onchange' => 'getTailinfo1($(this))',
+                    ]
+                ]) ?>
+            </div>
+            <div class="col-lg-3">
+                <label for="">ทะเบียน</label>
+                <input type="text" class="form-control tail-back-plate-no" value="<?= $t_back_plate ?>" readonly>
+            </div>
+            <div class="col-lg-3">
+                <label for="">ระยะทางไป-กลับ</label>
+                <input type="text" class="form-control total-distance" name="total_distance"
+                       value="<?= $model->total_distance ?>">
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-lg-3">
+                <label for="">ราคาน้ำมัน</label>
+                <input type="text" class="form-control oil-daily-price" name="oil_daily_price"
+                       value="<?= $model->oil_daily_price ?>">
+            </div>
+            <div class="col-lg-3">
+                <label for="">รวมจำนวน(ลิตร)</label>
+                <input type="text" class="form-control total-lite" name="total_lite" value="<?= $model->total_lite ?>">
+            </div>
+            <div class="col-lg-3">
+                <label for="">รวมจำนวน(บาท)</label>
+                <input type="text" class="form-control total-amount" name="total_amount"
+                       value="<?= $model->total_amount ?>"
+                       readonly>
+            </div>
+
+        </div>
+        <div style="height: 10px;"></div>
         <div class="row">
             <div class="col-lg-3">
                 <label for="">ราคาน้ำมันปั๊มนอก</label>
@@ -333,224 +348,82 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
             </div>
         </div>
         <div style="height: 10px;"></div>
-    <div class="row">
-        <div class="col-lg-3">
-            <?php echo $form->field($model, 'status')->widget(\toxor88\switchery\Switchery::className(), ['options' => ['label' => '', 'class' => 'form-control']])->label() ?>
+        <div class="row">
+            <div class="col-lg-3">
+                <?php echo $form->field($model, 'status')->widget(\toxor88\switchery\Switchery::className(), ['options' => ['label' => '', 'class' => 'form-control']])->label() ?>
+            </div>
+            <div class="col-lg-3">
+                <?php echo $form->field($model, 'is_labur')->widget(\toxor88\switchery\Switchery::className(), ['options' => ['label' => '', 'class' => 'form-control', 'onchange' => 'enableLabour($(this))']])->label() ?>
+            </div>
+            <div class="col-lg-3"> <?php echo $form->field($model, 'is_express_road')->widget(\toxor88\switchery\Switchery::className(), ['options' => ['label' => '', 'class' => 'form-control', 'onchange' => 'enableExpressroad($(this))']])->label() ?></div>
+            <div class="col-lg-3"> <?php echo $form->field($model, 'is_other')->widget(\toxor88\switchery\Switchery::className(), ['options' => ['label' => '', 'class' => 'form-control', 'onchange' => 'enableOther($(this))']])->label() ?></div>
         </div>
-        <div class="col-lg-3">
-            <?php echo $form->field($model, 'is_labur')->widget(\toxor88\switchery\Switchery::className(), ['options' => ['label' => '', 'class' => 'form-control', 'onchange' => 'enableLabour($(this))']])->label() ?>
+        <div style="height: 10px;"></div>
+        <div class="row">
+            <div class="col-lg-4">
+                <?= $form->field($model, 'labour_price')->textinput(['maxlength' => true, 'id' => 'labour-price',]) ?>
+            </div>
+            <div class="col-lg-4">
+                <?= $form->field($model, 'express_road_price')->textInput(['maxlength' => true, 'id' => 'express-road-price',]) ?>
+            </div>
+            <div class="col-lg-4">
+                <?= $form->field($model, 'other_price')->textInput(['maxlength' => true, 'id' => 'other-price',]) ?>
+            </div>
         </div>
-        <div class="col-lg-3"> <?php echo $form->field($model, 'is_express_road')->widget(\toxor88\switchery\Switchery::className(), ['options' => ['label' => '', 'class' => 'form-control', 'onchange' => 'enableExpressroad($(this))']])->label() ?></div>
-        <div class="col-lg-3"> <?php echo $form->field($model, 'is_other')->widget(\toxor88\switchery\Switchery::className(), ['options' => ['label' => '', 'class' => 'form-control', 'onchange' => 'enableOther($(this))']])->label() ?></div>
-    </div>
-    <div style="height: 10px;"></div>
-    <div class="row">
-        <div class="col-lg-4">
-            <?= $form->field($model, 'labour_price')->textinput(['maxlength' => true, 'id' => 'labour-price',]) ?>
+        <div style="height: 10px;"></div>
+        <div class="row">
+            <div class="col-lg-4">
+                <?= $form->field($model, 'cover_sheet_price')->textinput(['maxlength' => true, 'id' => 'cover-sheet-price',]) ?>
+            </div>
+            <div class="col-lg-4">
+                <?= $form->field($model, 'overnight_price')->textInput(['maxlength' => true, 'id' => 'overnight-price',]) ?>
+            </div>
+            <div class="col-lg-4">
+                <?= $form->field($model, 'warehouse_plus_price')->textInput(['maxlength' => true, 'id' => 'warehouse-plus-price',]) ?>
+            </div>
         </div>
-        <div class="col-lg-4">
-            <?= $form->field($model, 'express_road_price')->textInput(['maxlength' => true, 'id' => 'express-road-price',]) ?>
+        <div style="height: 10px;"></div>
+        <div class="row">
+            <div class="col-lg-4"><?= $form->field($model, 'test_price')->textinput(['maxlength' => true, 'id' => 'test-price',]) ?></div>
+            <div class="col-lg-4"><?= $form->field($model, 'damaged_price')->textinput(['maxlength' => true, 'id' => 'damaged-price',]) ?></div>
+            <div class="col-lg-4"><?= $form->field($model, 'deduct_other_price')->textinput(['maxlength' => true, 'id' => 'deduct-other-price',]) ?></div>
         </div>
-        <div class="col-lg-4">
-            <?= $form->field($model, 'other_price')->textInput(['maxlength' => true, 'id' => 'other-price',]) ?>
+        <div style="height: 10px;"></div>
+        <div class="row">
+            <div class="col-lg-4"><?= $form->field($model, 'work_double_price')->textinput(['maxlength' => true, 'id' => 'work-double-price',]) ?></div>
+            <div class="col-lg-4"><?= $form->field($model, 'towing_price')->textinput(['maxlength' => true, 'id' => 'work-towing-price',]) ?></div>
+            <div class="col-lg-4"><?= $form->field($model, 'other_amt')->textinput(['maxlength' => true, 'id' => 'work-other-amt',]) ?></div>
         </div>
-    </div>
-    <div style="height: 10px;"></div>
-    <div class="row">
-        <div class="col-lg-4">
-            <?= $form->field($model, 'cover_sheet_price')->textinput(['maxlength' => true, 'id' => 'cover-sheet-price',]) ?>
-        </div>
-        <div class="col-lg-4">
-            <?= $form->field($model, 'overnight_price')->textInput(['maxlength' => true, 'id' => 'overnight-price',]) ?>
-        </div>
-        <div class="col-lg-4">
-            <?= $form->field($model, 'warehouse_plus_price')->textInput(['maxlength' => true, 'id' => 'warehouse-plus-price',]) ?>
-        </div>
-    </div>
-    <div style="height: 10px;"></div>
-    <div class="row">
-        <div class="col-lg-4"><?= $form->field($model, 'test_price')->textinput(['maxlength' => true, 'id' => 'test-price',]) ?></div>
-        <div class="col-lg-4"><?= $form->field($model, 'damaged_price')->textinput(['maxlength' => true, 'id' => 'damaged-price',]) ?></div>
-        <div class="col-lg-4"><?= $form->field($model, 'deduct_other_price')->textinput(['maxlength' => true, 'id' => 'deduct-other-price',]) ?></div>
-    </div>
-    <div style="height: 10px;"></div>
-    <div class="row">
-        <div class="col-lg-4"><?= $form->field($model, 'work_double_price')->textinput(['maxlength' => true, 'id' => 'work-double-price',]) ?></div>
-        <div class="col-lg-4"><?= $form->field($model, 'towing_price')->textinput(['maxlength' => true, 'id' => 'work-towing-price',]) ?></div>
-        <div class="col-lg-4"><?= $form->field($model, 'other_amt')->textinput(['maxlength' => true, 'id' => 'work-other-amt',]) ?></div>
-    </div>
 
-    <br/>
+        <br/>
 
 
-    <br/>
-    <h5>จุดขึ้นสินค้า</h5>
-    <div class="row">
-        <div class="col-lg-12">
-            <table class="table table-bordered table-striped" id="table-list2">
-                <thead>
-                <th>สถานที่ขึ้นสินค้า</th>
-                <th>RouteNo</th>
-                <th>เลขที่ใบตั้ง</th>
-                <th>จำนวนม้วน</th>
-                <th>เหมา</th>
-                <th>น้ำหนัก</th>
-                <th>ราคาบาท/ตัน</th>
-                <th>จำนวนเงิน</th>
-                <th></th>
-                </thead>
-                <tbody>
-                <?php
-                   $sum_total_weight = 0;
-                   $sum_total_amount = 0;
-                ?>
-                <?php if ($model->isNewRecord): ?>
-                    <tr>
-                        <td>
-                            <select name="dropoff_id[]" class="form-control dropoff-id" id="" onchange="getpriceroutefromquotation($(this))">
-                                <option value="0">--สถานที่ชื้นสินค้า--</option>
-                                <?php for ($i = 0; $i <= count($dropoff_data) - 1; $i++) : ?>
-                                    <option value="<?= $dropoff_data[$i]['id'] ?>"><?= $dropoff_data[$i]['name'] ?></option>
-                                <?php endfor; ?>
-                            </select>
-                        </td>
-                        <td>
-                            <select class="form-control line-route-no" name="line_route_no[]"  onchange="getpricefromquotation($(this))">
-                            </select>
-                        </td>
-                        <td>
-                            <input type="text" name="dropoff_no[]"
-                                   class="form-control dropoff-no" id="">
-                        </td>
-                        <td>
-                            <input type="number" name="qty[]"
-                                   step="any"
-                                   class="form-control qty" id="">
-                        </td>
-                        <td>
-                            <select name="is_charter[]" id="" class="form-control is-charter"
-                                    onchange="checkcharter($(this))">
-                                <?php for ($z = 0; $z <= count($charter_data) - 1; $z++): ?>
-                                    <option value="<?= $charter_data[$z]['id'] ?>"><?= $charter_data[$z]['name'] ?></option>
-                                <?php endfor; ?>
-                            </select>
-                        </td>
-                        <td>
-                            <input type="number" name="weight[]"
-                                   step="any"
-                                   class="form-control weight" id="" onchange="calpriceperton($(this))">
-                        </td>
-                        <td>
-                            <input type="text" class="form-control price-per-ton" name="price_per_ton[]"
-                                   onchange="calpriceperton($(this))">
-                        </td>
-                        <td>
-                            <input type="text" class="form-control price-line-total" name="price_line_total[]" readonly>
-                        </td>
-                        <td>
-                            <div class="btn btn-danger btn-sm" onclick="removeline1($(this))"><i
-                                        class="fa fa-trash"></i></div>
-                        </td>
-                    </tr>
-                <?php else: ?>
-                    <?php if (count($w_dropoff)): ?>
-                        <?php foreach ($w_dropoff as $key): ?>
-                            <?php
-                                $sum_total_weight += $key->weight;
-                                $sum_total_amount += $key->price_line_total;
-                            ?>
-                        <?php $route_no_data = \common\models\QueryQuotationPricePerTon::find()->where(['dropoff_id' => $key->dropoff_id, 'car_type_id' => $current_car_type_id])->all(); ?>
-                            <tr data-var="<?= $key->id ?>">
-                                <td>
-                                    <select name="dropoff_id[]" class="form-control dropoff-id" id="" onchange="getpriceroutefromquotation($(this))">
-                                        <option value="0">--สถานที่ชื้นสินค้า--</option>
-                                        <?php for ($i = 0; $i <= count($dropoff_data) - 1; $i++) : ?>
-                                            <?php
-                                            $selected = "";
-                                            if ($dropoff_data[$i]['id'] == $key->dropoff_id) {
-                                                $selected = 'selected';
-                                            }
-                                            ?>
-                                            <option value="<?= $dropoff_data[$i]['id'] ?>" <?= $selected ?>><?= $dropoff_data[$i]['name'] ?></option>
-                                        <?php endfor; ?>
-                                    </select>
-                                    <?php
-//                                    echo \kartik\select2\Select2::widget([
-//                                        'name' => 'dropoff_id[]',
-//                                        'data' => \yii\helpers\ArrayHelper::map($dropoff_data, 'id', 'name'),
-//                                        'value' => $key->dropoff_id,
-//                                        'options' => [
-//                                            'class' => 'form-control dropoff-id',
-//                                            'placeholder' => '--สถานที่ชื้นสินค้า--',
-//                                            'onchange' => 'getpriceroutefromquotation($(this))',
-//                                        ],
-//                                        'pluginOptions' => [
-//                                            'allowClear' => true
-//                                        ]
-//                                    ]);
-                                    ?>
-                                </td>
-                                <td>
-                                    <select class="form-control line-route-no" name="line_route_no[]"  onchange="getpricefromquotation($(this))">
-                                        <?php for ($j = 0; $j <= count($route_no_data) - 1; $j++): ?>
-                                            <?php
-                                            $selected = "";
-                                            if ($route_no_data[$j]['id'] == $key->quotation_route_no) {
-                                                $selected = 'selected';
-                                            }
-                                            ?>
-                                            <option value="<?= $route_no_data[$j]['route_no'] ?>" <?= $selected ?>><?= $route_no_data[$j]['route_no'] ?></option>
-                                        <?php endfor; ?>
-                                    </select>
-                                </td>
-                                <td>
-                                    <input type="text" name="dropoff_no[]"
-                                           class="form-control dropoff-no" id=""
-                                           value="<?= $key->dropoff_no ?>">
-                                </td>
-                                <td>
-                                    <input type="number" name="qty[]"
-                                           class="form-control qty" id=""
-                                           step="any"
-                                           value="<?= $key->qty ?>">
-                                </td>
-                                <td>
-                                    <select name="is_charter[]" id="" class="form-control is-charter"
-                                            onchange="checkcharter($(this))">
-                                        <?php for ($z = 0; $z <= count($charter_data) - 1; $z++): ?>
-                                            <?php
-                                            $selected = $charter_data[$z]['id'] == $key->is_charter ? "selected" : "";
-                                            ?>
-                                            <option value="<?= $charter_data[$z]['id'] ?>" <?= $selected ?>><?= $charter_data[$z]['name'] ?></option>
-                                        <?php endfor; ?>
-                                    </select>
-                                </td>
-                                <td>
-                                    <input type="number" name="weight[]"
-                                           class="form-control weight" id=""
-                                           step="any"
-                                           value="<?= $key->weight ?>"
-                                           onchange="calpriceperton($(this))" <?= $key->is_charter == 1 ? 'readonly' : '' ?>>
-                                </td>
-
-                                <td>
-                                    <input type="text" class="form-control price-per-ton" name="price_per_ton[]"
-                                           value="<?= $key->price_per_ton ?>" onchange="calpriceperton($(this))">
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control price-line-total" name="price_line_total[]"
-                                           value="<?= $key->price_line_total ?>" readonly>
-                                </td>
-                                <td>
-                                    <div class="btn btn-danger btn-sm" onclick="removeline1($(this))"><i
-                                                class="fa fa-trash"></i></div>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
+        <br/>
+        <h5>จุดขึ้นสินค้า</h5>
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="table table-bordered table-striped" id="table-list2">
+                    <thead>
+                    <th>สถานที่ขึ้นสินค้า</th>
+                    <th>RouteNo</th>
+                    <th>เลขที่ใบตั้ง</th>
+                    <th>จำนวนม้วน</th>
+                    <th>เหมา</th>
+                    <th>น้ำหนัก</th>
+                    <th>ราคาบาท/ตัน</th>
+                    <th>จำนวนเงิน</th>
+                    <th></th>
+                    </thead>
+                    <tbody>
+                    <?php
+                    $sum_total_weight = 0;
+                    $sum_total_amount = 0;
+                    ?>
+                    <?php if ($model->isNewRecord): ?>
                         <tr>
                             <td>
-                                <select name="dropoff_id[]" class="form-control dropoff-id" id="" onchange="getpriceroutefromquotation($(this))">
+                                <select name="dropoff_id[]" class="form-control dropoff-id" id=""
+                                        onchange="getpriceroutefromquotation($(this))">
                                     <option value="0">--สถานที่ชื้นสินค้า--</option>
                                     <?php for ($i = 0; $i <= count($dropoff_data) - 1; $i++) : ?>
                                         <option value="<?= $dropoff_data[$i]['id'] ?>"><?= $dropoff_data[$i]['name'] ?></option>
@@ -558,7 +431,8 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                                 </select>
                             </td>
                             <td>
-                                <select class="form-control line-route-no" name="line_route_no[]"  onchange="getpricefromquotation($(this))">
+                                <select class="form-control line-route-no" name="line_route_no[]"
+                                        onchange="getpricefromquotation($(this))">
                                 </select>
                             </td>
                             <td>
@@ -567,9 +441,8 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                             </td>
                             <td>
                                 <input type="number" name="qty[]"
-                                       class="form-control qty"
                                        step="any"
-                                       id="">
+                                       class="form-control qty" id="">
                             </td>
                             <td>
                                 <select name="is_charter[]" id="" class="form-control is-charter"
@@ -597,173 +470,326 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                                             class="fa fa-trash"></i></div>
                             </td>
                         </tr>
+                    <?php else: ?>
+                        <?php if (count($w_dropoff)): ?>
+                            <?php foreach ($w_dropoff as $key): ?>
+                                <?php
+                                $sum_total_weight += $key->weight;
+                                $sum_total_amount += $key->price_line_total;
+                                ?>
+                                <?php $route_no_data = \common\models\QueryQuotationPricePerTon::find()->where(['dropoff_id' => $key->dropoff_id, 'car_type_id' => $current_car_type_id])->all(); ?>
+                                <tr data-var="<?= $key->id ?>">
+                                    <td>
+                                        <select name="dropoff_id[]" class="form-control dropoff-id" id=""
+                                                onchange="getpriceroutefromquotation($(this))">
+                                            <option value="0">--สถานที่ชื้นสินค้า--</option>
+                                            <?php for ($i = 0; $i <= count($dropoff_data) - 1; $i++) : ?>
+                                                <?php
+                                                $selected = "";
+                                                if ($dropoff_data[$i]['id'] == $key->dropoff_id) {
+                                                    $selected = 'selected';
+                                                }
+                                                ?>
+                                                <option value="<?= $dropoff_data[$i]['id'] ?>" <?= $selected ?>><?= $dropoff_data[$i]['name'] ?></option>
+                                            <?php endfor; ?>
+                                        </select>
+                                        <?php
+                                        //                                    echo \kartik\select2\Select2::widget([
+                                        //                                        'name' => 'dropoff_id[]',
+                                        //                                        'data' => \yii\helpers\ArrayHelper::map($dropoff_data, 'id', 'name'),
+                                        //                                        'value' => $key->dropoff_id,
+                                        //                                        'options' => [
+                                        //                                            'class' => 'form-control dropoff-id',
+                                        //                                            'placeholder' => '--สถานที่ชื้นสินค้า--',
+                                        //                                            'onchange' => 'getpriceroutefromquotation($(this))',
+                                        //                                        ],
+                                        //                                        'pluginOptions' => [
+                                        //                                            'allowClear' => true
+                                        //                                        ]
+                                        //                                    ]);
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <select class="form-control line-route-no" name="line_route_no[]"
+                                                onchange="getpricefromquotation($(this))">
+                                            <?php for ($j = 0; $j <= count($route_no_data) - 1; $j++): ?>
+                                                <?php
+                                                $selected = "";
+                                                if ($route_no_data[$j]['id'] == $key->quotation_route_no) {
+                                                    $selected = 'selected';
+                                                }
+                                                ?>
+                                                <option value="<?= $route_no_data[$j]['route_no'] ?>" <?= $selected ?>><?= $route_no_data[$j]['route_no'] ?></option>
+                                            <?php endfor; ?>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="text" name="dropoff_no[]"
+                                               class="form-control dropoff-no" id=""
+                                               value="<?= $key->dropoff_no ?>">
+                                    </td>
+                                    <td>
+                                        <input type="number" name="qty[]"
+                                               class="form-control qty" id=""
+                                               step="any"
+                                               value="<?= $key->qty ?>">
+                                    </td>
+                                    <td>
+                                        <select name="is_charter[]" id="" class="form-control is-charter"
+                                                onchange="checkcharter($(this))">
+                                            <?php for ($z = 0; $z <= count($charter_data) - 1; $z++): ?>
+                                                <?php
+                                                $selected = $charter_data[$z]['id'] == $key->is_charter ? "selected" : "";
+                                                ?>
+                                                <option value="<?= $charter_data[$z]['id'] ?>" <?= $selected ?>><?= $charter_data[$z]['name'] ?></option>
+                                            <?php endfor; ?>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="number" name="weight[]"
+                                               class="form-control weight" id=""
+                                               step="any"
+                                               value="<?= $key->weight ?>"
+                                               onchange="calpriceperton($(this))" <?= $key->is_charter == 1 ? 'readonly' : '' ?>>
+                                    </td>
+
+                                    <td>
+                                        <input type="text" class="form-control price-per-ton" name="price_per_ton[]"
+                                               value="<?= $key->price_per_ton ?>" onchange="calpriceperton($(this))">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control price-line-total"
+                                               name="price_line_total[]"
+                                               value="<?= $key->price_line_total ?>" readonly>
+                                    </td>
+                                    <td>
+                                        <div class="btn btn-danger btn-sm" onclick="removeline1($(this))"><i
+                                                    class="fa fa-trash"></i></div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td>
+                                    <select name="dropoff_id[]" class="form-control dropoff-id" id=""
+                                            onchange="getpriceroutefromquotation($(this))">
+                                        <option value="0">--สถานที่ชื้นสินค้า--</option>
+                                        <?php for ($i = 0; $i <= count($dropoff_data) - 1; $i++) : ?>
+                                            <option value="<?= $dropoff_data[$i]['id'] ?>"><?= $dropoff_data[$i]['name'] ?></option>
+                                        <?php endfor; ?>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select class="form-control line-route-no" name="line_route_no[]"
+                                            onchange="getpricefromquotation($(this))">
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" name="dropoff_no[]"
+                                           class="form-control dropoff-no" id="">
+                                </td>
+                                <td>
+                                    <input type="number" name="qty[]"
+                                           class="form-control qty"
+                                           step="any"
+                                           id="">
+                                </td>
+                                <td>
+                                    <select name="is_charter[]" id="" class="form-control is-charter"
+                                            onchange="checkcharter($(this))">
+                                        <?php for ($z = 0; $z <= count($charter_data) - 1; $z++): ?>
+                                            <option value="<?= $charter_data[$z]['id'] ?>"><?= $charter_data[$z]['name'] ?></option>
+                                        <?php endfor; ?>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="number" name="weight[]"
+                                           step="any"
+                                           class="form-control weight" id="" onchange="calpriceperton($(this))">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control price-per-ton" name="price_per_ton[]"
+                                           onchange="calpriceperton($(this))">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control price-line-total" name="price_line_total[]"
+                                           readonly>
+                                </td>
+                                <td>
+                                    <div class="btn btn-danger btn-sm" onclick="removeline1($(this))"><i
+                                                class="fa fa-trash"></i></div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
                     <?php endif; ?>
-                <?php endif; ?>
 
-                </tbody>
-                <tfoot>
-                <tr>
-                    <td colspan="4">
-                        <div class="btn btn-primary"
-                             onclick="addline1($(this))">
-                            <i class="fa fa-plus-circle"></i>
-                        </div>
-                    </td>
-                    <td></td>
-                    <td><b><span class="sum-total-weight"><?= number_format($sum_total_weight, 3) ?></span></b></td>
-                    <td></td>
-                    <td><b><span class="sum-total-amount"><?= number_format($sum_total_amount, 2) ?></span></b></td>
-                </tr>
-                </tfoot>
-            </table>
-        </div>
-    </div>
-
-
-    <h6>แนบเอกสาร</h6>
-
-    <?php if ($model_line_doc == null): ?>
-
-        <div class="row">
-            <div class="col-lg-12">
-                <table class="table table-striped table-bordered" id="table-list">
-                    <tbody>
-                    <tr>
-                        <td>
-                            <input type="hidden" class="rec-id" name="rec_id[]" value="0">
-                            <input type="text" class="form-control line-doc-name" name="line_doc_name[]" value="">
-                        </td>
-                        <td>
-                            <input type="file" class="line-file-name" name="line_file_name[]">
-                        </td>
-                        <td>
-                            <div class="btn btn-danger" onclick="removeline($(this))">ลบ</div>
-                        </td>
-                    </tr>
                     </tbody>
                     <tfoot>
                     <tr>
-                        <td>
-                            <div class="btn btn-primary" onclick="addline($(this))">เพิ่ม</div>
+                        <td colspan="4">
+                            <div class="btn btn-primary"
+                                 onclick="addline1($(this))">
+                                <i class="fa fa-plus-circle"></i>
+                            </div>
                         </td>
-                        <td colspan="2"></td>
+                        <td></td>
+                        <td><b><span class="sum-total-weight"><?= number_format($sum_total_weight, 3) ?></span></b></td>
+                        <td></td>
+                        <td><b><span class="sum-total-amount"><?= number_format($sum_total_amount, 2) ?></span></b></td>
                     </tr>
                     </tfoot>
-
                 </table>
             </div>
         </div>
-    <?php else: ?>
-        <div class="row">
-            <div class="col-lg-12">
-                <table class="table table-striped table-bordered" id="table-list">
-                    <tbody>
-                    <?php foreach ($model_line_doc as $val): ?>
-                        <tr data-var="<?= $val->id ?>">
+
+
+        <h6>แนบเอกสาร</h6>
+
+        <?php if ($model_line_doc == null): ?>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <table class="table table-striped table-bordered" id="table-list">
+                        <tbody>
+                        <tr>
                             <td>
-                                <input type="hidden" class="rec-id" name="rec_id[]" value="<?= $val->id ?>">
-                                <input type="text" class="form-control line-doc-name" name="line_doc_name[]"
-                                       value="<?= $val->description ?>">
+                                <input type="hidden" class="rec-id" name="rec_id[]" value="0">
+                                <input type="text" class="form-control line-doc-name" name="line_doc_name[]" value="">
                             </td>
                             <td>
-                                <a href="<?= \Yii::$app->getUrlManager()->getBaseUrl() . '/uploads/workqueue_doc/' . $val->doc ?>"
-                                   target="_blank">ดูเอกสาร</a></td>
+                                <input type="file" class="line-file-name" name="line_file_name[]">
                             </td>
                             <td>
                                 <div class="btn btn-danger" onclick="removeline($(this))">ลบ</div>
                             </td>
                         </tr>
-                    <?php endforeach; ?>
-                    <tr>
-                        <td>
-                            <input type="hidden" class="rec-id" name="rec_id[]" value="0">
-                            <input type="text" class="form-control line-doc-name" name="line_doc_name[]" value="">
-                        </td>
-                        <td>
-                            <input type="file" class="line-file-name" name="line_file_name[]">
-                        </td>
-                        <td>
-                            <div class="btn btn-danger" onclick="removeline($(this))">ลบ</div>
-                        </td>
-                    </tr>
-                    </tbody>
-                    <tfoot>
-                    <tr>
-                        <td>
-                            <div class="btn btn-primary" onclick="addline($(this))">เพิ่ม</div>
-                        </td>
-                        <td colspan="2"></td>
-                    </tr>
-                    </tfoot>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td>
+                                <div class="btn btn-primary" onclick="addline($(this))">เพิ่ม</div>
+                            </td>
+                            <td colspan="2"></td>
+                        </tr>
+                        </tfoot>
 
-                </table>
+                    </table>
+                </div>
             </div>
-        </div>
+        <?php else: ?>
+            <div class="row">
+                <div class="col-lg-12">
+                    <table class="table table-striped table-bordered" id="table-list">
+                        <tbody>
+                        <?php foreach ($model_line_doc as $val): ?>
+                            <tr data-var="<?= $val->id ?>">
+                                <td>
+                                    <input type="hidden" class="rec-id" name="rec_id[]" value="<?= $val->id ?>">
+                                    <input type="text" class="form-control line-doc-name" name="line_doc_name[]"
+                                           value="<?= $val->description ?>">
+                                </td>
+                                <td>
+                                    <a href="<?= \Yii::$app->getUrlManager()->getBaseUrl() . '/uploads/workqueue_doc/' . $val->doc ?>"
+                                       target="_blank">ดูเอกสาร</a></td>
+                                </td>
+                                <td>
+                                    <div class="btn btn-danger" onclick="removeline($(this))">ลบ</div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                        <tr>
+                            <td>
+                                <input type="hidden" class="rec-id" name="rec_id[]" value="0">
+                                <input type="text" class="form-control line-doc-name" name="line_doc_name[]" value="">
+                            </td>
+                            <td>
+                                <input type="file" class="line-file-name" name="line_file_name[]">
+                            </td>
+                            <td>
+                                <div class="btn btn-danger" onclick="removeline($(this))">ลบ</div>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td>
+                                <div class="btn btn-primary" onclick="addline($(this))">เพิ่ม</div>
+                            </td>
+                            <td colspan="2"></td>
+                        </tr>
+                        </tfoot>
 
-    <?php endif; ?>
+                    </table>
+                </div>
+            </div>
+
+        <?php endif; ?>
 
 
-    <div class="row">
-        <div class="col-lg-6">
-            <div class="form-group">
-                <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-                <?php if (!$model->isNewRecord && $model->approve_status != 1): ?>
-                    <a class="btn btn-primary"
-                       href="<?= \yii\helpers\Url::to(['workqueue/approvejob', 'id' => $model->id, 'approve_id' => 1], true) ?>">อนุมัติจำนวน</a>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+                    <?php if (!$model->isNewRecord && $model->approve_status != 1): ?>
+                        <a class="btn btn-primary"
+                           href="<?= \yii\helpers\Url::to(['workqueue/approvejob', 'id' => $model->id, 'approve_id' => 1], true) ?>">อนุมัติจำนวน</a>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <div class="col-lg-6" style="text-align: right">
+                <?php if (!$model->isNewRecord): ?>
+                    <div class="btn-group">
+                        <a href="<?= \yii\helpers\Url::to(['workqueue/exportdoc', 'id' => $model->id], true) ?>"
+                           class="btn btn-default">Export</a>
+                        <a href="<?= \yii\helpers\Url::to(['workqueue/printdocx', 'id' => $model->id], true) ?>"
+                           class="btn btn-warning">พิมพ์</a>
+                    </div>
+
                 <?php endif; ?>
             </div>
         </div>
-        <div class="col-lg-6" style="text-align: right">
-            <?php if (!$model->isNewRecord): ?>
-                <div class="btn-group">
-                    <a href="<?= \yii\helpers\Url::to(['workqueue/exportdoc', 'id' => $model->id], true) ?>"
-                       class="btn btn-default">Export</a>
-                    <a href="<?= \yii\helpers\Url::to(['workqueue/printdocx', 'id' => $model->id], true) ?>"
-                       class="btn btn-warning">พิมพ์</a>
-                </div>
 
-            <?php endif; ?>
-        </div>
+
+        <?php ActiveForm::end(); ?>
+
+
     </div>
 
+    <form id="form-delete-doc" action="<?= \yii\helpers\Url::to(['workqueue/removedoc'], true) ?>" method="post">
+        <input type="hidden" name="work_queue_id" value="<?= $model->id ?>">
+        <input type="hidden" class="work-queue-doc-delete" name="doc_name" value="">
+    </form>
+    <input type="hidden" id="is-page-new" value="<?= $is_newpage ?>">
+    <input type="hidden" id="route-plan-id" value="<?= $current_route_plan_id ?>">
+    <input type="hidden" id="car-type-selected" value="<?= $current_car_type_id ?>">
+    <input type="hidden" id="labour-price-checked" value="0">
+    <input type="hidden" id="labour-price-plan" value="<?= $model->labour_price ?>">
+    <input type="hidden" id="express-road-price-checked" value="0">
+    <input type="hidden" id="express-road-price-plan" value="<?= $model->express_road_price ?>">
+    <input type="hidden" id="other-price-checked" value="0">
+    <input type="hidden" id="other-price-plan" value="<?= $model->other_price ?>">
+    <input type="hidden" id="cover-sheet-price-checked" value="0">
+    <input type="hidden" id="cover-sheet-price-plan" value="<?= $model->cover_sheet_price ?>">
+    <input type="hidden" id="overnight-price-checked" value="0">
+    <input type="hidden" id="overnight-price-plan" value="<?= $model->overnight_price ?>">
+    <input type="hidden" id="warehouse-plus-price-checked" value="0">
+    <input type="hidden" id="warehouse-plus-price-plan" value="<?= $model->warehouse_plus_price ?>">
+    <?php
+    $url_to_getCardata = \yii\helpers\Url::to(['car/getcarinfo'], true);
+    $url_to_routeplan = \yii\helpers\Url::to(['car/getrouteplan'], true);
+    $url_to_find_item = \yii\helpers\Url::to(['item/finditem'], true);
+    $url_to_customer_invoice = \yii\helpers\Url::to(['customer/getcustomerinvoice'], true);
+    $url_to_getpricefromquotation = \yii\helpers\Url::to(['workqueue/getpricefromquotation'], true);
+    $url_to_getquotation_route = \yii\helpers\Url::to(['workqueue/getquotationrouote'], true);
+    $url_to_getcuspoitem = \yii\helpers\Url::to(['workqueue/getcuspoitem'],true);
 
-    <?php ActiveForm::end(); ?>
-
-
-</div>
-
-<form id="form-delete-doc" action="<?= \yii\helpers\Url::to(['workqueue/removedoc'], true) ?>" method="post">
-    <input type="hidden" name="work_queue_id" value="<?= $model->id ?>">
-    <input type="hidden" class="work-queue-doc-delete" name="doc_name" value="">
-</form>
-<input type="hidden" id="is-page-new" value="<?= $is_newpage ?>">
-<input type="hidden" id="route-plan-id" value="<?= $current_route_plan_id ?>">
-<input type="hidden" id="car-type-selected" value="<?= $current_car_type_id ?>">
-<input type="hidden" id="labour-price-checked" value="0">
-<input type="hidden" id="labour-price-plan" value="<?= $model->labour_price ?>">
-<input type="hidden" id="express-road-price-checked" value="0">
-<input type="hidden" id="express-road-price-plan" value="<?= $model->express_road_price ?>">
-<input type="hidden" id="other-price-checked" value="0">
-<input type="hidden" id="other-price-plan" value="<?= $model->other_price ?>">
-<input type="hidden" id="cover-sheet-price-checked" value="0">
-<input type="hidden" id="cover-sheet-price-plan" value="<?= $model->cover_sheet_price ?>">
-<input type="hidden" id="overnight-price-checked" value="0">
-<input type="hidden" id="overnight-price-plan" value="<?= $model->overnight_price ?>">
-<input type="hidden" id="warehouse-plus-price-checked" value="0">
-<input type="hidden" id="warehouse-plus-price-plan" value="<?= $model->warehouse_plus_price ?>">
-<?php
-$url_to_getCardata = \yii\helpers\Url::to(['car/getcarinfo'], true);
-$url_to_routeplan = \yii\helpers\Url::to(['car/getrouteplan'], true);
-$url_to_find_item = \yii\helpers\Url::to(['item/finditem'], true);
-$url_to_customer_invoice = \yii\helpers\Url::to(['customer/getcustomerinvoice'], true);
-$url_to_getpricefromquotation = \yii\helpers\Url::to(['workqueue/getpricefromquotation'], true);
-$url_to_getquotation_route = \yii\helpers\Url::to(['workqueue/getquotationrouote'], true);
-$js = <<<JS
+    $js = <<<JS
 var removelist = [];
 var removelist2 = [];
 var loop = 0;
 var loop2 = 0;
 var loop3 = 0;
+
 
 $(function(){
      //alert($("#is-page-new").val());
@@ -1389,6 +1415,29 @@ function getpriceroutefromquotation(e){
     calpriceperton(e);
 }
 
+function getPoItem(e){
+    var id = e.val();
+    if(id !=null){
+       // alert();
+        $.ajax({
+            'type': 'post',
+            'dataType': 'html',
+            'url': '$url_to_getcuspoitem',
+            'data': {'id': id},
+            'success': function(data){
+              //  alert(data);
+                 $('#cus-po-name-id').html(data);
+            },
+            'error': function(data){
+                 alert(data);//return;
+            }
+            
+        });
+    }
+}
+
+
+
 JS;
-$this->registerJs($js, static::POS_END);
-?>
+    $this->registerJs($js, static::POS_END);
+    ?>

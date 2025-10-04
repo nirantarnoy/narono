@@ -42,7 +42,7 @@ class WorkQueue extends \yii\db\ActiveRecord
             [['weight_on_go','weight_on_back','weight_go_deduct','back_deduct','labour_price','express_road_price','other_price','test_price','damaged_price','total_lite','total_distance','total_amount'], 'double'],
             [['cover_sheet_price','overnight_price','warehouse_plus_price','deduct_other_price','work_double_price','total_amount2','towing_price','other_amt'], 'double'],
             [['oil_daily_price','oil_out_price','total_out_lite','oil_out_price_2','oil_out_price_3','total_amount3','total_amount4','total_out_lite_2','total_out_lite_3'],'safe'],
-            [['item_back_id','cus_po_id'],'safe'],
+            [['item_back_id','cus_po_id','cus_po_name_id'],'safe'],
         ];
     }
 
@@ -96,6 +96,7 @@ class WorkQueue extends \yii\db\ActiveRecord
             'updated_by' => 'Updated By',
             'work_queue_type' => 'ประเภทคิวงาน',
             'cus_po_id' => 'ใบสั่งซื้อลูกค้า',
+            'cus_po_name_id' => 'ชื่องาน',
         ];
     }
 }

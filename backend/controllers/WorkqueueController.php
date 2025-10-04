@@ -543,4 +543,20 @@ class WorkqueueController extends Controller
         }
         echo $html;
     }
+
+    public function actionGetcuspoitem()
+    {
+        $id = \Yii::$app->request->post('id');
+        $html = '';
+        if ($id) {
+            $model = \backend\models\CustomerPoLine::find()->where(['po_id' => $id])->all();
+            if ($model) {
+                foreach($model as $value){
+                    $html .= '<option value="' . $value->id . '">' . $value->item_name . '</option>';
+                }
+
+            }
+        }
+        echo $html;
+    }
 }
