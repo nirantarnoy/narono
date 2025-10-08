@@ -65,7 +65,7 @@ class CustomerPo extends ActiveRecord
             [['po_number', 'po_date', 'po_target_date', 'customer_id', 'work_name'], 'required'],
             [['po_date', 'po_target_date'], 'date', 'format' => 'php:Y-m-d'],
             [['customer_id', 'created_by', 'updated_by'], 'integer'],
-            [['po_amount', 'billed_amount', 'remaining_amount'], 'number', 'min' => 0],
+            [['billed_amount', 'remaining_amount'], 'number', 'min' => 0],
             [['work_name', 'remark'], 'string'],
             [['po_number'], 'string', 'max' => 50],
             [['po_file'], 'string', 'max' => 255],
@@ -74,6 +74,7 @@ class CustomerPo extends ActiveRecord
             [['po_number'], 'unique'],
             [['po_file_upload'], 'file', 'extensions' => 'pdf,doc,docx,jpg,jpeg,png', 'maxSize' => 1024 * 1024 * 10],
             [['po_target_date'], 'compare', 'compareAttribute' => 'po_date', 'operator' => '>=', 'message' => 'วันที่หมดอายุต้องมากกว่าหรือเท่ากับวันที่สร้าง PO'],
+            [['po_amount', ],'safe'],
         ];
     }
 
