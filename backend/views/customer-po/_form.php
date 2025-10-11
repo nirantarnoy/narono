@@ -249,7 +249,7 @@ $this->registerCss("
                                                 'value' => $modelLine->qty ?: 1,
                                                 'placeholder' => '0.00',
                                                 'class' => 'form-control text-right line-qty',
-                                                'data-index' => $i
+                                                // ลบ data-index ออก จะให้ JS เพิ่มเอง
                                             ]) ?>
                                         </td>
                                         <td>
@@ -270,13 +270,12 @@ $this->registerCss("
                                                 'min' => '0',
                                                 'placeholder' => '0.00',
                                                 'class' => 'form-control text-right line-price',
-                                                'data-index' => $i
+                                                // ลบ data-index ออก จะให้ JS เพิ่มเอง
                                             ]) ?>
                                         </td>
                                         <td>
                                             <input type="text"
                                                    class="form-control text-right line-total"
-                                                   id="line-total-<?= $i ?>"
                                                    value="<?= number_format($modelLine->qty * $modelLine->price, 2) ?>"
                                                    readonly
                                                    style="background-color: #e9ecef;">
@@ -349,20 +348,28 @@ $this->registerCss("
     </div>
 
 <?php
-// JavaScript แยกออกมา register ทีหลัง
 $js = <<<JS
 
-// ฟังก์ชันคำนวณ
-function calculateLineTotal(index) {
-    var qty = parseFloat($('.line-qty[data-index="' + index + '"]').val()) || 0;
-    var price = parseFloat($('.line-price[data-index="' + index + '"]').val()) || 0;
+// ฟังก์ชันคำนวณยอดรวมในแต่ละรายการ
+function calculateLineTotal(row) {
+    console.log('Calculating line total for row');
+    
+    var \$row = $(row);
+    var qtyInput = \$row.find('.line-qty');
+    var priceInput = \$row.find('.line-price');
+    var totalInput = \$row.find('.line-total');
+    
+    var qty = parseFloat(qtyInput.val()) || 0;
+    var price = parseFloat(priceInput.val()) || 0;
     var total = qty * price;
     
-    $('#line-total-' + index).val(total.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
+    console.log('Qty:', qty, 'Price:', price, 'Total:', total);
     
+    totalInput.val(total.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
     calculateGrandTotal();
 }
 
+// ฟังก์ชันคำนวณยอดรวมทั้งหมด
 function calculateGrandTotal() {
     var grandTotal = 0;
     $('.line-total').each(function() {
@@ -370,9 +377,12 @@ function calculateGrandTotal() {
         grandTotal += value;
     });
     
+    console.log('Grand total:', grandTotal);
+    
     $('#grand-total').val(grandTotal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
 }
 
+// ฟังก์ชันอัพเดทหมายเลขรายการ
 function updateLineNumbers() {
     $('.line-number').each(function(index) {
         $(this).text(index + 1);
@@ -382,50 +392,55 @@ function updateLineNumbers() {
 // Document Ready
 $(document).ready(function() {
     
-    // Event handlers for dynamicform
-    $(".dynamicform_wrapper").on("afterInsert", function(e, item) {
-        var lastIndex = $('.item').length - 1;
-        
-        // Update attributes for new row
-        $(item).find('.line-qty').attr('data-index', lastIndex).val(1);
-        $(item).find('.line-price').attr('data-index', lastIndex).val(0);
-        $(item).find('.line-total').attr('id', 'line-total-' + lastIndex).val('0.00');
-        
-        updateLineNumbers();
-        calculateGrandTotal();
-    });
-
-    $(".dynamicform_wrapper").on("afterDelete", function(e) {
-        // Re-index all rows
-        $('.item').each(function(index) {
-            $(this).find('.line-qty').attr('data-index', index);
-            $(this).find('.line-price').attr('data-index', index);
-            $(this).find('.line-total').attr('id', 'line-total-' + index);
-        });
-        
-        updateLineNumbers();
-        calculateGrandTotal();
+    // Event handler สำหรับการคำนวณ - ใช้ event delegation บน container
+    $('.dynamicform_wrapper').on('change keyup input', '.line-qty, .line-price', function(e) {
+        console.log('Input event triggered:', e.type);
+        var row = $(this).closest('.item');
+        calculateLineTotal(row);
     });
     
-    $(".dynamicform_wrapper").on("limitReached", function(e, item) {
+    // จัดการเมื่อเพิ่มรายการใหม่
+    $('.dynamicform_wrapper').on('afterInsert', function(e, item) {
+        console.log('afterInsert triggered');
+        
+        // รอให้ DOM อัพเดทก่อน
+        setTimeout(function() {
+            // อัพเดตหมายเลขรายการ
+            updateLineNumbers();
+            
+            // ล้างค่าในรายการใหม่
+            var \$item = $(item);
+            \$item.find('.line-qty').val(1);
+            \$item.find('.line-price').val(0);
+            \$item.find('.line-total').val('1.00');
+            
+            // คำนวณรายการใหม่
+            calculateLineTotal(\$item);
+            
+            console.log('New item added');
+        }, 100);
+    });
+    
+    // จัดการเมื่อลบรายการ
+    $('.dynamicform_wrapper').on('afterDelete', function(e) {
+        console.log('afterDelete triggered');
+        
+        setTimeout(function() {
+            updateLineNumbers();
+            calculateGrandTotal();
+        }, 100);
+    });
+    
+    $('.dynamicform_wrapper').on('limitReached', function(e, item) {
         alert("ถึงจำนวนสูงสุดแล้ว (50 รายการ)");
     });
-
-    // Handle input changes
-    $(document).on('input', '.line-qty, .line-price', function() {
-        var index = $(this).data('index');
-        calculateLineTotal(index);
-    });
-
-    // Initialize calculations
-    $('.item').each(function(index) {
-        $(this).find('.line-qty').attr('data-index', index);
-        $(this).find('.line-price').attr('data-index', index);
-        $(this).find('.line-total').attr('id', 'line-total-' + index);
-        calculateLineTotal(index);
+    
+    // เริ่มต้นการทำงาน - คำนวณทุกแถว
+    $('.item').each(function() {
+        calculateLineTotal(this);
     });
     
-    calculateGrandTotal();
+    updateLineNumbers();
 });
 
 // Form validation
@@ -450,28 +465,6 @@ $('#dynamic-form').on('beforeSubmit', function(e) {
         isValid = false;
     }
     
-    // Validate each line
-    $('.item').each(function(index) {
-        var itemName = $(this).find('[name*="[item_name]"]').val();
-        var qty = parseFloat($(this).find('[name*="[qty]"]').val()) || 0;
-        var price = parseFloat($(this).find('[name*="[price]"]').val()) || 0;
-        
-        // if (!itemName || itemName.trim() === '') {
-        //     errorMessages.push('- รายการที่ ' + (index + 1) + ': กรุณากรอกชื่องาน');
-        //     isValid = false;
-        // }
-        //
-        // if (qty <= 0) {
-        //     errorMessages.push('- รายการที่ ' + (index + 1) + ': จำนวนต้องมากกว่า 0');
-        //     isValid = false;
-        // }
-        //
-        // if (price < 0) {
-        //     errorMessages.push('- รายการที่ ' + (index + 1) + ': ราคาต้องไม่ติดลบ');
-        //     isValid = false;
-        // }
-    });
-    
     if (!isValid) {
         e.preventDefault();
         alert('กรุณาตรวจสอบข้อมูลดังต่อไปนี้:\\n\\n' + errorMessages.join('\\n'));
@@ -485,5 +478,5 @@ $('#dynamic-form').on('beforeSubmit', function(e) {
 
 JS;
 
-$this->registerJs($js, \yii\web\View::POS_READY);
+$this->registerJs($js, \yii\web\View::POS_END);
 ?>
