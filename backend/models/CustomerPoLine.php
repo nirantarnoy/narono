@@ -49,7 +49,7 @@ class CustomerPoLine extends \yii\db\ActiveRecord
             [['line_total'], 'default', 'value' => 0.00],
             [['sort_order'], 'default', 'value' => 0],
             [['status'], 'default', 'value' => 'active'],
-            [['po_id', 'item_name'], 'required'],
+            [['item_name'], 'required'],
             [['po_id', 'sort_order', 'created_by', 'updated_by'], 'integer'],
             [['description'], 'string'],
             [['qty', 'price', 'line_total'], 'number'],

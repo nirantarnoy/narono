@@ -178,18 +178,50 @@ class CustomerPoController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
 
-            $modelsLine = Model::createMultiple(CustomerPoLine::class);
-            Model::loadMultiple($modelsLine, Yii::$app->request->post());
+            // ===== แก้ไขส่วนนี้ - Normalize POST data index =====
+            $postData = Yii::$app->request->post('CustomerPoLine', []);
+
+            // Reindex array ให้เริ่มจาก 0
+            $normalizedData = array_values($postData);
+
+            // สร้าง models และโหลดข้อมูล
+            $modelsLine = [];
+            foreach ($normalizedData as $data) {
+                $modelLine = new CustomerPoLine();
+                $modelLine->setAttributes($data);
+                $modelsLine[] = $modelLine;
+            }
+            // =====================================================
+
+            // กรองเฉพาะแถวที่มีข้อมูล
+            $modelsLine = array_filter($modelsLine, function($line) {
+                return !empty($line->item_name);
+            });
+            $modelsLine = array_values($modelsLine);
 
             // รับไฟล์
             $model->po_file_upload = UploadedFile::getInstance($model, 'po_file_upload');
 
-            // ตรวจสอบ
+            // ตรวจสอบว่ามีแถวที่จะบันทึกหรือไม่
+            if (empty($modelsLine)) {
+                Yii::$app->session->setFlash('error', 'กรุณาเพิ่มรายละเอียด PO อย่างน้อย 1 รายการ');
+                return $this->render('create', [
+                    'model' => $model,
+                    'modelsLine' => [new CustomerPoLine()]
+                ]);
+            }
+
+            // ตรวจสอบเฉพาะ master
             $valid = $model->validate();
-        //    $valid = Model::validateMultiple($modelsLine) && $valid;
+
+            // ตรวจสอบ detail แต่ข้าม po_id
+            foreach ($modelsLine as $modelLine) {
+                if (!$modelLine->validate(['item_name', 'qty', 'price', 'unit', 'description'])) {
+                    $valid = false;
+                }
+            }
 
             if ($valid) {
-               // echo "ok";return;
                 $transaction = Yii::$app->db->beginTransaction();
                 try {
                     $total_po_amount = 0;
@@ -211,9 +243,10 @@ class CustomerPoController extends Controller
                             $modelLine->sort_order = $i + 1;
                             $modelLine->status = 0;
                             $modelLine->line_total = ($modelLine->qty * $modelLine->price);
+
                             if (!($flag = $modelLine->save(false))) {
                                 $transaction->rollBack();
-                                Yii::$app->session->setFlash('error', 'เกิดข้อผิดพลาด: ' . print_r($modelLine->getErrors(), true));
+                                Yii::$app->session->setFlash('error', 'เกิดข้อผิดพลาดบรรทัดที่ ' . ($i + 1) . ': ' . print_r($modelLine->getErrors(), true));
                                 break;
                             }
                             $total_po_amount += $modelLine->line_total;
@@ -221,24 +254,41 @@ class CustomerPoController extends Controller
                     }
 
                     if ($flag) {
-                        //echo "no";return;
-//                        $model->updatePoAmountFromLines();
                         $model->po_amount = $total_po_amount;
-                        $model->save(false);
+                        $model->save(false, ['po_amount']);
                         $transaction->commit();
-                        Yii::$app->session->setFlash('success', 'สร้าง PO พร้อมรายละเอียดเรียบร้อยแล้ว');
+                        Yii::$app->session->setFlash('success', 'สร้าง PO พร้อมรายละเอียดเรียบร้อยแล้ว (' . count($modelsLine) . ' รายการ)');
                         return $this->redirect(['view', 'id' => $model->id]);
-                    }else{
+                    } else {
                         $transaction->rollBack();
-                        Yii::$app->session->setFlash('error', 'เกิดข้อผิดพลาด1: ' . $model->getMessage());
+                        Yii::$app->session->setFlash('error', 'เกิดข้อผิดพลาดในการบันทึก PO');
                     }
                 } catch (\Throwable $e) {
                     $transaction->rollBack();
                     Yii::error($e->getMessage(), __METHOD__);
-                    Yii::$app->session->setFlash('error', 'เกิดข้อผิดพลาด2: ' . $e->getMessage());
+                    Yii::$app->session->setFlash('error', 'เกิดข้อผิดพลาด: ' . $e->getMessage());
                 }
-            }else{
-                Yii::$app->session->setFlash('error', 'เกิดข้อผิดพลาด3: ' . print_r($model->getErrors(), true));
+            } else {
+                // แสดง error
+                $errorMsg = 'กรุณาตรวจสอบข้อมูล:<br>';
+
+                if ($model->hasErrors()) {
+                    $errorMsg .= '<strong>ข้อมูล PO:</strong><br>';
+                    foreach ($model->getErrors() as $field => $errors) {
+                        $errorMsg .= "- {$field}: " . implode(', ', $errors) . '<br>';
+                    }
+                }
+
+                foreach ($modelsLine as $i => $modelLine) {
+                    if ($modelLine->hasErrors()) {
+                        $errorMsg .= '<strong>แถวที่ ' . ($i + 1) . ':</strong><br>';
+                        foreach ($modelLine->getErrors() as $field => $errors) {
+                            $errorMsg .= "- {$field}: " . implode(', ', $errors) . '<br>';
+                        }
+                    }
+                }
+
+                Yii::$app->session->setFlash('error', $errorMsg);
             }
         }
 
@@ -263,17 +313,64 @@ class CustomerPoController extends Controller
 
         if ($model->load(Yii::$app->request->post())) {
 
+            // เก็บ ID เก่าไว้เพื่อหารายการที่ถูกลบ
             $oldIDs = ArrayHelper::map($modelsLine, 'id', 'id');
-            $modelsLine = Model::createMultiple(CustomerPoLine::class, $modelsLine);
-            Model::loadMultiple($modelsLine, Yii::$app->request->post());
-            $deletedIDs = array_diff($oldIDs, array_filter(ArrayHelper::map($modelsLine, 'id', 'id')));
+
+            // ===== แก้ไขส่วนนี้ - Normalize POST data index =====
+            $postData = Yii::$app->request->post('CustomerPoLine', []);
+
+            // Reindex array ให้เริ่มจาก 0
+            $normalizedData = array_values($postData);
+
+            // สร้าง/อัพเดท models และโหลดข้อมูล
+            $modelsLine = [];
+            foreach ($normalizedData as $data) {
+                // ถ้ามี id แสดงว่าเป็นรายการเก่า (update)
+                if (!empty($data['id'])) {
+                    $modelLine = CustomerPoLine::findOne($data['id']);
+                    if ($modelLine === null) {
+                        $modelLine = new CustomerPoLine();
+                    }
+                } else {
+                    // ถ้าไม่มี id แสดงว่าเป็นรายการใหม่ (insert)
+                    $modelLine = new CustomerPoLine();
+                }
+                $modelLine->setAttributes($data);
+                $modelsLine[] = $modelLine;
+            }
+
+            // หา ID ที่ถูกลบ
+            $newIDs = array_filter(ArrayHelper::map($modelsLine, 'id', 'id'));
+            $deletedIDs = array_diff($oldIDs, $newIDs);
+            // =====================================================
+
+            // กรองเฉพาะแถวที่มีข้อมูล
+            $modelsLine = array_filter($modelsLine, function($line) {
+                return !empty($line->item_name);
+            });
+            $modelsLine = array_values($modelsLine);
 
             // รับไฟล์ใหม่
             $model->po_file_upload = UploadedFile::getInstance($model, 'po_file_upload');
 
-            // ตรวจสอบ
+            // ตรวจสอบว่ามีแถวที่จะบันทึกหรือไม่
+            if (empty($modelsLine)) {
+                Yii::$app->session->setFlash('error', 'กรุณาเพิ่มรายละเอียด PO อย่างน้อย 1 รายการ');
+                return $this->render('update', [
+                    'model' => $model,
+                    'modelsLine' => [new CustomerPoLine()]
+                ]);
+            }
+
+            // ตรวจสอบเฉพาะ master
             $valid = $model->validate();
-            $valid = Model::validateMultiple($modelsLine) && $valid;
+
+            // ตรวจสอบ detail แต่ข้าม po_id
+            foreach ($modelsLine as $modelLine) {
+                if (!$modelLine->validate(['item_name', 'qty', 'price', 'unit', 'description'])) {
+                    $valid = false;
+                }
+            }
 
             if ($valid) {
                 $transaction = Yii::$app->db->beginTransaction();
@@ -313,7 +410,6 @@ class CustomerPoController extends Controller
 
                         // บันทึก PO Line
                         foreach ($modelsLine as $i => $modelLine) {
-                           // echo 'xx'.($modelLine->qty) * ($modelLine->price);return;
                             $modelLine->po_id = $model->id;
                             $modelLine->sort_order = $i + 1;
                             $modelLine->status = 0;
@@ -321,26 +417,49 @@ class CustomerPoController extends Controller
 
                             if (!($flag = $modelLine->save(false))) {
                                 $transaction->rollBack();
+                                Yii::$app->session->setFlash('error', 'เกิดข้อผิดพลาดบรรทัดที่ ' . ($i + 1) . ': ' . print_r($modelLine->getErrors(), true));
                                 break;
                             }
-                            $total_po_amount += ($modelLine->line_total);
+                            $total_po_amount += $modelLine->line_total;
                         }
                     }
 
                     if ($flag) {
-                       // $model->updatePoAmountFromLines();
-                       // echo $total_po_amount;return;
                         $model->po_amount = $total_po_amount;
-                        $model->save(false);
+                        $model->save(false, ['po_amount']);
                         $transaction->commit();
-                        Yii::$app->session->setFlash('success', 'อัพเดต PO พร้อมรายละเอียดเรียบร้อยแล้ว');
+                        Yii::$app->session->setFlash('success', 'อัพเดต PO พร้อมรายละเอียดเรียบร้อยแล้ว (' . count($modelsLine) . ' รายการ)');
                         return $this->redirect(['view', 'id' => $model->id]);
+                    } else {
+                        $transaction->rollBack();
+                        Yii::$app->session->setFlash('error', 'เกิดข้อผิดพลาดในการบันทึก PO');
                     }
                 } catch (\Exception $e) {
                     $transaction->rollBack();
                     Yii::error($e->getMessage(), __METHOD__);
                     Yii::$app->session->setFlash('error', 'เกิดข้อผิดพลาด: ' . $e->getMessage());
                 }
+            } else {
+                // แสดง error
+                $errorMsg = 'กรุณาตรวจสอบข้อมูล:<br>';
+
+                if ($model->hasErrors()) {
+                    $errorMsg .= '<strong>ข้อมูล PO:</strong><br>';
+                    foreach ($model->getErrors() as $field => $errors) {
+                        $errorMsg .= "- {$field}: " . implode(', ', $errors) . '<br>';
+                    }
+                }
+
+                foreach ($modelsLine as $i => $modelLine) {
+                    if ($modelLine->hasErrors()) {
+                        $errorMsg .= '<strong>แถวที่ ' . ($i + 1) . ':</strong><br>';
+                        foreach ($modelLine->getErrors() as $field => $errors) {
+                            $errorMsg .= "- {$field}: " . implode(', ', $errors) . '<br>';
+                        }
+                    }
+                }
+
+                Yii::$app->session->setFlash('error', $errorMsg);
             }
         }
 
