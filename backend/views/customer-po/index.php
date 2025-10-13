@@ -167,9 +167,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'label' => 'งาน',
                                     'contentOptions' => ['style' => 'max-width: 200px; word-wrap: break-word;'],
                                     'value' => function($model) {
-                                        return strlen($model->work_name) > 50 ?
-                                            substr($model->work_name, 0, 50) . '...' :
-                                            $model->work_name;
+//                                        return strlen($model->work_name) > 50 ?
+//                                            substr($model->work_name, 0, 50) . '...' :
+//                                            $model->work_name;
+                                        return $model->work_name;
                                     },
                                 ],
 
