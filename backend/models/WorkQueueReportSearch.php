@@ -4,12 +4,12 @@ namespace backend\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\WorkQueue;
+use backend\models\Workqueue;
 
 /**
  * WorkQueueReportSearch represents the model behind the search form for work queue report.
  */
-class WorkQueueReportSearch extends WorkQueue
+class WorkQueueReportSearch extends Workqueue
 {
     public $start_date;
     public $end_date;
@@ -41,7 +41,7 @@ class WorkQueueReportSearch extends WorkQueue
      */
     public function search($params)
     {
-        $query = WorkQueue::find()
+        $query = Workqueue::find()
             ->joinWith(['workQueueDropoffs', 'customer'])
             ->groupBy(['work_queue.id']);
 
