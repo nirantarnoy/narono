@@ -14,6 +14,7 @@ $this->params['breadcrumbs'][] = 'Update';
     <?= $this->render('_form', [
         'model' => $model,
         'model_line'=>$model_line,
+        'last_month_price'=>null,
     ]) ?>
 
 </div>

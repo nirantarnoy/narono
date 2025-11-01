@@ -18,7 +18,7 @@ $selected_dropoff = [];
 $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 'name' => 'ราคาเหมา']];
 $haul_data = \common\models\Haul::find()->orderBy(['id'=>SORT_ASC])->all();
 
-$new_quot_price = 0;
+//$new_quot_price = 0;
 
 ?>
 
@@ -82,7 +82,7 @@ $new_quot_price = 0;
                 <?= $form->field($model, 'created_by_display')->textInput(['readonly' => 'readonly']) ?>
             </div>
             <div class="col-lg-3">
-                <?= $form->field($model, 'fuel_rate')->textInput() ?>
+                <?= $form->field($model, 'fuel_rate')->textInput(['value'=>$model->isNewRecord?$last_month_price:$model->fuel_rate]) ?>
             </div>
             <div class="col-lg-3">
                 <!--            <select name="xx" class="form-control input-lg" data-live-search="true" id="provice-selected">-->

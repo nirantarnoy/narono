@@ -90,6 +90,7 @@ class QuotationtitleController extends Controller
     public function actionCreate()
     {
         $model = new Quotationtitle();
+        $last_month_price = $this->getBeforemonthprice();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
@@ -132,7 +133,20 @@ class QuotationtitleController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'last_month_price' => $last_month_price
         ]);
+    }
+
+    public function getBeforemonthprice(){
+        $firstDayPrevMonth = date('Y-m-01', strtotime('first day of last month'));
+        $lastDayPrevMonth = date('Y-m-t', strtotime('first day of last month'));
+
+        $model = \common\models\FuelPrice::find()
+            ->where(['between', 'price_date', $firstDayPrevMonth, $lastDayPrevMonth])
+            ->orderBy(['price_date' => SORT_DESC])
+            ->one();
+
+        return $model ? $model->price : 0;
     }
 
     /**
