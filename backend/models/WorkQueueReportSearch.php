@@ -42,7 +42,7 @@ class WorkQueueReportSearch extends Workqueue
     public function search($params)
     {
         $query = Workqueue::find()
-            ->joinWith(['workQueueDropoffs', 'customer'])
+            ->joinWith(['workQueueDropoff', 'customer'])
             ->groupBy(['work_queue.id']);
 
         $dataProvider = new ActiveDataProvider([
@@ -105,7 +105,7 @@ class WorkQueueReportSearch extends Workqueue
                 'SUM(work_queue_dropoff.price_per_ton) as total_price_per_ton',
                 'SUM(work_queue_dropoff.price_line_total) as total_price',
             ])
-            ->joinWith(['workQueueDropoffs', 'customer'])
+            ->joinWith(['workQueueDropoff', 'customer'])
             ->where(['>=', 'work_queue.work_queue_date', $this->start_date])
             ->andWhere(['<=', 'work_queue.work_queue_date', $this->end_date])
             ->groupBy(['work_queue.id']);
@@ -139,7 +139,7 @@ class WorkQueueReportSearch extends Workqueue
                 'SUM(work_queue_dropoff.weight) as grand_total_weight',
                 'SUM(work_queue_dropoff.price_line_total) as grand_total_price',
             ])
-            ->joinWith(['workQueueDropoffs'])
+            ->joinWith(['workQueueDropoff'])
             ->where(['>=', 'work_queue.work_queue_date', $this->start_date])
             ->andWhere(['<=', 'work_queue.work_queue_date', $this->end_date]);
 
