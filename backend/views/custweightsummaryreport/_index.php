@@ -14,6 +14,7 @@ $work_queue_type = \yii\helpers\ArrayHelper::map(\backend\helpers\WorkQueueType:
 echo "<pre>";
 print_r($work_queue_type);
 echo "</pre>";
+return;
 $customer_data = [];
 if ($find_year != null) {
     $sql = "SELECT t1.customer_id";
