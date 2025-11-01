@@ -31,7 +31,7 @@ if ($find_year != null) {
     }
 
     if($work_queue_type_id != null){
-        $sql .= " AND t2.work_queue_type=" . $work_queue_type_id;
+        $sql .= " AND t1.work_queue_type=" . $work_queue_type_id;
     }
 
     $sql .= " GROUP BY t1.customer_id";
