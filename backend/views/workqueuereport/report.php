@@ -226,7 +226,7 @@ $this->title = 'รายงานคิวงาน';
                     <td class="text-center"><?=\backend\models\DropoffPlace::findName($item['dropoff_id'])?></td>
                     <td class="text-right"><?= number_format($weight, 2) ?></td>
                     <td class="text-center">ตัน</td>
-                    <td class="text-right"><?= $item['price_per_ton'] ? number_format($item['price_per_ton'], 2) : 0 ?></td>
+                    <td class="text-right"><?= $item['total_price_per_ton'] ? number_format($item['total_price_per_ton'], 2) : 0 ?></td>
                     <td class="text-right"><?= number_format($price, 2) ?></td>
                     <td class="text-center"><?= Html::encode($item['po_number']) ?></td>
                     <td class="text-center"></td>
