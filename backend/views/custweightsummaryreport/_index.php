@@ -78,9 +78,9 @@ if ($find_year != null) {
             <label for="">ประเภทคิวงาน</label>
             <select class="form-control" id="find_work_queue_type_id" name="find_work_queue_type_id">
                 <option value="">ทั้งหมด</option>
-                <?php foreach ($work_queue_type as $x): ?>
-                    <option value="<?= $x->id ?>" <?= ($x->id == $work_queue_type_id) ? 'selected' : '' ?>><?= $x->name ?></option>
-                <?php endforeach; ?>
+                <?php for($i=0;$i<=count($work_queue_type)-1;$i++): ?>
+                    <option value="<?= $work_queue_type[$i]['id'] ?>" <?= ($work_queue_type[$i]['id'] == $work_queue_type_id) ? 'selected' : '' ?>><?= $work_queue_type[$i]['name'] ?></option>
+                <?php endfor; ?>
             </select>
         </div>
         <div class="col-lg-3">
