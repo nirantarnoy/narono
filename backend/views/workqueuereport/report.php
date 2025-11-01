@@ -165,9 +165,9 @@ $this->title = 'รายงานคิวงาน';
             <strong>รายงานวันที่ <?= Yii::$app->formatter->asDate($searchModel->start_date, 'php:d/m/Y') ?>
                 - <?= Yii::$app->formatter->asDate($searchModel->end_date, 'php:d/m/Y') ?></strong>
         </div>
-        <div class="oil-label">
-            oil: <?= number_format($summaryData['grand_total_weight'] / 1000, 2) ?>
-        </div>
+<!--        <div class="oil-label">-->
+<!--            oil: --><?php //= number_format($summaryData['grand_total_weight'] / 1000, 2) ?>
+<!--        </div>-->
     </div>
 
     <table class="report-table">
@@ -223,7 +223,7 @@ $this->title = 'รายงานคิวงาน';
                 ?>
                 <tr>
                     <td><?= Html::encode($customerData['customer_name']) ?></td>
-                    <td class="text-center"></td>
+                    <td class="text-center"><?=$customerData['dropoff_id']?></td>
                     <td class="text-right"><?= number_format($weight, 2) ?></td>
                     <td class="text-center">ตัน</td>
                     <td class="text-right"><?= $item['total_price_per_ton'] ? number_format($item['total_price_per_ton'], 2) : '' ?></td>

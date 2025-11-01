@@ -100,6 +100,7 @@ class WorkQueueReportSearch extends Workqueue
                 'work_queue.*',
                 'customer.name as customer_name',
                 'customer.code as customer_code',
+                'work_queue_dropoff.dropoff_id',
                 'SUM(work_queue_dropoff.qty) as total_qty',
                 'SUM(work_queue_dropoff.weight) as total_weight',
                 'SUM(work_queue_dropoff.price_per_ton) as total_price_per_ton',
