@@ -159,6 +159,7 @@ $this->title = 'รายงานคิวงาน';
     <table class="report-table">
         <thead>
         <tr>
+            <th rowspan="2" style="width: 30px;">ลำดับ</th>
             <th rowspan="2" style="width: 200px;">รายการวัตถุดิบ</th>
             <th colspan="2">ประจำเดือน</th>
             <th rowspan="2" style="width: 80px;">Unit</th>
@@ -211,6 +212,7 @@ $this->title = 'รายงานคิวงาน';
                 $totalPrice += $price;
                 ?>
                 <tr>
+                    <td class="text-center"><?= $no++ ?></td>
                     <td><?= Html::encode($customerData['customer_name']) ?></td>
                     <td class="text-right"><?= number_format($weight, 2) ?></td>
                     <td class="text-right"><?= number_format($qty) ?></td>
@@ -227,7 +229,7 @@ $this->title = 'รายงานคิวงาน';
             if (count($customerData['items']) > 1):
                 ?>
                 <tr class="total-row">
-                    <td class="text-right">รวม <?= Html::encode($customerData['customer_name']) ?></td>
+                    <td colspan="2" class="text-right">รวม <?= Html::encode($customerData['customer_name']) ?></td>
                     <td class="text-right"><?= number_format($customerTotalWeight, 2) ?></td>
                     <td class="text-right"><?= number_format($customerTotalQty) ?></td>
                     <td colspan="2"></td>
@@ -241,7 +243,7 @@ $this->title = 'รายงานคิวงาน';
         </tbody>
         <tfoot>
         <tr class="total-row" style="background-color: #d9edf7;">
-            <td class="text-right"><strong>รวมทั้งหมด</strong></td>
+            <td colspan="2" class="text-right"><strong>รวมทั้งหมด</strong></td>
             <td class="text-right"><strong><?= number_format($summaryData['grand_total_weight'], 2) ?></strong></td>
             <td class="text-right"><strong><?= number_format($summaryData['grand_total_qty']) ?></strong></td>
             <td colspan="2"></td>
