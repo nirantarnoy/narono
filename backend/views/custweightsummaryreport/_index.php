@@ -11,7 +11,9 @@ $month_data = [['id' => 1, 'name' => 'มกราคม'], ['id' => 2, 'name' =
 $car_type_data = \backend\models\CarType::find()->where(['status' => 1])->all();
 $work_queue_type = \yii\helpers\ArrayHelper::map(\backend\helpers\WorkQueueType::asArrayObject(),'id','name');
 //print_r($work_queue_type);return;
-
+echo "<pre>";
+print_r($work_queue_type);
+echo "</pre>";
 $customer_data = [];
 if ($find_year != null) {
     $sql = "SELECT t1.customer_id";
@@ -80,7 +82,7 @@ if ($find_year != null) {
             <select class="form-control" id="find_work_queue_type_id" name="find_work_queue_type_id">
                 <option value="">ทั้งหมด</option>
                 <?php for($i=1;$i<=count($work_queue_type);$i++): ?>
-                    <option value="<?= $work_queue_type[$i]->id ?>" <?= ($work_queue_type[$i]->id == $work_queue_type_id) ? 'selected' : '' ?>><?= $work_queue_type[$i]['name'] ?></option>
+                    <option value="<?= $work_queue_type[$i]['id'] ?>" <?= ($work_queue_type[$i]['id'] == $work_queue_type_id) ? 'selected' : '' ?>><?= $work_queue_type[$i]['name'] ?></option>
                 <?php endfor; ?>
             </select>
         </div>
