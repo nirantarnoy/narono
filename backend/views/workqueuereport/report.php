@@ -20,21 +20,25 @@ $this->title = 'รายงานคิวงาน';
             font-family: "Sarabun", "TH SarabunPSK", sans-serif;
             font-size: 14px;
         }
+
         .report-header {
             text-align: center;
             margin-bottom: 20px;
             border-bottom: 2px solid #333;
             padding-bottom: 10px;
         }
+
         .report-header h2 {
             margin: 5px 0;
             font-size: 20px;
             font-weight: bold;
         }
+
         .report-header .date-range {
             font-size: 14px;
             color: #666;
         }
+
         .report-filter {
             margin-bottom: 20px;
             padding: 15px;
@@ -42,11 +46,13 @@ $this->title = 'รายงานคิวงาน';
             border: 1px solid #ddd;
             border-radius: 4px;
         }
+
         .report-table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
         }
+
         .report-table th {
             background-color: #e8f4f8;
             border: 1px solid #000;
@@ -54,20 +60,25 @@ $this->title = 'รายงานคิวงาน';
             text-align: center;
             font-weight: bold;
         }
+
         .report-table td {
             border: 1px solid #000;
             padding: 5px 8px;
         }
+
         .report-table .text-right {
             text-align: right;
         }
+
         .report-table .text-center {
             text-align: center;
         }
+
         .report-table .total-row {
             background-color: #f5f5f5;
             font-weight: bold;
         }
+
         .oil-label {
             float: right;
             margin-right: 20px;
@@ -75,15 +86,18 @@ $this->title = 'รายงานคิวงาน';
             background-color: #fff;
             border: 1px solid #000;
         }
+
         .summary-box {
             margin-top: 20px;
             padding: 10px;
             border: 1px solid #000;
         }
+
         @media print {
             .no-print {
                 display: none;
             }
+
             body {
                 font-size: 12px;
             }
@@ -122,7 +136,7 @@ $this->title = 'รายงานคิวงาน';
         <div class="form-group" style="margin-right: 15px;">
             <label>ลูกค้า: </label>
             <?= $form->field($searchModel, 'customer_id')->dropDownList(
-                ArrayHelper::map($customers, 'id', function($model) {
+                ArrayHelper::map($customers, 'id', function ($model) {
                     return $model->code . ' - ' . $model->name;
                 }),
                 ['prompt' => 'ทั้งหมด']
@@ -159,17 +173,14 @@ $this->title = 'รายงานคิวงาน';
     <table class="report-table">
         <thead>
         <tr>
-            <th rowspan="2" style="width: 200px;">รายการวัตถุดิบ</th>
-            <th colspan="2">ประจำเดือน</th>
-            <th rowspan="2" style="width: 80px;">Unit</th>
-            <th rowspan="2" style="width: 80px;">อัตรา</th>
-            <th rowspan="2" style="width: 120px;">จำนวนเงิน</th>
-            <th rowspan="2" style="width: 150px;">PO.</th>
-            <th rowspan="2" style="width: 150px;">GR</th>
-        </tr>
-        <tr>
-            <th style="width: 80px;">น้ำหนัก</th>
-            <th style="width: 80px;">จำนวนชิ้น</th>
+            <th style="width: 200px;">รายการการขนส่ง</th>
+            <th>ปลายทาง</th>
+            <th>น้ำหนัก</th>
+            <th style="width: 80px;">Unit</th>
+            <th style="width: 80px;">อัตรา</th>
+            <th style="width: 120px;">จำนวนเงิน</th>
+            <th style="width: 150px;">PO.</th>
+            <th style="width: 150px;">GR</th>
         </tr>
         </thead>
         <tbody>
@@ -226,14 +237,14 @@ $this->title = 'รายงานคิวงาน';
             // Customer subtotal row
             if (count($customerData['items']) > 1):
                 ?>
-                <tr class="total-row">
-                    <td class="text-right">รวม <?= Html::encode($customerData['customer_name']) ?></td>
-                    <td class="text-right"><?= number_format($customerTotalWeight, 2) ?></td>
-                    <td class="text-right"><?= number_format($customerTotalQty) ?></td>
-                    <td colspan="2"></td>
-                    <td class="text-right"><?= number_format($customerTotalPrice, 2) ?></td>
-                    <td colspan="2"></td>
-                </tr>
+<!--                <tr class="total-row">-->
+<!--                    <td class="text-right">รวม --><?php //= Html::encode($customerData['customer_name']) ?><!--</td>-->
+<!--                    <td class="text-right">--><?php //= number_format($customerTotalWeight, 2) ?><!--</td>-->
+<!--                    <td class="text-right">--><?php //= number_format($customerTotalQty) ?><!--</td>-->
+<!--                    <td colspan="2"></td>-->
+<!--                    <td class="text-right">--><?php //= number_format($customerTotalPrice, 2) ?><!--</td>-->
+<!--                    <td colspan="2"></td>-->
+<!--                </tr>-->
             <?php
             endif;
         endforeach;
@@ -255,7 +266,8 @@ $this->title = 'รายงานคิวงาน';
         <div class="row">
             <div class="col-md-6">
                 <p><strong>หมายเหตุ:</strong></p>
-                <p>- รายงานนี้แสดงข้อมูลวันที่ <?= Yii::$app->formatter->asDate($searchModel->start_date, 'php:d/m/Y') ?>
+                <p>-
+                    รายงานนี้แสดงข้อมูลวันที่ <?= Yii::$app->formatter->asDate($searchModel->start_date, 'php:d/m/Y') ?>
                     ถึง <?= Yii::$app->formatter->asDate($searchModel->end_date, 'php:d/m/Y') ?></p>
                 <p>- จำนวนรายการทั้งหมด: <?= count($reportData) ?> รายการ</p>
             </div>
