@@ -258,43 +258,43 @@ if ($find_year != null) {
                         <tr>
                             <td style="text-align: left;width: 20%;"><?= \backend\models\Customer::findCusName($line_count_data[$m]['customer_id']) ?></td>
                             <?php if($find_month ==1):?>
-                            <td style="text-align: center;"><?= number_format($line_m1) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m1,3) ?></td>
                             <?php endif;?>
                             <?php if($find_month ==2):?>
-                            <td style="text-align: center;"><?= number_format($line_m2) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m2,3) ?></td>
                             <?php endif;?>
                             <?php if($find_month ==3):?>
-                            <td style="text-align: center;"><?= number_format($line_m3) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m3,3) ?></td>
                             <?php endif;?>
                             <?php if($find_month ==4):?>
-                            <td style="text-align: center;"><?= number_format($line_m4) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m4,3) ?></td>
                             <?php endif;?>
                             <?php if($find_month ==5):?>
-                            <td style="text-align: center;"><?= number_format($line_m5) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m5,3) ?></td>
                             <?php endif;?>
                             <?php if($find_month ==6):?>
-                            <td style="text-align: center;"><?= number_format($line_m6) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m6,3) ?></td>
                             <?php endif;?>
                             <?php if($find_month ==7):?>
-                            <td style="text-align: center;"><?= number_format($line_m7) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m7,3) ?></td>
                             <?php endif;?>
                             <?php if($find_month ==8):?>
-                            <td style="text-align: center;"><?= number_format($line_m8) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m8,3) ?></td>
                             <?php endif;?>
                             <?php if($find_month ==9):?>
-                            <td style="text-align: center;"><?= number_format($line_m9) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m9,3) ?></td>
                             <?php endif;?>
                             <?php if($find_month ==10):?>
-                            <td style="text-align: center;"><?= number_format($line_m10) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m10,3) ?></td>
                             <?php endif;?>
                             <?php if($find_month ==11):?>
-                            <td style="text-align: center;"><?= number_format($line_m11) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m11,3) ?></td>
                             <?php endif;?>
                             <?php if($find_month ==12):?>
-                            <td style="text-align: center;"><?= number_format($line_m12) ?></td>
+                            <td style="text-align: center;"><?= number_format($line_m12,3) ?></td>
                             <?php endif;?>
 
-                            <td style="text-align: center;"><b><?= number_format($line_all_total) ?></b></td>
+                            <td style="text-align: center;"><b><?= number_format($line_all_total,3) ?></b></td>
                         </tr>
                     <?php endfor; ?>
                 <?php endif; ?>
