@@ -141,45 +141,45 @@ $this->params['breadcrumbs'][] = $this->title;
                             return $model->customer ? $model->customer->name : '-';
                         },
                     ],
-                    [
-                        'label' => 'จำนวน (ชิ้น)',
-                        'value' => function($model) {
-                            $total = 0;
-                            foreach ($model->workQueueDropoff as $dropoff) {
-                                $total += $dropoff->qty;
-                            }
-                            return $total;
-                        },
-                        'format' => 'integer',
-                        'headerOptions' => ['style' => 'width: 120px; text-align: center;'],
-                        'contentOptions' => ['style' => 'text-align: right;'],
-                    ],
-                    [
-                        'label' => 'น้ำหนัก (กก.)',
-                        'value' => function($model) {
-                            $total = 0;
-                            foreach ($model->workQueueDropoff as $dropoff) {
-                                $total += $dropoff->weight;
-                            }
-                            return $total;
-                        },
-                        'format' => ['decimal', 2],
-                        'headerOptions' => ['style' => 'width: 130px; text-align: center;'],
-                        'contentOptions' => ['style' => 'text-align: right;'],
-                    ],
-                    [
-                        'label' => 'ราคารวม (บาท)',
-                        'value' => function($model) {
-                            $total = 0;
-                            foreach ($model->workQueueDropoff as $dropoff) {
-                                $total += $dropoff->price_line_total;
-                            }
-                            return $total;
-                        },
-                        'format' => ['decimal', 2],
-                        'headerOptions' => ['style' => 'width: 150px; text-align: center;'],
-                        'contentOptions' => ['style' => 'text-align: right;'],
-                    ],
+//                    [
+//                        'label' => 'จำนวน (ชิ้น)',
+//                        'value' => function($model) {
+//                            $total = 0;
+//                            foreach ($model->workQueueDropoff as $dropoff) {
+//                                $total += $dropoff->qty;
+//                            }
+//                            return $total;
+//                        },
+//                        'format' => 'integer',
+//                        'headerOptions' => ['style' => 'width: 120px; text-align: center;'],
+//                        'contentOptions' => ['style' => 'text-align: right;'],
+//                    ],
+//                    [
+//                        'label' => 'น้ำหนัก (กก.)',
+//                        'value' => function($model) {
+//                            $total = 0;
+//                            foreach ($model->workQueueDropoff as $dropoff) {
+//                                $total += $dropoff->weight;
+//                            }
+//                            return $total;
+//                        },
+//                        'format' => ['decimal', 2],
+//                        'headerOptions' => ['style' => 'width: 130px; text-align: center;'],
+//                        'contentOptions' => ['style' => 'text-align: right;'],
+//                    ],
+//                    [
+//                        'label' => 'ราคารวม (บาท)',
+//                        'value' => function($model) {
+//                            $total = 0;
+//                            foreach ($model->workQueueDropoff as $dropoff) {
+//                                $total += $dropoff->price_line_total;
+//                            }
+//                            return $total;
+//                        },
+//                        'format' => ['decimal', 2],
+//                        'headerOptions' => ['style' => 'width: 150px; text-align: center;'],
+//                        'contentOptions' => ['style' => 'text-align: right;'],
+//                    ],
 
                     [
                         'class' => 'yii\grid\ActionColumn',
