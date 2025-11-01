@@ -80,7 +80,7 @@ if ($find_year != null) {
             <select class="form-control" id="find_work_queue_type_id" name="find_work_queue_type_id">
                 <option value="">ทั้งหมด</option>
                 <?php for($i=1;$i<=count($work_queue_type);$i++): ?>
-                    <option value="<?= $work_queue_type[$i]['id'] ?>" <?= ($work_queue_type[$i]['id'] == $work_queue_type_id) ? 'selected' : '' ?>><?= $work_queue_type[$i]['name'] ?></option>
+                    <option value="<?= $work_queue_type[$i]->id ?>" <?= ($work_queue_type[$i]->id == $work_queue_type_id) ? 'selected' : '' ?>><?= $work_queue_type[$i]['name'] ?></option>
                 <?php endfor; ?>
             </select>
         </div>
