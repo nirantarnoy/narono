@@ -2,6 +2,8 @@
 
 namespace backend\models;
 
+use backend\models\Workqueue;
+use backend\models\Workqueue;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use backend\models\Workqueue;
@@ -95,6 +97,22 @@ class WorkQueueReportSearch extends Workqueue
             $this->end_date = date('Y-m-15');
         }
 
+//        $query = WorkQueue::find()
+//            ->select([
+//                'work_queue.*',
+//                'customer.name as customer_name',
+//                'customer.code as customer_code',
+//                'work_queue_dropoff.dropoff_id',
+//                'customer_po.po_number',
+//                'SUM(work_queue_dropoff.qty) as total_qty',
+//                'SUM(work_queue_dropoff.weight) as total_weight',
+//                'SUM(work_queue_dropoff.price_per_ton) as total_price_per_ton',
+//                'SUM(work_queue_dropoff.price_line_total) as total_price',
+//            ])
+//            ->joinWith(['workQueueDropoff', 'customer','customerPo'])
+//            ->where(['>=', 'work_queue.work_queue_date', $this->start_date])
+//            ->andWhere(['<=', 'work_queue.work_queue_date', $this->end_date])
+//            ->groupBy(['work_queue.id']);
         $query = WorkQueue::find()
             ->select([
                 'work_queue.*',
@@ -102,10 +120,10 @@ class WorkQueueReportSearch extends Workqueue
                 'customer.code as customer_code',
                 'work_queue_dropoff.dropoff_id',
                 'customer_po.po_number',
-                'SUM(work_queue_dropoff.qty) as total_qty',
-                'SUM(work_queue_dropoff.weight) as total_weight',
-                'SUM(work_queue_dropoff.price_per_ton) as total_price_per_ton',
-                'SUM(work_queue_dropoff.price_line_total) as total_price',
+                'work_queue_dropoff.qty as total_qty',
+                'work_queue_dropoff.weight as total_weight',
+                'work_queue_dropoff.price_per_ton as total_price_per_ton',
+                'work_queue_dropoff.price_line_total as total_price',
             ])
             ->joinWith(['workQueueDropoff', 'customer','customerPo'])
             ->where(['>=', 'work_queue.work_queue_date', $this->start_date])
