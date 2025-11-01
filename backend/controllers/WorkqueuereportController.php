@@ -12,7 +12,7 @@ use backend\models\Customer;
 /**
  * WorkQueueReportController handles work queue report actions
  */
-class WorkQueueReportController extends Controller
+class WorkqueuereportController extends Controller
 {
     /**
      * {@inheritdoc}
