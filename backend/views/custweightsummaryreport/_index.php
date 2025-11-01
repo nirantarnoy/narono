@@ -9,6 +9,7 @@ $find_month = $find_month==null?'-1':$find_month;
 $month_data = [['id' => 1, 'name' => 'มกราคม'], ['id' => 2, 'name' => 'กุมภาพันธ์'], ['id' => 3, 'name' => 'มีนาคม'], ['id' => 4, 'name' => 'เมษายน'], ['id' => 5, 'name' => 'พฤษภาคม'], ['id' => 6, 'name' => 'มิถุนายน'], ['id' => 7, 'name' => 'กรกฎาคม'], ['id' => 8, 'name' => 'สิงหาคม'], ['id' => 9, 'name' => 'กันยายน'], ['id' => 10, 'name' => 'ตุลาคม'], ['id' => 11, 'name' => 'พฤศจิกายน'], ['id' => 12, 'name' => 'ธันวาคม']];
 
 $car_type_data = \backend\models\CarType::find()->where(['status' => 1])->all();
+$work_queue_type = \yii\helpers\ArrayHelper::map(\backend\helpers\WorkQueueType::asArray(),'id','name');
 
 $customer_data = [];
 if ($find_year != null) {
@@ -70,6 +71,15 @@ if ($find_year != null) {
                 <option value="">ทั้งหมด</option>
                 <?php foreach ($car_type_data as $x): ?>
                     <option value="<?= $x->id ?>" <?= ($x->id == $car_type_id) ? 'selected' : '' ?>><?= $x->name ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="col-lg-3">
+            <label for="">ประเภทคิวงาน</label>
+            <select class="form-control" id="find_work_queue_type_id" name="find_work_queue_type_id">
+                <option value="">ทั้งหมด</option>
+                <?php foreach ($work_queue_type as $x): ?>
+                    <option value="<?= $x->id ?>" <?= ($x->id == $work_queue_type_id) ? 'selected' : '' ?>><?= $x->name ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
