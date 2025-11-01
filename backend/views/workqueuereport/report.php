@@ -223,10 +223,10 @@ $this->title = 'รายงานคิวงาน';
                 ?>
                 <tr>
                     <td><?= Html::encode($customerData['customer_name']) ?></td>
+                    <td class="text-center"></td>
                     <td class="text-right"><?= number_format($weight, 2) ?></td>
-                    <td class="text-right"><?= number_format($qty) ?></td>
-                    <td class="text-center">ชิ้น</td>
-                    <td class="text-right"><?= $item['total_price_per_ton'] ? number_format($item['total_price_per_ton'], 2) : '-' ?></td>
+                    <td class="text-center">ตัน</td>
+                    <td class="text-right"><?= $item['total_price_per_ton'] ? number_format($item['total_price_per_ton'], 2) : '' ?></td>
                     <td class="text-right"><?= number_format($price, 2) ?></td>
                     <td class="text-center"><?= Html::encode($item['work_queue_no']) ?></td>
                     <td class="text-center"><?= Html::encode($item['id']) ?></td>
@@ -253,8 +253,8 @@ $this->title = 'รายงานคิวงาน';
         <tfoot>
         <tr class="total-row" style="background-color: #d9edf7;">
             <td class="text-right"><strong>รวมทั้งหมด</strong></td>
+            <td class="text-right"><strong></td>
             <td class="text-right"><strong><?= number_format($summaryData['grand_total_weight'], 2) ?></strong></td>
-            <td class="text-right"><strong><?= number_format($summaryData['grand_total_qty']) ?></strong></td>
             <td colspan="2"></td>
             <td class="text-right"><strong><?= number_format($summaryData['grand_total_price'], 2) ?></strong></td>
             <td colspan="2"></td>
