@@ -303,20 +303,20 @@ if ($find_year != null) {
                 <?php if ($find_month == null || $find_month == '-1'): ?>
                     <tr>
                         <td style="text-align: right;width: 20%;"><b>รวม</b></td>
-                        <td style="text-align: center;"><b><?= number_format($total_m1) ?></b></td>
-                        <td style="text-align: center;"><b><?= number_format($total_m2) ?></b></td>
-                        <td style="text-align: center;"><b><?= number_format($total_m3) ?></b></td>
-                        <td style="text-align: center;"><b><?= number_format($total_m4) ?></b></td>
-                        <td style="text-align: center;"><b><?= number_format($total_m5) ?></b></td>
-                        <td style="text-align: center;"><b><?= number_format($total_m6) ?></b></td>
-                        <td style="text-align: center;"><b><?= number_format($total_m7) ?></b></td>
-                        <td style="text-align: center;"><b><?= number_format($total_m8) ?></b></td>
-                        <td style="text-align: center;"><b><?= number_format($total_m9) ?></b></td>
-                        <td style="text-align: center;"><b><?= number_format($total_m10) ?></b></td>
-                        <td style="text-align: center;"><b><?= number_format($total_m11) ?></b></td>
-                        <td style="text-align: center;"><b><?= number_format($total_m12) ?></b></td>
+                        <td style="text-align: center;"><b><?= number_format($total_m1,3) ?></b></td>
+                        <td style="text-align: center;"><b><?= number_format($total_m2,3) ?></b></td>
+                        <td style="text-align: center;"><b><?= number_format($total_m3,3) ?></b></td>
+                        <td style="text-align: center;"><b><?= number_format($total_m4,3) ?></b></td>
+                        <td style="text-align: center;"><b><?= number_format($total_m5,3) ?></b></td>
+                        <td style="text-align: center;"><b><?= number_format($total_m6,3) ?></b></td>
+                        <td style="text-align: center;"><b><?= number_format($total_m7,3) ?></b></td>
+                        <td style="text-align: center;"><b><?= number_format($total_m8,3) ?></b></td>
+                        <td style="text-align: center;"><b><?= number_format($total_m9,3) ?></b></td>
+                        <td style="text-align: center;"><b><?= number_format($total_m10,3) ?></b></td>
+                        <td style="text-align: center;"><b><?= number_format($total_m11,3) ?></b></td>
+                        <td style="text-align: center;"><b><?= number_format($total_m12,3) ?></b></td>
                         <td style="text-align: center;">
-                            <b><?= number_format($total_m1 + $total_m2 + $total_m3 + $total_m4 + $total_m5 + $total_m6 + $total_m7 + $total_m8 + $total_m9 + $total_m10 + $total_m11 + $total_m12) ?></b>
+                            <b><?= number_format($total_m1 + $total_m2 + $total_m3 + $total_m4 + $total_m5 + $total_m6 + $total_m7 + $total_m8 + $total_m9 + $total_m10 + $total_m11 + $total_m12,3) ?></b>
                         </td>
 
                     </tr>
@@ -324,32 +324,32 @@ if ($find_year != null) {
                     <tr>
                         <th style="text-align: center;width: 20%;"><b>รวม</b></th>
                         <?php if ($find_month == 1): ?>
-                            <th style="text-align: center;"><b><?= number_format($total_m1) ?></b></th>
+                            <th style="text-align: center;"><b><?= number_format($total_m1,3) ?></b></th>
                         <?php elseif ($find_month == 2): ?>
-                            <th style="text-align: center;"><b><?= number_format($total_m2) ?></b></th>
+                            <th style="text-align: center;"><b><?= number_format($total_m2,3) ?></b></th>
                         <?php elseif ($find_month == 3): ?>
-                            <th style="text-align: center;"><b><?= number_format($total_m3) ?></b></th>
+                            <th style="text-align: center;"><b><?= number_format($total_m3,3) ?></b></th>
                         <?php elseif ($find_month == 4): ?>
-                            <th style="text-align: center;"><b><?= number_format($total_m4) ?></b></th>
+                            <th style="text-align: center;"><b><?= number_format($total_m4,3) ?></b></th>
                         <?php elseif ($find_month == 5): ?>
-                            <th style="text-align: center;"><b><?= number_format($total_m5) ?></b></th>
+                            <th style="text-align: center;"><b><?= number_format($total_m5,3) ?></b></th>
                         <?php elseif ($find_month == 6): ?>
-                            <th style="text-align: center;"><b><?= number_format($total_m6) ?></b></th>
+                            <th style="text-align: center;"><b><?= number_format($total_m6,3) ?></b></th>
                         <?php elseif ($find_month == 7): ?>
-                            <th style="text-align: center;"><b><?= number_format($total_m7) ?></b></th>
+                            <th style="text-align: center;"><b><?= number_format($total_m7,3) ?></b></th>
                         <?php elseif ($find_month == 8): ?>
-                            <th style="text-align: center;"><b><?= number_format($total_m8) ?></b></th>
+                            <th style="text-align: center;"><b><?= number_format($total_m8,3) ?></b></th>
                         <?php elseif ($find_month == 9): ?>
-                            <th style="text-align: center;"><b><?= number_format($total_m9) ?></b></th>
+                            <th style="text-align: center;"><b><?= number_format($total_m9,3) ?></b></th>
                         <?php elseif ($find_month == 10): ?>
-                            <th style="text-align: center;"><b><?= number_format($total_m10) ?></b></th>
+                            <th style="text-align: center;"><b><?= number_format($total_m10,3) ?></b></th>
                         <?php elseif ($find_month == 11): ?>
-                            <th style="text-align: center;"><b><?= number_format($total_m11) ?></b></th>
+                            <th style="text-align: center;"><b><?= number_format($total_m11,3) ?></b></th>
                         <?php elseif ($find_month == 12): ?>
-                            <th style="text-align: center;"><b><?= number_format($total_m12) ?></b></th>
+                            <th style="text-align: center;"><b><?= number_format($total_m12,3) ?></b></th>
                         <?php endif; ?>
                         <th style="text-align: center;">
-                            <b><?= number_format($total_m1 + $total_m2 + $total_m3 + $total_m4 + $total_m5 + $total_m6 + $total_m7 + $total_m8 + $total_m9 + $total_m10 + $total_m11 + $total_m12) ?></b>
+                            <b><?= number_format($total_m1 + $total_m2 + $total_m3 + $total_m4 + $total_m5 + $total_m6 + $total_m7 + $total_m8 + $total_m9 + $total_m10 + $total_m11 + $total_m12,3) ?></b>
                         </th>
                     </tr>
                 <?php endif; ?>
