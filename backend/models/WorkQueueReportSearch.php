@@ -101,12 +101,13 @@ class WorkQueueReportSearch extends Workqueue
                 'customer.name as customer_name',
                 'customer.code as customer_code',
                 'work_queue_dropoff.dropoff_id',
+                'customer_po.po_number',
                 'SUM(work_queue_dropoff.qty) as total_qty',
                 'SUM(work_queue_dropoff.weight) as total_weight',
                 'SUM(work_queue_dropoff.price_per_ton) as total_price_per_ton',
                 'SUM(work_queue_dropoff.price_line_total) as total_price',
             ])
-            ->joinWith(['workQueueDropoff', 'customer'])
+            ->joinWith(['workQueueDropoff', 'customer','customerPo'])
             ->where(['>=', 'work_queue.work_queue_date', $this->start_date])
             ->andWhere(['<=', 'work_queue.work_queue_date', $this->end_date])
             ->groupBy(['work_queue.id']);

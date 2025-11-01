@@ -228,7 +228,7 @@ $this->title = 'รายงานคิวงาน';
                     <td class="text-center">ตัน</td>
                     <td class="text-right"><?= $item['total_price_per_ton'] ? number_format($item['total_price_per_ton'], 2) : '' ?></td>
                     <td class="text-right"><?= number_format($price, 2) ?></td>
-                    <td class="text-center"><?= Html::encode($item['work_queue_no']) ?></td>
+                    <td class="text-center"><?= Html::encode($item['po_number']) ?></td>
                     <td class="text-center"><?= Html::encode($item['id']) ?></td>
                 </tr>
             <?php

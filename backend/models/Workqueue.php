@@ -128,4 +128,8 @@ class Workqueue extends \common\models\WorkQueue
     public function getWorkQueueDropoff(){
         return $this->hasMany(WorkqueueDropoff::className(), ['work_queue_id' => 'id']);
     }
+
+    public function getCustomerPo(){
+        return $this->hasOne(CustomerPo::className(),['id' => 'cus_po_id']);
+    }
 }
