@@ -17,6 +17,9 @@ $selected_dropoff = [];
 
 $price_type_data = [['id' => 0, 'name' => 'ไม่เหมา'], ['id' => 1, 'name' => 'ราคาเหมา']];
 $haul_data = \common\models\Haul::find()->orderBy(['id'=>SORT_ASC])->all();
+
+$new_quot_price = 0;
+
 ?>
 
     <div class="quotationtitle-form">
