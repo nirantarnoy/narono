@@ -174,8 +174,8 @@ $this->title = 'รายงานคิวงาน';
         <thead>
         <tr>
             <th style="width: 200px;">รายการการขนส่ง</th>
-            <th>ปลายทาง</th>
-            <th>น้ำหนัก</th>
+            <th style="width: 50px;">ปลายทาง</th>
+            <th style="width: 20px;">น้ำหนัก</th>
             <th style="width: 80px;">Unit</th>
             <th style="width: 80px;">อัตรา</th>
             <th style="width: 120px;">จำนวนเงิน</th>
