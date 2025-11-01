@@ -30,6 +30,10 @@ if ($find_year != null) {
         $sql .= " AND t2.car_type_id=" . $car_type_id;
     }
 
+    if($work_queue_type_id != null){
+        $sql .= " AND t2.work_queue_type=" . $work_queue_type_id;
+    }
+
     $sql .= " GROUP BY t1.customer_id";
 
     $query = \Yii::$app->db->createCommand($sql);
