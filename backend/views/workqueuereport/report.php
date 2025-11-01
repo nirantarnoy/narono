@@ -223,7 +223,7 @@ $this->title = 'รายงานคิวงาน';
                 ?>
                 <tr>
                     <td><?= Html::encode($customerData['customer_name']) ?></td>
-                    <td class="text-center"><?=$item['dropoff_id']?></td>
+                    <td class="text-center"><?=\backend\models\DropoffPlace::findName($item['dropoff_id'])?></td>
                     <td class="text-right"><?= number_format($weight, 2) ?></td>
                     <td class="text-center">ตัน</td>
                     <td class="text-right"><?= $item['total_price_per_ton'] ? number_format($item['total_price_per_ton'], 2) : '' ?></td>

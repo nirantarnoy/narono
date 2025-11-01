@@ -87,4 +87,9 @@ class DropoffPlace extends \common\models\DropoffPlace
         }
         return $data;
     }
+
+    public static function findName($id){
+        $model = DropoffPlace::find()->where(['id' => $id])->one();
+        return $model != null ? $model->name : '';
+    }
 }
