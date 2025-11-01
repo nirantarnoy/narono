@@ -255,9 +255,11 @@ $this->title = 'รายงานคิวงาน';
             <td class="text-right"><strong>รวมทั้งหมด</strong></td>
             <td class="text-right"><strong></td>
             <td class="text-right"><strong><?= number_format($summaryData['grand_total_weight'], 2) ?></strong></td>
-            <td colspan="2"></td>
+            <td></td>
+            <td></td>
             <td class="text-right"><strong><?= number_format($summaryData['grand_total_price'], 2) ?></strong></td>
-            <td colspan="2"></td>
+            <td></td>
+            <td></td>
         </tr>
         </tfoot>
     </table>
