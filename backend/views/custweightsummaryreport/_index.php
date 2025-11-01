@@ -10,6 +10,7 @@ $month_data = [['id' => 1, 'name' => 'มกราคม'], ['id' => 2, 'name' =
 
 $car_type_data = \backend\models\CarType::find()->where(['status' => 1])->all();
 $work_queue_type = \yii\helpers\ArrayHelper::map(\backend\helpers\WorkQueueType::asArrayObject(),'id','name');
+print_r($work_queue_type);return;
 
 $customer_data = [];
 if ($find_year != null) {
