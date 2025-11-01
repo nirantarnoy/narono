@@ -126,6 +126,6 @@ class Workqueue extends \common\models\WorkQueue
     }
 
     public function getWorkQueueDropoff(){
-        return $this->hasMany(WorkqueueDropoff::className(), ['id' => 'id']);
+        return $this->hasMany(WorkqueueDropoff::className(), ['work_queue_id' => 'id']);
     }
 }
