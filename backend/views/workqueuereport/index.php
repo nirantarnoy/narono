@@ -145,7 +145,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'label' => 'จำนวน (ชิ้น)',
                         'value' => function($model) {
                             $total = 0;
-                            foreach ($model->workQueueDropoffs as $dropoff) {
+                            foreach ($model->workQueueDropoff as $dropoff) {
                                 $total += $dropoff->qty;
                             }
                             return $total;
@@ -158,7 +158,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'label' => 'น้ำหนัก (กก.)',
                         'value' => function($model) {
                             $total = 0;
-                            foreach ($model->workQueueDropoffs as $dropoff) {
+                            foreach ($model->workQueueDropoff as $dropoff) {
                                 $total += $dropoff->weight;
                             }
                             return $total;
@@ -171,7 +171,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'label' => 'ราคารวม (บาท)',
                         'value' => function($model) {
                             $total = 0;
-                            foreach ($model->workQueueDropoffs as $dropoff) {
+                            foreach ($model->workQueueDropoff as $dropoff) {
                                 $total += $dropoff->price_line_total;
                             }
                             return $total;

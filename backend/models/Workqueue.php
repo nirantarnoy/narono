@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use common\models\WorkQueueDropoff;
 use Yii;
 use yii\db\ActiveRecord;
 
@@ -122,5 +123,9 @@ class Workqueue extends \common\models\WorkQueue
     public function getCustomer()
     {
         return $this->hasOne(Customer::className(), ['id' => 'customer_id']);
+    }
+
+    public function getWorkQueueDropoff(){
+        return $this->hasMany(WorkqueueDropoff::className(), ['id' => 'id']);
     }
 }
