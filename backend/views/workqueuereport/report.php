@@ -155,16 +155,16 @@ $this->title = 'รายงานคิวงาน';
 
         <?= Html::submitButton('ค้นหา', ['class' => 'btn btn-primary']) ?>
         <?= Html::button('พิมพ์', ['class' => 'btn btn-default', 'onclick' => 'window.print()']) ?>
-        <?= Html::a('PDF', ['pdf', 'WorkQueueReportSearch' => [
-            'start_date' => $searchModel->start_date,
-            'end_date' => $searchModel->end_date,
-            'customer_id' => $searchModel->customer_id,
-        ]], ['class' => 'btn btn-danger', 'target' => '_blank']) ?>
-        <?= Html::a('Excel', ['excel', 'WorkQueueReportSearch' => [
-            'start_date' => $searchModel->start_date,
-            'end_date' => $searchModel->end_date,
-            'customer_id' => $searchModel->customer_id,
-        ]], ['class' => 'btn btn-success']) ?>
+<!--        --><?php //= Html::a('PDF', ['pdf', 'WorkQueueReportSearch' => [
+//            'start_date' => $searchModel->start_date,
+//            'end_date' => $searchModel->end_date,
+//            'customer_id' => $searchModel->customer_id,
+//        ]], ['class' => 'btn btn-danger', 'target' => '_blank']) ?>
+<!--        --><?php //= Html::a('Excel', ['excel', 'WorkQueueReportSearch' => [
+//            'start_date' => $searchModel->start_date,
+//            'end_date' => $searchModel->end_date,
+//            'customer_id' => $searchModel->customer_id,
+//        ]], ['class' => 'btn btn-success']) ?>
 
         <?php ActiveForm::end(); ?>
     </div>
