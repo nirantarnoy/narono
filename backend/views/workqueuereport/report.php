@@ -122,7 +122,7 @@ $this->title = 'รายงานคิวงาน';
         ]); ?>
 
         <div class="row">
-            <div class="col-lg-3">
+            <div class="col-lg-2">
                 <label>วันที่เริ่มต้น: </label>
                 <?= $form->field($searchModel, 'start_date')->widget(DatePicker::classname(), [
                     'options' => ['placeholder' => 'วันที่เริ่มต้น'],
@@ -132,7 +132,7 @@ $this->title = 'รายงานคิวงาน';
                     ]
                 ])->label(false) ?>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-2">
                 <label>วันที่สิ้นสุด: </label>
                 <?= $form->field($searchModel, 'end_date')->widget(DatePicker::classname(), [
                     'options' => ['placeholder' => 'วันที่สิ้นสุด'],
@@ -151,11 +151,11 @@ $this->title = 'รายงานคิวงาน';
                     ['prompt' => 'ทั้งหมด']
                 )->label(false) ?>
             </div>
-            <div class="col-lg-3">
-                <div class="form-group" style="margin-right: 15px;">
-                    <?= Html::submitButton('ค้นหา', ['class' => 'btn btn-primary']) ?>
-                    <?= Html::button('พิมพ์', ['class' => 'btn btn-default', 'onclick' => 'window.print()']) ?>
-                </div>
+            <div class="col-lg-1">
+                <?= Html::submitButton('ค้นหา', ['class' => 'btn btn-primary']) ?>
+            </div>
+            <div class="col-lg-1">
+                <?= Html::button('พิมพ์', ['class' => 'btn btn-default', 'onclick' => 'window.print()']) ?>
             </div>
         </div>
 
