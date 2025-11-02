@@ -122,7 +122,7 @@ $this->registerCssFile('https://fonts.cdnfonts.com/css/calibri-light', [
         ]); ?>
         <table style="width: 100%">
             <tr>
-                <td>
+                <td style="width: 20%">
                     <label>วันที่เริ่มต้น: </label>
                     <?= $form->field($searchModel, 'start_date')->widget(DatePicker::classname(), [
                         'options' => ['placeholder' => 'วันที่เริ่มต้น'],
@@ -132,7 +132,7 @@ $this->registerCssFile('https://fonts.cdnfonts.com/css/calibri-light', [
                         ]
                     ])->label(false) ?>
                 </td>
-                <td>
+                <td style="width: 20%">
                     <label>วันที่สิ้นสุด: </label>
                     <?= $form->field($searchModel, 'end_date')->widget(DatePicker::classname(), [
                         'options' => ['placeholder' => 'วันที่สิ้นสุด'],
@@ -142,7 +142,7 @@ $this->registerCssFile('https://fonts.cdnfonts.com/css/calibri-light', [
                         ]
                     ])->label(false) ?>
                 </td>
-                <td>
+                <td style="width: 40%">
                     <label>ลูกค้า: </label>
                     <?= $form->field($searchModel, 'customer_id')->widget(\kartik\select2\Select2::classname(), [
                         'data'=>ArrayHelper::map(\backend\models\Customer::find()->all(),'id','name'),
