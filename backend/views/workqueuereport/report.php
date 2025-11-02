@@ -20,16 +20,18 @@ $this->title = 'รายงานคิวงาน';
 <div class="work-queue-report">
 
     <style>
-        body {
-            font-family: "Calibri Light", sans-serif;
-            font-size: 14px;
-        }
+        /*body {*/
+        /*    font-family: "Calibri Light", sans-serif;*/
+        /*    font-size: 14px;*/
+        /*}*/
 
         .report-header {
             text-align: center;
             margin-bottom: 20px;
             border-bottom: 2px solid #333;
             padding-bottom: 10px;
+            font-family: "Calibri Light", sans-serif;
+            font-size: 14px;
         }
 
         .report-header h2 {
@@ -55,6 +57,8 @@ $this->title = 'รายงานคิวงาน';
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
+            font-family: "Calibri Light", sans-serif;
+            font-size: 14px;
         }
 
         .report-table th {
@@ -95,6 +99,8 @@ $this->title = 'รายงานคิวงาน';
             margin-top: 20px;
             padding: 10px;
             border: 1px solid #000;
+            font-family: "Calibri Light", sans-serif;
+            font-size: 14px;
         }
 
         @media print {
