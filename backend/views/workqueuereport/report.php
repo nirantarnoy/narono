@@ -121,40 +121,42 @@ $this->title = 'รายงานคิวงาน';
             'options' => ['class' => 'form-inline'],
         ]); ?>
 
-        <div class="form-group" style="margin-right: 15px;">
-            <label>วันที่เริ่มต้น: </label>
-            <?= $form->field($searchModel, 'start_date')->widget(DatePicker::classname(), [
-                'options' => ['placeholder' => 'วันที่เริ่มต้น'],
-                'pluginOptions' => [
-                    'autoclose' => true,
-                    'format' => 'yyyy-mm-dd',
-                ]
-            ])->label(false) ?>
-        </div>
-
-        <div class="form-group" style="margin-right: 15px;">
-            <label>วันที่สิ้นสุด: </label>
-            <?= $form->field($searchModel, 'end_date')->widget(DatePicker::classname(), [
-                'options' => ['placeholder' => 'วันที่สิ้นสุด'],
-                'pluginOptions' => [
-                    'autoclose' => true,
-                    'format' => 'yyyy-mm-dd',
-                ]
-            ])->label(false) ?>
-        </div>
-
-        <div class="form-group" style="margin-right: 15px;">
-            <label>ลูกค้า: </label>
-            <?= $form->field($searchModel, 'customer_id')->dropDownList(
-                ArrayHelper::map($customers, 'id', function ($model) {
-                    return $model->code . ' - ' . $model->name;
-                }),
-                ['prompt' => 'ทั้งหมด']
-            )->label(false) ?>
-        </div>
-        <div class="form-group" style="margin-right: 15px;">
-            <?= Html::submitButton('ค้นหา', ['class' => 'btn btn-primary']) ?>
-            <?= Html::button('พิมพ์', ['class' => 'btn btn-default', 'onclick' => 'window.print()']) ?>
+        <div class="row">
+            <div class="col-lg-3">
+                <label>วันที่เริ่มต้น: </label>
+                <?= $form->field($searchModel, 'start_date')->widget(DatePicker::classname(), [
+                    'options' => ['placeholder' => 'วันที่เริ่มต้น'],
+                    'pluginOptions' => [
+                        'autoclose' => true,
+                        'format' => 'yyyy-mm-dd',
+                    ]
+                ])->label(false) ?>
+            </div>
+            <div class="col-lg-3">
+                <label>วันที่สิ้นสุด: </label>
+                <?= $form->field($searchModel, 'end_date')->widget(DatePicker::classname(), [
+                    'options' => ['placeholder' => 'วันที่สิ้นสุด'],
+                    'pluginOptions' => [
+                        'autoclose' => true,
+                        'format' => 'yyyy-mm-dd',
+                    ]
+                ])->label(false) ?>
+            </div>
+            <div class="col-lg-3">
+                <label>ลูกค้า: </label>
+                <?= $form->field($searchModel, 'customer_id')->dropDownList(
+                    ArrayHelper::map($customers, 'id', function ($model) {
+                        return $model->code . ' - ' . $model->name;
+                    }),
+                    ['prompt' => 'ทั้งหมด']
+                )->label(false) ?>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group" style="margin-right: 15px;">
+                    <?= Html::submitButton('ค้นหา', ['class' => 'btn btn-primary']) ?>
+                    <?= Html::button('พิมพ์', ['class' => 'btn btn-default', 'onclick' => 'window.print()']) ?>
+                </div>
+            </div>
         </div>
 
 
