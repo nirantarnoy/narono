@@ -14,10 +14,14 @@ use kartik\date\DatePicker;
 $this->title = 'รายงานคิวงาน';
 ?>
 <div class="work-queue-report">
-
+    <?
+    $this->registerCssFile('https://fonts.cdnfonts.com/css/calibri-light', [
+        'depends' => [\yii\web\YiiAsset::class],
+    ]);
+    ?>
     <style>
         body {
-            font-family: "Sarabun", "TH SarabunPSK", sans-serif;
+            font-family: "Calibri Light", sans-serif;
             font-size: 14px;
         }
 
