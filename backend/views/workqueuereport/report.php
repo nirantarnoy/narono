@@ -120,47 +120,46 @@ $this->registerCssFile('https://fonts.cdnfonts.com/css/calibri-light', [
             'method' => 'get',
             'options' => ['class' => 'form-inline'],
         ]); ?>
-
-        <div class="row">
-            <div class="col-lg-3">
-                <label>วันที่เริ่มต้น: </label>
-                <?= $form->field($searchModel, 'start_date')->widget(DatePicker::classname(), [
-                    'options' => ['placeholder' => 'วันที่เริ่มต้น'],
-                    'pluginOptions' => [
-                        'autoclose' => true,
-                        'format' => 'yyyy-mm-dd',
-                    ]
-                ])->label(false) ?>
-            </div>
-            <div class="col-lg-3">
-                <label>วันที่สิ้นสุด: </label>
-                <?= $form->field($searchModel, 'end_date')->widget(DatePicker::classname(), [
-                    'options' => ['placeholder' => 'วันที่สิ้นสุด'],
-                    'pluginOptions' => [
-                        'autoclose' => true,
-                        'format' => 'yyyy-mm-dd',
-                    ]
-                ])->label(false) ?>
-            </div>
-            <div class="col-lg-8">
-                <label>ลูกค้า: </label>
-                <?= $form->field($searchModel, 'customer_id')->widget(\kartik\select2\Select2::classname(), [
-                      'data'=>ArrayHelper::map(\backend\models\Customer::find()->all(),'id','name'),
-                      'options'=>[
-                              'placeholder'=>'--เลือกลูกค้า--',
-                      ],
-                    'pluginOptions' => [
+        <table style="width: 100%">
+            <tr>
+                <td>
+                    <label>วันที่เริ่มต้น: </label>
+                    <?= $form->field($searchModel, 'start_date')->widget(DatePicker::classname(), [
+                        'options' => ['placeholder' => 'วันที่เริ่มต้น'],
+                        'pluginOptions' => [
+                            'autoclose' => true,
+                            'format' => 'yyyy-mm-dd',
+                        ]
+                    ])->label(false) ?>
+                </td>
+                <td>
+                    <label>วันที่สิ้นสุด: </label>
+                    <?= $form->field($searchModel, 'end_date')->widget(DatePicker::classname(), [
+                        'options' => ['placeholder' => 'วันที่สิ้นสุด'],
+                        'pluginOptions' => [
+                            'autoclose' => true,
+                            'format' => 'yyyy-mm-dd',
+                        ]
+                    ])->label(false) ?>
+                </td>
+                <td>
+                    <label>ลูกค้า: </label>
+                    <?= $form->field($searchModel, 'customer_id')->widget(\kartik\select2\Select2::classname(), [
+                        'data'=>ArrayHelper::map(\backend\models\Customer::find()->all(),'id','name'),
+                        'options'=>[
+                            'placeholder'=>'--เลือกลูกค้า--',
+                        ],
+                        'pluginOptions' => [
                             'allowClear' => true,
-                    ]
-                ])->label(false) ?>
-            </div>
-            <div class="col-lg-1">
-                <?= Html::submitButton('ค้นหา', ['class' => 'btn btn-primary']) ?>
-            </div>
-            <div class="col-lg-1">
-                <?= Html::button('พิมพ์', ['class' => 'btn btn-default', 'onclick' => 'window.print()']) ?>
-            </div>
-        </div>
+                        ]
+                    ])->label(false) ?>
+                </td>
+                <td>
+                    <?= Html::submitButton('ค้นหา', ['class' => 'btn btn-primary']) ?>
+                    <?= Html::button('พิมพ์', ['class' => 'btn btn-default', 'onclick' => 'window.print()']) ?>
+                </td>
+            </tr>
+        </table>
 
 
         <!--        --><?php //= Html::a('PDF', ['pdf', 'WorkQueueReportSearch' => [
