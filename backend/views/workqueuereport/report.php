@@ -15,7 +15,6 @@ $this->title = 'รายงานคิวงาน';
     $this->registerCssFile('https://fonts.cdnfonts.com/css/calibri-light', [
         'depends' => [\yii\web\YiiAsset::class],
     ]);
-    ?>
 ?>
 <link href="https://fonts.cdnfonts.com/css/calibri-light" rel="stylesheet">
 <div class="work-queue-report">
