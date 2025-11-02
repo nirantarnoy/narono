@@ -211,7 +211,8 @@ $this->title = 'รายงานคิวงาน';
             foreach ($customerData['items'] as $item):
                 $weight = $item['total_weight'];
                 $qty = $item['total_qty'];
-                $price = $item['total_price'];
+                $price = ($weight * $qty);
+              //  $price = $item['total_price'];
 
                 $customerTotalWeight += $weight;
                 $customerTotalQty += $qty;
