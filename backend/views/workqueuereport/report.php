@@ -152,9 +152,12 @@ $this->title = 'รายงานคิวงาน';
                 ['prompt' => 'ทั้งหมด']
             )->label(false) ?>
         </div>
+        <div class="form-group" style="margin-right: 15px;">
+            <?= Html::submitButton('ค้นหา', ['class' => 'btn btn-primary']) ?>
+            <?= Html::button('พิมพ์', ['class' => 'btn btn-default', 'onclick' => 'window.print()']) ?>
+        </div>
 
-        <?= Html::submitButton('ค้นหา', ['class' => 'btn btn-primary']) ?>
-        <?= Html::button('พิมพ์', ['class' => 'btn btn-default', 'onclick' => 'window.print()']) ?>
+
 <!--        --><?php //= Html::a('PDF', ['pdf', 'WorkQueueReportSearch' => [
 //            'start_date' => $searchModel->start_date,
 //            'end_date' => $searchModel->end_date,
