@@ -164,7 +164,7 @@ $this->title = 'รายงานคิวงาน';
     </div>
 
     <div class="report-header">
-        <h2>บริษัท โตรีลิสต์</h2>
+        <h2>บริษัท ณโรโน่ โลจิสติกส์</h2>
         <div class="date-range">
             <strong>รายงานวันที่ <?= Yii::$app->formatter->asDate($searchModel->start_date, 'php:d/m/Y') ?>
                 - <?= Yii::$app->formatter->asDate($searchModel->end_date, 'php:d/m/Y') ?></strong>
