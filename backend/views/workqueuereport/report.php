@@ -118,7 +118,7 @@ $this->registerCssFile('https://fonts.cdnfonts.com/css/calibri-light', [
         <?php $form = ActiveForm::begin([
             'action' => ['report'],
             'method' => 'get',
-            'options' => ['class' => 'form-inline'],
+            'options' => ['class' => ''],
         ]); ?>
         <table style="width: 100%">
             <tr>
@@ -142,7 +142,7 @@ $this->registerCssFile('https://fonts.cdnfonts.com/css/calibri-light', [
                         ]
                     ])->label(false) ?>
                 </td>
-                <td style="width: 40%">
+                <td style="width: 50%">
                     <label>ลูกค้า: </label>
                     <?= $form->field($searchModel, 'customer_id')->widget(\kartik\select2\Select2::classname(), [
                         'data'=>ArrayHelper::map(\backend\models\Customer::find()->all(),'id','name'),
