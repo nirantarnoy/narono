@@ -159,7 +159,7 @@ class WorkQueueReportSearch extends Workqueue
                 'SUM(work_queue_dropoff.price_line_total) as grand_total_price',
             ])
             ->joinWith(['workQueueDropoff'])
-            ->where(['>=', 'work_queue.work_queue_date', $this->start_date])
+            ->where(['>=', 'work_queue.work_queue_datex', $this->start_date])
             ->andWhere(['<=', 'work_queue.work_queue_date', $this->end_date]);
 
         if ($this->customer_id) {
