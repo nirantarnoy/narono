@@ -89,12 +89,12 @@ class WorkQueueReportSearch extends Workqueue
         $this->load($params);
 
         // Default to current month if not specified
-        if (!$this->start_date) {
-            $this->start_date = date('Y-m-01');
-        }
-        if (!$this->end_date) {
-            $this->end_date = date('Y-m-15');
-        }
+//        if (!$this->start_date) {
+//            $this->start_date = date('Y-m-01');
+//        }
+//        if (!$this->end_date) {
+//            $this->end_date = date('Y-m-15');
+//        }
 
 //        $query = WorkQueue::find()
 //            ->select([
@@ -145,12 +145,12 @@ class WorkQueueReportSearch extends Workqueue
     {
         $this->load($params);
 
-        if (!$this->start_date) {
-            $this->start_date = date('Y-m-01');
-        }
-        if (!$this->end_date) {
-            $this->end_date = date('Y-m-15');
-        }
+//        if (!$this->start_date) {
+//            $this->start_date = date('Y-m-01');
+//        }
+//        if (!$this->end_date) {
+//            $this->end_date = date('Y-m-15');
+//        }
 
         $query = WorkQueue::find()
             ->select([

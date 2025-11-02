@@ -275,20 +275,4 @@ $this->title = 'รายงานคิวงาน';
         </tfoot>
     </table>
 
-    <div class="summary-box">
-        <div class="row">
-            <div class="col-md-6">
-                <p><strong>หมายเหตุ:</strong></p>
-                <p>-
-                    รายงานนี้แสดงข้อมูลวันที่ <?= Yii::$app->formatter->asDate($searchModel->start_date, 'php:d/m/Y') ?>
-                    ถึง <?= Yii::$app->formatter->asDate($searchModel->end_date, 'php:d/m/Y') ?></p>
-                <p>- จำนวนรายการทั้งหมด: <?= count($reportData) ?> รายการ</p>
-            </div>
-            <div class="col-md-6 text-right">
-                <p>วันที่พิมพ์: <?= date('d/m/Y H:i:s') ?></p>
-                <p>ผู้พิมพ์: <?= Yii::$app->user->identity->username ?></p>
-            </div>
-        </div>
-    </div>
-
 </div>
