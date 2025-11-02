@@ -581,6 +581,12 @@
                                 <p>Export ค่าเที่ยว</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="index.php?r=workqueuereport/report" class="nav-link workqueuereport">
+                                <i class="far fa-circlez nav-icon"></i>
+                                <p>สรุปรอบขนส่ง</p>
+                            </a>
+                        </li>
                         <?php //endif;?>
 
                     </ul>
