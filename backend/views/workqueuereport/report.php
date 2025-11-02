@@ -142,7 +142,7 @@ $this->registerCssFile('https://fonts.cdnfonts.com/css/calibri-light', [
                     ]
                 ])->label(false) ?>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-8">
                 <label>ลูกค้า: </label>
                 <?= $form->field($searchModel, 'customer_id')->widget(\kartik\select2\Select2::classname(), [
                       'data'=>ArrayHelper::map(\backend\models\Customer::find()->all(),'id','name'),
