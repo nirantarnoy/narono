@@ -12,9 +12,9 @@ use kartik\date\DatePicker;
 /* @var $customers array */
 
 $this->title = 'รายงานคิวงาน';
-    $this->registerCssFile('https://fonts.cdnfonts.com/css/calibri-light', [
-        'depends' => [\yii\web\YiiAsset::class],
-    ]);
+$this->registerCssFile('https://fonts.cdnfonts.com/css/calibri-light', [
+    'depends' => [\yii\web\YiiAsset::class],
+]);
 ?>
 <link href="https://fonts.cdnfonts.com/css/calibri-light" rel="stylesheet">
 <div class="work-queue-report">
@@ -144,12 +144,15 @@ $this->title = 'รายงานคิวงาน';
             </div>
             <div class="col-lg-3">
                 <label>ลูกค้า: </label>
-                <?= $form->field($searchModel, 'customer_id')->dropDownList(
-                    ArrayHelper::map($customers, 'id', function ($model) {
-                        return $model->code . ' - ' . $model->name;
-                    }),
-                    ['prompt' => 'ทั้งหมด']
-                )->label(false) ?>
+                <?= $form->field($searchModel, 'customer_id')->widget(\kartik\select2\Select2::classname(), [
+                      'data'=>ArrayHelper::map(\backend\models\Customer::find()->all(),'id','name'),
+                      'options'=>[
+                              'placeholder'=>'--เลือกลูกค้า--',
+                      ],
+                    'pluginOptions' => [
+                            'allowClear' => true,
+                    ]
+                ])->label(false) ?>
             </div>
             <div class="col-lg-1">
                 <?= Html::submitButton('ค้นหา', ['class' => 'btn btn-primary']) ?>
@@ -160,16 +163,16 @@ $this->title = 'รายงานคิวงาน';
         </div>
 
 
-<!--        --><?php //= Html::a('PDF', ['pdf', 'WorkQueueReportSearch' => [
-//            'start_date' => $searchModel->start_date,
-//            'end_date' => $searchModel->end_date,
-//            'customer_id' => $searchModel->customer_id,
-//        ]], ['class' => 'btn btn-danger', 'target' => '_blank']) ?>
-<!--        --><?php //= Html::a('Excel', ['excel', 'WorkQueueReportSearch' => [
-//            'start_date' => $searchModel->start_date,
-//            'end_date' => $searchModel->end_date,
-//            'customer_id' => $searchModel->customer_id,
-//        ]], ['class' => 'btn btn-success']) ?>
+        <!--        --><?php //= Html::a('PDF', ['pdf', 'WorkQueueReportSearch' => [
+        //            'start_date' => $searchModel->start_date,
+        //            'end_date' => $searchModel->end_date,
+        //            'customer_id' => $searchModel->customer_id,
+        //        ]], ['class' => 'btn btn-danger', 'target' => '_blank']) ?>
+        <!--        --><?php //= Html::a('Excel', ['excel', 'WorkQueueReportSearch' => [
+        //            'start_date' => $searchModel->start_date,
+        //            'end_date' => $searchModel->end_date,
+        //            'customer_id' => $searchModel->customer_id,
+        //        ]], ['class' => 'btn btn-success']) ?>
 
         <?php ActiveForm::end(); ?>
     </div>
@@ -180,9 +183,9 @@ $this->title = 'รายงานคิวงาน';
             <strong>รายงานวันที่ <?= Yii::$app->formatter->asDate($searchModel->start_date, 'php:d/m/Y') ?>
                 - <?= Yii::$app->formatter->asDate($searchModel->end_date, 'php:d/m/Y') ?></strong>
         </div>
-<!--        <div class="oil-label">-->
-<!--            oil: --><?php //= number_format($summaryData['grand_total_weight'] / 1000, 2) ?>
-<!--        </div>-->
+        <!--        <div class="oil-label">-->
+        <!--            oil: --><?php //= number_format($summaryData['grand_total_weight'] / 1000, 2) ?>
+        <!--        </div>-->
     </div>
 
     <table class="report-table">
@@ -227,7 +230,7 @@ $this->title = 'รายงานคิวงาน';
                 $weight = $item['total_weight'];
                 $qty = $item['total_qty'];
                 $price = ($weight * $qty);
-              //  $price = $item['total_price'];
+                //  $price = $item['total_price'];
 
                 $customerTotalWeight += $weight;
                 $customerTotalQty += $qty;
@@ -239,7 +242,7 @@ $this->title = 'รายงานคิวงาน';
                 ?>
                 <tr>
                     <td><?= Html::encode($customerData['customer_name']) ?></td>
-                    <td class="text-center"><?=\backend\models\DropoffPlace::findName($item['dropoff_id'])?></td>
+                    <td class="text-center"><?= \backend\models\DropoffPlace::findName($item['dropoff_id']) ?></td>
                     <td class="text-right"><?= number_format($weight, 2) ?></td>
                     <td class="text-center">ตัน</td>
                     <td class="text-right"><?= $item['total_price_per_ton'] ? number_format($item['total_price_per_ton'], 2) : 0 ?></td>
@@ -253,14 +256,18 @@ $this->title = 'รายงานคิวงาน';
             // Customer subtotal row
             if (count($customerData['items']) > 1):
                 ?>
-<!--                <tr class="total-row">-->
-<!--                    <td class="text-right">รวม --><?php //= Html::encode($customerData['customer_name']) ?><!--</td>-->
-<!--                    <td class="text-right">--><?php //= number_format($customerTotalWeight, 2) ?><!--</td>-->
-<!--                    <td class="text-right">--><?php //= number_format($customerTotalQty) ?><!--</td>-->
-<!--                    <td colspan="2"></td>-->
-<!--                    <td class="text-right">--><?php //= number_format($customerTotalPrice, 2) ?><!--</td>-->
-<!--                    <td colspan="2"></td>-->
-<!--                </tr>-->
+                <!--                <tr class="total-row">-->
+                <!--                    <td class="text-right">รวม --><?php //= Html::encode($customerData['customer_name'])
+                ?><!--</td>-->
+                <!--                    <td class="text-right">--><?php //= number_format($customerTotalWeight, 2)
+                ?><!--</td>-->
+                <!--                    <td class="text-right">--><?php //= number_format($customerTotalQty)
+                ?><!--</td>-->
+                <!--                    <td colspan="2"></td>-->
+                <!--                    <td class="text-right">--><?php //= number_format($customerTotalPrice, 2)
+                ?><!--</td>-->
+                <!--                    <td colspan="2"></td>-->
+                <!--                </tr>-->
             <?php
             endif;
         endforeach;
