@@ -143,7 +143,7 @@ $this->registerCssFile('https://fonts.cdnfonts.com/css/calibri-light', [
                     ])->label(false) ?>
                 </td>
                 <td style="width: 20%">
-                    <label>ลูกค้า: </label>
+                    <label>บริษัท: </label>
                     <?= $form->field($searchModel, 'company_id')->widget(\kartik\select2\Select2::classname(), [
                         'data'=>ArrayHelper::map(\backend\models\Company::find()->all(),'id','name'),
                         'options'=>[
@@ -155,7 +155,7 @@ $this->registerCssFile('https://fonts.cdnfonts.com/css/calibri-light', [
                     ])->label(false) ?>
                 </td>
                 <td style="width: 20%">
-                    <label>ลูกค้า: </label>
+                    <label>ประเภทงาน: </label>
                     <?= $form->field($searchModel, 'work_queue_type')->widget(\kartik\select2\Select2::classname(), [
                         'data'=>ArrayHelper::map(\backend\models\Customer::find()->all(),'id','name'),
                         'options'=>[
