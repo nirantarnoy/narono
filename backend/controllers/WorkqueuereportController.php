@@ -241,11 +241,11 @@ class WorkqueuereportController extends Controller
                 .table th, .table td { border: 1px solid #000; padding: 5px; }
             ',
             'options' => [
-                'title' => 'รายงานตรวจสอบสรุปรอบขนส่ง',
+                'title' => 'รายงานสรุปรายละเอียดขนส่ง',
                 'defaultfooterline' => 0,
             ],
             'methods' => [
-                'SetHeader' => ['รายงานตรวจสอบสรุปรอบขนส่ง'],
+                'SetHeader' => ['รายงานสรุปรายละเอียดขนส่ง'],
                 'SetFooter' => ['{PAGENO}'],
             ]
         ]);
@@ -433,7 +433,7 @@ class WorkqueuereportController extends Controller
         // Download
         $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
 
-        $filename = 'รายงานตรวจสอบสรุปรอบขนส่ง_' . date('Y-m-d_His') . '.xlsx';
+        $filename = 'รายงานสรุปรายละเอียดขนส่ง_' . date('Y-m-d_His') . '.xlsx';
 
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . $filename . '"');

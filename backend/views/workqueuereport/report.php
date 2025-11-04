@@ -11,7 +11,7 @@ use kartik\date\DatePicker;
 /* @var $summaryData array */
 /* @var $customers array */
 
-$this->title = 'รายงานตรวจสอบสรุปรอบขนส่ง';
+$this->title = 'รายงานสรุปรายละเอียดขนส่ง';
 $this->registerCssFile('https://fonts.cdnfonts.com/css/calibri-light', [
     'depends' => [\yii\web\YiiAsset::class],
 ]);
