@@ -122,7 +122,7 @@ $this->registerCssFile('https://fonts.cdnfonts.com/css/calibri-light', [
         ]); ?>
         <table style="width: 100%">
             <tr>
-                <td style="width: 20%">
+                <td style="width: 15%">
                     <label>วันที่เริ่มต้น: </label>
                     <?= $form->field($searchModel, 'start_date')->widget(DatePicker::classname(), [
                         'options' => ['placeholder' => 'วันที่เริ่มต้น'],
@@ -132,7 +132,7 @@ $this->registerCssFile('https://fonts.cdnfonts.com/css/calibri-light', [
                         ]
                     ])->label(false) ?>
                 </td>
-                <td style="width: 20%">
+                <td style="width: 15%">
                     <label>วันที่สิ้นสุด: </label>
                     <?= $form->field($searchModel, 'end_date')->widget(DatePicker::classname(), [
                         'options' => ['placeholder' => 'วันที่สิ้นสุด'],
@@ -178,9 +178,15 @@ $this->registerCssFile('https://fonts.cdnfonts.com/css/calibri-light', [
                         ]
                     ])->label(false) ?>
                 </td>
+            </tr>
+            <tr>
                 <td>
                     <?= Html::submitButton('ค้นหา', ['class' => 'btn btn-primary']) ?>
                     <?= Html::button('พิมพ์', ['class' => 'btn btn-default', 'onclick' => 'window.print()']) ?>
+                    <?= Html::a('Export Excel',['excel'],['class'=>'btn btn-success'])?>
+                </td>
+                <td>
+
                 </td>
             </tr>
         </table>
@@ -201,7 +207,7 @@ $this->registerCssFile('https://fonts.cdnfonts.com/css/calibri-light', [
     </div>
 
     <div class="report-header">
-        <h2>บริษัท ณโรโน่ โลจิสติกส์</h2>
+        <h2><?=\backend\models\Company::findCompanyName($searchModel->company_id)?></h2>
         <div class="date-range">
             <strong>รายงานวันที่ <?= Yii::$app->formatter->asDate($searchModel->start_date, 'php:d/m/Y') ?>
                 - <?= Yii::$app->formatter->asDate($searchModel->end_date, 'php:d/m/Y') ?></strong>
@@ -262,10 +268,16 @@ $this->registerCssFile('https://fonts.cdnfonts.com/css/calibri-light', [
                 $totalWeight += $weight;
                 $totalQty += $qty;
                 $totalPrice += $price;
+
+                $dest_name = '';
+                $x=explode('-',\backend\models\DropoffPlace::findName($item['dropoff_id']));
+                if(isset($x[1])){
+                    $dest_name = $x[1];
+                }
                 ?>
                 <tr>
                     <td><?= Html::encode($customerData['customer_name']) ?></td>
-                    <td class="text-center"><?= \backend\models\DropoffPlace::findName($item['dropoff_id']) ?></td>
+                    <td class="text-center"><?=$dest_name?></td>
                     <td class="text-right"><?= number_format($weight, 3) ?></td>
                     <td class="text-center">ตัน</td>
                     <td class="text-right"><?= $item['total_price_per_ton'] ? number_format($item['total_price_per_ton'], 2) : 0 ?></td>
