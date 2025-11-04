@@ -16,6 +16,8 @@ class WorkQueueReportSearch extends Workqueue
     public $end_date;
     public $customer_id;
     public $customer_name;
+    public $company_id;
+    public $work_queue_type;
 
     /**
      * {@inheritdoc}
@@ -24,7 +26,7 @@ class WorkQueueReportSearch extends Workqueue
     {
         return [
             [['start_date', 'end_date'], 'safe'],
-            [['customer_id'], 'integer'],
+            [['customer_id','company_id','work_queue_type'], 'integer'],
             [['customer_name'], 'safe'],
         ];
     }
@@ -74,6 +76,12 @@ class WorkQueueReportSearch extends Workqueue
         }
 
         // Filter by customer
+        if ($this->company_id) {
+            $query->andWhere(['work_queue.company_id' => $this->company_id]);
+        }
+        if ($this->work_queue_type) {
+            $query->andWhere(['work_queue.work_queue_type' => $this->work_queue_type]);
+        }
         if ($this->customer_id) {
             $query->andWhere(['work_queue.customer_id' => $this->customer_id]);
         }
@@ -129,6 +137,12 @@ class WorkQueueReportSearch extends Workqueue
             ->andWhere(['<=', 'work_queue.work_queue_date', $this->end_date])
             ->groupBy(['work_queue.id']);
 
+        if ($this->company_id) {
+            $query->andWhere(['work_queue.company_id' => $this->company_id]);
+        }
+        if ($this->work_queue_type) {
+            $query->andWhere(['work_queue.work_queue_type' => $this->work_queue_type]);
+        }
         if ($this->customer_id) {
             $query->andWhere(['work_queue.customer_id' => $this->customer_id]);
         }
@@ -162,6 +176,12 @@ class WorkQueueReportSearch extends Workqueue
             ->where(['>=', 'work_queue.work_queue_date', $this->start_date])
             ->andWhere(['<=', 'work_queue.work_queue_date', $this->end_date]);
 
+        if ($this->company_id) {
+            $query->andWhere(['work_queue.company_id' => $this->company_id]);
+        }
+        if ($this->work_queue_type) {
+            $query->andWhere(['work_queue.work_queue_type' => $this->work_queue_type]);
+        }
         if ($this->customer_id) {
             $query->andWhere(['work_queue.customer_id' => $this->customer_id]);
         }
