@@ -228,7 +228,7 @@ $this->registerCss("
     $query->andFilterWhere($conditions)
         ->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])
         ->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date]);
-
+    $query->orderBy('work_queue_date ASC');
     $model = $query->all();
 
 
