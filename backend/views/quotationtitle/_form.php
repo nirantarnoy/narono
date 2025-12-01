@@ -51,7 +51,7 @@ $haul_data = \common\models\Haul::find()->orderBy(['id'=>SORT_ASC])->all();
             }
         }
         ?>
-        <input type="hidden" class="remove-line-list" value="">
+        <input type="hidden" class="remove-line-list" name="remove_line_list" value="">
         <div class="row">
             <div class="col-lg-6">
                 <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>

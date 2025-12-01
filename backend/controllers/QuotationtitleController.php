@@ -177,6 +177,11 @@ class QuotationtitleController extends Controller
             //echo count($line_warehouse_id);return;
             // print_r(\Yii::$app->request->post());return;
             if ($model->save(false)) {
+                $remove_list = \Yii::$app->request->post('remove_line_list');
+                if ($remove_list != null && $remove_list != '') {
+                    $remove_ids = explode(',', $remove_list);
+                    \common\models\QuotationRate::deleteAll(['id' => $remove_ids]);
+                }
                 if ($line_warehouse_id != null) {
                    // \common\models\QuotationRate::deleteAll(['quotation_title_id' => $id]);
                     for ($i = 0; $i <= count($line_warehouse_id) - 1; $i++) {
