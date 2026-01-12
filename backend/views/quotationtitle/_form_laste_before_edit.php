@@ -82,7 +82,7 @@ $haul_data = \common\models\Haul::find()->orderBy(['id'=>SORT_ASC])->all();
                 <?= $form->field($model, 'created_by_display')->textInput(['readonly' => 'readonly']) ?>
             </div>
             <div class="col-lg-3">
-                <?= $form->field($model, 'fuel_rate')->textInput() ?>
+                <?= $form->field($model, 'fuel_rate')->textInput(['value'=>$model->isNewRecord?$last_month_price:$model->fuel_rate]) ?>
             </div>
             <div class="col-lg-3">
                 <!--            <select name="xx" class="form-control input-lg" data-live-search="true" id="provice-selected">-->
@@ -213,8 +213,8 @@ $haul_data = \common\models\Haul::find()->orderBy(['id'=>SORT_ASC])->all();
                                 <input type="number" class="form-control line-average" name="line_average[]" min="0">
                             </td>
                             <td>
-                                <input type="number" class="form-control line-quotation-price"
-                                       name="line_quotation_price[]" step="0.01">
+                                <input type="text" class="form-control line-quotation-price"
+                                       name="line_quotation_price[]">
                             </td>
                             <td>
                                 <div class="btn btn-danger btn-sm" onclick="removeline($(this))">ลบ</div>
@@ -222,13 +222,6 @@ $haul_data = \common\models\Haul::find()->orderBy(['id'=>SORT_ASC])->all();
                         </tr>
                     <?php else: ?>
                         <?php if ($model_line != null): ?>
-                            <?php 
-                            // เตรียมข้อมูลโซนไว้ล่วงหน้าเพื่อลด Query ใน Loop
-                            $zone_details = [];
-                            foreach ($model_cityzone as $z) {
-                                $zone_details[$z->id] = getCityzonedetail($z->id);
-                            }
-                            ?>
                             <?php foreach ($model_line as $value): ?>
                                 <tr data-var="<?= $value->id ?>">
                                     <td>
@@ -256,9 +249,12 @@ $haul_data = \common\models\Haul::find()->orderBy(['id'=>SORT_ASC])->all();
                                             <option value="-1">--เลือกโซน--</option>
                                             <?php foreach ($model_cityzone as $valuex): ?>
                                                 <?php
-                                                $selected = ($valuex->id == $value->zone_id) ? 'selected' : '';
+                                                $selected = '';
+                                                if ($valuex->id == $value->zone_id) {
+                                                    $selected = 'selected';
+                                                }
                                                 ?>
-                                                <option value="<?= $valuex->id ?>" <?= $selected ?>><?= $zone_details[$valuex->id] ?? '' ?></option>
+                                                <option value="<?= $valuex->id ?>" <?= $selected ?>><?= getCityzonedetail($valuex->id) ?></option>
                                             <?php endforeach; ?>
                                         </select>
                                     </td>
@@ -272,8 +268,8 @@ $haul_data = \common\models\Haul::find()->orderBy(['id'=>SORT_ASC])->all();
                                                value="<?= $value->load_qty ?>">
                                     </td>
                                     <td>
-                                        <input type="number" class="form-control line-quotation-price"
-                                               name="line_quotation_price[]" value="<?= $value->price_current_rate ?>" step="0.01">
+                                        <input type="text" class="form-control line-quotation-price"
+                                               name="line_quotation_price[]" value="<?= $value->price_current_rate ?>">
                                     </td>
                                     <td>
                                         <div class="btn btn-danger btn-sm" onclick="removeline($(this))">ลบ</div>
@@ -314,8 +310,8 @@ $haul_data = \common\models\Haul::find()->orderBy(['id'=>SORT_ASC])->all();
                                            min="0">
                                 </td>
                                 <td>
-                                    <input type="number" class="form-control line-quotation-price"
-                                           name="line_quotation_price[]" step="0.01">
+                                    <input type="text" class="form-control line-quotation-price"
+                                           name="line_quotation_price[]">
                                 </td>
                                 <td>
                                     <div class="btn btn-danger btn-sm" onclick="removeline($(this))">ลบ</div>
