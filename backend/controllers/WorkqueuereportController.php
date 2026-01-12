@@ -84,6 +84,18 @@ class WorkqueuereportController extends Controller
         $reportData = $searchModel->getReportData(Yii::$app->request->queryParams);
         $summaryData = $searchModel->getSummaryData(Yii::$app->request->queryParams);
 
+        // ดึงราคาน้ำมันของเดือนก่อนหน้า (ยึดตามเดือนของวันที่เริ่มต้นรายงาน)
+        $targetDate = $searchModel->start_date ? $searchModel->start_date : date('Y-m-d');
+        $firstDayPrevMonth = date('Y-m-01', strtotime('first day of last month', strtotime($targetDate)));
+        $lastDayPrevMonth = date('Y-m-t', strtotime('first day of last month', strtotime($targetDate)));
+
+        $fuelModel = \common\models\FuelPrice::find()
+            ->where(['between', 'price_date', $firstDayPrevMonth, $lastDayPrevMonth])
+            ->orderBy(['price_date' => SORT_DESC])
+            ->one();
+        
+        $last_month_oil_price = $fuelModel ? $fuelModel->price : 0;
+
         // Get customers for dropdown
         $customers = Customer::find()
             ->select(['id', 'name', 'code'])
@@ -95,6 +107,7 @@ class WorkqueuereportController extends Controller
             'reportData' => $reportData,
             'summaryData' => $summaryData,
             'customers' => $customers,
+            'last_month_oil_price' => $last_month_oil_price, // ส่งค่าไปยัง view
         ]);
     }
 

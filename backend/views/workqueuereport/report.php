@@ -10,6 +10,7 @@ use kartik\date\DatePicker;
 /* @var $reportData array */
 /* @var $summaryData array */
 /* @var $customers array */
+/* @var $last_month_oil_price float */
 
 $this->title = 'รายงานสรุปรายละเอียดขนส่ง';
 $this->registerCssFile('https://fonts.cdnfonts.com/css/calibri-light', [
@@ -212,9 +213,11 @@ $this->registerCssFile('https://fonts.cdnfonts.com/css/calibri-light', [
             <strong>รายงานวันที่ <?= Yii::$app->formatter->asDate($searchModel->start_date, 'php:d/m/Y') ?>
                 - <?= Yii::$app->formatter->asDate($searchModel->end_date, 'php:d/m/Y') ?></strong>
         </div>
-        <!--        <div class="oil-label">-->
-        <!--            oil: --><?php //= number_format($summaryData['grand_total_weight'] / 1000, 2) ?>
-        <!--        </div>-->
+        <div style="text-align: right; margin-bottom: 5px;">
+            <span style="color: red; font-weight: bold; font-size: 16px;">
+                oil : <?= number_format($last_month_oil_price, 2) ?>
+            </span>
+        </div>
     </div>
 
     <table class="report-table">
