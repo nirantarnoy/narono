@@ -258,8 +258,8 @@ $this->registerCssFile('https://fonts.cdnfonts.com/css/calibri-light', [
             foreach ($customerData['items'] as $item):
                 $weight = $item['total_weight'];
                 $qty = $item['total_qty'];
-                $price = ($weight * $qty);
-                //  $price = $item['total_price'];
+                $rate = $item['total_price_per_ton'] ? $item['total_price_per_ton'] : 0;
+                $price = ($weight * $rate);
 
                 $customerTotalWeight += $weight;
                 $customerTotalQty += $qty;
