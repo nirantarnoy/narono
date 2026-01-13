@@ -364,13 +364,14 @@
                         </li>
 
 
-                        <li class="nav-item">
-                            <a href="index.php?r=taximport/index" class="nav-link taximport">
-                                <i class="far fa-circlez nav-icon"></i>
-                                <p>จัดการข้อมูลภาษี</p>
-                            </a>
-                        </li>
+
                     </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="index.php?r=taximport/index" class="nav-link taximport">
+                        <i class="nav-icon fas fa-file-invoice-dollar"></i>
+                        <p>จัดการข้อมูลภาษี</p>
+                    </a>
                 </li>
                 <li class="nav-item has-treeview has-sub">
                     <a href="#" class="nav-link">
