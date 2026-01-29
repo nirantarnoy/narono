@@ -9,6 +9,9 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 
 /**
  * WorkqueueController implements the CRUD actions for Workqueue model.
@@ -559,4 +562,93 @@ class WorkqueueController extends Controller
         }
         echo $html;
     }
+
+    public function actionExportPattern()
+    {
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $headers = [
+            'A' => 'วันที่(Y-m-d)',
+            'B' => 'ลูกค้า',
+            'C' => 'DP/Shipment',
+            'D' => 'รถ',
+            'E' => 'ของนำกลับ',
+            'F' => 'ประเภทคิวงาน(1=ไป, 2=กลับ)',
+            'G' => 'พนักงาน',
+            'H' => 'พ่วง',
+            'I' => 'ใบสั่งซื้อลูกค้า',
+            'J' => 'ชื่องาน',
+            'K' => 'น้ำหนักเที่ยวไป',
+            'L' => 'หักขาไป',
+            'M' => 'เหตุผลขาไป',
+            'N' => 'น้ำหนักเที่ยวกลับ',
+            'O' => 'หักขากลับ',
+            'P' => 'เหตุผลขากลับ',
+            'Q' => 'ส่วนพ่วงขากลับ',
+            'R' => 'ระยะทางไป-กลับ',
+            'S' => 'ราคาน้ำมัน',
+            'T' => 'รวมจำนวน(ลิตร)',
+            'U' => 'ราคาน้ำมันปั๊มนอก',
+            'V' => 'รวมจำนวนปั๊มนอก(ลิตร)',
+            'W' => 'ราคาน้ำมันปั๊มนอก 2',
+            'X' => 'รวมจำนวนปั๊มนอก(ลิตร) 2',
+            'Y' => 'ราคาน้ำมันปั๊มนอก 3',
+            'Z' => 'รวมจำนวนปั๊มนอก(ลิตร) 3',
+            'AA' => 'สถานะ(1=ใช้งาน, 0=ไม่ใช้งาน)',
+            'AB' => 'มีค่าเที่ยว(1=ใช่, 0=ไม่ใช่)',
+            'AC' => 'มีค่าทางด่วน(1=ใช่, 0=ไม่ใช่)',
+            'AD' => 'มีค่าอื่นๆ(1=ใช่, 0=ไม่ใช่)',
+            'AE' => 'ค่าเที่ยว',
+            'AF' => 'ค่าทางด่วน',
+            'AG' => 'พิเศษอื่นๆ',
+            'AH' => 'ค่าคลุมผ้าใบ',
+            'AI' => 'ค่าค้างคืน',
+            'AJ' => 'ค่าบวกคลัง',
+            'AK' => 'ค่าเงินยืมทดรอง',
+            'AL' => 'เงินประกันสินค้าเสียหาย',
+            'AM' => 'หักเงิน อื่นๆ',
+            'AN' => 'ค่าเบิ้ลงาน',
+            'AO' => 'ค่าลาก/ค่าแบก',
+            'AP' => 'อื่นๆ',
+        ];
+
+        foreach ($headers as $col => $label) {
+            $sheet->setCellValue($col . '1', $label);
+        }
+
+        $sheet->getStyle('A1:AP1')->getFont()->setBold(true);
+        $sheet->getStyle('A1:AP1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+        foreach (range('A', 'Z') as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+        $sheet->getColumnDimension('AA')->setAutoSize(true);
+        $sheet->getColumnDimension('AB')->setAutoSize(true);
+        $sheet->getColumnDimension('AC')->setAutoSize(true);
+        $sheet->getColumnDimension('AD')->setAutoSize(true);
+        $sheet->getColumnDimension('AE')->setAutoSize(true);
+        $sheet->getColumnDimension('AF')->setAutoSize(true);
+        $sheet->getColumnDimension('AG')->setAutoSize(true);
+        $sheet->getColumnDimension('AH')->setAutoSize(true);
+        $sheet->getColumnDimension('AI')->setAutoSize(true);
+        $sheet->getColumnDimension('AJ')->setAutoSize(true);
+        $sheet->getColumnDimension('AK')->setAutoSize(true);
+        $sheet->getColumnDimension('AL')->setAutoSize(true);
+        $sheet->getColumnDimension('AM')->setAutoSize(true);
+        $sheet->getColumnDimension('AN')->setAutoSize(true);
+        $sheet->getColumnDimension('AO')->setAutoSize(true);
+        $sheet->getColumnDimension('AP')->setAutoSize(true);
+
+        $writer = new Xlsx($spreadsheet);
+        $filename = 'workqueue_import_pattern.xlsx';
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+        exit;
+    }
 }
+

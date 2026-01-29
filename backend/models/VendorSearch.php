@@ -70,6 +70,8 @@ class VendorSearch extends Vendor
             'updated_by' => $this->updated_by,
         ]);
 
+
+
         if($this->globalSearch!=''){
             $query->orFilterWhere(['like', 'code', $this->globalSearch])
                 ->orFilterWhere(['like', 'name', $this->globalSearch])
