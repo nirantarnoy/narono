@@ -650,5 +650,113 @@ class WorkqueueController extends Controller
         $writer->save('php://output');
         exit;
     }
+
+    public function actionImport()
+    {
+        $file = \yii\web\UploadedFile::getInstanceByName('import_file');
+        if ($file) {
+            try {
+                $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($file->tempName);
+                $sheet = $spreadsheet->getActiveSheet();
+                $highestRow = $sheet->getHighestRow();
+
+                $fieldMap = [
+                    'A' => 'work_queue_date',
+                    'B' => 'customer_id',
+                    'C' => 'dp_no',
+                    'D' => 'car_id',
+                    'E' => 'item_back_id',
+                    'F' => 'work_queue_type',
+                    'G' => 'emp_assign',
+                    'H' => 'tail_id',
+                    'I' => 'cus_po_id',
+                    'J' => 'cus_po_name_id',
+                    'K' => 'weight_on_go',
+                    'L' => 'weight_go_deduct',
+                    'M' => 'go_deduct_reason',
+                    'N' => 'weight_on_back',
+                    'O' => 'back_deduct',
+                    'P' => 'back_reason',
+                    'Q' => 'tail_back_id',
+                    'R' => 'total_distance',
+                    'S' => 'oil_daily_price',
+                    'T' => 'total_lite',
+                    'U' => 'oil_out_price',
+                    'V' => 'total_out_lite',
+                    'W' => 'oil_out_price_2',
+                    'X' => 'total_out_lite_2',
+                    'Y' => 'oil_out_price_3',
+                    'Z' => 'total_out_lite_3',
+                    'AA' => 'status',
+                    'AB' => 'is_labur',
+                    'AC' => 'is_express_road',
+                    'AD' => 'is_other',
+                    'AE' => 'labour_price',
+                    'AF' => 'express_road_price',
+                    'AG' => 'other_price',
+                    'AH' => 'cover_sheet_price',
+                    'AI' => 'overnight_price',
+                    'AJ' => 'warehouse_plus_price',
+                    'AK' => 'test_price',
+                    'AL' => 'damaged_price',
+                    'AM' => 'deduct_other_price',
+                    'AN' => 'work_double_price',
+                    'AO' => 'towing_price',
+                    'AP' => 'other_amt',
+                ];
+
+                $successCount = 0;
+                $errorCount = 0;
+
+                for ($row = 2; $row <= $highestRow; $row++) {
+                    $model = new Workqueue();
+                    $hasData = false;
+
+                    foreach ($fieldMap as $col => $field) {
+                        $value = $sheet->getCell($col . $row)->getValue();
+                        if ($value !== null && $value !== '') {
+                            $hasData = true;
+                            if ($field == 'work_queue_date') {
+                                if (is_numeric($value)) {
+                                    $date = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value);
+                                    $model->$field = $date->format('Y-m-d H:i:s');
+                                } else {
+                                    $model->$field = date('Y-m-d H:i:s', strtotime($value));
+                                }
+                            } else {
+                                $model->$field = $value;
+                            }
+                        }
+                    }
+
+                    if (!$hasData) continue;
+
+                    $model->work_queue_no = $model->getLastNo();
+                    $model->company_id = \backend\models\Customer::findCompanyByCustomer($model->customer_id);
+
+                    if ($model->save(false)) {
+                        $successCount++;
+                    } else {
+                        $errorCount++;
+                    }
+                }
+
+                if ($successCount > 0) {
+                    \Yii::$app->session->setFlash('success', "นำเข้าข้อมูลสำเร็จ $successCount รายการ");
+                }
+                if ($errorCount > 0) {
+                    \Yii::$app->session->setFlash('error', "พบข้อผิดพลาด $errorCount รายการ");
+                }
+
+            } catch (\Exception $e) {
+                \Yii::$app->session->setFlash('error', 'เกิดข้อผิดพลาด: ' . $e->getMessage());
+            }
+        } else {
+            \Yii::$app->session->setFlash('error', 'กรุณาเลือกไฟล์');
+        }
+
+        return $this->redirect(['index']);
+    }
 }
+
 
