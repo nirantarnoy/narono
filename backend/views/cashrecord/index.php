@@ -23,6 +23,12 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-lg-10">
             <p>
                 <?= Html::a(Yii::t('app', '<i class="fa fa-plus"></i> สร้างใหม่'), ['create'], ['class' => 'btn btn-success']) ?>
+                <?= Html::a(Yii::t('app', '<i class="fa fa-download"></i> Export Pattern'), ['export-pattern'], ['class' => 'btn btn-outline-primary']) ?>
+                <?= Html::button('<i class="fas fa-file-import"></i> Import Excel', [
+                    'class' => 'btn btn-outline-info',
+                    'data-toggle' => 'modal',
+                    'data-target' => '#importModal'
+                ]) ?>
             </p>
         </div>
         <div class="col-lg-2" style="text-align: right">
@@ -171,5 +177,35 @@ $this->params['breadcrumbs'][] = $this->title;
     ]); ?>
 
     <?php Pjax::end(); ?>
+
+    <!-- Import Modal -->
+    <div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="importModalLabel">นำเข้าข้อมูลจาก Excel</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <?= Html::beginForm(['import'], 'post', ['enctype' => 'multipart/form-data']) ?>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>เลือกไฟล์ Excel (.xlsx, .xls)</label>
+                        <?= Html::fileInput('import_file', null, ['class' => 'form-control', 'accept' => '.xlsx, .xls', 'required' => true]) ?>
+                        <small class="text-muted mt-2 d-block">
+                            * ระบบจะอ่านข้อมูลจากแถวที่ 2 เป็นต้นไป<br>
+                            * ตรวจสอบหัว Column ให้ตรงตามไฟล์ Pattern
+                        </small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary">เริ่มนำเข้าข้อมูล</button>
+                </div>
+                <?= Html::endForm() ?>
+            </div>
+        </div>
+    </div>
 
 </div>

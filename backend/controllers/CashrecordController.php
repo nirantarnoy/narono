@@ -8,6 +8,8 @@ use backend\models\CashrecordSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 /**
  * CashrecordController implements the CRUD actions for Cashrecord model.
@@ -248,5 +250,145 @@ class CashrecordController extends Controller
             'model' => $model,
             'model_line' => $model_line,
         ]);
+    }
+
+    public function actionExportPattern()
+    {
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $headers = [
+            'A' => 'วันที่(Y-m-d)',
+            'B' => 'จ่ายให้',
+            'C' => 'ทะเบียนรถ(ระบุรายการเดียวถ้ามี)',
+            'D' => 'จ่ายโดย(ธนาคาร/เบอร์เช็ค)',
+            'E' => 'เลขที่อ้างอิง',
+            'F' => 'รายการ(ชื่อรายการค่าใช้จ่าย)',
+            'G' => 'จำนวนเงิน',
+            'H' => 'ภาษี %',
+            'I' => 'จำนวนภาษี',
+            'J' => 'หมายเหตุ',
+        ];
+
+        foreach ($headers as $col => $label) {
+            $sheet->setCellValue($col . '1', $label);
+        }
+
+        $sheet->getStyle('A1:J1')->getFont()->setBold(true);
+        $sheet->getStyle('A1:J1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+        foreach (range('A', 'J') as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $filename = 'cashrecord_import_pattern.xlsx';
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+        exit;
+    }
+
+    public function actionImport()
+    {
+        $file = \yii\web\UploadedFile::getInstanceByName('import_file');
+        if ($file) {
+            try {
+                $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($file->tempName);
+                $sheet = $spreadsheet->getActiveSheet();
+                $highestRow = $sheet->getHighestRow();
+
+                $successCount = 0; // Count Master Records
+                $errorCount = 0;
+                $current_master_id = null;
+
+                for ($row = 2; $row <= $highestRow; $row++) {
+                    $trans_date = $sheet->getCell('A' . $row)->getValue();
+                    $pay_for = $sheet->getCell('B' . $row)->getValue();
+                    $car_plate = $sheet->getCell('C' . $row)->getValue();
+                    $bank_account = $sheet->getCell('D' . $row)->getValue();
+                    $ref_no = $sheet->getCell('E' . $row)->getValue();
+                    $cost_title_name = $sheet->getCell('F' . $row)->getValue();
+                    $amount = $sheet->getCell('G' . $row)->getValue();
+                    $vat_per = $sheet->getCell('H' . $row)->getValue();
+                    $vat_amount = $sheet->getCell('I' . $row)->getValue();
+                    $remark = $sheet->getCell('J' . $row)->getValue();
+
+                    // If has Master Info (Date or Payee), Create New Master
+                    if ($trans_date != '' || $pay_for != '') {
+                        $model = new Cashrecord();
+                        if (is_numeric($trans_date)) {
+                            $date = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($trans_date);
+                            $model->trans_date = $date->format('Y-m-d');
+                        } else {
+                            $model->trans_date = date('Y-m-d', strtotime($trans_date));
+                        }
+                        $model->pay_for = $pay_for;
+                        $model->bank_account = $bank_account;
+                        $model->ref_no = $ref_no;
+                        $model->vat_per = $vat_per;
+                        $model->status = 1;
+                        $model->journal_no = $model->getLastNo();
+
+                        // find car_id
+                        if ($car_plate != '') {
+                            $car = \backend\models\Car::find()->where(['plate_no' => $car_plate])->one();
+                            if ($car) {
+                                $model->car_id = $car->id;
+                            }
+                        }
+
+                        if ($model->save(false)) {
+                            $current_master_id = $model->id;
+                            $successCount++;
+
+                            // create stock transaction once per master
+                            $model_trans = new \backend\models\Stocktrans();
+                            $model_trans->trans_date = date('Y-m-d H:i:s');
+                            $model_trans->activity_type_id = 5; // cash record
+                            $model_trans->trans_ref_id = $model->id;
+                            $model_trans->save(false);
+                        } else {
+                            $current_master_id = null;
+                            $errorCount++;
+                        }
+                    }
+
+                    // Create Detail Line if we have a current master
+                    if ($current_master_id != null && $cost_title_name != '') {
+                        $model_line = new \common\models\CashRecordLine();
+                        $model_line->car_record_id = $current_master_id;
+                        $model_line->amount = $amount;
+                        $model_line->vat_amount = $vat_amount;
+                        $model_line->remark = $remark;
+                        $model_line->status = 1;
+
+                        // find cost_title_id
+                        $cost_title = \backend\models\CostTitle::find()->where(['name' => $cost_title_name])->one();
+                        if ($cost_title) {
+                            $model_line->cost_title_id = $cost_title->id;
+                        }
+                        $model_line->save(false);
+                    }
+                }
+
+                if ($successCount > 0) {
+                    \Yii::$app->session->setFlash('success', "นำเข้าข้อมูลสำเร็จ $successCount ใบ");
+                }
+                if ($errorCount > 0) {
+                    \Yii::$app->session->setFlash('error', "พบข้อผิดพลาด $errorCount ใบ");
+                }
+
+            } catch (\Exception $e) {
+                \Yii::$app->session->setFlash('error', 'เกิดข้อผิดพลาด: ' . $e->getMessage());
+            }
+        } else {
+            \Yii::$app->session->setFlash('error', 'กรุณาเลือกไฟล์');
+        }
+
+        return $this->redirect(['index']);
     }
 }
