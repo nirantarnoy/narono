@@ -11,69 +11,73 @@ if ($f_date != null && $t_date != null) {
 
 //echo \backend\models\Stockjournal::getLastNo(1,1);
 
-$url = \Yii::$app->basePath . '/web/api_con/simple_html_dom.php';
-include $url;
-
-$domain = 'https://xn--42cah7d0cxcvbbb9x.com/%E0%B8%A3%E0%B8%B2%E0%B8%84%E0%B8%B2%E0%B8%99%E0%B9%89%E0%B8%B3%E0%B8%A1%E0%B8%B1%E0%B8%99%E0%B8%A7%E0%B8%B1%E0%B8%99%E0%B8%99%E0%B8%B5%E0%B9%89/';
 $html = '';
-$opts = [
-    "http" => [
-        "method" => "GET",
-        "header" => "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\r\n" .
-                    "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8\r\n" .
-                    "Accept-Language: th-TH,th;q=0.9,en-US;q=0.8,en;q=0.7\r\n" .
-                    "Cache-Control: max-age=0\r\n" .
-                    "Connection: keep-alive\r\n"
-    ]
-];
-
-$context = stream_context_create($opts);
-
-$target = file_get_html($domain, false, $context);
-$i = 0;
-
-$fuel_data = ['แก๊สโซฮอล์ 95', 'แก๊สโซฮอล์ 91', 'แก๊สโซฮอล์ E20', 'แก๊สโซฮอล์ E85', 'เบนซิน 95', 'ดีเซล', 'ดีเซล B7', 'ดีเซล B20', 'ดีเซลพรีเมี่ยม', 'แก๊ส NGV'];
-
-$current_loop = '';
-$is_start = 0;
-$completed_data = [];
 $check_pull_price = 0;
-if ($target) {
-    foreach ($target->find('.gtoday table tbody tr td') as $el) {
-        if (in_array(trim($el->plaintext), $fuel_data)) {
-            $is_start = 1;
-            //echo $el->plaintext.'<br />';
-            $current_loop = $el->plaintext;
-        } else {
-            // echo $is_start;
-            if ($is_start == 1) {
-                // echo $el->plaintext.'<br />';
-                $is_start = 0;
+if (false) {
+    $url = \Yii::$app->basePath . '/web/api_con/simple_html_dom.php';
+    include $url;
 
-                array_push($completed_data, ['name' => $current_loop, 'price' => $el->plaintext]);
+    $domain = 'https://xn--42cah7d0cxcvbbb9x.com/%E0%B8%A3%E0%B8%B2%E0%B8%84%E0%B8%B2%E0%B8%99%E0%B9%89%E0%B8%B3%E0%B8%A1%E0%B8%B1%E0%B8%99%E0%B8%A7%E0%B8%B1%E0%B8%99%E0%B8%99%E0%B8%B5%E0%B9%89/';
+    $html = '';
+    $opts = [
+        "http" => [
+            "method" => "GET",
+            "header" => "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36\r\n" .
+                "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8\r\n" .
+                "Accept-Language: th-TH,th;q=0.9,en-US;q=0.8,en;q=0.7\r\n" .
+                "Cache-Control: max-age=0\r\n" .
+                "Connection: keep-alive\r\n"
+        ]
+    ];
 
+    $context = stream_context_create($opts);
+
+    $target = file_get_html($domain, false, $context);
+    $i = 0;
+
+    $fuel_data = ['แก๊สโซฮอล์ 95', 'แก๊สโซฮอล์ 91', 'แก๊สโซฮอล์ E20', 'แก๊สโซฮอล์ E85', 'เบนซิน 95', 'ดีเซล', 'ดีเซล B7', 'ดีเซล B20', 'ดีเซลพรีเมี่ยม', 'แก๊ส NGV'];
+
+    $current_loop = '';
+    $is_start = 0;
+    $completed_data = [];
+    $check_pull_price = 0;
+    if ($target) {
+        foreach ($target->find('.gtoday table tbody tr td') as $el) {
+            if (in_array(trim($el->plaintext), $fuel_data)) {
+                $is_start = 1;
+                //echo $el->plaintext.'<br />';
+                $current_loop = $el->plaintext;
+            } else {
+                // echo $is_start;
+                if ($is_start == 1) {
+                    // echo $el->plaintext.'<br />';
+                    $is_start = 0;
+
+                    array_push($completed_data, ['name' => $current_loop, 'price' => $el->plaintext]);
+
+                }
             }
         }
+        $target->clear();
+        unset($target);
     }
-    $target->clear();
-    unset($target);
-}
 
-$html .= '<table style="border: 1px solid black;" class="table table-striped table-bordered">';
-if (count($completed_data) > 0) {
-    for ($xx = 0; $xx <= count($completed_data) - 1; $xx++) {
-        $html .= '<tr>';
-        $html .= '<td style="padding: 10px;"><input type="hidden" name="line_name[]" value="' . $completed_data[$xx]['name'] . '">';
-        $html .= $completed_data[$xx]['name'];
-        $html .= '</td>';
-        $html .= '<td style="padding: 10px;"><input type="hidden" name="line_price[]" value="' . $completed_data[$xx]['price'] . '">';
-        $html .= $completed_data[$xx]['price'];
-        $html .= '</td>';
+    $html .= '<table style="border: 1px solid black;" class="table table-striped table-bordered">';
+    if (count($completed_data) > 0) {
+        for ($xx = 0; $xx <= count($completed_data) - 1; $xx++) {
+            $html .= '<tr>';
+            $html .= '<td style="padding: 10px;"><input type="hidden" name="line_name[]" value="' . $completed_data[$xx]['name'] . '">';
+            $html .= $completed_data[$xx]['name'];
+            $html .= '</td>';
+            $html .= '<td style="padding: 10px;"><input type="hidden" name="line_price[]" value="' . $completed_data[$xx]['price'] . '">';
+            $html .= $completed_data[$xx]['price'];
+            $html .= '</td>';
 
-        $html .= '</tr>';
+            $html .= '</tr>';
+        }
     }
+    $html .= '</table>';
 }
-$html .= '</table>';
 
 ?>
 <br/>
@@ -359,6 +363,7 @@ $html .= '</table>';
                     <!--                    </div>-->
                     <!-- /.card -->
 
+                    <!--
                     <div class="card">
                         <div class="card-header border-0">
                             <h3 class="card-title">ราคาน้ำมัน ปตท. วันนี้</h3>
@@ -390,9 +395,9 @@ $html .= '</table>';
 
 
                             </form>
-                            <!-- /.d-flex -->
                         </div>
                     </div>
+                    -->
                 </div>
                 <!-- /.col-md-6 -->
             </div>
@@ -429,9 +434,11 @@ $url_to_save_screenshort = \yii\helpers\Url::to(['site/createscreenshort'], true
 $js = <<<JS
 $(function(){
     //aleret();
+    /*
     if($(".check-pull-price").val() == 0){
         $(".btn-pull-daily").trigger("click");
     }
+    */
    
 });
 function takeshot() {
