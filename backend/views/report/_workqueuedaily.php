@@ -206,19 +206,23 @@ $this->registerCss("
         if ($car_list) {
             // ถ้ามี search_car_id ให้ตรวจสอบว่าอยู่ใน car_list หรือไม่
             if ($search_car_id != null && in_array($search_car_id, $car_list)) {
-                $conditions['car_id'] = $search_car_id;
+                $conditions['w.car_id'] = $search_car_id;
             } else if ($search_car_id == null) {
-                $conditions['car_id'] = $car_list;
+                $conditions['w.car_id'] = $car_list;
+            }else{
+                $conditions['w.car_id'] = -1;
             }
             // ถ้า search_car_id ไม่อยู่ใน car_list จะไม่เพิ่ม condition (ไม่มีผลลัพธ์)
+        }else{
+             $conditions['w.car_id'] = -1;
         }
     } else if ($search_car_id != null) {
-        $conditions['car_id'] = $search_car_id;
+        $conditions['w.car_id'] = $search_car_id;
     }
 
 // เพิ่ม company และ employee filters
-    if ($search_company_id != null) $conditions['company_id'] = $search_company_id;
-    if ($search_emp_id != null) $conditions['emp_assign'] = $search_emp_id;
+    if ($search_company_id != null) $conditions['w.company_id'] = $search_company_id;
+    if ($search_emp_id != null) $conditions['w.emp_assign'] = $search_emp_id;
     if ($search_work_type_id != null)
     {
         $conditions['c.work_type_id'] = $search_work_type_id;
@@ -226,9 +230,9 @@ $this->registerCss("
 
 // Apply conditions และ date range
     $query->andFilterWhere($conditions)
-        ->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])
-        ->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date]);
-    $query->orderBy('work_queue_date ASC');
+        ->andFilterWhere(['>=', 'date(w.work_queue_date)', $find_date])
+        ->andFilterWhere(['<=', 'date(w.work_queue_date)', $find_to_date]);
+    $query->orderBy('w.work_queue_date ASC');
     $model = $query->all();
 
 
