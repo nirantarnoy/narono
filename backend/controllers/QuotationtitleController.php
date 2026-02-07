@@ -90,7 +90,6 @@ class QuotationtitleController extends Controller
     public function actionCreate()
     {
         $model = new Quotationtitle();
-        $last_month_price = $this->getBeforemonthprice();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
@@ -133,7 +132,6 @@ class QuotationtitleController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'last_month_price' => $last_month_price
         ]);
     }
 
@@ -242,29 +240,30 @@ class QuotationtitleController extends Controller
         if($quotation_title_id) {
             $factor_up = 1.01;
             $factor_down = 0.99;
-            $curren_oil_price = \common\models\FuelPrice::find()->where(['fuel_id' => 1])->orderBy(['price_date' => SORT_DESC])->one();
-            if ($curren_oil_price) {
+            $model_title = \common\models\QuotationTitle::findOne($quotation_title_id);
+            if ($model_title && $model_title->fuel_rate != null) {
+                $current_fuel_price = $model_title->fuel_rate;
                 $model_quotation_rate = \common\models\QuotationRate::find()->where(['quotation_title_id' => $quotation_title_id])->all();
                 if($model_quotation_rate){
                     foreach ($model_quotation_rate as $keyx => $valuex) {
                         $model = \common\models\QuotationRateHistory::find()->where(['quotation_title_id' => $quotation_title_id,'quotation_rate_id' => $valuex->id])->orderBy(['id' => SORT_DESC])->one();
                         if ($model) { // has record
                             $new_current_rate = 0;
-                            if($curren_oil_price->price > $model->oil_price){ // current oil price is higher than history
+                            if($current_fuel_price > $model->oil_price){ // current oil price is higher than history
                                 $new_current_rate = round($valuex->price_current_rate * $factor_up,2);
-                            }elseif($curren_oil_price->price < $model->oil_price){ // current oil price is lower than history
+                            }elseif($current_fuel_price < $model->oil_price){ // current oil price is lower than history
                                 $new_current_rate = round($valuex->price_current_rate * $factor_down,2);
                             }else{
                                 continue;
                             }
 
-                            $res = \common\models\QuotationRate::updateAll(['price_current_rate' => round($new_current_rate), 'oil_price' => $curren_oil_price->price], ['id' => $valuex->id]); // update line price and oil price
+                            $res = \common\models\QuotationRate::updateAll(['price_current_rate' => round($new_current_rate), 'oil_price' => $current_fuel_price], ['id' => $valuex->id]); // update line price and oil price
                             if($res){
-                                if($curren_oil_price->price != $model->oil_price) {
+                                if($current_fuel_price != $model->oil_price) {
                                     $model_new_history = new \common\models\QuotationRateHistory();
                                     $model_new_history->quotation_title_id = $quotation_title_id;
                                     $model_new_history->quotation_rate_id = $valuex->id;
-                                    $model_new_history->oil_price = $valuex->oil_price == null ? $curren_oil_price->price : $valuex->oil_price;
+                                    $model_new_history->oil_price = $valuex->oil_price == null ? $current_fuel_price : $valuex->oil_price;
                                     $model_new_history->rate_amount = round($valuex->price_current_rate);
                                     $model_new_history->created_at = time();
                                     $model_new_history->created_by = \Yii::$app->user->id;
@@ -275,7 +274,7 @@ class QuotationtitleController extends Controller
                             $model_new_history = new \common\models\QuotationRateHistory();
                             $model_new_history->quotation_title_id = $quotation_title_id;
                             $model_new_history->quotation_rate_id = $valuex->id;
-                            $model_new_history->oil_price = $valuex->oil_price == null ? $curren_oil_price->price : $valuex->oil_price;
+                            $model_new_history->oil_price = $valuex->oil_price == null ? $current_fuel_price : $valuex->oil_price;
                             $model_new_history->rate_amount = round($valuex->price_current_rate);
                             $model_new_history->created_at = time();
                             $model_new_history->created_by = \Yii::$app->user->id;
@@ -283,8 +282,7 @@ class QuotationtitleController extends Controller
                         }
                     }
                 }
-                \common\models\QuotationTitle::updateAll(['fuel_rate' => $curren_oil_price->price], ['id' => $quotation_title_id]);
-
+                // Removed automatic update of fuel_rate in QuotationTitle table to allow manual input
             }
         }
     }
