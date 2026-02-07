@@ -14,6 +14,7 @@ $this->title = 'จัดการข้อมูลภาษี (Tax Import)';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="tax-import-index">
+    <?= \common\widgets\Alert::widget() ?>
     <div class="row">
         <div class="col-md-12">
             <div class="card card-primary card-outline shadow-sm">
@@ -121,6 +122,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'data-toggle' => 'modal',
                             'data-target' => '#importModal'
                         ]) ?>
+                        <?= Html::a('<i class="fas fa-download"></i> Export Pattern', ['export-pattern'], ['class' => 'btn btn-outline-info shadow-sm mr-2']) ?>
                         <?= Html::a('<i class="fas fa-file-excel"></i> Export Excel', ['export'], ['class' => 'btn btn-outline-success shadow-sm']) ?>
                     </div>
                 </div>
@@ -141,8 +143,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                     <label>เลือกไฟล์ Excel (.xlsx, .xls)</label>
                                     <?= Html::fileInput('import_file', null, ['class' => 'form-control', 'accept' => '.xlsx, .xls', 'required' => true]) ?>
                                     <small class="text-muted mt-2 d-block">
-                                        * ระบบจะอ่านข้อมูลจากแถวที่ 13 เป็นต้นไป<br>
-                                        * ตรวจสอบหัว Column ในแถวที่ 12 ให้ตรงตามที่กำหนด
+                                        * ระบบจะอ่านข้อมูลจากแถวที่ 3 เป็นต้นไป<br>
+                                        * ตรวจสอบหัว Column ในแถวที่ 1 (A-U) และแถวที่ 2 ให้ตรงตามที่กำหนด หรือดาวน์โหลด Pattern ได้จากปุ่ม <b>Export Pattern</b>
                                     </small>
                                 </div>
                             </div>

@@ -147,13 +147,13 @@ class TaximportController extends Controller
                     'U' => 'group_type',
                 ];
 
-                // Get dynamic mappings from row 9
+                // Get dynamic mappings from row 1
                 $columnMappings = [];
                 $highestColumnIndex = Coordinate::columnIndexFromString($highestColumn);
                 
                 for ($i = 1; $i <= $highestColumnIndex; $i++) {
                     $col = Coordinate::stringFromColumnIndex($i);
-                    $val = trim((string)$sheet->getCell($col . '9')->getValue());
+                    $val = trim((string)$sheet->getCell($col . '1')->getValue());
                     if ($val) {
                         $parts = preg_split('/[\s&\/]+/', $val);
                         foreach ($parts as $part) {
@@ -166,16 +166,17 @@ class TaximportController extends Controller
                 }
 
                 if (empty($columnMappings)) {
-                    Yii::error("Import Error: No mappings found in row 9.", 'tax_import');
-                    throw new \Exception("ไม่พบตัวอักษร Mapping (A-U) ในบรรทัดที่ 9 ของไฟล์ Excel");
+                    Yii::error("Import Error: No mappings found in row 1.", 'tax_import');
+                    throw new \Exception("ไม่พบตัวอักษร Mapping (A-U) ในบรรทัดที่ 1 ของไฟล์ Excel");
                 }
 
                 $successCount = 0;
                 $errorCount = 0;
+                $skipCount = 0;
                 $errorDetails = [];
                 $currentRowSequence = 1;
 
-                for ($row = 13; $row <= $highestRow; $row++) {
+                for ($row = 3; $row <= $highestRow; $row++) {
                     $hasData = false;
                     foreach (array_keys($columnMappings) as $col) {
                         if (!empty($sheet->getCell($col . $row)->getValue())) {
@@ -229,6 +230,17 @@ class TaximportController extends Controller
                         }
                     }
 
+                    // Check for duplicate reference_no and branch_code
+                    if (!empty($model->reference_no)) {
+                        $existing = TaxImport::find()
+                            ->where(['reference_no' => $model->reference_no, 'branch_code' => $model->branch_code])
+                            ->exists();
+                        if ($existing) {
+                            $skipCount++;
+                            continue;
+                        }
+                    }
+
                     if ($model->save()) {
                         $successCount++;
                     } else {
@@ -246,14 +258,21 @@ class TaximportController extends Controller
                     }
                 }
 
-                if ($successCount > 0) {
-                    Yii::$app->session->setFlash('success', "นำเข้าข้อมูลสำเร็จ $successCount รายการ");
-                }
+                $summary = "<b>สรุปผลการนำเข้า:</b><br>";
+                $summary .= "- สำเร็จ: $successCount รายการ<br>";
+                $summary .= "- ซ้ำ (ข้ามไป): $skipCount รายการ<br>";
                 if ($errorCount > 0) {
-                    Yii::$app->session->setFlash('error', "พบข้อผิดพลาด $errorCount รายการ:<br>" . implode('<br>', $errorDetails));
+                    $summary .= "- ผิดพลาด: $errorCount รายการ<br>";
                 }
-                if ($successCount == 0 && $errorCount == 0) {
-                    Yii::$app->session->setFlash('warning', "ไม่พบข้อมูลในแถวที่ 13");
+
+                Yii::$app->session->setFlash('success', $summary);
+
+                if ($errorCount > 0) {
+                    Yii::$app->session->setFlash('error', "รายละเอียดข้อผิดพลาด:<br>" . implode('<br>', $errorDetails));
+                }
+                
+                if ($successCount == 0 && $skipCount == 0 && $errorCount == 0) {
+                    Yii::$app->session->setFlash('warning', "ไม่พบข้อมูลในแถวที่ 3");
                 }
 
             } catch (\Exception $e) {
@@ -346,6 +365,71 @@ class TaximportController extends Controller
 
         $writer = new Xlsx($spreadsheet);
         $filename = 'tax_import_' . date('Y-m-d_His') . '.xlsx';
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+        exit;
+    }
+
+    /**
+     * Exports pattern for Excel import.
+     */
+    public function actionExportPattern()
+    {
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Pattern Mapping at Row 1
+        $letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U'];
+        foreach ($letters as $col) {
+            $sheet->setCellValue($col . '1', $col);
+        }
+        $sheet->getStyle('A1:U1')->getFont()->setBold(true);
+        $sheet->getStyle('A1:U1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+        // Headers at Row 2
+        $headers = [
+            'A' => 'ลำดับที่',
+            'B' => 'วันที่เอกสาร',
+            'C' => 'อ้างอิงถึง',
+            'D' => 'ผู้รับเงิน/คู่ค้า',
+            'E' => 'เลขทะเบียน 13 หลัก',
+            'F' => 'เลขสาขา 5 หลัก',
+            'G' => 'เลขที่ใบกำกับฯ',
+            'H' => 'วันที่ใบกำกับฯ',
+            'I' => 'วันที่บันทึกภาษีซื้อ',
+            'J' => 'ประเภทราคา',
+            'K' => 'บัญชี',
+            'L' => 'คำอธิบาย',
+            'M' => 'จำนวน',
+            'N' => 'ราคาต่อหน่วย',
+            'O' => 'อัตราภาษี',
+            'P' => 'หัก ณ ที่จ่าย',
+            'Q' => 'ชำระโดย',
+            'R' => 'จำนวนเงินที่ชำระ',
+            'S' => 'ภ.ง.ด.',
+            'T' => 'หมายเหตุ',
+            'U' => 'กลุ่มจัดประเภท',
+        ];
+
+        foreach ($headers as $col => $label) {
+            $sheet->setCellValue($col . '2', $label);
+        }
+
+        // Style headers
+        $sheet->getStyle('A2:U2')->getFont()->setBold(true);
+        $sheet->getStyle('A2:U2')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+        // Auto size columns
+        foreach (range('A', 'U') as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $filename = 'tax_import_pattern.xlsx';
 
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . $filename . '"');
