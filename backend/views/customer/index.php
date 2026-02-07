@@ -21,7 +21,8 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="row">
         <div class="col-lg-10">
             <p>
-                <?= Html::a(Yii::t('app', '<i class="fa fa-plus"></i> สร้างใหม่'), ['create'], ['class' => 'btn btn-success']) ?>
+                <?= Html::a(Yii::t('app', '<i class="fa fa-plus"></i>สร้างใหม่'), ['create'], ['class' => 'btn btn-success']) ?>
+                <?= Html::a(Yii::t('app', '<i class="fa fa-file-excel"></i> Export Excel'), ['export-excel'], ['class' => 'btn btn-outline-success', 'target' => '_blank']) ?>
             </p>
         </div>
         <div class="col-lg-2" style="text-align: right">

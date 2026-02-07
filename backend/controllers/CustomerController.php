@@ -7,6 +7,8 @@ use backend\models\CustomerSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 /**
  * CustomerController implements the CRUD actions for Customer model.
@@ -521,6 +523,61 @@ class CustomerController extends Controller
                 }
             }
         }
+    }
+
+    public function actionExportExcel()
+    {
+        $searchModel = new CustomerSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+        $dataProvider->pagination = false;
+        $models = $dataProvider->getModels();
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $headers = [
+            'A' => 'รหัส',
+            'B' => 'ชื่อลูกค้า',
+            'C' => 'ที่อยู่',
+            'D' => 'เลขที่ผู้เสียภาษี',
+            'E' => 'สาขา',
+            'F' => 'เบอร์ติดต่อ',
+            'G' => 'อีเมล',
+            'H' => 'สถานะ',
+        ];
+
+        foreach ($headers as $col => $label) {
+            $sheet->setCellValue($col . '1', $label);
+        }
+
+        $sheet->getStyle('A1:H1')->getFont()->setBold(true);
+
+        $row = 2;
+        foreach ($models as $model) {
+            $sheet->setCellValue('A' . $row, $model->code);
+            $sheet->setCellValue('B' . $row, $model->name);
+            $sheet->setCellValue('C' . $row, $model->address);
+            $sheet->setCellValue('D' . $row, $model->taxid);
+            $sheet->setCellValue('E' . $row, $model->branch_name);
+            $sheet->setCellValue('F' . $row, $model->phone);
+            $sheet->setCellValue('G' . $row, $model->email);
+            $sheet->setCellValue('H' . $row, $model->status == 1 ? 'ใช้งาน' : 'ไม่ใช้งาน');
+            $row++;
+        }
+
+        foreach (range('A', 'H') as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $filename = 'customer_data_' . date('Y-m-d_His') . '.xlsx';
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+        exit;
     }
 
 }
