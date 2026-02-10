@@ -145,6 +145,9 @@ $date_year = date('Y',strtotime($model->work_queue_date)) + 543;
             <td style="width:15%;padding: 5px;">
                 DP_NO <b><?= $model->dp_no ?></b>
             </td>
+            <td style="width:15%;padding: 5px;">
+                รหัส 6 หลัก <b><?= $model->code_6_digit ?></b>
+            </td>
         </tr>
     </table>
     <br>

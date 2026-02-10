@@ -611,6 +611,7 @@ class WorkqueueController extends Controller
             'AN' => 'ค่าเบิ้ลงาน',
             'AO' => 'ค่าลาก/ค่าแบก',
             'AP' => 'อื่นๆ',
+            'AQ' => 'รหัส 6 หลัก',
         ];
 
         foreach ($headers as $col => $label) {
@@ -703,6 +704,7 @@ class WorkqueueController extends Controller
                     'AN' => 'work_double_price',
                     'AO' => 'towing_price',
                     'AP' => 'other_amt',
+                    'AQ' => 'code_6_digit',
                 ];
 
                 $successCount = 0;

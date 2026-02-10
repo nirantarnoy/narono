@@ -77,6 +77,9 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
             ]) ?>
         </div>
         <div class="col-lg-3">
+            <?= $form->field($model, 'code_6_digit')->textInput(['maxlength' => 6, 'placeholder' => 'รหัส 6 หลัก']) ?>
+        </div>
+        <div class="col-lg-3">
             <?= $form->field($model, 'customer_id')->Widget(\kartik\select2\Select2::className(), [
                 'data' => \yii\helpers\ArrayHelper::map(\backend\models\Customer::find()->all(), 'id', function ($data) {
                     return $data->name;
@@ -88,10 +91,19 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
             ]) ?>
         </div>
 
+    </div>
+
+    <div class="row">
         <div class="col-lg-3">
             <label for="">ลูกค้าวางบิล</label>
             <input type="text" class="form-control customer-invoice-name" readonly
                    value="<?= $model->isNewRecord ? '' : \backend\models\Customer::findCustomerInvoiceName($model->customer_id) ?>">
+        </div>
+        <div class="col-lg-3">
+        </div>
+        <div class="col-lg-3">
+        </div>
+        <div class="col-lg-3">
         </div>
 
     </div>
