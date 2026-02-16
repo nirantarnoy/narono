@@ -17,17 +17,7 @@ $this->title = "รายละเอียด";
                     <th>โซนพื้นที่</th>
                     <th style="text-align: right;">ระยะทาง</th>
                     <th style="text-align: right;">ปริมาณเฉลี่ยตัน/ปี</th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
                     <th style="text-align: center;background-color: yellow;">ราคาที่เสนอ</th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -50,19 +40,9 @@ $this->title = "รายละเอียด";
                             <td style="text-align: right;">
                                 <?= number_format($value->load_qty) ?>
                             </td>
-                            <td style="text-align: center;"><?= number_format(((((($value->price_current_rate * 0.99)*0.99)*0.99)*0.99)*0.99),0) ?></td>
-                            <td style="text-align: center;"><?= number_format((((($value->price_current_rate * 0.99)*0.99)*0.99)*0.99),0) ?></td>
-                            <td style="text-align: center;"><?= number_format(((($value->price_current_rate * 0.99)*0.99)*0.99),0) ?></td>
-                            <td style="text-align: center;"><?= number_format((($value->price_current_rate * 0.99)*0.99),0) ?></td>
-                            <td style="text-align: center;"><?= number_format(($value->price_current_rate * 0.99),0) ?></td>
                             <td style="text-align: center;background-color: yellow;">
                                 <?= $value->price_current_rate ?>
                             </td>
-                            <td style="text-align: center;"><?= number_format(($value->price_current_rate * 1.01),0) ?></td>
-                            <td style="text-align: center;"><?= number_format((($value->price_current_rate * 1.01)*1.01),0) ?></td>
-                            <td style="text-align: center;"><?= number_format(((($value->price_current_rate * 1.01)*1.01)*1.01),0) ?></td>
-                            <td style="text-align: center;"><?= number_format((((($value->price_current_rate * 1.01)*1.01)*1.01)*1.01),0) ?></td>
-                            <td style="text-align: center;"><?= number_format(((((($value->price_current_rate * 1.01)*1.01)*1.01)*1.01)*1.01),0) ?></td>
                         </tr>
                     <?php endforeach; ?>
 

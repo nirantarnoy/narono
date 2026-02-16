@@ -273,7 +273,7 @@ $haul_data = \common\models\Haul::find()->orderBy(['id'=>SORT_ASC])->all();
                                     </td>
                                     <td>
                                         <input type="number" class="form-control line-quotation-price"
-                                               name="line_quotation_price[]" value="<?= $value->price_current_rate ?>" step="0.01">
+                                               name="line_quotation_price[]" value="<?= $value->price_current_rate > 0 ? $value->price_current_rate : '' ?>" step="0.01">
                                     </td>
                                     <td>
                                         <div class="btn btn-danger btn-sm" onclick="removeline($(this))">ลบ</div>
