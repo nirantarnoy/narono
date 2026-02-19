@@ -148,7 +148,7 @@ $date_year = date('Y', strtotime($model->trans_date)) + 543;
         <tr>
             <td style="width:15%;padding: 5px;">จ่ายโดย
                 <b><?= \backend\helpers\PayType::getTypeById($model->payment_method_id) ?></b></td>
-            <td style="width:15%;padding: 5px;"></td>
+            <td style="width:15%;padding: 5px;">เลขที่เช็ค <b><?= $model->check_no ?></b></td>
             <td style="width:15%;padding: 5px;">อ้างถึง <?=$model->ref_no?></td>
 
         </tr>
@@ -258,24 +258,45 @@ $date_year = date('Y', strtotime($model->trans_date)) + 543;
             <td colspan="2" style="border: 1px solid grey;text-align: center;">เครดิต</td>
 
         </tr>
-        <?php for($xx=0;$xx<=3;$xx++):?>
+        <?php 
+          $model_account = \common\models\CashRecordAccount::find()->where(['cash_record_id' => $model->id])->all(); 
+          $total_debit = 0;
+          $total_credit = 0;
+        ?>
+        <?php if($model_account): ?>
+            <?php foreach($model_account as $acc): ?>
+                <?php 
+                    $total_debit += $acc->debit;
+                    $total_credit += $acc->credit;
+                ?>
+                <tr>
+                    <td style="border: 1px solid grey;padding: 5px;"><?= $acc->account_name ?></td>
+                    <td style="border: 1px solid grey;text-align: center;padding: 5px;"><?= $acc->account_code ?></td>
+                    <td style="border: 1px solid grey;text-align: right;padding: 5px;"><?= $acc->debit > 0 ? number_format($acc->debit, 2) : '' ?></td>
+                    <td style="border: 1px solid grey;width: 5%;border-left: none;"></td>
+                    <td style="border: 1px solid grey;text-align: right;padding: 5px;"><?= $acc->credit > 0 ? number_format($acc->credit, 2) : '' ?></td>
+                    <td style="border: 1px solid grey;width: 5%;border-left: none;"></td>
+                </tr>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <?php for($xx=0;$xx<=3;$xx++):?>
+            <tr>
+                <td style="border: 1px solid grey;padding: 15px;"></td>
+                <td style="border: 1px solid grey;text-align: center;"></td>
+                <td style="border: 1px solid grey;text-align: center;"></td>
+                <td style="border: 1px solid grey;width: 5%"></td>
+                <td style="border: 1px solid grey;text-align: center;"></td>
+                <td style="border: 1px solid grey;width: 5%"></td>
+            </tr>
+            <?php endfor;?>
+        <?php endif; ?>
         <tr>
-            <td style="border: 1px solid grey;padding: 15px;"></td>
-            <td style="border: 1px solid grey;text-align: center;"></td>
-            <td style="border: 1px solid grey;text-align: center;"></td>
-            <td style="border: 1px solid grey;width: 5%"></td>
-            <td style="border: 1px solid grey;text-align: center;"></td>
-            <td style="border: 1px solid grey;width: 5%"></td>
+            <td colspan="2" style="border: 1px solid grey;padding: 5px;text-align: right;"><b>รวม</b></td>
+            <td style="border: 1px solid grey;text-align: right;padding: 5px;"><b><?= number_format($total_debit, 2) ?></b></td>
+            <td style="border: 1px solid grey;width: 5%;border-left: none;"></td>
+            <td style="border: 1px solid grey;text-align: right;padding: 5px;"><b><?= number_format($total_credit, 2) ?></b></td>
+            <td style="border: 1px solid grey;width: 5%;border-left: none;"></td>
         </tr>
-        <?php endfor;?>
-        <tr>
-            <td colspan="2" style="padding: 15px;"></td>
-            <td style="border: 1px solid grey;text-align: center;"></td>
-            <td style="border: 1px solid grey;width: 5%"></td>
-            <td style="border: 1px solid grey;text-align: center;"></td>
-            <td style="border: 1px solid grey;width: 5%"></td>
-        </tr>
-
     </table>
     <table style="width: 100%;border: 1px solid grey;">
         <tr>

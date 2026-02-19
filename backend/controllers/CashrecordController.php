@@ -116,6 +116,23 @@ class CashrecordController extends Controller
                         }
                     }
 
+                    $acc_name = \Yii::$app->request->post('account_name_line');
+                    $acc_code = \Yii::$app->request->post('account_code_line');
+                    $debit = \Yii::$app->request->post('debit_line');
+                    $credit = \Yii::$app->request->post('credit_line');
+                    if ($acc_name != null) {
+                        for ($i = 0; $i <= count($acc_name) - 1; $i++) {
+                            if ($acc_name[$i] == '') continue;
+                            $model_acc = new \common\models\CashRecordAccount();
+                            $model_acc->cash_record_id = $model->id;
+                            $model_acc->account_name = $acc_name[$i];
+                            $model_acc->account_code = $acc_code[$i];
+                            $model_acc->debit = $debit[$i];
+                            $model_acc->credit = $credit[$i];
+                            $model_acc->save(false);
+                        }
+                    }
+
                     // create transaction
 
                     $model_trans = new \backend\models\Stocktrans();
@@ -157,7 +174,8 @@ class CashrecordController extends Controller
             $remark = \Yii::$app->request->post('remark_line');
             $line_id = \Yii::$app->request->post('rec_id');
 
-            $removelist = \Yii::$app->request->post('remove_list2');
+            $removelist = \Yii::$app->request->post('remove_list');
+            $removelist_account = \Yii::$app->request->post('remove_account_list');
 
             $trans_date = date('Y-m-d');
             $x = explode('-', $model->trans_date);
@@ -189,9 +207,46 @@ class CashrecordController extends Controller
                         }
                     }
                 }
+
+                $acc_name = \Yii::$app->request->post('account_name_line');
+                $acc_code = \Yii::$app->request->post('account_code_line');
+                $debit = \Yii::$app->request->post('debit_line');
+                $credit = \Yii::$app->request->post('credit_line');
+                $acc_rec_id = \Yii::$app->request->post('acc_rec_id');
+
+                if ($acc_name != null) {
+                    for ($i = 0; $i <= count($acc_name) - 1; $i++) {
+                        if ($acc_name[$i] == '') continue;
+                        $model_acc_chk = null;
+                        if (isset($acc_rec_id[$i])) {
+                            $model_acc_chk = \common\models\CashRecordAccount::findOne($acc_rec_id[$i]);
+                        }
+
+                        if ($model_acc_chk) {
+                            $model_acc_chk->account_name = $acc_name[$i];
+                            $model_acc_chk->account_code = $acc_code[$i];
+                            $model_acc_chk->debit = $debit[$i];
+                            $model_acc_chk->credit = $credit[$i];
+                            $model_acc_chk->save(false);
+                        } else {
+                            $model_acc = new \common\models\CashRecordAccount();
+                            $model_acc->cash_record_id = $model->id;
+                            $model_acc->account_name = $acc_name[$i];
+                            $model_acc->account_code = $acc_code[$i];
+                            $model_acc->debit = $debit[$i];
+                            $model_acc->credit = $credit[$i];
+                            $model_acc->save(false);
+                        }
+                    }
+                }
+
                 $delete_rec = explode(",", $removelist);
-                if (count($delete_rec)) {
+                if (count($delete_rec) && $removelist != '') {
                     \common\models\CashRecordLine::deleteAll(['id' => $delete_rec]);
+                }
+                $delete_acc = explode(",", $removelist_account);
+                if (count($delete_acc) && $removelist_account != '') {
+                    \common\models\CashRecordAccount::deleteAll(['id' => $delete_acc]);
                 }
             }
             return $this->redirect(['view', 'id' => $model->id]);

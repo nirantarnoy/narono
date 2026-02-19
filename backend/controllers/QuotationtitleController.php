@@ -476,7 +476,6 @@ class QuotationtitleController extends Controller
                             $model_new_quotation_rate = new \common\models\QuotationRate();
                             $model_new_quotation_rate->attributes = $value->attributes;
                             $model_new_quotation_rate->quotation_title_id = $model_new_quotation->id;
-                            $model_new_quotation_rate->price_current_rate = null; // ปล่อยเป็นค่าว่างให้เลย เด๋ว user กรอกเองเสมอ
                             $model_new_quotation_rate->isNewRecord = true;
                             $model_new_quotation_rate->id = null;
                             $model_new_quotation_rate->save(false);

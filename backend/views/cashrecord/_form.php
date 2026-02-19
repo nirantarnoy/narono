@@ -19,7 +19,8 @@ if($model->company_id > 0){
 
         <?php $form = ActiveForm::begin(); ?>
 
-        <input type="hidden" class="remove-list2" name="remove_list2" value="">
+        <input type="hidden" class="remove-list" name="remove_list" value="">
+        <input type="hidden" class="remove-account-list" name="remove_account_list" value="">
         <input type="hidden" name="status" value="<?= $model->isNewRecord ? 1 : $model->status ?>">
 
         <div class="row">
@@ -143,10 +144,11 @@ if($model->company_id > 0){
                 ]) ?>
             </div>
             <div class="col-lg-3">
-                <?= $form->field($model, 'bank_account')->Textinput()->label() ?>
+                <?= $form->field($model, 'bank_account')->textInput(['maxlength' => true]) ?>
             </div>
-
-
+            <div class="col-lg-3">
+                <?= $form->field($model, 'check_no')->textInput(['maxlength' => true]) ?>
+            </div>
         </div>
         <div class="row">
             <div class="col-lg-3">
@@ -298,6 +300,95 @@ if($model->company_id > 0){
                 </table>
             </div>
         </div>
+        <br />
+        <h5>สำหรับฝ่ายบัญชี</h5>
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="table table-bordered table-striped" id="table-list-account">
+                    <thead>
+                    <tr>
+                        <th>ชื่อบัญชี</th>
+                        <th>รหัสบัญชี</th>
+                        <th style="text-align: right">เดบิต</th>
+                        <th style="text-align: right">เครดิต</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php if ($model->isNewRecord): ?>
+                        <tr>
+                            <td>
+                                <input type="text" name="account_name_line[]" class="form-control account-name-line">
+                            </td>
+                            <td>
+                                <input type="text" name="account_code_line[]" class="form-control account-code-line">
+                            </td>
+                            <td>
+                                <input type="number" name="debit_line[]" class="form-control debit-line" step="0.01" style="text-align: right">
+                            </td>
+                            <td>
+                                <input type="number" name="credit_line[]" class="form-control credit-line" step="0.01" style="text-align: right">
+                            </td>
+                            <td>
+                                <div class="btn btn-danger btn-sm" onclick="removeaccountline($(this))"><i class="fa fa-trash"></i></div>
+                            </td>
+                        </tr>
+                    <?php else: ?>
+                        <?php $model_account = \common\models\CashRecordAccount::find()->where(['cash_record_id' => $model->id])->all(); ?>
+                        <?php if (count($model_account)): ?>
+                            <?php foreach ($model_account as $acc): ?>
+                                <tr data-var="<?= $acc->id ?>">
+                                    <td>
+                                        <input type="hidden" name="acc_rec_id[]" value="<?= $acc->id ?>">
+                                        <input type="text" name="account_name_line[]" class="form-control account-name-line" value="<?= $acc->account_name ?>">
+                                    </td>
+                                    <td>
+                                        <input type="text" name="account_code_line[]" class="form-control account-code-line" value="<?= $acc->account_code ?>">
+                                    </td>
+                                    <td>
+                                        <input type="number" name="debit_line[]" class="form-control debit-line" step="0.01" style="text-align: right" value="<?= $acc->debit ?>">
+                                    </td>
+                                    <td>
+                                        <input type="number" name="credit_line[]" class="form-control credit-line" step="0.01" style="text-align: right" value="<?= $acc->credit ?>">
+                                    </td>
+                                    <td>
+                                        <div class="btn btn-danger btn-sm" onclick="removeaccountline($(this))"><i class="fa fa-trash"></i></div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td>
+                                    <input type="text" name="account_name_line[]" class="form-control account-name-line">
+                                </td>
+                                <td>
+                                    <input type="text" name="account_code_line[]" class="form-control account-code-line">
+                                </td>
+                                <td>
+                                    <input type="number" name="debit_line[]" class="form-control debit-line" step="0.01" style="text-align: right">
+                                </td>
+                                <td>
+                                    <input type="number" name="credit_line[]" class="form-control credit-line" step="0.01" style="text-align: right">
+                                </td>
+                                <td>
+                                    <div class="btn btn-danger btn-sm" onclick="removeaccountline($(this))"><i class="fa fa-trash"></i></div>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td colspan="5">
+                            <div class="btn btn-primary" onclick="addaccountline($(this))">
+                                <i class="fa fa-plus-circle"></i> เพิ่มหัวข้อบัญชี
+                            </div>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
 
 
         <div class="row">
@@ -328,7 +419,7 @@ $url_to_Dropoffdata = \yii\helpers\Url::to(['dropoffplace/getdropoffdata'], true
 $url_to_get_office = \yii\helpers\Url::to(['recieptrecord/getoffice'], true);
 $js = <<<JS
 var removelist = [];
-var removelist2 = [];
+var removelist_account = [];
 
 $(function(){
     // $('.start-date').datepicker({dateformat: 'dd-mm-yy'});
@@ -363,9 +454,9 @@ function addline(e){
 }
     function removeline(e) {
         if (confirm("ต้องการลบรายการนี้ใช่หรือไม่?")) {
-            if (e.parent().parent().attr("data-var") != '') {
-                removelist2.push(e.parent().parent().attr("data-var"));
-                $(".remove-list2").val(removelist2);
+            if (e.parent().parent().attr("data-var") != '' && e.parent().parent().attr("data-var") != undefined) {
+                removelist.push(e.parent().parent().attr("data-var"));
+                $(".remove-list").val(removelist);
             }
             // alert(removelist);
             // alert(e.parent().parent().attr("data-var"));
@@ -432,6 +523,33 @@ function getOffice(e){
         }
         
     })
+}
+
+function addaccountline(e){
+    var tr = $("#table-list-account tbody tr:last");
+    var clone = tr.clone();
+    clone.find(":text").val("");
+    clone.find(':input[type="number"]').val("");
+    clone.attr("data-var", "");
+    clone.find('input[name="acc_rec_id[]"]').remove();
+    tr.after(clone);
+}
+
+function removeaccountline(e) {
+    if (confirm("ต้องการลบรายการนี้ใช่หรือไม่?")) {
+        if (e.parent().parent().attr("data-var") != '' && e.parent().parent().attr("data-var") != undefined) {
+             removelist_account.push(e.parent().parent().attr("data-var"));
+             $(".remove-account-list").val(removelist_account);
+        }
+        if ($("#table-list-account tbody tr").length == 1) {
+            $("#table-list-account tbody tr").each(function () {
+                $(this).find(":text").val("");
+                $(this).find(':input[type="number"]').val("");
+            });
+        } else {
+            e.parent().parent().remove();
+        }
+    }
 }
 JS;
 
