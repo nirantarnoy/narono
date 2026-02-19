@@ -270,7 +270,7 @@ $date_year = date('Y', strtotime($model->trans_date)) + 543;
                     $total_credit += $acc->credit;
                 ?>
                 <tr>
-                    <td style="border: 1px solid grey;padding: 5px;"><?= $acc->credit > 0 ? '&nbsp;&nbsp;&nbsp;'.$acc->account_name : $acc->account_name ?></td>
+                    <td style="border: 1px solid grey;padding: 5px;"><?= $acc->credit > 0 ? '&nbsp;&nbsp;&nbsp;&nbsp;'.$acc->account_name : $acc->account_name ?></td>
                     <td style="border: 1px solid grey;text-align: center;padding: 5px;"><?= $acc->account_code ?></td>
                     <td style="border: 1px solid grey;text-align: right;padding: 5px;"><?= $acc->debit > 0 ? number_format($acc->debit, 2) : '' ?></td>
                     <td style="border: 1px solid grey;width: 5%;border-left: none;"></td>
