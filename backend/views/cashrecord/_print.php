@@ -147,7 +147,7 @@ $date_year = date('Y', strtotime($model->trans_date)) + 543;
     <table style="width: 100%">
         <tr>
             <td style="width:15%;padding: 5px;">จ่ายโดย
-                <b><?= \backend\helpers\PayType::getTypeById($model->payment_method_id) ?></b></td>
+                <b><?= \backend\models\Paymentmethod::findName($model->payment_method_id) ?></b></td>
             <td style="width:15%;padding: 5px;">เลขที่เช็ค <b><?= $model->check_no ?></b></td>
             <td style="width:15%;padding: 5px;">อ้างถึง <?=$model->ref_no?></td>
 
@@ -270,7 +270,7 @@ $date_year = date('Y', strtotime($model->trans_date)) + 543;
                     $total_credit += $acc->credit;
                 ?>
                 <tr>
-                    <td style="border: 1px solid grey;padding: 5px;"><?= $acc->account_name ?></td>
+                    <td style="border: 1px solid grey;padding: 5px;"><?= $acc->credit > 0 ? '&nbsp;&nbsp;&nbsp;'.$acc->account_name : $acc->account_name ?></td>
                     <td style="border: 1px solid grey;text-align: center;padding: 5px;"><?= $acc->account_code ?></td>
                     <td style="border: 1px solid grey;text-align: right;padding: 5px;"><?= $acc->debit > 0 ? number_format($acc->debit, 2) : '' ?></td>
                     <td style="border: 1px solid grey;width: 5%;border-left: none;"></td>
