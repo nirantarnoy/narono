@@ -147,7 +147,7 @@ $date_year = date('Y', strtotime($model->trans_date)) + 543;
     <table style="width: 100%">
         <tr>
             <td style="width:15%;padding: 5px;">จ่ายโดย
-                <b><?= \backend\models\Paymentmethod::findName($model->payment_method_id) ?></b></td>
+                <b><?= \backend\models\Paymentmethod::findName($model->payment_method_id) ?> <?= $model->bank_account ?></b></td>
             <td style="width:15%;padding: 5px;">เลขที่เช็ค <b><?= $model->check_no ?></b></td>
             <td style="width:15%;padding: 5px;">อ้างถึง <?=$model->ref_no?></td>
 
