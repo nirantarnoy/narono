@@ -444,6 +444,7 @@ function addline(e){
                     // clone.find("td:eq(1)").text("");
                     clone.find(".cost-title-id").val("");
                     clone.find(".price-line").val("0");
+                    clone.find(".vat-per-line").val("0");
                     clone.find(".remark-line").val("");
                     
                     clone.attr("data-var", "");
@@ -495,16 +496,17 @@ function checkpaytype(e){
 
 function callinevat(e){
     var line_amount = e.val();
-    var vat_per = $("#vat-per-amount").val();
-    var vat_amount = parseFloat(line_amount) * parseFloat(vat_per) / 100;
+    var vat_per = $("#vat-per-amount").val() || 0;
+    var vat_amount = (parseFloat(line_amount) || 0) * (parseFloat(vat_per) || 0) / 100;
     
     e.closest("tr").find(".vat-per-line").val(parseFloat(vat_amount).toFixed(2));
 }
 function calallvat(e){
-    var vat_per = e.val();
+    var vat_per = e.val() || 0;
  
     $("#table-list2 tbody tr").each(function (){
-      var line_vat_amt = parseFloat($(this).closest("tr").find(".price-line").val()) * parseFloat(vat_per) / 100;
+      var line_amt = $(this).closest("tr").find(".price-line").val() || 0;
+      var line_vat_amt = (parseFloat(line_amt) || 0) * (parseFloat(vat_per) || 0) / 100;
       $(this).closest("tr").find(".vat-per-line").val(parseFloat(line_vat_amt).toFixed(2));
     });
    

@@ -107,8 +107,8 @@ class CashrecordController extends Controller
                             $model_line = new \common\models\CashRecordLine();
                             $model_line->car_record_id = $model->id;
                             $model_line->cost_title_id = $cost_title_id[$i];
-                            $model_line->amount = $amount[$i];
-                            $model_line->vat_amount = $vat_amount[$i];
+                            $model_line->amount = is_numeric($amount[$i]) ? $amount[$i] : 0;
+                            $model_line->vat_amount = is_numeric($vat_amount[$i]) ? $vat_amount[$i] : 0;
                             $model_line->remark = $remark[$i];
                             $model_line->status = 1;
                             $model_line->save(false);
@@ -191,16 +191,16 @@ class CashrecordController extends Controller
                         $model_chk = \common\models\CashRecordLine::find()->where(['id' => $line_id[$i]])->one();
                         if ($model_chk) {
                             $model_chk->cost_title_id = $cost_title_id[$i];
-                            $model_chk->amount = $amount[$i];
-                            $model_chk->vat_amount = $vat_amount[$i];
+                            $model_chk->amount = is_numeric($amount[$i]) ? $amount[$i] : 0;
+                            $model_chk->vat_amount = is_numeric($vat_amount[$i]) ? $vat_amount[$i] : 0;
                             $model_chk->remark = $remark[$i];
                             $model_chk->save(false);
                         } else {
                             $model_rec = new \common\models\CashRecordLine();
                             $model_rec->car_record_id = $model->id;
                             $model_rec->cost_title_id = $cost_title_id[$i];
-                            $model_rec->amount = $amount[$i];
-                            $model_rec->vat_amount = $vat_amount[$i];
+                            $model_rec->amount = is_numeric($amount[$i]) ? $amount[$i] : 0;
+                            $model_rec->vat_amount = is_numeric($vat_amount[$i]) ? $vat_amount[$i] : 0;
                             $model_rec->remark = $remark[$i];
                             $model_rec->status = 1;
                             $model_rec->save(false);
@@ -416,8 +416,8 @@ class CashrecordController extends Controller
                     if ($current_master_id != null && $cost_title_name != '') {
                         $model_line = new \common\models\CashRecordLine();
                         $model_line->car_record_id = $current_master_id;
-                        $model_line->amount = $amount;
-                        $model_line->vat_amount = $vat_amount;
+                        $model_line->amount = is_numeric($amount) ? $amount : 0;
+                        $model_line->vat_amount = is_numeric($vat_amount) ? $vat_amount : 0;
                         $model_line->remark = $remark;
                         $model_line->status = 1;
 
