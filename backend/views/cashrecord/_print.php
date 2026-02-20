@@ -169,7 +169,7 @@ $date_year = date('Y', strtotime($model->trans_date)) + 543;
                     <?php foreach ($model_line as $value): ?>
                         <?php $all_total = ($all_total + $value->amount); ?>
                         <tr>
-                            <td style="width: 30%;border: 1px solid grey;text-align: left;padding: 6px;"><?= \backend\models\CostTitle::findName($value->cost_title_id).' ('.$value->remark.' )' ?></td>
+                            <td style="width: 30%;border: 1px solid grey;text-align: left;padding: 6px;"><?= \backend\models\CostTitle::findName($value->cost_title_id) . (trim($value->remark) != '' ? ' (' . $value->remark . ')' : '') ?></td>
                             <td style="width: 30%;border: 1px solid grey;text-align: right;padding: 5px;"><?= number_format($value->amount, 2) ?></td>
                         </tr>
                     <?php endforeach; ?>
