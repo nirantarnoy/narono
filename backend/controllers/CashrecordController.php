@@ -307,6 +307,112 @@ class CashrecordController extends Controller
         ]);
     }
 
+    public function actionExport()
+    {
+        $searchModel = new CashrecordSearch();
+        $dataProvider = $searchModel->search($this->request->get());
+        $dataProvider->pagination = false;
+        $models = $dataProvider->getModels();
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $headers = [
+            'A' => 'เลขที่',
+            'B' => 'วันที่',
+            'C' => 'จ่ายให้',
+            'D' => 'ทะเบียนรถ',
+            'E' => 'ส่วนพ่วง',
+            'F' => 'จ่ายโดย(ธนาคาร/เบอร์เช็ค)',
+            'G' => 'เลขที่อ้างอิง',
+            'H' => 'รายการ(ชื่อรายการค่าใช้จ่าย)',
+            'I' => 'จำนวนเงิน',
+            'J' => 'ภาษี %',
+            'K' => 'จำนวนภาษี',
+            'L' => 'รวมเงิน',
+            'M' => 'หมายเหตุ',
+            'N' => 'สถานะ',
+        ];
+
+        foreach ($headers as $col => $label) {
+            $sheet->setCellValue($col . '1', $label);
+        }
+
+        $rowDigit = 2;
+        foreach ($models as $model) {
+            $lines = \common\models\CashRecordLine::find()->where(['car_record_id' => $model->id])->all();
+
+            $car_name = \backend\models\Car::findName($model->car_id);
+            $car_tail_name = \backend\models\Car::findName($model->car_tail_id);
+            $pay_for = $model->pay_for;
+            if ($model->car_id != null && ($pay_for == '' || $pay_for == null)) {
+                $pay_for = \backend\models\car::findDrivername($model->car_id);
+            }
+
+            $status_text = 'สร้างใหม่';
+            if ($model->status == 1) {
+                $status_text = 'ใช้งาน';
+            } else if ($model->status == 2) {
+                $status_text = 'อนุมัติแล้ว';
+            }
+
+            if (empty($lines)) {
+                $sheet->setCellValue('A' . $rowDigit, $model->journal_no);
+                $sheet->setCellValue('B' . $rowDigit, $model->trans_date);
+                $sheet->setCellValue('C' . $rowDigit, $pay_for);
+                $sheet->setCellValue('D' . $rowDigit, $car_name);
+                $sheet->setCellValue('E' . $rowDigit, $car_tail_name);
+                $sheet->setCellValue('F' . $rowDigit, $model->bank_account);
+                $sheet->setCellValue('G' . $rowDigit, $model->ref_no);
+                $sheet->setCellValue('N' . $rowDigit, $status_text);
+                $rowDigit++;
+            } else {
+                foreach ($lines as $line) {
+                    $cost_title_name = '';
+                    $cost_title = \backend\models\CostTitle::findOne($line->cost_title_id);
+                    if ($cost_title) {
+                        $cost_title_name = $cost_title->name;
+                    }
+
+                    $total_amount = ($line->amount ?? 0) + ($line->vat_amount ?? 0);
+
+                    $sheet->setCellValue('A' . $rowDigit, $model->journal_no);
+                    $sheet->setCellValue('B' . $rowDigit, $model->trans_date);
+                    $sheet->setCellValue('C' . $rowDigit, $pay_for);
+                    $sheet->setCellValue('D' . $rowDigit, $car_name);
+                    $sheet->setCellValue('E' . $rowDigit, $car_tail_name);
+                    $sheet->setCellValue('F' . $rowDigit, $model->bank_account);
+                    $sheet->setCellValue('G' . $rowDigit, $model->ref_no);
+                    $sheet->setCellValue('H' . $rowDigit, $cost_title_name);
+                    $sheet->setCellValue('I' . $rowDigit, $line->amount);
+                    $sheet->setCellValue('J' . $rowDigit, $model->vat_per);
+                    $sheet->setCellValue('K' . $rowDigit, $line->vat_amount);
+                    $sheet->setCellValue('L' . $rowDigit, $total_amount);
+                    $sheet->setCellValue('M' . $rowDigit, $line->remark);
+                    $sheet->setCellValue('N' . $rowDigit, $status_text);
+                    $rowDigit++;
+                }
+            }
+        }
+
+        $sheet->getStyle('A1:N1')->getFont()->setBold(true);
+        $sheet->getStyle('A1:N1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+        foreach (range('A', 'N') as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $filename = 'cash_record_data_' . date('YmdHis') . '.xlsx';
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+        exit;
+    }
+
     public function actionExportPattern()
     {
         $spreadsheet = new Spreadsheet();

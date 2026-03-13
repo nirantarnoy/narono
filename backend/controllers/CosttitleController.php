@@ -118,6 +118,90 @@ class CosttitleController extends Controller
         return $this->redirect(['index']);
     }
 
+    public function actionExportPattern()
+    {
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $headers = [
+            'A' => 'ชื่อ',
+            'B' => 'รายละเอียด',
+            'C' => 'ประเภทรับจ่าย(1=จ่าย, 2=รับ)',
+            'D' => 'สถานะ(1=ใช้งาน, 0=ไม่ใช้งาน)',
+        ];
+
+        foreach ($headers as $col => $label) {
+            $sheet->setCellValue($col . '1', $label);
+        }
+
+        $sheet->getStyle('A1:D1')->getFont()->setBold(true);
+        $sheet->getStyle('A1:D1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+        foreach (range('A', 'D') as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+        $filename = 'cost_title_import_pattern.xlsx';
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+        exit;
+    }
+
+    public function actionImport()
+    {
+        $file = \yii\web\UploadedFile::getInstanceByName('import_file');
+        if ($file) {
+            try {
+                $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($file->tempName);
+                $sheet = $spreadsheet->getActiveSheet();
+                $highestRow = $sheet->getHighestRow();
+
+                $successCount = 0;
+                $errorCount = 0;
+
+                for ($row = 2; $row <= $highestRow; $row++) {
+                    $name = $sheet->getCell('A' . $row)->getValue();
+                    $description = $sheet->getCell('B' . $row)->getValue();
+                    $type_id = $sheet->getCell('C' . $row)->getValue();
+                    $status = $sheet->getCell('D' . $row)->getValue();
+
+                    if ($name != '') {
+                        $model = new CostTitle();
+                        $model->name = (string)$name;
+                        $model->description = (string)$description;
+                        $model->type_id = (int)$type_id;
+                        $model->status = ($status != null) ? (int)$status : 1;
+
+                        if ($model->save()) {
+                            $successCount++;
+                        } else {
+                            $errorCount++;
+                        }
+                    }
+                }
+
+                if ($successCount > 0) {
+                    \Yii::$app->session->setFlash('success', "นำเข้าข้อมูลสำเร็จ $successCount รายการ");
+                }
+                if ($errorCount > 0) {
+                    \Yii::$app->session->setFlash('error', "พบข้อผิดพลาด $errorCount รายการ");
+                }
+
+            } catch (\Exception $e) {
+                \Yii::$app->session->setFlash('error', 'เกิดข้อผิดพลาด: ' . $e->getMessage());
+            }
+        } else {
+            \Yii::$app->session->setFlash('error', 'กรุณาเลือกไฟล์');
+        }
+
+        return $this->redirect(['index']);
+    }
+
     /**
      * Finds the FixcostTitle model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

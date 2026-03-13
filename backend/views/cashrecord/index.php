@@ -29,6 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'data-toggle' => 'modal',
                     'data-target' => '#importModal'
                 ]) ?>
+                <?= Html::a('<i class="fas fa-file-export"></i> Export Excel', array_merge(['export'], Yii::$app->request->queryParams), ['class' => 'btn btn-outline-success']) ?>
             </p>
         </div>
         <div class="col-lg-2" style="text-align: right">

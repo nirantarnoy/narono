@@ -53,7 +53,21 @@ if($model->company_id > 0){
             </div>
 
             <div class="col-lg-3">
-                <?= $form->field($model, 'pay_for')->textInput(['maxlength' => true, 'class' => 'form-control pay-for-name']) ?>
+                <?= $form->field($model, 'pay_for')->Widget(\kartik\select2\Select2::className(), [
+                    'data' => \yii\helpers\ArrayHelper::map(\backend\models\Employee::find()->where(['status' => 1])->all(), function ($data) {
+                        return $data->fname . ' ' . $data->lname;
+                    }, function ($data) {
+                        return $data->fname . ' ' . $data->lname;
+                    }),
+                    'options' => [
+                        'placeholder' => '--จ่ายให้--',
+                        'class' => 'pay-for-name',
+                    ],
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                        'tags' => true, // Allow custom names if needed
+                    ]
+                ]) ?>
             </div>
 
         </div>
@@ -168,6 +182,19 @@ if($model->company_id > 0){
                         'onchange'=>'calallvat($(this))'
                     ]
                 ]) ?>
+            </div>
+            <div class="col-lg-2">
+                <?= $form->field($model, 'is_vat')->widget(\toxor88\switchery\Switchery::className(), [
+                    'options' => ['id' => 'is-vat', 'onchange' => 'calallvat($(this))'],
+                    'clientOptions' => ['size' => 'small', 'color' => '#26B99A']
+                ])->label('VAT 7%') ?>
+            </div>
+            <div class="col-lg-1">
+                <?= $form->field($model, 'is_wht')->widget(\toxor88\switchery\Switchery::className(), [
+                    'options' => ['id' => 'is-wht', 'onchange' => 'calallvat($(this))'],
+                    'clientOptions' => ['size' => 'small', 'color' => '#26B99A']
+                ])->label('ภงด') ?>
+            </div>
             </div>
         </div>
 
@@ -495,21 +522,26 @@ function checkpaytype(e){
 }
 
 function callinevat(e){
-    var line_amount = e.val();
-    var vat_per = $("#vat-per-amount").val() || 0;
-    var vat_amount = (parseFloat(line_amount) || 0) * (parseFloat(vat_per) || 0) / 100;
-    
-    e.closest("tr").find(".vat-per-line").val(parseFloat(vat_amount).toFixed(2));
+    calallvat(e);
 }
 function calallvat(e){
-    var vat_per = e.val() || 0;
- 
+    var wht_per = $("#vat-per-amount").val() || 0;
+    var is_vat = $("#is-vat").is(':checked');
+    var is_wht = $("#is-wht").is(':checked');
+
     $("#table-list2 tbody tr").each(function (){
       var line_amt = $(this).closest("tr").find(".price-line").val() || 0;
-      var line_vat_amt = (parseFloat(line_amt) || 0) * (parseFloat(vat_per) || 0) / 100;
+      var line_vat_amt = 0;
+      
+      if(is_wht){
+          line_vat_amt = (parseFloat(line_amt) || 0) * (parseFloat(wht_per) || 0) / 100;
+      }
+      
       $(this).closest("tr").find(".vat-per-line").val(parseFloat(line_vat_amt).toFixed(2));
+      
+      // If we need to show VAT status or something else, we can add it here.
+      // Currently the requirement is to calculate according to choice.
     });
-   
 }
 function getOffice(e){
     var office_id = e.val();
