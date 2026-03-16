@@ -17,11 +17,21 @@ if ($search_to_date != null) {
 $model = null;
 
 //$model = \backend\models\Workqueue::find()->where(['date(work_queue_date)' => $find_date,'work_option_type_id'=>[1,2]])->all();
+$query = \common\models\QueryCashRecord::find();
 if ($search_cost_type != null) {
-    $model = \common\models\QueryCashRecord::find()->where(['cost_title_id' => $search_cost_type, 'company_id' => $search_company_id, 'office_id' => $search_office_id])->andFilterWhere(['>=', 'date(trans_date)', $find_date])->andFilterWhere(['<=', 'date(trans_date)', $find_to_date])->all();
+    $query->where(['cost_title_id' => $search_cost_type, 'company_id' => $search_company_id]);
 } else {
-    $model = \common\models\QueryCashRecord::find()->where(['company_id' => $search_company_id, 'office_id' => $search_office_id])->andFilterWhere(['>=', 'date(trans_date)', $find_date])->andFilterWhere(['<=', 'date(trans_date)', $find_to_date])->all();
+    $query->where(['company_id' => $search_company_id]);
 }
+
+$query->andFilterWhere(['>=', 'date(trans_date)', $find_date])
+    ->andFilterWhere(['<=', 'date(trans_date)', $find_to_date]);
+
+if ($search_office_id > 0) {
+    $query->andWhere(['office_id' => $search_office_id]);
+}
+
+$model = $query->all();
 
 $location_data = \common\models\Location::find()->where(['company_id' => $search_company_id])->all();
 
@@ -93,6 +103,7 @@ $location_data = \common\models\Location::find()->where(['company_id' => $search
         <div class="col-lg-2">
             <label class="form-label">สำนักงาน</label>
             <select name="search_office_id" id="office-list" class="form-control">
+                <option value="0">ทั้งหมด</option>
                 <?php
                 for($a=0;$a <=count($location_data)-1;$a++){
                     $selected = '';
@@ -135,7 +146,7 @@ $location_data = \common\models\Location::find()->where(['company_id' => $search
         </tr>
         <tr>
             <td style="text-align: center;"><h5>หน่วยงาน
-                    <b><?= \backend\helpers\OfficeType::getTypeById($search_office_id) ?></b></h5></td>
+                    <b><?= $search_office_id > 0 ? \backend\helpers\OfficeType::getTypeById($search_office_id) : 'ทั้งหมด' ?></b></h5></td>
         </tr>
         <tr>
             <td style="text-align: center;"><b>วันที่ <?= date('d/m/Y', strtotime($find_date)); ?>

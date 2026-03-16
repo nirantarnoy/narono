@@ -36,7 +36,7 @@ class CashreportdailyController extends Controller
 
     public function actionGetoffice()
     {
-        $html = '';
+        $html = '<option value="0">ทั้งหมด</option>';
         $company_id = \Yii::$app->request->post('company_id');
         if ($company_id != null) {
             $data = \common\models\Location::find()->where(['company_id' => $company_id])->all();

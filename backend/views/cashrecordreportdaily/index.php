@@ -5,18 +5,17 @@ use kartik\date\DatePicker;
 $model = null;
 
 //if ($from_date!=null && $to_date != null) {
-if($search_company_id == null && $search_office_id ==null){
+if($search_company_id == null && ($search_office_id ==null || $search_office_id == 0)){
     $model = \common\models\QueryCashCompareReceipt::find()->where(['>=','date(trans_date)',date('Y-m-d',strtotime($from_date))])
         ->andFilterWhere(['<=','date(trans_date)',date('Y-m-d',strtotime($to_date))])->all();
-}else if($search_company_id != null && $search_office_id != null){
+}else if($search_company_id != null && ($search_office_id != null && $search_office_id > 0)){
     $model = \common\models\QueryCashCompareReceipt::find()->where(['>=','date(trans_date)',date('Y-m-d',strtotime($from_date))])->andFilterWhere(['<=','date(trans_date)',date('Y-m-d',strtotime($to_date))])->andfilterWhere(['or',['company_id' => $search_company_id],['company_id_2' => $search_company_id]])->andFilterWhere(['or',['office_id' => $search_office_id],['office_id_2' => $search_office_id]])->all();
 }
 
-if($search_company_id != null && $search_office_id ==null){
-    echo $search_company_id;
+if($search_company_id != null && ($search_office_id ==null || $search_office_id == 0)){
     $model = \common\models\QueryCashCompareReceipt::find()->where(['>=','date(trans_date)',date('Y-m-d',strtotime($from_date))])->andFilterWhere(['<=','date(trans_date)',date('Y-m-d',strtotime($to_date))])->andFilterWhere(['or',['company_id' => $search_company_id],['company_id_2' => $search_company_id]])->all();
 }
-if($search_company_id == null && $search_office_id != null){
+if($search_company_id == null && ($search_office_id != null && $search_office_id > 0)){
     $model = \common\models\QueryCashCompareReceipt::find()->where(['>=','date(trans_date)',date('Y-m-d',strtotime($from_date))])->andFilterWhere(['or',['office_id' => $search_office_id],['office_id_2' => $search_office_id]])->all();
 }
 
@@ -79,6 +78,7 @@ $location_data = \common\models\Location::find()->where(['company_id' => $search
                     <div class="col-lg-2">
                         <label class="form-label">สำนักงาน</label>
                         <select name="search_office_id" id="office-list" class="form-control">
+                            <option value="0">ทั้งหมด</option>
                             <?php
                             for($a=0;$a <=count($location_data)-1;$a++){
                                 $selected = '';
