@@ -187,7 +187,7 @@ $location_data = \common\models\Location::find()->where(['company_id' => $search
 
                             ?>
                             <tr>
-                                <td style="border: 1px solid grey;text-align: center"><?= date('d-m-Y H:i', strtotime($value->trans_date)) ?></td>
+                                <td style="border: 1px solid grey;text-align: center"><?= date('d-m-Y', strtotime($value->trans_date)) ?></td>
                                 <td style="border: 1px solid grey;padding: 3px;"><?= $line_title; ?></td>
                                 <td style="border: 1px solid grey;text-align: center;padding: 3px;"><?= \backend\models\Car::findName($line_carplateno); ?></td>
                                 <td style="border: 1px solid grey;text-align: right;padding: 3px;color: green;"><?= $line_reciept_amount == 0 ? '' : number_format($line_reciept_amount, 2) ?></td>
