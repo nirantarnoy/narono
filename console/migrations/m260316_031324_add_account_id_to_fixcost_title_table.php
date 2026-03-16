@@ -9,7 +9,7 @@ class m260316_031324_add_account_id_to_fixcost_title_table extends Migration
      */
     public function safeUp()
     {
-
+        $this->addColumn('{{%fixcost_title}}', 'account_id', $this->integer());
     }
 
     /**
@@ -17,9 +17,7 @@ class m260316_031324_add_account_id_to_fixcost_title_table extends Migration
      */
     public function safeDown()
     {
-        echo "m260316_031324_add_account_id_to_fixcost_title_table cannot be reverted.\n";
-
-        return false;
+        $this->dropColumn('{{%fixcost_title}}', 'account_id');
     }
 
     /*
