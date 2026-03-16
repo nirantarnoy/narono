@@ -23,6 +23,16 @@ use yii\widgets\ActiveForm;
             ]
     ]) ?>
 
+    <?= $form->field($model, 'account_id')->widget(\kartik\select2\Select2::className(),[
+            'data'=>\yii\helpers\ArrayHelper::map(\common\models\ChartOfAccount::find()->all(),'id', function($data){
+                return '['.$data->account_code.'] '.$data->name;
+            }),
+            'options' => ['placeholder' => 'เลือกผังบัญชี...'],
+            'pluginOptions' => [
+                  'allowClear'=> true,
+            ]
+    ]) ?>
+
     <?php echo $form->field($model, 'status')->widget(\toxor88\switchery\Switchery::className(), ['options' => ['label' => '', 'class' => 'form-control']])->label() ?>
 
     <div class="form-group">

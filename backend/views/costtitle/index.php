@@ -48,25 +48,31 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
 
-    <?= GridView::widget([
+    <?= \kartik\grid\GridView::widget([
         'dataProvider' => $dataProvider,
         'emptyCell' => '-',
         'layout' => "{items}\n{summary}\n<div class='text-center'>{pager}</div>",
         'summary' => "แสดง {begin} - {end} ของทั้งหมด {totalCount} รายการ",
         'showOnEmpty' => false,
-        //    'bordered' => true,
-        //     'striped' => false,
-        //    'hover' => true,
+        'striped' => true,
+        'hover' => true,
+        'bordered' => true,
         'id' => 'product-grid',
-        //'tableOptions' => ['class' => 'table table-hover'],
         'emptyText' => '<div style="color: red;text-align: center;"> <b>ไม่พบรายการไดๆ</b> <span> เพิ่มรายการโดยการคลิกที่ปุ่ม </span><span class="text-success">"สร้างใหม่"</span></div>',
-//        'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-          //  'id',
+            [
+                'class' => 'kartik\grid\SerialColumn',
+                'contentOptions' => ['style' => 'text-align: center'],
+            ],
             'name',
             'description',
+            [
+                'attribute' => 'account_id',
+                'value' => function($data){
+                    $account = \common\models\ChartOfAccount::findOne($data->account_id);
+                    return $account ? '['.$account->account_code.'] '.$account->name : '-';
+                }
+            ],
             [
                 'attribute' => 'type_id',
                 'format' => 'html',
@@ -77,6 +83,8 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'status',
                 'format' => 'raw',
+                'contentOptions' => ['style' => 'text-align: center'],
+                'headerOptions' => ['style' => 'text-align: center'],
                 'value' => function ($data) {
                     if ($data->status == 1) {
                         return '<div class="badge badge-success" >ใช้งาน</div>';
@@ -85,54 +93,32 @@ $this->params['breadcrumbs'][] = $this->title;
                     }
                 }
             ],
-            //  'created_at',
-            //'created_by',
             [
-
                 'header' => 'ตัวเลือก',
                 'headerOptions' => ['style' => 'text-align:center;', 'class' => 'activity-view-link',],
-                'class' => 'yii\grid\ActionColumn',
-                'contentOptions' => ['style' => 'text-align: center'],
+                'class' => 'kartik\grid\ActionColumn',
+                'contentOptions' => ['style' => 'text-align: center; vertical-align: middle;'],
                 'template' => '{view} {update}{delete}',
                 'buttons' => [
                     'view' => function ($url, $data, $index) {
-                        $options = [
-                            'title' => Yii::t('yii', 'View'),
-                            'aria-label' => Yii::t('yii', 'View'),
+                        return Html::a('<span class="fas fa-eye btn btn-xs btn-default"></span>', $url, [
+                            'title' => 'ดูรายละเอียด',
                             'data-pjax' => '0',
-                        ];
-                        return Html::a(
-                            '<span class="fas fa-eye btn btn-xs btn-default"></span>', $url, $options);
+                        ]);
                     },
                     'update' => function ($url, $data, $index) {
-                        $options = array_merge([
-                            'title' => Yii::t('yii', 'Update'),
-                            'aria-label' => Yii::t('yii', 'Update'),
+                        return Html::a('<span class="fas fa-edit btn btn-xs btn-default"></span>', $url, [
+                            'title' => 'แก้ไข',
                             'data-pjax' => '0',
-                            'id' => 'modaledit',
-                        ]);
-                        return Html::a(
-                            '<span class="fas fa-edit btn btn-xs btn-default"></span>', $url, [
-                            'id' => 'activity-view-link',
-                            //'data-toggle' => 'modal',
-                            // 'data-target' => '#modal',
-                            'data-id' => $index,
-                            'data-pjax' => '0',
-                            // 'style'=>['float'=>'rigth'],
                         ]);
                     },
                     'delete' => function ($url, $data, $index) {
-                        $options = array_merge([
-                            'title' => Yii::t('yii', 'Delete'),
-                            'aria-label' => Yii::t('yii', 'Delete'),
-                            //'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
-                            //'data-method' => 'post',
-                            //'data-pjax' => '0',
+                        return Html::a('<span class="fas fa-trash-alt btn btn-xs btn-default"></span>', 'javascript:void(0)', [
+                            'title' => 'ลบ',
                             'data-url' => $url,
                             'data-var' => $data->id,
                             'onclick' => 'recDelete($(this));'
                         ]);
-                        return Html::a('<span class="fas fa-trash-alt btn btn-xs btn-default"></span>', 'javascript:void(0)', $options);
                     }
                 ]
             ],

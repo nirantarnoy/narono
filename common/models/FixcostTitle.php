@@ -30,7 +30,7 @@ class FixcostTitle extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['status', 'created_at', 'created_by','type_id'], 'integer'],
+            [['status', 'created_at', 'created_by','type_id', 'account_id'], 'integer'],
             [['name', 'description'], 'string', 'max' => 255],
         ];
     }
@@ -45,6 +45,7 @@ class FixcostTitle extends \yii\db\ActiveRecord
             'name' => 'ชื่อ',
             'description' => 'รายละเอียด',
             'type_id' => 'ประเภทรับจ่าย',
+            'account_id' => 'บัญชีแยกประเภท',
             'status' => 'สถานะ',
             'created_at' => 'Created At',
             'created_by' => 'Created By',

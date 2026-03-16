@@ -31,6 +31,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             'description',
             [
+                'attribute' => 'account_id',
+                'value' => function ($data) {
+                    $account = \common\models\ChartOfAccount::findOne($data->account_id);
+                    return $account ? '[' . $account->account_code . '] ' . $account->name : '-';
+                }
+            ],
+            [
                 'attribute' => 'status',
                 'format' => 'raw',
                 'value' => function ($data) {

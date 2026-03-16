@@ -91,6 +91,12 @@
                                     <p>จัดการเอกสาร</p>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="index.php?r=chartofaccount" class="nav-link chartofaccount">
+                                    <i class="fas fa-university nav-icon"></i>
+                                    <p>ผังบัญชี</p>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 <?php endif; ?>
