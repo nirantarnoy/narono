@@ -7,7 +7,7 @@ use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 /** @var yii\web\View $this */
-/** @var backend\models\FixcostTitleSearch $searchModel */
+/** @var backend\models\CostTitleSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = 'รายการค่าใช้จ่าย';
@@ -34,9 +34,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="form-group">
                     <label>แสดง </label>
                     <select class="form-control" name="perpage" id="perpage">
-                        <option value="20" <?= $perpage == '20' ? 'selected' : '' ?>>20</option>
-                        <option value="50" <?= $perpage == '50' ? 'selected' : '' ?> >50</option>
-                        <option value="100" <?= $perpage == '100' ? 'selected' : '' ?>>100</option>
+                        <option value="20" <?= (isset($perpage) && $perpage == '20') || !isset($perpage) ? 'selected' : '' ?>>20</option>
+                        <option value="50" <?= isset($perpage) && $perpage == '50' ? 'selected' : '' ?> >50</option>
+                        <option value="100" <?= isset($perpage) && $perpage == '100' ? 'selected' : '' ?>>100</option>
                     </select>
                     <label> รายการ</label>
                 </div>

@@ -13,6 +13,8 @@ use yii\filters\VerbFilter;
  */
 class CosttitleController extends Controller
 {
+    public $enableCsrfValidation = false;
+
     /**
      * @inheritDoc
      */
@@ -42,10 +44,12 @@ class CosttitleController extends Controller
         $searchModel = new CostTitleSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
+        $dataProvider->pagination->pageSize = $pageSize;
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'perpage' => $pageSize,
+            'perpage' => $pageSize == null ? 20 : $pageSize,
         ]);
     }
 
