@@ -283,11 +283,16 @@ if($driver_id == null || $search_emp_id !=null){
                 <th style="text-align: center;padding: 10px;border: 1px solid grey;"><b>สถานที่</b></th>
                 <th style="text-align: center;padding: 10px;border: 1px solid grey;"><b>รายการ</b></th>
                 <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าเที่ยว</b></th>
+                <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าทางด่วน</b></th>
+                <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>พิเศษอื่นๆ</b></th>
                 <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าคลุมผ้าใบ</b></th>
                 <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าค้างคืน</b></th>
                 <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าบวกคลัง</b></th>
-                <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าเบิ้ลงาน</b></th>
+                <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าเบี้ยงาน</b></th>
                 <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าลาก/แบก</b></th>
+                <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>เงินยืมทดรอง</b></th>
+                <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ประกันสินค้า</b></th>
+                <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>หักอื่นๆ</b></th>
                 <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>อื่นๆ</b></th>
                 <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>รวม</b></th>
             </tr>
@@ -304,6 +309,7 @@ if($driver_id == null || $search_emp_id !=null){
             $sum_col_11 = 0;
             $sum_col_12 = 0;
             $sum_col_13 = 0;
+            $sum_total_net = 0;
 
             $test_price = 0;
             $damage_price = 0;
@@ -332,7 +338,6 @@ if($driver_id == null || $search_emp_id !=null){
             <?php if ($model_line != null): ?>
                 <?php foreach ($model_line as $value): ?>
                     <?php
-                    //$sum_col_4 += ($value->work_labour_price + $value->trail_labour_price + $value->cover_sheet_price + $value->overnight_price + $value->warehouse_plus_price + $value->work_double_price + $value->towing_price);
                     $sum_col_4 += ($value->work_labour_price);
                     $sum_col_5 += ($value->work_express_road_price);
                     $sum_col_6 += ($value->cover_sheet_price);
@@ -348,21 +353,27 @@ if($driver_id == null || $search_emp_id !=null){
                     $deduct_other_price += ($value->deduct_other_price);
                     $total_towing_amount +=($value->towing_price);
 
-                    $line_total = ($value->work_labour_price + $value->trail_labour_price + $value->work_express_road_price + $value->cover_sheet_price + $value->overnight_price + $value->warehouse_plus_price + $value->work_double_price + $value->towing_price + $value->other_amt);
-                    $sum_col_10 += ($line_total);
-
-
+                    $line_income_gross = ($value->work_labour_price + $value->trail_labour_price + $value->work_express_road_price + $value->cover_sheet_price + $value->overnight_price + $value->warehouse_plus_price + $value->work_double_price + $value->towing_price + $value->other_amt);
+                    $line_total = ($line_income_gross + $value->work_other_price) - ($value->test_price + $value->damaged_price + $value->deduct_other_price);
+                    
+                    $sum_col_10 += ($line_income_gross);
+                    $sum_total_net += ($line_total);
                     ?>
                     <tr>
                         <td style="border: 1px solid grey;padding: 5px;text-align: center;"><?= date('d-m-Y', strtotime($value->work_queue_date)) ?></td>
                         <td style="border: 1px solid grey;padding: 5px;"><?= \backend\models\Customer::findCusName($value->customer_id) ?></td>
                         <td style="border: 1px solid grey;padding: 5px;text-align: center;"><?= \backend\models\Customer::findWorkTypeByCustomerid($value->customer_id) ?></td>
                         <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->work_labour_price, 2) ?></td>
+                        <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->work_express_road_price, 2) ?></td>
+                        <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->work_other_price, 2) ?></td>
                         <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->cover_sheet_price, 2) ?></td>
                         <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->overnight_price, 2) ?></td>
                         <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->warehouse_plus_price, 2) ?></td>
                         <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->work_double_price, 2) ?></td>
                         <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->towing_price, 2) ?></td>
+                        <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->test_price, 2) ?></td>
+                        <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->damaged_price, 2) ?></td>
+                        <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->deduct_other_price, 2) ?></td>
                         <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->other_amt, 2) ?></td>
                         <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($line_total, 2) ?></td>
                     </tr>
@@ -384,6 +395,10 @@ if($driver_id == null || $search_emp_id !=null){
                 <td style="border: 1px solid grey;padding: 5px;text-align: right;">
                     <b><?= number_format($sum_col_4, 2) ?></b></td>
                 <td style="border: 1px solid grey;padding: 5px;text-align: right;">
+                    <b><?= number_format($sum_col_5, 2) ?></b></td>
+                <td style="border: 1px solid grey;padding: 5px;text-align: right;">
+                    <b><?= number_format($sum_col_9, 2) ?></b></td>
+                <td style="border: 1px solid grey;padding: 5px;text-align: right;">
                     <b><?= number_format($sum_col_6, 2) ?></b></td>
                 <td style="border: 1px solid grey;padding: 5px;text-align: right;">
                     <b><?= number_format($sum_col_7, 2) ?></b></td>
@@ -394,9 +409,15 @@ if($driver_id == null || $search_emp_id !=null){
                 <td style="border: 1px solid grey;padding: 5px;text-align: right;">
                     <b><?= number_format($sum_col_12, 2) ?></b></td>
                 <td style="border: 1px solid grey;padding: 5px;text-align: right;">
+                    <b><?= number_format($test_price, 2) ?></b></td>
+                <td style="border: 1px solid grey;padding: 5px;text-align: right;">
+                    <b><?= number_format($damage_price, 2) ?></b></td>
+                <td style="border: 1px solid grey;padding: 5px;text-align: right;">
+                    <b><?= number_format($deduct_other_price, 2) ?></b></td>
+                <td style="border: 1px solid grey;padding: 5px;text-align: right;">
                     <b><?= number_format($sum_col_13, 2) ?></b></td>
                 <td style="border: 1px solid grey;padding: 5px;text-align: right;">
-                    <b><?= number_format($sum_col_10, 2) ?></b></td>
+                    <b><?= number_format($sum_total_net, 2) ?></b></td>
 
             </tr>
             </tfoot>
