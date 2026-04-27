@@ -89,7 +89,7 @@ class WorkqueueController extends Controller
                 $model->work_queue_date = date('Y-m-d H:i:s', strtotime($new_date));
                 $model->work_queue_no = $model->getLastNo();
 
-                $line_doc_name = \Yii::$app->request->post('line_doc_name');
+                $line_doc_name = \Yii::$app->request->post('line_doc_name') ?? [];
                 // $line_file_name = \Yii::$app->request->post('line_file_name');
                 $uploaded = UploadedFile::getInstancesByName('line_file_name');
 
@@ -105,14 +105,14 @@ class WorkqueueController extends Controller
                 $total_amount = \Yii::$app->request->post('total_amount');
                 $total_amount2 = \Yii::$app->request->post('total_amount2');
 
-                $dropoff_id = \Yii::$app->request->post('dropoff_id');
-                $dropoff_no = \Yii::$app->request->post('dropoff_no');
-                $qty = \Yii::$app->request->post('qty');
-                $weight = \Yii::$app->request->post('weight');
-                $price_per_ton = \Yii::$app->request->post('price_per_ton');
-                $price_line_total = \Yii::$app->request->post('price_line_total');
-                $is_charter = \Yii::$app->request->post('is_charter');
-                $route_no = \Yii::$app->request->post('line_route_no');
+                $dropoff_id = \Yii::$app->request->post('dropoff_id') ?? [];
+                $dropoff_no = \Yii::$app->request->post('dropoff_no') ?? [];
+                $qty = \Yii::$app->request->post('qty') ?? [];
+                $weight = \Yii::$app->request->post('weight') ?? [];
+                $price_per_ton = \Yii::$app->request->post('price_per_ton') ?? [];
+                $price_line_total = \Yii::$app->request->post('price_line_total') ?? [];
+                $is_charter = \Yii::$app->request->post('is_charter') ?? [];
+                $route_no = \Yii::$app->request->post('line_route_no') ?? [];
 
                 // add new
 
@@ -194,7 +194,7 @@ class WorkqueueController extends Controller
 //                            }
 //                        }
 //                    }
-                    if ($model->item_back_id != null) {
+                    if (is_array($model->item_back_id)) {
                         if (count($model->item_back_id) > 0) {
                             for ($x = 0; $x <= count($model->item_back_id) - 1; $x++) {
                                 $w_itemback = new \common\models\WorkQueueItemback();
@@ -237,18 +237,18 @@ class WorkqueueController extends Controller
         if ($this->request->isPost && $model->load($this->request->post())) {
             $model->work_queue_date = date('Y-m-d', strtotime($model->work_queue_date));
             $removelist = \Yii::$app->request->post('remove_list');
-            $line_doc_name = \Yii::$app->request->post('line_doc_name');
+            $line_doc_name = \Yii::$app->request->post('line_doc_name') ?? [];
             // $line_file_name = \Yii::$app->request->post('line_file_name');
             $uploaded = UploadedFile::getInstancesByName('line_file_name');
-            $line_id = \Yii::$app->request->post('rec_id');
+            $line_id = \Yii::$app->request->post('rec_id') ?? [];
 
-            $dropoff_id = \Yii::$app->request->post('dropoff_id');
-            $dropoff_no = \Yii::$app->request->post('dropoff_no');
-            $qty = \Yii::$app->request->post('qty');
-            $weight = \Yii::$app->request->post('weight');
-            $price_per_ton = \Yii::$app->request->post('price_per_ton');
-            $price_line_total = \Yii::$app->request->post('price_line_total');
-            $route_no = \Yii::$app->request->post('line_route_no');
+            $dropoff_id = \Yii::$app->request->post('dropoff_id') ?? [];
+            $dropoff_no = \Yii::$app->request->post('dropoff_no') ?? [];
+            $qty = \Yii::$app->request->post('qty') ?? [];
+            $weight = \Yii::$app->request->post('weight') ?? [];
+            $price_per_ton = \Yii::$app->request->post('price_per_ton') ?? [];
+            $price_line_total = \Yii::$app->request->post('price_line_total') ?? [];
+            $route_no = \Yii::$app->request->post('line_route_no') ?? [];
 
             $oil_daily_price = \Yii::$app->request->post('oil_daily_price');
             $oil_out_price = \Yii::$app->request->post('oil_out_price');
@@ -260,7 +260,7 @@ class WorkqueueController extends Controller
 
             $removelist2 = \Yii::$app->request->post('remove_list2');
 
-            $is_charter = \Yii::$app->request->post('is_charter');
+            $is_charter = \Yii::$app->request->post('is_charter') ?? [];
 
             // add new
 
@@ -359,7 +359,7 @@ class WorkqueueController extends Controller
                 }
 
                 $delete_rec2 = explode(",", $removelist2);
-                if (count($delete_rec)) {
+                if (count($delete_rec2) > 0 && $removelist2 != '') {
                     \common\models\WorkQueueDropoff::deleteAll(['id' => $delete_rec2]);
 
                 }
@@ -375,7 +375,7 @@ class WorkqueueController extends Controller
 //                        }
 //                    }
 //                }
-                if ($model->item_back_id != null) {
+                if (is_array($model->item_back_id)) {
                     if (count($model->item_back_id) > 0) {
                         \common\models\WorkQueueItemback::deleteAll(['work_queue_id' => $model->id,'work_queue_type'=>1]);
                         for ($x = 0; $x <= count($model->item_back_id) - 1; $x++) {
