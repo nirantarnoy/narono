@@ -16,11 +16,12 @@ class WorkqueueSearch extends Workqueue
      */
 
     public $globalSearch;
+    public $car_type_id;
 
     public function rules()
     {
         return [
-            [['id', 'customer_id', 'emp_assign', 'status', 'create_at', 'created_by', 'updated_at', 'updated_by'], 'integer'],
+            [['id', 'customer_id', 'emp_assign', 'status', 'create_at', 'created_by', 'updated_at', 'updated_by','car_id','company_id','car_type_id'], 'integer'],
             [['work_queue_no', 'work_queue_date', 'dp_no'], 'safe'],
             [['globalSearch'], 'string'],
         ];
@@ -44,7 +45,8 @@ class WorkqueueSearch extends Workqueue
      */
     public function search($params)
     {
-        $query = Workqueue::find()->leftJoin('customer','work_queue.customer_id = customer.id')->leftJoin('employee','work_queue.emp_assign=employee.id');
+        $query = Workqueue::find()->joinWith(['customer','car'])
+            ->leftJoin('employee','work_queue.emp_assign=employee.id');
 
         // add conditions that should always apply here
 
@@ -61,22 +63,26 @@ class WorkqueueSearch extends Workqueue
         }
 
         // grid filtering conditions
-//        $query->andFilterWhere([
-//            'id' => $this->id,
-//            'work_queue_date' => $this->work_queue_date,
-//            'customer_id' => $this->customer_id,
-//            'emp_assign' => $this->emp_assign,
-//            'status' => $this->status,
-//            'create_at' => $this->create_at,
-//            'created_by' => $this->created_by,
-//            'updated_at' => $this->updated_at,
-//            'updated_by' => $this->updated_by,
-//        ]);
+        $query->andFilterWhere([
+            'work_queue.id' => $this->id,
+            'work_queue.customer_id' => $this->customer_id,
+            'work_queue.emp_assign' => $this->emp_assign,
+            'work_queue.status' => $this->status,
+            'work_queue.car_id' => $this->car_id,
+            'work_queue.company_id' => $this->company_id,
+            'car.car_type_id' => $this->car_type_id,
+        ]);
 
-        $query->orFilterWhere(['like', 'work_queue_no', $this->globalSearch])
-            ->orFilterWhere(['like', 'dp_no', $this->globalSearch])
-        ->orFilterWhere(['like', 'customer.name', $this->globalSearch])
-        ->orFilterWhere(['like', 'employee.fname', $this->globalSearch]);
+        if(!empty($this->work_queue_date)){
+            $query->andFilterWhere(['like', 'work_queue_date', date('Y-m-d', strtotime($this->work_queue_date))]);
+        }
+
+        $query->andFilterWhere(['or',
+            ['like', 'work_queue_no', $this->globalSearch],
+            ['like', 'dp_no', $this->globalSearch],
+            ['like', 'customer.name', $this->globalSearch],
+            ['like', 'employee.fname', $this->globalSearch]
+        ]);
 
         return $dataProvider;
     }

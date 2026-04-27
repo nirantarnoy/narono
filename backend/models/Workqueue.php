@@ -132,4 +132,9 @@ class Workqueue extends \common\models\WorkQueue
     public function getCustomerPo(){
         return $this->hasOne(CustomerPo::className(),['id' => 'cus_po_id']);
     }
+
+    public function getCar()
+    {
+        return $this->hasOne(Car::className(), ['id' => 'car_id']);
+    }
 }
