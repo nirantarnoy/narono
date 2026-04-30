@@ -27,6 +27,19 @@ use Yii;
  * @property float|null $labour_price
  * @property float|null $express_road_price
  * @property float|null $other_price
+ * @property float|null $work_labour_price
+ * @property float|null $work_express_road_price
+ * @property float|null $work_other_price
+ * @property float|null $test_price
+ * @property float|null $damaged_price
+ * @property float|null $deduct_other_price
+ * @property float|null $other_amt
+ * @property float|null $cover_sheet_price
+ * @property float|null $overnight_price
+ * @property float|null $warehouse_plus_price
+ * @property float|null $work_double_price
+ * @property float|null $towing_price
+ * @property float|null $trail_labour_price
  * @property int|null $car_type_id
  * @property string|null $car_type_name
  */
@@ -47,7 +60,7 @@ class QueryCarWorkSummary extends \yii\db\ActiveRecord
     {
         return [
             [['id', 'des_province_id', 'status', 'created_at', 'created_by', 'updated_at', 'updated_by', 'customer_id', 'hp', 'item_back_id', 'company_id', 'dropoff_place_id', 'car_type_id'], 'integer'],
-            [['total_distanct', 'oil_rate_qty', 'dropoff_qty', 'labour_price', 'express_road_price', 'other_price'], 'number'],
+            [['total_distanct', 'oil_rate_qty', 'dropoff_qty', 'labour_price', 'express_road_price', 'other_price', 'work_labour_price', 'work_express_road_price', 'work_other_price', 'test_price', 'damaged_price', 'deduct_other_price', 'other_amt', 'cover_sheet_price', 'overnight_price', 'warehouse_plus_price', 'work_double_price', 'towing_price', 'trail_labour_price'], 'number'],
             [['des_name', 'dropoff_name', 'car_type_name'], 'string', 'max' => 255],
         ];
     }

@@ -157,7 +157,7 @@ class WorkqueueController extends Controller
                                             $model_doc = new \common\models\WorkQueueLine();
                                             $model_doc->work_queue_id = $model->id;
                                             $model_doc->doc = $upfiles;
-                                            $model_doc->description = $line_doc_name[$i];
+                                            $model_doc->description = $line_doc_name[$i] ?? '';
                                             $model_doc->save(false);
                                         }
                                     }
@@ -172,14 +172,14 @@ class WorkqueueController extends Controller
                         for ($a = 0; $a <= count($dropoff_id) - 1; $a++) {
                             $model_df = new \common\models\WorkQueueDropoff();
                             $model_df->work_queue_id = $model->id;
-                            $model_df->dropoff_id = $dropoff_id[$a];
-                            $model_df->quotation_route_no = $route_no[$a];
-                            $model_df->dropoff_no = $dropoff_no[$a];
-                            $model_df->qty = $qty[$a];
-                            $model_df->weight = $weight[$a];
-                            $model_df->price_per_ton = $price_per_ton[$a];
-                            $model_df->price_line_total = $price_line_total[$a];
-                            $model_df->is_charter = $is_charter[$a];
+                            $model_df->dropoff_id = $dropoff_id[$a] ?? null;
+                            $model_df->quotation_route_no = $route_no[$a] ?? null;
+                            $model_df->dropoff_no = $dropoff_no[$a] ?? null;
+                            $model_df->qty = (float)($qty[$a] ?? 0);
+                            $model_df->weight = (float)($weight[$a] ?? 0);
+                            $model_df->price_per_ton = (float)($price_per_ton[$a] ?? 0);
+                            $model_df->price_line_total = (float)($price_line_total[$a] ?? 0);
+                            $model_df->is_charter = $is_charter[$a] ?? 0;
                             $model_df->save(false);
                         }
                     }
@@ -294,7 +294,7 @@ class WorkqueueController extends Controller
                     for ($i = 0; $i <= count($line_id) - 1; $i++) {
                         $model_check = \common\models\WorkQueueLine::find()->where(['id' => $line_id[$i]])->one();
                         if ($model_check) {
-                            $model_check->description = $line_doc_name[$i];
+                            $model_check->description = $line_doc_name[$i] ?? '';
                             $model_check->save(false);
                         } else {
                             foreach ($uploaded as $key => $value) {
@@ -306,7 +306,7 @@ class WorkqueueController extends Controller
                                         $model_doc = new \common\models\WorkQueueLine();
                                         $model_doc->work_queue_id = $model->id;
                                         $model_doc->doc = $upfiles;
-                                        $model_doc->description = $line_doc_name[$i];
+                                        $model_doc->description = $line_doc_name[$i] ?? '';
                                         $model_doc->save(false);
                                     }
                                 }
@@ -318,30 +318,17 @@ class WorkqueueController extends Controller
                 if ($dropoff_id != null) {
                     \common\models\WorkQueueDropoff::deleteAll(['work_queue_id' => $model->id]);
                     for ($a = 0; $a <= count($dropoff_id) - 1; $a++) {
-                        $model_test = \common\models\WorkQueueDropoff::find()->where(['work_queue_id' => $model->id, 'dropoff_id' => $dropoff_id[$a], 'dropoff_no' => $dropoff_no[$a]])->one();
-                        if ($model_test) {
-                            $model_test->dropoff_id = $dropoff_id[$a];
-                            $model_test->quotation_route_no = $route_no[$a];
-                            $model_test->dropoff_no = $dropoff_no[$a];
-                            $model_test->qty = (float)$qty[$a];
-                            $model_test->weight = (float)$weight[$a];
-                            $model_test->price_per_ton = (float)$price_per_ton[$a];
-                            $model_test->price_line_total = (float)$price_line_total[$a];
-                            $model_test->is_charter = $is_charter[$a];
-                            $model_test->save(false);
-                        } else {
-                            $model_do = new \common\models\WorkQueueDropoff();
-                            $model_do->work_queue_id = $model->id;
-                            $model_do->dropoff_id = $dropoff_id[$a];
-                            $model_do->quotation_route_no = $route_no[$a];
-                            $model_do->dropoff_no = $dropoff_no[$a];
-                            $model_do->qty = (float)$qty[$a];
-                            $model_do->weight = (float)$weight[$a];
-                            $model_do->price_per_ton = (float)$price_per_ton[$a];
-                            $model_do->price_line_total = (float)$price_line_total[$a];
-                            $model_do->is_charter = $is_charter[$a];
-                            $model_do->save(false);
-                        }
+                        $model_do = new \common\models\WorkQueueDropoff();
+                        $model_do->work_queue_id = $model->id;
+                        $model_do->dropoff_id = $dropoff_id[$a] ?? null;
+                        $model_do->quotation_route_no = $route_no[$a] ?? null;
+                        $model_do->dropoff_no = $dropoff_no[$a] ?? null;
+                        $model_do->qty = (float)($qty[$a] ?? 0);
+                        $model_do->weight = (float)($weight[$a] ?? 0);
+                        $model_do->price_per_ton = (float)($price_per_ton[$a] ?? 0);
+                        $model_do->price_line_total = (float)($price_line_total[$a] ?? 0);
+                        $model_do->is_charter = $is_charter[$a] ?? 0;
+                        $model_do->save(false);
                     }
                 }
 

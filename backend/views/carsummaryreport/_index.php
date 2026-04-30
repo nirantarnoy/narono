@@ -353,8 +353,8 @@ if($driver_id == null || $search_emp_id !=null){
                     $deduct_other_price += ($value->deduct_other_price);
                     $total_towing_amount +=($value->towing_price);
 
-                    $line_income_gross = ($value->work_labour_price + $value->trail_labour_price + $value->work_express_road_price + $value->cover_sheet_price + $value->overnight_price + $value->warehouse_plus_price + $value->work_double_price + $value->towing_price + $value->other_amt);
-                    $line_total = ($line_income_gross + $value->work_other_price) - ($value->test_price + $value->damaged_price + $value->deduct_other_price);
+                    $line_income_gross = ($value->work_labour_price + $value->trail_labour_price + $value->work_express_road_price + $value->cover_sheet_price + $value->overnight_price + $value->warehouse_plus_price + $value->work_double_price + $value->towing_price);
+                    $line_total = ($line_income_gross + $value->work_other_price) - ($value->test_price + $value->damaged_price + $value->deduct_other_price + $value->other_amt);
                     
                     $sum_col_10 += ($line_income_gross);
                     $sum_total_net += ($line_total);
@@ -498,9 +498,9 @@ if($driver_id == null || $search_emp_id !=null){
                 <td></td>
                 <td style="text-align: right;padding: 5px;"><?php //echo number_format($sum_col_8,2)?></td>
                 <td style="text-align: center;padding: 5px;"></td>
-                <td></td>
-                <td style="text-align: right;padding: 5px;"></td>
-                <td></td>
+                <td style="padding-left: 10px">อื่นๆ</td>
+                <td style="text-align: right;padding: 5px;"><?= number_format($sum_col_13, 2) ?></td>
+                <td style="text-align: center;padding: 5px;">บาท</td>
             </tr>
             <tr>
                 <td></td>
@@ -521,7 +521,7 @@ if($driver_id == null || $search_emp_id !=null){
                 <td style="text-align: center;padding: 5px;">บาท</td>
                 <td><b>คงเหลือ</b></td>
                 <td style="text-align: right;padding: 5px;">
-                    <b><u><?= number_format(($sum_col_10 + $cost_living_price + $sum_col_9) - $deduct_total - $test_price - $damage_price - $deduct_other_price - $fine_employee_amount, 2) ?></u></b>
+                    <b><u><?= number_format(($sum_col_10 + $cost_living_price + $sum_col_9) - $deduct_total - $test_price - $damage_price - $deduct_other_price - $sum_col_13 - $fine_employee_amount, 2) ?></u></b>
                 </td>
                 <td style="text-align: center;padding: 5px;">บาท</td>
             </tr>
