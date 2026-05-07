@@ -414,11 +414,12 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
         <h5>จุดขึ้นสินค้า</h5>
         <div class="row">
             <div class="col-lg-12">
+        <div class="table-responsive">
                 <table class="table table-bordered table-striped" id="table-list2">
                     <thead>
                     <th>สถานที่ขึ้นสินค้า</th>
                     <th>RouteNo</th>
-                    <th>เลขที่ใบตั้ง</th>
+                    <th style="min-width: 250px;">เลขที่ใบตั้ง</th>
                     <th>จำนวนม้วน</th>
                     <th>เหมา</th>
                     <th>น้ำหนัก</th>
@@ -650,7 +651,8 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                         <td><b><span class="sum-total-amount"><?= number_format($sum_total_amount, 2) ?></span></b></td>
                     </tr>
                     </tfoot>
-                </table>
+                    </table>
+                </div>
             </div>
         </div>
 
