@@ -47,7 +47,7 @@ if (!$model->isNewRecord) {
 }
 //print_r($dropoff_list);
 //print_r($model->route_plan_id);
-$dropoff_data = \common\models\DropoffPlace::find()->all();
+$dropoff_data = \common\models\DropoffPlace::find()->select(['id', 'name'])->asArray()->all();
 
 //print_r($dropoff_data);
 
@@ -81,9 +81,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
         </div>
         <div class="col-lg-3">
             <?= $form->field($model, 'customer_id')->Widget(\kartik\select2\Select2::className(), [
-                'data' => \yii\helpers\ArrayHelper::map(\backend\models\Customer::find()->all(), 'id', function ($data) {
-                    return $data->name;
-                }),
+                'data' => \yii\helpers\ArrayHelper::map(\backend\models\Customer::find()->select(['id', 'name'])->asArray()->all(), 'id', 'name'),
                 'options' => [
                     'id' => 'customer-selected-id',
                     'placeholder' => '--ลูกค้า--'
@@ -125,9 +123,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
         <!--        </div>-->
         <div class="col-lg-3">
             <?= $form->field($model, 'car_id')->Widget(\kartik\select2\Select2::className(), [
-                'data' => \yii\helpers\ArrayHelper::map(\backend\models\Car::find()->where(['type_id' => '1'])->all(), 'id', function ($data) {
-                    return $data->name;
-                }),
+                'data' => \yii\helpers\ArrayHelper::map(\backend\models\Car::find()->select(['id', 'name'])->where(['type_id' => '1'])->asArray()->all(), 'id', 'name'),
                 'options' => [
                     'id' => 'car-selected-id',
                     'placeholder' => '--รถ--',
@@ -138,9 +134,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
         <div class="col-lg-3">
             <?php $model->item_back_id = !$model->isNewRecord ? $itemback_list : null ?>
             <?= $form->field($model, 'item_back_id')->Widget(\kartik\select2\Select2::className(), [
-                'data' => \yii\helpers\ArrayHelper::map(\backend\models\Item::find()->all(), 'id', function ($data) {
-                    return $data->name;
-                }),
+                'data' => \yii\helpers\ArrayHelper::map(\backend\models\Item::find()->select(['id', 'name'])->asArray()->all(), 'id', 'name'),
                 'options' => [
                     'placeholder' => '--ของนำกลับ--',
                 ],
@@ -201,9 +195,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
         <div class="row">
             <div class="col-lg-3">
                 <?= $form->field($model, 'tail_id')->Widget(\kartik\select2\Select2::className(), [
-                    'data' => \yii\helpers\ArrayHelper::map(\backend\models\Car::find()->where(['type_id' => '2'])->all(), 'id', function ($data) {
-                        return $data->name;
-                    }),
+                    'data' => \yii\helpers\ArrayHelper::map(\backend\models\Car::find()->select(['id', 'name'])->where(['type_id' => '2'])->asArray()->all(), 'id', 'name'),
                     'options' => [
                         'placeholder' => '--พ่วง--',
                         'onchange' => 'getTailinfo($(this))',
@@ -216,9 +208,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
             </div>
             <div class="col-lg-3">
                 <?= $form->field($model, 'cus_po_id')->Widget(\kartik\select2\Select2::className(), [
-                    'data' => \yii\helpers\ArrayHelper::map(\backend\models\CustomerPo::find()->all(), 'id', function ($data) {
-                        return $data->po_number;
-                    }),
+                    'data' => \yii\helpers\ArrayHelper::map(\backend\models\CustomerPo::find()->select(['id', 'po_number'])->asArray()->all(), 'id', 'po_number'),
                     'options' => [
                         'id' => 'cus-po-id',
                         'placeholder' => '--PO ลูกค้า--',
@@ -269,9 +259,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
         <div class="row">
             <div class="col-lg-3">
                 <?= $form->field($model, 'tail_back_id')->Widget(\kartik\select2\Select2::className(), [
-                    'data' => \yii\helpers\ArrayHelper::map(\backend\models\Car::find()->where(['type_id' => '2'])->all(), 'id', function ($data) {
-                        return $data->name;
-                    }),
+                    'data' => \yii\helpers\ArrayHelper::map(\backend\models\Car::find()->select(['id', 'name'])->where(['type_id' => '2'])->asArray()->all(), 'id', 'name'),
                     'options' => [
                         'placeholder' => '--พ่วง--',
                         'onchange' => 'getTailinfo1($(this))',
@@ -377,78 +365,75 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                     <tr style="background-color: #92d050; color: white; font-weight: bold;">
                         <td colspan="6" class="text-center">เงินส่วนเพิ่ม</td>
                     </tr>
-                    <!-- Group 1 -->
                     <tr style="background-color: #e2efda;">
                         <td colspan="2"><b>กลุ่ม 1</b></td>
                         <td colspan="4">ค่าเที่ยวหลัก</td>
                     </tr>
                     <tr>
                         <td style="width: 15%;">ค่าเที่ยวทั่วไป</td>
-                        <td style="width: 18%; background-color: #ffff00;"><?= $form->field($model, 'labour_price_general')->textInput(['class' => 'form-control cal-income group-1', 'id' => 'labour-price-general', 'style' => 'background-color: #ffff00;'])->label(false) ?></td>
+                        <td style="width: 18%;"><?= $form->field($model, 'labour_price_general')->textInput(['class' => 'form-control cal-income group-1', 'id' => 'labour-price-general'])->label(false) ?></td>
                         <td style="width: 15%;">ค่าเที่ยวพิเศษ</td>
-                        <td style="width: 18%; background-color: #ffff00;"><?= $form->field($model, 'labour_price_special')->textInput(['class' => 'form-control cal-income group-1', 'id' => 'labour-price-special', 'style' => 'background-color: #ffff00;'])->label(false) ?></td>
-                        <td style="width: 15%;">รวม A+B (บาท)</td>
+                        <td style="width: 18%;"><?= $form->field($model, 'labour_price_special')->textInput(['class' => 'form-control cal-income group-1', 'id' => 'labour-price-special'])->label(false) ?></td>
+                        <td style="width: 15%;">รวม (บาท)</td>
                         <td style="width: 19%;"><input type="text" class="form-control total-group-1" readonly value="0" style="background-color: #f2f2f2;"></td>
                     </tr>
-                    <!-- Group 2 -->
                     <tr style="background-color: #e2efda;">
                         <td colspan="2"><b>กลุ่ม 2</b></td>
                         <td colspan="4">เงินพิเศษอื่นๆ</td>
                     </tr>
                     <tr>
                         <td>ค่าแบก</td>
-                        <td style="background-color: #ffff00;"><?= $form->field($model, 'towing_price')->textInput(['class' => 'form-control cal-income group-2', 'id' => 'towing-price', 'style' => 'background-color: #ffff00;'])->label(false) ?></td>
+                        <td><?= $form->field($model, 'towing_price')->textInput(['class' => 'form-control cal-income group-2', 'id' => 'towing-price'])->label(false) ?></td>
                         <td>ค่าคลุมผ้าใบ</td>
-                        <td style="background-color: #ffff00;"><?= $form->field($model, 'cover_sheet_price')->textInput(['class' => 'form-control cal-income group-2', 'id' => 'cover-sheet-price', 'style' => 'background-color: #ffff00;'])->label(false) ?></td>
+                        <td><?= $form->field($model, 'cover_sheet_price')->textInput(['class' => 'form-control cal-income group-2', 'id' => 'cover-sheet-price'])->label(false) ?></td>
                         <td>ค่าบวกคลัง</td>
-                        <td style="background-color: #ffff00;"><?= $form->field($model, 'warehouse_plus_price')->textInput(['class' => 'form-control cal-income group-2', 'id' => 'warehouse-plus-price', 'style' => 'background-color: #ffff00;'])->label(false) ?></td>
+                        <td><?= $form->field($model, 'warehouse_plus_price')->textInput(['class' => 'form-control cal-income group-2', 'id' => 'warehouse-plus-price'])->label(false) ?></td>
                     </tr>
                     <tr>
                         <td>ค่าส่ง 2 ลูกค้า</td>
-                        <td style="background-color: #ffff00;"><?= $form->field($model, 'delivery_2_cus_price')->textInput(['class' => 'form-control cal-income group-2', 'id' => 'delivery-2-cus-price', 'style' => 'background-color: #ffff00;'])->label(false) ?></td>
-                        <td colspan="2">รวม C+D+E+F (บาท)</td>
+                        <td><?= $form->field($model, 'delivery_2_cus_price')->textInput(['class' => 'form-control cal-income group-2', 'id' => 'delivery-2-cus-price'])->label(false) ?></td>
+                        <td colspan="2">รวม (บาท)</td>
                         <td colspan="2"><input type="text" class="form-control total-group-2" readonly value="0" style="background-color: #f2f2f2;"></td>
                     </tr>
-                    <!-- Group 3 -->
                     <tr style="background-color: #e2efda;">
                         <td colspan="2"><b>กลุ่ม 3</b></td>
                         <td colspan="4">Incentive</td>
                     </tr>
                     <tr>
                         <td>ค่าขึ้นงานวันอาทิตย์</td>
-                        <td style="background-color: #ffff00;"><?= $form->field($model, 'sunday_price')->textInput(['class' => 'form-control cal-income group-3', 'id' => 'sunday-price', 'style' => 'background-color: #ffff00;'])->label(false) ?></td>
+                        <td><?= $form->field($model, 'sunday_price')->textInput(['class' => 'form-control cal-income group-3', 'id' => 'sunday-price'])->label(false) ?></td>
                         <td>ค่าขึ้นงานฝั่งรังสิตฯ</td>
-                        <td style="background-color: #ffff00;"><?= $form->field($model, 'rangsit_price')->textInput(['class' => 'form-control cal-income group-3', 'id' => 'rangsit-price', 'style' => 'background-color: #ffff00;'])->label(false) ?></td>
+                        <td><?= $form->field($model, 'rangsit_price')->textInput(['class' => 'form-control cal-income group-3', 'id' => 'rangsit-price'])->label(false) ?></td>
                         <td>ค้างคืน</td>
-                        <td style="background-color: #ffff00;"><?= $form->field($model, 'overnight_price')->textInput(['class' => 'form-control cal-income group-3', 'id' => 'overnight-price', 'style' => 'background-color: #ffff00;'])->label(false) ?></td>
+                        <td><?= $form->field($model, 'overnight_price')->textInput(['class' => 'form-control cal-income group-3', 'id' => 'overnight-price'])->label(false) ?></td>
                     </tr>
                     <tr>
+                        <td>ค่าทางด่วน</td>
+                        <td><?= $form->field($model, 'express_road_price')->textInput(['class' => 'form-control cal-income group-3', 'id' => 'express-road-price'])->label(false) ?></td>
                         <td>ค่าเบี้ยขยัน</td>
-                        <td style="background-color: #ffff00;"><?= $form->field($model, 'diligence_price')->textInput(['class' => 'form-control cal-income group-3', 'id' => 'diligence-price', 'style' => 'background-color: #ffff00;'])->label(false) ?></td>
-                        <td colspan="2">รวม G+H+I+N (บาท)</td>
+                        <td><?= $form->field($model, 'diligence_price')->textInput(['class' => 'form-control cal-income group-3', 'id' => 'diligence-price'])->label(false) ?></td>
+                        <td colspan="2">รวม (บาท)</td>
                         <td colspan="2"><input type="text" class="form-control total-group-3" readonly value="0" style="background-color: #f2f2f2;"></td>
                     </tr>
-                    <!-- Grand Total Income -->
                     <tr style="background-color: #fff2cc; font-weight: bold;">
-                        <td colspan="4" class="text-right">รวมทั้งสิ้น (1+2+3)</td>
+                        <td colspan="4" class="text-right">รวมทั้งสิ้น (บาท)</td>
                         <td colspan="2"><input type="text" class="form-control total-income-all" readonly value="0" style="font-weight: bold; color: blue;"></td>
                     </tr>
-                    <!-- Deductions -->
                     <tr style="background-color: #ffc000; color: white; font-weight: bold;">
                         <td colspan="6" class="text-center">หักเงิน</td>
                     </tr>
                     <tr>
                         <td>เงินยืมทดลอง</td>
-                        <td style="background-color: #ffff00;"><?= $form->field($model, 'test_price')->textInput(['class' => 'form-control cal-deduct', 'id' => 'test-price', 'style' => 'background-color: #ffff00;'])->label(false) ?></td>
+                        <td><?= $form->field($model, 'test_price')->textInput(['class' => 'form-control cal-deduct', 'id' => 'test-price'])->label(false) ?></td>
                         <td>ประกันสินค้าเสียหาย</td>
-                        <td style="background-color: #ffff00;"><?= $form->field($model, 'damaged_price')->textInput(['class' => 'form-control cal-deduct', 'id' => 'damaged-price', 'style' => 'background-color: #ffff00;'])->label(false) ?></td>
+                        <td><?= $form->field($model, 'damaged_price')->textInput(['class' => 'form-control cal-deduct', 'id' => 'damaged-price'])->label(false) ?></td>
                         <td>ค่าปรับจราจร</td>
-                        <td style="background-color: #ffff00;"><?= $form->field($model, 'traffic_fine_price')->textInput(['class' => 'form-control cal-deduct', 'id' => 'traffic-fine-price', 'style' => 'background-color: #ffff00;'])->label(false) ?></td>
+                        <td><?= $form->field($model, 'traffic_fine_price')->textInput(['class' => 'form-control cal-deduct', 'id' => 'traffic-fine-price'])->label(false) ?></td>
                     </tr>
                     <tr>
                         <td>อื่นๆ</td>
-                        <td style="background-color: #ffff00;"><?= $form->field($model, 'deduct_other_price')->textInput(['class' => 'form-control cal-deduct', 'id' => 'deduct-other-price', 'style' => 'background-color: #ffff00;'])->label(false) ?></td>
-                        <td colspan="2" class="text-right"><b>รวม J+K+L+M (บาท)</b></td>
+                        <td><?= $form->field($model, 'deduct_other_price')->textInput(['class' => 'form-control cal-deduct', 'id' => 'deduct-other-price'])->label(false) ?></td>
+                        <td colspan="2" class="text-right"><b>รวม (บาท)</b></td>
                         <td colspan="2"><input type="text" class="form-control total-deduct-all" readonly value="0" style="font-weight: bold; color: red;"></td>
                     </tr>
                 </table>
@@ -538,7 +523,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                                 $sum_total_weight += $key->weight;
                                 $sum_total_amount += $key->price_line_total;
                                 ?>
-                                <?php $route_no_data = \common\models\QueryQuotationPricePerTon::find()->where(['dropoff_id' => $key->dropoff_id, 'car_type_id' => $current_car_type_id])->all(); ?>
+                                <?php $route_no_data = \common\models\QueryQuotationPricePerTon::find()->select(['id', 'route_no'])->where(['dropoff_id' => $key->dropoff_id, 'car_type_id' => $current_car_type_id])->asArray()->all(); ?>
                                 <tr data-var="<?= $key->id ?>">
                                     <td>
                                         <select name="dropoff_id[]" class="form-control dropoff-id" id=""
@@ -1000,12 +985,16 @@ function enableLabour(e){
        }
          loop +=1;
          if($("#labour-price-checked").val() == 1){
-           var labour = $('#labour-price-plan').val();
-           $("#labour-price").val(labour);
-           }else{
-                $("#labour-price").val(0);
-           }
-         
+            var labour = $('#labour-price-plan').val();
+            $("#labour-price").val(labour);
+            $("#labour-price-general").val(labour);
+            }else{
+                 $("#labour-price").val(0);
+                 $("#labour-price-general").val(0);
+                 $("#labour-price-special").val(0);
+            }
+          
+          calculateGroups();
        return false;
    }
  
@@ -1017,12 +1006,17 @@ function enableLabour(e){
        }
         loop +=1;
        if($("#labour-price-checked").val() == 1){
-           getRouteplan();
-           var labour = $('#labour-price-plan').val();
-           $("#labour-price").val(labour);
-           }else{
-                $("#labour-price").val(0);
-           }
+            getRouteplan();
+            var labour = $('#labour-price-plan').val();
+            $("#labour-price").val(labour);
+            $("#labour-price-general").val(labour);
+            }else{
+                 $("#labour-price").val(0);
+                 $("#labour-price-general").val(0);
+                 $("#labour-price-special").val(0);
+            }
+          
+        calculateGroups();
       
        // loop = 0;
        return  false;
@@ -1061,14 +1055,14 @@ function enableExpressroad(e){
         loop2 +=1;
        if($("#express-road-price-checked").val() == 1){
            getRouteplan();
-           var labour = $('#express-road-price-plan').val();
-           $("#express-road-price").val(labour);
-           }else{
-                $("#express-road-price").val(0);
-           }
-      
-       // loop = 0;
-       return  false;
+            var labour = $('#express-road-price-plan').val();
+            $("#express-road-price").val(labour);
+            }else{
+                 $("#express-road-price").val(0);
+            }
+        
+        calculateGroups();
+        return false;
    }
   
  
@@ -1083,23 +1077,22 @@ function enableOther(e){
     }
   
    if($("#other-price-checked").val() == 1){
-     //  alert("has 1");
        $("#other-price-checked").val(0);
-       if($("#other-price-checked").val() == 0){
-           $("#other-price-checked").val(0)
-       }
-         loop3 +=1;
-         if($("#other-price-checked").val() == 1){
-           var labour = $('#other-price-plan').val();
-           $("#other-price").val(labour);
-           }else{
-                $("#other-price").val(0);
-           }
+       loop3 +=1;
+       $("#other-price").val(0);
+       $("#towing-price").val(0);
+       $("#cover-sheet-price").val(0);
+       $("#warehouse-plus-price").val(0);
+       $("#delivery-2-cus-price").val(0);
+       $("#sunday-price").val(0);
+       $("#rangsit-price").val(0);
+       $("#overnight-price").val(0);
+       $("#diligence-price").val(0);
+       calculateGroups();
        return false;
    }
  
    if($("#other-price-checked").val() == 0){
-      // alert("has 0");
        $("#other-price-checked").val(1);
        if($("#other-price-checked").val() == 0){
            $("#other-price-checked").val(1)
@@ -1225,12 +1218,16 @@ function getRouteplan(){
                     $('.total-distance').val(distance);
                     $('.total-qty').val(parseFloat(rate_qty) + parseFloat(dropoff_qty));
                     $('#labour-price').val(labour_price);
+                    $('#labour-price-general').val(labour_price); // Default to Group 1 General
                     $('#labour-price-plan').val(labour_price);
                     $('#express-road-price-plan').val(express_road_price);
                     $('#cover-sheet-price-plan').val(cover_sheet_price);
                     $('#overnight-price-plan').val(overnight_price);
                     $('#warehouse-plus-price-plan').val(warehouse_plus_price);
                     $('#other-price-plan').val(other_price);
+                    
+                    // Trigger calculation if toggles are ON
+                    calculateGroups();
                 }
             },
             'error': function(data){

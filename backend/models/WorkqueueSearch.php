@@ -21,7 +21,7 @@ class WorkqueueSearch extends Workqueue
     public function rules()
     {
         return [
-            [['id', 'customer_id', 'emp_assign', 'status', 'create_at', 'created_by', 'updated_at', 'updated_by','car_id','company_id','car_type_id'], 'integer'],
+            [['id', 'customer_id', 'emp_assign', 'status', 'create_at', 'created_by', 'updated_at', 'updated_by','car_id','company_id','car_type_id', 'approve_status'], 'integer'],
             [['work_queue_no', 'work_queue_date', 'dp_no'], 'safe'],
             [['globalSearch'], 'string'],
         ];
@@ -71,6 +71,7 @@ class WorkqueueSearch extends Workqueue
             'work_queue.car_id' => $this->car_id,
             'work_queue.company_id' => $this->company_id,
             'car.car_type_id' => $this->car_type_id,
+            'work_queue.approve_status' => $this->approve_status,
         ]);
 
         if(!empty($this->work_queue_date)){

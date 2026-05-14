@@ -55,6 +55,15 @@ use yii\widgets\ActiveForm;
                 ],
             ])->label('ประเภทรถ') ?>
         </div>
+        <div class="col-lg-3">
+            <?= $form->field($model, 'approve_status')->widget(\kartik\select2\Select2::className(), [
+                'data' => [0 => 'ยังไม่อนุมัติ', 1 => 'อนุมัติแล้ว'],
+                'options' => ['placeholder' => 'สถานะอนุมัติ'],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ])->label('สถานะอนุมัติ') ?>
+        </div>
     </div>
     <div class="row">
         <div class="col-lg-3">
