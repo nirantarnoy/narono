@@ -71,8 +71,16 @@ class WorkqueueSearch extends Workqueue
             'work_queue.car_id' => $this->car_id,
             'work_queue.company_id' => $this->company_id,
             'car.car_type_id' => $this->car_type_id,
-            'work_queue.approve_status' => $this->approve_status,
         ]);
+
+        if ($this->approve_status === '1') {
+            // "อนุมัติแล้ว"
+            $query->andWhere(['work_queue.approve_status' => 1, 'work_queue.status' => 1]);
+        } else if ($this->approve_status === '0') {
+            // "ยังไม่อนุมัติ" (Anything that is NOT Approved and NOT Received)
+            $query->andWhere(['not', ['work_queue.approve_status' => 1, 'work_queue.status' => 1]])
+                  ->andWhere(['!=', 'work_queue.status', 100]);
+        }
 
         if(!empty($this->work_queue_date)){
             $query->andFilterWhere(['like', 'work_queue_date', date('Y-m-d', strtotime($this->work_queue_date))]);
