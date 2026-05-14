@@ -599,6 +599,14 @@ class WorkqueueController extends Controller
             'AO' => 'ค่าลาก/ค่าแบก',
             'AP' => 'อื่นๆ',
             'AQ' => 'รหัส 6 หลัก',
+            'AR' => 'ค่าเที่ยวทั่วไป',
+            'AS' => 'ค่าเที่ยวพิเศษ',
+            'AT' => 'ค่าส่ง 2 ลูกค้า',
+            'AU' => 'Incentive',
+            'AV' => 'ค่าขึ้นงานวันอาทิตย์',
+            'AW' => 'ค่าขึ้นงานฝั่งรังสิต-ธัญฯ',
+            'AX' => 'ค่าเบี้ยขยัน',
+            'AY' => 'ค่าปรับจราจร',
         ];
 
         foreach ($headers as $col => $label) {
@@ -692,6 +700,14 @@ class WorkqueueController extends Controller
                     'AO' => 'towing_price',
                     'AP' => 'other_amt',
                     'AQ' => 'code_6_digit',
+                    'AR' => 'labour_price_general',
+                    'AS' => 'labour_price_special',
+                    'AT' => 'delivery_2_cus_price',
+                    'AU' => 'incentive_price',
+                    'AV' => 'sunday_price',
+                    'AW' => 'rangsit_price',
+                    'AX' => 'diligence_price',
+                    'AY' => 'traffic_fine_price',
                 ];
 
                 $successCount = 0;
@@ -745,6 +761,78 @@ class WorkqueueController extends Controller
         }
 
         return $this->redirect(['index']);
+    }
+
+    public function actionImportDetailsDemo()
+    {
+        $file = \yii\web\UploadedFile::getInstanceByName('import_file');
+        $data = [];
+        if ($file) {
+            try {
+                $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($file->tempName);
+                $sheet = $spreadsheet->getActiveSheet();
+                $highestRow = $sheet->getHighestRow();
+
+                for ($row = 2; $row <= $highestRow; $row++) {
+                    $cellValue = (string)$sheet->getCell('AR' . $row)->getValue();
+                    $masterValue = (string)$sheet->getCell('AH' . $row)->getValue();
+                    if (empty(trim($cellValue))) continue;
+
+                    // Split by newline to get records
+                    $records = preg_split('/\R/u', $cellValue);
+                    foreach ($records as $line) {
+                        $line = trim($line);
+                        if (empty($line)) continue;
+
+                        $item = [
+                            'master_data' => $masterValue,
+                            'bill_no' => '',
+                            'qty' => '',
+                            'weight' => '',
+                            'type' => '',
+                            'raw_text' => $line
+                        ];
+
+                        // Parsing logic based on keywords
+                        // เลขที่ใบตั้ง
+                        if (preg_match('/เลขที่ใบตั้ง\s*([^,]+)/u', $line, $matches)) {
+                            $item['bill_no'] = trim($matches[1]);
+                        }
+                        // จำนวน
+                        if (preg_match('/จำนวน\s*([\d\.]+)/u', $line, $matches)) {
+                            $item['qty'] = trim($matches[1]);
+                        } else {
+                            $item['qty'] = 0;
+                        }
+                        // น้ำหนัก
+                        if (preg_match('/น้ำหนัก\s*([\d\.]+)/u', $line, $matches)) {
+                            $item['weight'] = trim($matches[1]);
+                        } else {
+                            $item['weight'] = 0;
+                        }
+                        // ชนิด
+                        if (preg_match('/ชนิด\s*([^,]+)/u', $line, $matches)) {
+                            $item['type'] = trim($matches[1]);
+                        }
+
+                        if ($item['bill_no'] != '') {
+                            $data[] = $item;
+                        }
+                    }
+                }
+
+            } catch (\Exception $e) {
+                \Yii::$app->session->setFlash('error', 'เกิดข้อผิดพลาด: ' . $e->getMessage());
+                return $this->redirect(['index']);
+            }
+        } else {
+            \Yii::$app->session->setFlash('error', 'กรุณาเลือกไฟล์');
+            return $this->redirect(['index']);
+        }
+
+        return $this->render('import_details_demo', [
+            'data' => $data,
+        ]);
     }
 }
 

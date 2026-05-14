@@ -372,39 +372,87 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
         </div>
         <div style="height: 10px;"></div>
         <div class="row">
-            <div class="col-lg-4">
-                <?= $form->field($model, 'labour_price')->textinput(['maxlength' => true, 'id' => 'labour-price',]) ?>
+            <div class="col-lg-12">
+                <table class="table table-bordered" style="background-color: #f9f9f9;">
+                    <tr style="background-color: #92d050; color: white; font-weight: bold;">
+                        <td colspan="6" class="text-center">เงินส่วนเพิ่ม</td>
+                    </tr>
+                    <!-- Group 1 -->
+                    <tr style="background-color: #e2efda;">
+                        <td colspan="2"><b>กลุ่ม 1</b></td>
+                        <td colspan="4">ค่าเที่ยวหลัก</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 15%;">ค่าเที่ยวทั่วไป</td>
+                        <td style="width: 18%; background-color: #ffff00;"><?= $form->field($model, 'labour_price_general')->textInput(['class' => 'form-control cal-income group-1', 'id' => 'labour-price-general', 'style' => 'background-color: #ffff00;'])->label(false) ?></td>
+                        <td style="width: 15%;">ค่าเที่ยวพิเศษ</td>
+                        <td style="width: 18%; background-color: #ffff00;"><?= $form->field($model, 'labour_price_special')->textInput(['class' => 'form-control cal-income group-1', 'id' => 'labour-price-special', 'style' => 'background-color: #ffff00;'])->label(false) ?></td>
+                        <td style="width: 15%;">รวม A+B (บาท)</td>
+                        <td style="width: 19%;"><input type="text" class="form-control total-group-1" readonly value="0" style="background-color: #f2f2f2;"></td>
+                    </tr>
+                    <!-- Group 2 -->
+                    <tr style="background-color: #e2efda;">
+                        <td colspan="2"><b>กลุ่ม 2</b></td>
+                        <td colspan="4">เงินพิเศษอื่นๆ</td>
+                    </tr>
+                    <tr>
+                        <td>ค่าแบก</td>
+                        <td style="background-color: #ffff00;"><?= $form->field($model, 'towing_price')->textInput(['class' => 'form-control cal-income group-2', 'id' => 'towing-price', 'style' => 'background-color: #ffff00;'])->label(false) ?></td>
+                        <td>ค่าคลุมผ้าใบ</td>
+                        <td style="background-color: #ffff00;"><?= $form->field($model, 'cover_sheet_price')->textInput(['class' => 'form-control cal-income group-2', 'id' => 'cover-sheet-price', 'style' => 'background-color: #ffff00;'])->label(false) ?></td>
+                        <td>ค่าบวกคลัง</td>
+                        <td style="background-color: #ffff00;"><?= $form->field($model, 'warehouse_plus_price')->textInput(['class' => 'form-control cal-income group-2', 'id' => 'warehouse-plus-price', 'style' => 'background-color: #ffff00;'])->label(false) ?></td>
+                    </tr>
+                    <tr>
+                        <td>ค่าส่ง 2 ลูกค้า</td>
+                        <td style="background-color: #ffff00;"><?= $form->field($model, 'delivery_2_cus_price')->textInput(['class' => 'form-control cal-income group-2', 'id' => 'delivery-2-cus-price', 'style' => 'background-color: #ffff00;'])->label(false) ?></td>
+                        <td colspan="2">รวม C+D+E+F (บาท)</td>
+                        <td colspan="2"><input type="text" class="form-control total-group-2" readonly value="0" style="background-color: #f2f2f2;"></td>
+                    </tr>
+                    <!-- Group 3 -->
+                    <tr style="background-color: #e2efda;">
+                        <td colspan="2"><b>กลุ่ม 3</b></td>
+                        <td colspan="4">Incentive</td>
+                    </tr>
+                    <tr>
+                        <td>ค่าขึ้นงานวันอาทิตย์</td>
+                        <td style="background-color: #ffff00;"><?= $form->field($model, 'sunday_price')->textInput(['class' => 'form-control cal-income group-3', 'id' => 'sunday-price', 'style' => 'background-color: #ffff00;'])->label(false) ?></td>
+                        <td>ค่าขึ้นงานฝั่งรังสิตฯ</td>
+                        <td style="background-color: #ffff00;"><?= $form->field($model, 'rangsit_price')->textInput(['class' => 'form-control cal-income group-3', 'id' => 'rangsit-price', 'style' => 'background-color: #ffff00;'])->label(false) ?></td>
+                        <td>ค้างคืน</td>
+                        <td style="background-color: #ffff00;"><?= $form->field($model, 'overnight_price')->textInput(['class' => 'form-control cal-income group-3', 'id' => 'overnight-price', 'style' => 'background-color: #ffff00;'])->label(false) ?></td>
+                    </tr>
+                    <tr>
+                        <td>ค่าเบี้ยขยัน</td>
+                        <td style="background-color: #ffff00;"><?= $form->field($model, 'diligence_price')->textInput(['class' => 'form-control cal-income group-3', 'id' => 'diligence-price', 'style' => 'background-color: #ffff00;'])->label(false) ?></td>
+                        <td colspan="2">รวม G+H+I+N (บาท)</td>
+                        <td colspan="2"><input type="text" class="form-control total-group-3" readonly value="0" style="background-color: #f2f2f2;"></td>
+                    </tr>
+                    <!-- Grand Total Income -->
+                    <tr style="background-color: #fff2cc; font-weight: bold;">
+                        <td colspan="4" class="text-right">รวมทั้งสิ้น (1+2+3)</td>
+                        <td colspan="2"><input type="text" class="form-control total-income-all" readonly value="0" style="font-weight: bold; color: blue;"></td>
+                    </tr>
+                    <!-- Deductions -->
+                    <tr style="background-color: #ffc000; color: white; font-weight: bold;">
+                        <td colspan="6" class="text-center">หักเงิน</td>
+                    </tr>
+                    <tr>
+                        <td>เงินยืมทดลอง</td>
+                        <td style="background-color: #ffff00;"><?= $form->field($model, 'test_price')->textInput(['class' => 'form-control cal-deduct', 'id' => 'test-price', 'style' => 'background-color: #ffff00;'])->label(false) ?></td>
+                        <td>ประกันสินค้าเสียหาย</td>
+                        <td style="background-color: #ffff00;"><?= $form->field($model, 'damaged_price')->textInput(['class' => 'form-control cal-deduct', 'id' => 'damaged-price', 'style' => 'background-color: #ffff00;'])->label(false) ?></td>
+                        <td>ค่าปรับจราจร</td>
+                        <td style="background-color: #ffff00;"><?= $form->field($model, 'traffic_fine_price')->textInput(['class' => 'form-control cal-deduct', 'id' => 'traffic-fine-price', 'style' => 'background-color: #ffff00;'])->label(false) ?></td>
+                    </tr>
+                    <tr>
+                        <td>อื่นๆ</td>
+                        <td style="background-color: #ffff00;"><?= $form->field($model, 'deduct_other_price')->textInput(['class' => 'form-control cal-deduct', 'id' => 'deduct-other-price', 'style' => 'background-color: #ffff00;'])->label(false) ?></td>
+                        <td colspan="2" class="text-right"><b>รวม J+K+L+M (บาท)</b></td>
+                        <td colspan="2"><input type="text" class="form-control total-deduct-all" readonly value="0" style="font-weight: bold; color: red;"></td>
+                    </tr>
+                </table>
             </div>
-            <div class="col-lg-4">
-                <?= $form->field($model, 'express_road_price')->textInput(['maxlength' => true, 'id' => 'express-road-price',]) ?>
-            </div>
-            <div class="col-lg-4">
-                <?= $form->field($model, 'other_price')->textInput(['maxlength' => true, 'id' => 'other-price',]) ?>
-            </div>
-        </div>
-        <div style="height: 10px;"></div>
-        <div class="row">
-            <div class="col-lg-4">
-                <?= $form->field($model, 'cover_sheet_price')->textinput(['maxlength' => true, 'id' => 'cover-sheet-price',]) ?>
-            </div>
-            <div class="col-lg-4">
-                <?= $form->field($model, 'overnight_price')->textInput(['maxlength' => true, 'id' => 'overnight-price',]) ?>
-            </div>
-            <div class="col-lg-4">
-                <?= $form->field($model, 'warehouse_plus_price')->textInput(['maxlength' => true, 'id' => 'warehouse-plus-price',]) ?>
-            </div>
-        </div>
-        <div style="height: 10px;"></div>
-        <div class="row">
-            <div class="col-lg-4"><?= $form->field($model, 'test_price')->textinput(['maxlength' => true, 'id' => 'test-price',]) ?></div>
-            <div class="col-lg-4"><?= $form->field($model, 'damaged_price')->textinput(['maxlength' => true, 'id' => 'damaged-price',]) ?></div>
-            <div class="col-lg-4"><?= $form->field($model, 'deduct_other_price')->textinput(['maxlength' => true, 'id' => 'deduct-other-price',]) ?></div>
-        </div>
-        <div style="height: 10px;"></div>
-        <div class="row">
-            <div class="col-lg-4"><?= $form->field($model, 'work_double_price')->textinput(['maxlength' => true, 'id' => 'work-double-price',]) ?></div>
-            <div class="col-lg-4"><?= $form->field($model, 'towing_price')->textinput(['maxlength' => true, 'id' => 'work-towing-price',]) ?></div>
-            <div class="col-lg-4"><?= $form->field($model, 'other_amt')->textinput(['maxlength' => true, 'id' => 'work-other-amt',]) ?></div>
         </div>
 
         <br/>
@@ -885,7 +933,45 @@ $(function(){
         $(".total-amount-4").val(parseFloat(total_amount).toFixed(2));
     });
     
+    $(".cal-income").on("change", function(){
+        calculateGroups();
+    });
+    $(".cal-deduct").on("change", function(){
+        calculateGroups();
+    });
+    
+    calculateGroups(); // Initial calculation
+    
 });
+
+function calculateGroups(){
+    var g1_total = 0;
+    $(".group-1").each(function(){
+        g1_total += parseFloat($(this).val()) || 0;
+    });
+    $(".total-group-1").val(g1_total.toFixed(2));
+    
+    var g2_total = 0;
+    $(".group-2").each(function(){
+        g2_total += parseFloat($(this).val()) || 0;
+    });
+    $(".total-group-2").val(g2_total.toFixed(2));
+    
+    var g3_total = 0;
+    $(".group-3").each(function(){
+        g3_total += parseFloat($(this).val()) || 0;
+    });
+    $(".total-group-3").val(g3_total.toFixed(2));
+    
+    var income_total = g1_total + g2_total + g3_total;
+    $(".total-income-all").val(income_total.toFixed(2));
+    
+    var deduct_total = 0;
+    $(".cal-deduct").each(function(){
+        deduct_total += parseFloat($(this).val()) || 0;
+    });
+    $(".total-deduct-all").val(deduct_total.toFixed(2));
+}
 
 function checkcharter(e){
     var checked_yesno = e.val();

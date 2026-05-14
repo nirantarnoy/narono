@@ -42,6 +42,7 @@ class WorkQueue extends \yii\db\ActiveRecord
             [['weight_on_go','weight_on_back','weight_go_deduct','back_deduct','labour_price','express_road_price','other_price','test_price','damaged_price','total_lite','total_distance','total_amount'], 'double'],
             [['cover_sheet_price','overnight_price','warehouse_plus_price','deduct_other_price','work_double_price','total_amount2','towing_price','other_amt'], 'double'],
             [['oil_daily_price','oil_out_price','total_out_lite','oil_out_price_2','oil_out_price_3','total_amount3','total_amount4','total_out_lite_2','total_out_lite_3'],'safe'],
+            [['labour_price_general','labour_price_special','delivery_2_cus_price','incentive_price','sunday_price','rangsit_price','diligence_price','traffic_fine_price'],'double'],
             [['item_back_id','cus_po_id','cus_po_name_id'],'safe'],
         ];
     }
@@ -98,6 +99,14 @@ class WorkQueue extends \yii\db\ActiveRecord
             'cus_po_id' => 'ใบสั่งซื้อลูกค้า',
             'cus_po_name_id' => 'ชื่องาน',
             'code_6_digit' => 'รหัส 6 หลัก',
+            'labour_price_general' => 'ค่าเที่ยวทั่วไป',
+            'labour_price_special' => 'ค่าเที่ยวพิเศษ',
+            'delivery_2_cus_price' => 'ค่าส่ง 2 ลูกค้า',
+            'incentive_price' => 'Incentive',
+            'sunday_price' => 'ค่าขึ้นงานวันอาทิตย์',
+            'rangsit_price' => 'ค่าขึ้นงานฝั่งรังสิต-ธัญฯ',
+            'diligence_price' => 'ค่าเบี้ยขยัน',
+            'traffic_fine_price' => 'ค่าปรับจราจร',
         ];
     }
 }

@@ -28,6 +28,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     'data-toggle' => 'modal',
                     'data-target' => '#importModal'
                 ]) ?>
+                <?= Html::button('<i class="fas fa-microscope"></i> Demo Import Details', [
+                    'class' => 'btn btn-outline-warning',
+                    'data-toggle' => 'modal',
+                    'data-target' => '#importDetailsModal'
+                ]) ?>
             </p>
         </div>
         <div class="col-lg-2" style="text-align: right">
@@ -203,6 +208,37 @@ $this->params['breadcrumbs'][] = $this->title;
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
                     <button type="submit" class="btn btn-primary">เริ่มนำเข้าข้อมูล</button>
+                </div>
+                <?= Html::endForm() ?>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import Details Modal -->
+    <div class="modal fade" id="importDetailsModal" tabindex="-1" role="dialog" aria-labelledby="importDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="importDetailsModalLabel">Demo Import Workqueue Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <?= Html::beginForm(['import-details-demo'], 'post', ['enctype' => 'multipart/form-data']) ?>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>เลือกไฟล์ Excel (.xlsx, .xls)</label>
+                        <?= Html::fileInput('import_file', null, ['class' => 'form-control', 'accept' => '.xlsx, .xls', 'required' => true]) ?>
+                        <small class="text-muted mt-2 d-block">
+                            * ระบบจะอ่านข้อมูลจากทุก Cell ใน Column แรก<br>
+                            * แยกข้อมูลตามคำสำคัญ: เลขที่ใบตั้ง, จำนวน, น้ำหนัก, ชนิด<br>
+                            * หนึ่ง Cell สามารถมีได้หลายบรรทัด
+                        </small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ยกเลิก</button>
+                    <button type="submit" class="btn btn-warning">ดูผลลัพธ์ (Demo)</button>
                 </div>
                 <?= Html::endForm() ?>
             </div>
