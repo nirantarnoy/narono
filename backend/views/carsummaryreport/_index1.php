@@ -15,7 +15,7 @@ if ($from_date != '' && $to_date != '') {
     $date_year = date('Y', strtotime($from_date)) + 543;
 
     if ($search_car_id != null) {
-        $model_line = \common\models\QueryCarWorkSummary::find()->where(['car_id' => $search_car_id])->andFilterWhere(['>=', 'date(work_queue_date)', $from_date])->andFilterWhere(['<=', 'date(work_queue_date)', $to_date])->all();
+        $model_line = \common\models\QueryCarWorkSummary::find()->select(['query_car_work_summary.*','work_queue.sunday_price','work_queue.rangsit_price','work_queue.diligence_price','work_queue.delivery_2_cus_price','work_queue.traffic_fine_price','work_queue.labour_price_general','work_queue.labour_price_special','work_queue.incentive_price'])->joinWith('workqueue')->where(['query_car_work_summary.car_id' => $search_car_id])->andFilterWhere(['>=', 'date(query_car_work_summary.work_queue_date)', $from_date])->andFilterWhere(['<=', 'date(query_car_work_summary.work_queue_date)', $to_date])->orderBy(['query_car_work_summary.work_queue_date' => SORT_ASC])->all();
     }
 
     $from_date = date('d-m-Y', strtotime($from_date));
@@ -251,6 +251,7 @@ if ($model_find_emp_id){
             <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าคลุมผ้าใบ</b></th>
             <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าค้างคืน</b></th>
             <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าบวกคลัง</b></th>
+            <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าเบี้ยขยัน</b></th>
             <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>พิเศษอื่นๆ</b></th>
             <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>รวม</b></th>
         </tr>
@@ -264,6 +265,8 @@ if ($model_find_emp_id){
         $sum_col_8 = 0;
         $sum_col_9 = 0;
         $sum_col_10 = 0;
+        $sum_incentive_all = 0;
+        $sum_traffic_fine = 0;
 
         $cost_living_price = \backend\models\Employee::findCostLivingPrice($search_car_id);
         //$social_price = \backend\models\Employee::findSocialPrice($search_car_id); // percent
@@ -284,7 +287,11 @@ if ($model_find_emp_id){
                 $sum_col_8 += ($value->warehouse_plus_price);
                 $sum_col_9 += ($value->work_other_price);
 
-                $line_total = ($value->work_labour_price + $value->work_express_road_price + $value->cover_sheet_price  + $value->overnight_price + $value->warehouse_plus_price + $value->work_other_price);
+                $line_incentive = ($value->sunday_price + $value->rangsit_price + $value->diligence_price + $value->delivery_2_cus_price + $value->incentive_price);
+                $sum_incentive_all += $line_incentive;
+                $sum_traffic_fine += $value->traffic_fine_price;
+
+                $line_total = ($value->work_labour_price + $value->work_express_road_price + $value->cover_sheet_price  + $value->overnight_price + $value->warehouse_plus_price + $value->work_other_price + $line_incentive) - $value->traffic_fine_price;
                 $sum_col_10 += ($line_total);
 
 
@@ -297,6 +304,7 @@ if ($model_find_emp_id){
                     <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->cover_sheet_price, 2) ?></td>
                     <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->overnight_price, 2) ?></td>
                     <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->warehouse_plus_price, 2) ?></td>
+                    <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($line_incentive, 2) ?></td>
                     <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->work_other_price, 2) ?></td>
                     <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($line_total, 2) ?></td>
                 </tr>
@@ -323,6 +331,8 @@ if ($model_find_emp_id){
                 <b><?= number_format($sum_col_7, 2) ?></b></td>
             <td style="border: 1px solid grey;padding: 5px;text-align: right;">
                 <b><?= number_format($sum_col_8, 2) ?></b></td>
+            <td style="border: 1px solid grey;padding: 5px;text-align: right;">
+                <b><?= number_format($sum_incentive_all, 2) ?></b></td>
             <td style="border: 1px solid grey;padding: 5px;text-align: right;">
                 <b><?= number_format($sum_col_9, 2) ?></b></td>
             <td style="border: 1px solid grey;padding: 5px;text-align: right;">
@@ -396,13 +406,13 @@ if ($model_find_emp_id){
         </tr>
         <tr>
             <td></td>
-            <td style="padding-left: 10px;">ค่าพิเศษอื่นๆ</td>
+            <td style="padding-left: 10px;">ค่าพิเศษอื่นๆ/เบี้ยขยัน</td>
             <td></td>
-            <td style="text-align: right;padding: 5px;"><?=number_format($sum_col_9,2)?></td>
+            <td style="text-align: right;padding: 5px;"><?=number_format($sum_col_9 + $sum_incentive_all,2)?></td>
             <td style="text-align: center;padding: 5px;">บาท</td>
-            <td></td>
-            <td style="text-align: right;padding: 5px;"></td>
-            <td></td>
+            <td>หักค่าปรับจราจร</td>
+            <td style="text-align: right;padding: 5px;"><?=number_format($sum_traffic_fine,2)?></td>
+            <td style="text-align: center;padding: 5px;">บาท</td>
         </tr>
         <tr>
             <td></td>
@@ -411,7 +421,7 @@ if ($model_find_emp_id){
             <td style="text-align: right;padding: 5px;"><b><u><?=number_format(($sum_col_10 + $cost_living_price),2)?></u></b></td>
             <td style="text-align: center;padding: 5px;">บาท</td>
             <td><b>คงเหลือ</b></td>
-            <td style="text-align: right;padding: 5px;"><b><u><?=number_format(($sum_col_10 + $cost_living_price) - $deduct_total,2)?></u></b></td>
+            <td style="text-align: right;padding: 5px;"><b><u><?=number_format(($sum_col_10 + $cost_living_price) - $deduct_total - $sum_traffic_fine,2)?></u></b></td>
             <td style="text-align: center;padding: 5px;">บาท</td>
         </tr>
     </table>

@@ -16,6 +16,7 @@ use Yii;
  * @property int|null $created_by
  * @property int|null $updated_at
  * @property int|null $updated_by
+ * @property string|null $work_queue_date
  * @property int|null $customer_id
  * @property int|null $hp
  * @property float|null $oil_rate_qty
@@ -42,6 +43,14 @@ use Yii;
  * @property float|null $trail_labour_price
  * @property int|null $car_type_id
  * @property string|null $car_type_name
+ * @property float|null $labour_price_general
+ * @property float|null $labour_price_special
+ * @property float|null $delivery_2_cus_price
+ * @property float|null $sunday_price
+ * @property float|null $rangsit_price
+ * @property float|null $diligence_price
+ * @property float|null $traffic_fine_price
+ * @property float|null $incentive_price
  */
 class QueryCarWorkSummary extends \yii\db\ActiveRecord
 {
@@ -61,7 +70,8 @@ class QueryCarWorkSummary extends \yii\db\ActiveRecord
         return [
             [['id', 'des_province_id', 'status', 'created_at', 'created_by', 'updated_at', 'updated_by', 'customer_id', 'hp', 'item_back_id', 'company_id', 'dropoff_place_id', 'car_type_id'], 'integer'],
             [['total_distanct', 'oil_rate_qty', 'dropoff_qty', 'labour_price', 'express_road_price', 'other_price', 'work_labour_price', 'work_express_road_price', 'work_other_price', 'test_price', 'damaged_price', 'deduct_other_price', 'other_amt', 'cover_sheet_price', 'overnight_price', 'warehouse_plus_price', 'work_double_price', 'towing_price', 'trail_labour_price'], 'number'],
-            [['des_name', 'dropoff_name', 'car_type_name'], 'string', 'max' => 255],
+            [['labour_price_general', 'labour_price_special', 'delivery_2_cus_price', 'sunday_price', 'rangsit_price', 'diligence_price', 'traffic_fine_price', 'incentive_price'], 'number'],
+            [['des_name', 'dropoff_name', 'car_type_name', 'work_queue_date'], 'string', 'max' => 255],
         ];
     }
 
@@ -94,5 +104,10 @@ class QueryCarWorkSummary extends \yii\db\ActiveRecord
             'car_type_id' => 'Car Type ID',
             'car_type_name' => 'Car Type Name',
         ];
+    }
+
+    public function getWorkqueue()
+    {
+        return $this->hasOne(Workqueue::className(), ['id' => 'id']);
     }
 }
