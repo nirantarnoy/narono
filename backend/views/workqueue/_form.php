@@ -1199,6 +1199,7 @@ function getRouteplan(){
         $.ajax({
             'type': 'post',
             'dataType': 'json',
+            'async': false,
             'url': '$url_to_routeplan',
             'data': {'route_plan_id': route_plan_id,'car_type_id': car_type_id,'customer_id': customer_id},
             'success': function(data){
@@ -1214,11 +1215,13 @@ function getRouteplan(){
                     var overnight_price = data[0]['overnight_price'];
                     var warehouse_plus_price = data[0]['warehouse_plus_price'];
                     var other_price = data[0]['other_price'];
+                    var trail_labour_price = data[0]['trail_labour_price'];
                    // alert(other_price);
                     $('.total-distance').val(distance);
                     $('.total-qty').val(parseFloat(rate_qty) + parseFloat(dropoff_qty));
                     $('#labour-price').val(labour_price);
                     $('#labour-price-general').val(labour_price); // Default to Group 1 General
+                    $('#labour-price-special').val(trail_labour_price);
                     $('#labour-price-plan').val(labour_price);
                     $('#express-road-price-plan').val(express_road_price);
                     $('#cover-sheet-price-plan').val(cover_sheet_price);

@@ -409,6 +409,7 @@ class CarController extends Controller
                         $overnight_price = $value->overnight_price;
                         $warehouse_plus_price = $value->warehouse_plus_price;
                         $other_price = $value->other_price;
+                        $trail_labour_price = $value->trail_labour_price;
                     }
                 }
                 $model_line_qty = \common\models\RoutePlanLine::find()->where(['route_plan_id' => $model->id])->sum('dropoff_qty');
@@ -429,6 +430,7 @@ class CarController extends Controller
                 'overnight_price' => $overnight_price,
                 'warehouse_plus_price' => $warehouse_plus_price,
                 'other_price' => $other_price,
+                'trail_labour_price' => isset($trail_labour_price)?$trail_labour_price:0,
             ]);
         }
         echo json_encode($data);
