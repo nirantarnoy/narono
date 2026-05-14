@@ -402,7 +402,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                     <tr>
                         <td>ค่าขึ้นงานวันอาทิตย์</td>
                         <td><?= $form->field($model, 'sunday_price')->textInput(['class' => 'form-control cal-income group-3', 'id' => 'sunday-price'])->label(false) ?></td>
-                        <td>ค่าขึ้นงานฝั่งรังสิตฯ</td>
+                        <td>ค่าขึ้นงานฝั่งวังศาลา</td>
                         <td><?= $form->field($model, 'rangsit_price')->textInput(['class' => 'form-control cal-income group-3', 'id' => 'rangsit-price'])->label(false) ?></td>
                         <td>ค้างคืน</td>
                         <td><?= $form->field($model, 'overnight_price')->textInput(['class' => 'form-control cal-income group-3', 'id' => 'overnight-price'])->label(false) ?></td>
