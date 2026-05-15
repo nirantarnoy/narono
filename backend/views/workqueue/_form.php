@@ -392,8 +392,10 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                     <tr>
                         <td>ค่าส่ง 2 ลูกค้า</td>
                         <td><?= $form->field($model, 'delivery_2_cus_price')->textInput(['class' => 'form-control cal-income group-2', 'id' => 'delivery-2-cus-price'])->label(false) ?></td>
-                        <td colspan="2">รวม (บาท)</td>
-                        <td colspan="2"><input type="text" class="form-control total-group-2" readonly value="0" style="background-color: #f2f2f2;"></td>
+                        <td>ค่าเบิ้ลงาน</td>
+                        <td><?= $form->field($model, 'work_double_price')->textInput(['class' => 'form-control cal-income group-2', 'id' => 'work-double-price'])->label(false) ?></td>
+                        <td>รวม (บาท)</td>
+                        <td><input type="text" class="form-control total-group-2" readonly value="0" style="background-color: #f2f2f2;"></td>
                     </tr>
                     <tr style="background-color: #e2efda;">
                         <td colspan="2"><b>กลุ่ม 3</b></td>
@@ -1084,6 +1086,7 @@ function enableOther(e){
        $("#cover-sheet-price").val(0);
        $("#warehouse-plus-price").val(0);
        $("#delivery-2-cus-price").val(0);
+       $("#work-double-price").val(0);
        $("#sunday-price").val(0);
        $("#rangsit-price").val(0);
        $("#overnight-price").val(0);
