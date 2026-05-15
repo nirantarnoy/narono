@@ -251,6 +251,7 @@ if ($model_find_emp_id){
             <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าคลุมผ้าใบ</b></th>
             <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าค้างคืน</b></th>
             <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าบวกคลัง</b></th>
+            <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>วังศาลา</b></th>
             <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าเบี้ยขยัน</b></th>
             <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>พิเศษอื่นๆ</b></th>
             <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>รวม</b></th>
@@ -265,6 +266,7 @@ if ($model_find_emp_id){
         $sum_col_8 = 0;
         $sum_col_9 = 0;
         $sum_col_10 = 0;
+        $sum_rangsit = 0;
         $sum_incentive_all = 0;
         $sum_traffic_fine = 0;
 
@@ -287,11 +289,12 @@ if ($model_find_emp_id){
                 $sum_col_8 += ($value->warehouse_plus_price);
                 $sum_col_9 += ($value->work_other_price);
 
-                $line_incentive = ($value->sunday_price + $value->rangsit_price + $value->diligence_price + $value->delivery_2_cus_price + $value->incentive_price);
+                $line_incentive = ($value->sunday_price + $value->diligence_price + $value->delivery_2_cus_price + $value->incentive_price);
+                $sum_rangsit += $value->rangsit_price;
                 $sum_incentive_all += $line_incentive;
                 $sum_traffic_fine += $value->traffic_fine_price;
 
-                $line_total = ($value->work_labour_price + $value->work_express_road_price + $value->cover_sheet_price  + $value->overnight_price + $value->warehouse_plus_price + $value->work_other_price + $line_incentive) - $value->traffic_fine_price;
+                $line_total = ($value->work_labour_price + $value->work_express_road_price + $value->cover_sheet_price  + $value->overnight_price + $value->warehouse_plus_price + $value->work_other_price + $value->rangsit_price + $line_incentive) - $value->traffic_fine_price;
                 $sum_col_10 += ($line_total);
 
 
@@ -304,6 +307,7 @@ if ($model_find_emp_id){
                     <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->cover_sheet_price, 2) ?></td>
                     <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->overnight_price, 2) ?></td>
                     <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->warehouse_plus_price, 2) ?></td>
+                    <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->rangsit_price, 2) ?></td>
                     <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($line_incentive, 2) ?></td>
                     <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->work_other_price, 2) ?></td>
                     <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($line_total, 2) ?></td>
@@ -331,6 +335,8 @@ if ($model_find_emp_id){
                 <b><?= number_format($sum_col_7, 2) ?></b></td>
             <td style="border: 1px solid grey;padding: 5px;text-align: right;">
                 <b><?= number_format($sum_col_8, 2) ?></b></td>
+            <td style="border: 1px solid grey;padding: 5px;text-align: right;">
+                <b><?= number_format($sum_rangsit, 2) ?></b></td>
             <td style="border: 1px solid grey;padding: 5px;text-align: right;">
                 <b><?= number_format($sum_incentive_all, 2) ?></b></td>
             <td style="border: 1px solid grey;padding: 5px;text-align: right;">
@@ -406,22 +412,34 @@ if ($model_find_emp_id){
         </tr>
         <tr>
             <td></td>
-            <td style="padding-left: 10px;">ค่าพิเศษอื่นๆ/เบี้ยขยัน</td>
+        <tr>
             <td></td>
-            <td style="text-align: right;padding: 5px;"><?=number_format($sum_col_9 + $sum_incentive_all,2)?></td>
+            <td style="padding-left: 10px;">พิเศษอื่นๆ/เบี้ยขยัน</td>
+            <td></td>
+            <td style="text-align: right;padding: 5px;"><?= number_format($sum_col_9 + $sum_incentive_all, 2) ?></td>
             <td style="text-align: center;padding: 5px;">บาท</td>
-            <td>หักค่าปรับจราจร</td>
-            <td style="text-align: right;padding: 5px;"><?=number_format($sum_traffic_fine,2)?></td>
+            <td style="padding-left: 10px">วังศาลา</td>
+            <td style="text-align: right;padding: 5px;"><?= number_format($sum_rangsit, 2) ?></td>
             <td style="text-align: center;padding: 5px;">บาท</td>
         </tr>
         <tr>
             <td></td>
-            <td><b>รวม</b></td>
+            <td style="padding-left: 10px;"></td>
             <td></td>
-            <td style="text-align: right;padding: 5px;"><b><u><?=number_format(($sum_col_10 + $cost_living_price),2)?></u></b></td>
+            <td style="text-align: right;padding: 5px;"></td>
+            <td style="text-align: center;padding: 5px;"></td>
+            <td style="padding-left: 10px">หักค่าปรับจราจร</td>
+            <td style="text-align: right;padding: 5px;"><?= number_format($sum_traffic_fine, 2) ?></td>
             <td style="text-align: center;padding: 5px;">บาท</td>
-            <td><b>คงเหลือ</b></td>
-            <td style="text-align: right;padding: 5px;"><b><u><?=number_format(($sum_col_10 + $cost_living_price) - $deduct_total - $sum_traffic_fine,2)?></u></b></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><b>รวมรายได้</b></td>
+            <td></td>
+            <td style="text-align: right;padding: 5px;"><b><u><?= number_format(($sum_col_4 + $sum_col_5 + $sum_col_6 + $sum_col_7 + $sum_col_8 + $sum_col_9 + $sum_rangsit + $sum_incentive_all + $cost_living_price), 2) ?></u></b></td>
+            <td style="text-align: center;padding: 5px;">บาท</td>
+            <td><b>คงเหลือสุทธิ</b></td>
+            <td style="text-align: right;padding: 5px;"><b><u><?= number_format(($sum_col_4 + $sum_col_5 + $sum_col_6 + $sum_col_7 + $sum_col_8 + $sum_col_9 + $sum_rangsit + $sum_incentive_all + $cost_living_price) - $deduct_total - $sum_traffic_fine, 2) ?></u></b></td>
             <td style="text-align: center;padding: 5px;">บาท</td>
         </tr>
     </table>
