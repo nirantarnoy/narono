@@ -404,18 +404,32 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                     <tr>
                         <td>ค่าขึ้นงานวันอาทิตย์</td>
                         <td><?= $form->field($model, 'sunday_price')->textInput(['class' => 'form-control cal-income group-3', 'id' => 'sunday-price'])->label(false) ?></td>
-                        <td>ค่าขึ้นงานฝั่งวังศาลา</td>
+                        <td>ค่าขึ้นงานข้ามฝั่ง</td>
                         <td><?= $form->field($model, 'rangsit_price')->textInput(['class' => 'form-control cal-income group-3', 'id' => 'rangsit-price'])->label(false) ?></td>
                         <td>ค้างคืน</td>
                         <td><?= $form->field($model, 'overnight_price')->textInput(['class' => 'form-control cal-income group-3', 'id' => 'overnight-price'])->label(false) ?></td>
                     </tr>
                     <tr>
-                        <td>ค่าทางด่วน</td>
-                        <td><?= $form->field($model, 'express_road_price')->textInput(['class' => 'form-control cal-income group-3', 'id' => 'express-road-price'])->label(false) ?></td>
                         <td>ค่าเบี้ยขยัน</td>
                         <td><?= $form->field($model, 'diligence_price')->textInput(['class' => 'form-control cal-income group-3', 'id' => 'diligence-price'])->label(false) ?></td>
-                        <td colspan="2">รวม (บาท)</td>
-                        <td colspan="2"><input type="text" class="form-control total-group-3" readonly value="0" style="background-color: #f2f2f2;"></td>
+                        <td colspan="2"></td>
+                        <td>รวม (บาท)</td>
+                        <td><input type="text" class="form-control total-group-3" readonly value="0" style="background-color: #f2f2f2;"></td>
+                    </tr>
+                    <tr style="background-color: #e2efda;">
+                        <td colspan="2"><b>กลุ่ม 4</b></td>
+                        <td colspan="4">พิเศษอื่นๆ</td>
+                    </tr>
+                    <tr>
+                        <td>พิเศษอื่นๆ</td>
+                        <td><?= $form->field($model, 'other_price')->textInput(['class' => 'form-control cal-income group-4', 'id' => 'other-price'])->label(false) ?></td>
+                        <td colspan="2"></td>
+                        <td>รวม (บาท)</td>
+                        <td><input type="text" class="form-control total-group-4" readonly value="0" style="background-color: #f2f2f2;"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="text-right">ค่าทางด่วน</td>
+                        <td colspan="2"><?= $form->field($model, 'express_road_price')->textInput(['class' => 'form-control cal-income', 'id' => 'express-road-price'])->label(false) ?></td>
                     </tr>
                     <tr style="background-color: #fff2cc; font-weight: bold;">
                         <td colspan="4" class="text-right">รวมทั้งสิ้น (บาท)</td>
@@ -950,7 +964,15 @@ function calculateGroups(){
     });
     $(".total-group-3").val(g3_total.toFixed(2));
     
-    var income_total = g1_total + g2_total + g3_total;
+    var g4_total = 0;
+    $(".group-4").each(function(){
+        g4_total += parseFloat($(this).val()) || 0;
+    });
+    $(".total-group-4").val(g4_total.toFixed(2));
+    
+    var express_road = parseFloat($("#express-road-price").val()) || 0;
+
+    var income_total = g1_total + g2_total + g3_total + g4_total + express_road;
     $(".total-income-all").val(income_total.toFixed(2));
     
     var deduct_total = 0;
@@ -1224,7 +1246,7 @@ function getRouteplan(){
                     $('.total-qty').val(parseFloat(rate_qty) + parseFloat(dropoff_qty));
                     $('#labour-price').val(labour_price);
                     $('#labour-price-general').val(labour_price); // Default to Group 1 General
-                    $('#labour-price-special').val(trail_labour_price);
+                    $('#labour-price-special').val(other_price);
                     $('#labour-price-plan').val(labour_price);
                     $('#express-road-price-plan').val(express_road_price);
                     $('#cover-sheet-price-plan').val(cover_sheet_price);

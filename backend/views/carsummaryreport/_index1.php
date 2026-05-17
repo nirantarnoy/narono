@@ -15,7 +15,7 @@ if ($from_date != '' && $to_date != '') {
     $date_year = date('Y', strtotime($from_date)) + 543;
 
     if ($search_car_id != null) {
-        $model_line = \common\models\QueryCarWorkSummary::find()->select(['query_car_work_summary.*','work_queue.sunday_price','work_queue.rangsit_price','work_queue.diligence_price','work_queue.delivery_2_cus_price','work_queue.traffic_fine_price','work_queue.labour_price_general','work_queue.labour_price_special','work_queue.incentive_price'])->joinWith('workqueue')->where(['query_car_work_summary.car_id' => $search_car_id])->andFilterWhere(['>=', 'date(query_car_work_summary.work_queue_date)', $from_date])->andFilterWhere(['<=', 'date(query_car_work_summary.work_queue_date)', $to_date])->orderBy(['query_car_work_summary.work_queue_date' => SORT_ASC])->all();
+        $model_line = \common\models\QueryCarWorkSummary::find()->select(['query_car_work_summary.*','work_queue.sunday_price','work_queue.rangsit_price','work_queue.diligence_price','work_queue.delivery_2_cus_price','work_queue.traffic_fine_price','work_queue.labour_price_general','work_queue.labour_price_special','work_queue.incentive_price','work_queue.towing_price','work_queue.work_double_price'])->joinWith('workqueue')->where(['query_car_work_summary.car_id' => $search_car_id])->andFilterWhere(['>=', 'date(query_car_work_summary.work_queue_date)', $from_date])->andFilterWhere(['<=', 'date(query_car_work_summary.work_queue_date)', $to_date])->orderBy(['query_car_work_summary.work_queue_date' => SORT_ASC])->all();
     }
 
     $from_date = date('d-m-Y', strtotime($from_date));
@@ -244,36 +244,49 @@ if ($model_find_emp_id){
     <table style="width: 100%;border: 1px solid grey;">
         <thead>
         <tr>
-            <th style="text-align: center;padding: 10px;border: 1px solid grey;"><b>วันที่ขึ้นสินค้า</b></th>
-            <th style="text-align: center;padding: 10px;border: 1px solid grey;"><b>สถานที่</b></th>
-            <th style="text-align: center;padding: 10px;border: 1px solid grey;"><b>รายการ</b></th>
-            <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าเที่ยว</b></th>
-            <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าคลุมผ้าใบ</b></th>
-            <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าค้างคืน</b></th>
-            <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าบวกคลัง</b></th>
-            <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>วังศาลา</b></th>
-            <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>ค่าเบี้ยขยัน</b></th>
-            <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>พิเศษอื่นๆ</b></th>
-            <th style="text-align: right;padding: 10px;border: 1px solid grey;"><b>รวม</b></th>
+            <th rowspan="2" style="text-align: center;padding: 5px;border: 1px solid grey;"><b>วันที่ขึ้นสินค้า</b></th>
+            <th rowspan="2" style="text-align: center;padding: 5px;border: 1px solid grey;"><b>สถานที่</b></th>
+            <th rowspan="2" style="text-align: center;padding: 5px;border: 1px solid grey;"><b>รายการ</b></th>
+            <th colspan="2" style="text-align: center;padding: 5px;border: 1px solid grey;"><b>กลุ่ม 1</b></th>
+            <th rowspan="2" style="text-align: center;padding: 5px;border: 1px solid grey;"><b>ค่าแบก</b></th>
+            <th colspan="4" style="text-align: center;padding: 5px;border: 1px solid grey;"><b>กลุ่ม 2</b></th>
+            <th colspan="4" style="text-align: center;padding: 5px;border: 1px solid grey;"><b>กลุ่ม 3</b></th>
+            <th colspan="1" style="text-align: center;padding: 5px;border: 1px solid grey;"><b>กลุ่ม 4</b></th>
+            <th rowspan="2" style="text-align: center;padding: 5px;border: 1px solid grey;"><b>รวม</b></th>
+        </tr>
+        <tr>
+            <th style="text-align: right;padding: 5px;border: 1px solid grey;"><b>ค่าเที่ยว</b></th>
+            <th style="text-align: right;padding: 5px;border: 1px solid grey;"><b>ค่าพิเศษ</b></th>
+            <th style="text-align: right;padding: 5px;border: 1px solid grey;"><b>ค่าคลุมผ้าใบ</b></th>
+            <th style="text-align: right;padding: 5px;border: 1px solid grey;"><b>ค่าบวกคลัง</b></th>
+            <th style="text-align: right;padding: 5px;border: 1px solid grey;"><b>ค่าส่ง 2 ลูกค้า</b></th>
+            <th style="text-align: right;padding: 5px;border: 1px solid grey;"><b>ค่าเบิ้ลงาน</b></th>
+            <th style="text-align: right;padding: 5px;border: 1px solid grey;"><b>ขึ้นงานวันอาทิตย์</b></th>
+            <th style="text-align: right;padding: 5px;border: 1px solid grey;"><b>ขึ้นงานข้ามฝั่ง</b></th>
+            <th style="text-align: right;padding: 5px;border: 1px solid grey;"><b>ค่าค้างคืน</b></th>
+            <th style="text-align: right;padding: 5px;border: 1px solid grey;"><b>ค่าเบี้ยขยัน</b></th>
+            <th style="text-align: right;padding: 5px;border: 1px solid grey;"><b>พิเศษอื่นๆ</b></th>
         </tr>
         </thead>
         <tbody>
         <?php
-        $sum_col_4 = 0;
-        $sum_col_5 = 0;
-        $sum_col_6 = 0;
-        $sum_col_7 = 0;
-        $sum_col_8 = 0;
-        $sum_col_9 = 0;
-        $sum_col_10 = 0;
+        $sum_general = 0;
+        $sum_special = 0;
+        $sum_towing = 0;
+        $sum_cover = 0;
+        $sum_warehouse = 0;
+        $sum_delivery2 = 0;
+        $sum_double = 0;
+        $sum_sunday = 0;
         $sum_rangsit = 0;
-        $sum_incentive_all = 0;
+        $sum_overnight = 0;
+        $sum_diligence = 0;
+        $sum_other = 0;
+        $sum_total = 0;
         $sum_traffic_fine = 0;
 
         $cost_living_price = \backend\models\Employee::findCostLivingPrice($search_car_id);
-        //$social_price = \backend\models\Employee::findSocialPrice($search_car_id); // percent
         $social_price = \backend\models\Company::findCompanySocialPer(1); // company percent
-        //$social_per_text = \backend\models\Employee::findSocialPricePer($search_car_id);
         $social_base_price = \backend\models\Company::findSocialbasePrice(1);
 
         $deduct_total = 0;
@@ -282,67 +295,90 @@ if ($model_find_emp_id){
         <?php if ($model_line != null): ?>
             <?php foreach ($model_line as $value): ?>
                 <?php
-                $sum_col_4 += ($value->work_labour_price);
-                $sum_col_5 += ($value->work_express_road_price);
-                $sum_col_6 += ($value->cover_sheet_price);
-                $sum_col_7 += ($value->overnight_price);
-                $sum_col_8 += ($value->warehouse_plus_price);
-                $sum_col_9 += ($value->work_other_price);
+                $val_general = $value->labour_price_general ?: 0;
+                $val_special = $value->labour_price_special ?: 0;
+                $val_towing = $value->towing_price ?: 0;
+                $val_cover = $value->cover_sheet_price ?: 0;
+                $val_warehouse = $value->warehouse_plus_price ?: 0;
+                $val_delivery2 = $value->delivery_2_cus_price ?: 0;
+                $val_double = $value->work_double_price ?: 0;
+                $val_sunday = $value->sunday_price ?: 0;
+                $val_rangsit = $value->rangsit_price ?: 0;
+                $val_overnight = $value->overnight_price ?: 0;
+                $val_diligence = $value->diligence_price ?: 0;
+                $val_other = $value->work_other_price ?: 0;
 
-                $line_incentive = ($value->sunday_price + $value->diligence_price + $value->delivery_2_cus_price + $value->incentive_price);
-                $sum_rangsit += $value->rangsit_price;
-                $sum_incentive_all += $line_incentive;
-                $sum_traffic_fine += $value->traffic_fine_price;
+                $sum_general += $val_general;
+                $sum_special += $val_special;
+                $sum_towing += $val_towing;
+                $sum_cover += $val_cover;
+                $sum_warehouse += $val_warehouse;
+                $sum_delivery2 += $val_delivery2;
+                $sum_double += $val_double;
+                $sum_sunday += $val_sunday;
+                $sum_rangsit += $val_rangsit;
+                $sum_overnight += $val_overnight;
+                $sum_diligence += $val_diligence;
+                $sum_other += $val_other;
+                
+                $sum_traffic_fine += $value->traffic_fine_price ?: 0;
 
-                $line_total = ($value->work_labour_price + $value->work_express_road_price + $value->cover_sheet_price  + $value->overnight_price + $value->warehouse_plus_price + $value->work_other_price + $value->rangsit_price + $line_incentive) - $value->traffic_fine_price;
-                $sum_col_10 += ($line_total);
-
-
+                $line_total = $val_general + $val_special + $val_towing + $val_cover + $val_warehouse + $val_delivery2 + $val_double + $val_sunday + $val_rangsit + $val_overnight + $val_diligence + $val_other;
+                $sum_total += $line_total;
                 ?>
                 <tr>
                     <td style="border: 1px solid grey;padding: 5px;text-align: center;"><?= date('d-m-Y', strtotime($value->work_queue_date)) ?></td>
                     <td style="border: 1px solid grey;padding: 5px;"><?= \backend\models\Customer::findCusName($value->customer_id) ?></td>
                     <td style="border: 1px solid grey;padding: 5px;text-align: center;"><?= \backend\models\Customer::findWorkTypeByCustomerid($value->customer_id) ?></td>
-                    <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->work_labour_price, 2) ?></td>
-                    <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->cover_sheet_price, 2) ?></td>
-                    <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->overnight_price, 2) ?></td>
-                    <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->warehouse_plus_price, 2) ?></td>
-                    <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->rangsit_price, 2) ?></td>
-                    <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($line_incentive, 2) ?></td>
-                    <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($value->work_other_price, 2) ?></td>
+                    <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($val_general, 2) ?></td>
+                    <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($val_special, 2) ?></td>
+                    <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($val_towing, 2) ?></td>
+                    <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($val_cover, 2) ?></td>
+                    <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($val_warehouse, 2) ?></td>
+                    <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($val_delivery2, 2) ?></td>
+                    <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($val_double, 2) ?></td>
+                    <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($val_sunday, 2) ?></td>
+                    <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($val_rangsit, 2) ?></td>
+                    <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($val_overnight, 2) ?></td>
+                    <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($val_diligence, 2) ?></td>
+                    <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($val_other, 2) ?></td>
                     <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($line_total, 2) ?></td>
                 </tr>
             <?php endforeach; ?>
         <?php endif; ?>
         <?php
-        $base_deduct = (($social_base_price * $social_price)/100); //15000
-        if(($sum_col_4 + $cost_living_price) >= $social_base_price){
+        $base_deduct = (($social_base_price * $social_price)/100);
+        $total_for_social = $sum_general + $sum_special + $cost_living_price;
+        if($total_for_social >= $social_base_price){
             $deduct_total = $base_deduct;
         }else{
-            $deduct_total = (($sum_col_4 + $cost_living_price) * $social_price /100);
+            $deduct_total = ($total_for_social * $social_price / 100);
         }
 
+        $sum_group1 = $sum_general + $sum_special;
+        $sum_group2 = $sum_cover + $sum_warehouse + $sum_delivery2 + $sum_double;
+        $sum_group3 = $sum_sunday + $sum_rangsit + $sum_overnight + $sum_diligence;
+        $sum_group4 = $sum_other;
+        $grand_total_income = $sum_total + $cost_living_price;
+        $grand_total_net = $grand_total_income - $deduct_total - $sum_traffic_fine;
         ?>
         </tbody>
         <tfoot>
         <tr>
             <td colspan="3" style="border: 1px solid grey;padding: 5px;text-align: right;"><b>รวม</b></td>
-            <td style="border: 1px solid grey;padding: 5px;text-align: right;">
-                <b><?= number_format($sum_col_4, 2) ?></b></td>
-            <td style="border: 1px solid grey;padding: 5px;text-align: right;">
-                <b><?= number_format($sum_col_6, 2) ?></b></td>
-            <td style="border: 1px solid grey;padding: 5px;text-align: right;">
-                <b><?= number_format($sum_col_7, 2) ?></b></td>
-            <td style="border: 1px solid grey;padding: 5px;text-align: right;">
-                <b><?= number_format($sum_col_8, 2) ?></b></td>
-            <td style="border: 1px solid grey;padding: 5px;text-align: right;">
-                <b><?= number_format($sum_rangsit, 2) ?></b></td>
-            <td style="border: 1px solid grey;padding: 5px;text-align: right;">
-                <b><?= number_format($sum_incentive_all, 2) ?></b></td>
-            <td style="border: 1px solid grey;padding: 5px;text-align: right;">
-                <b><?= number_format($sum_col_9, 2) ?></b></td>
-            <td style="border: 1px solid grey;padding: 5px;text-align: right;">
-                <b><?= number_format($sum_col_10, 2) ?></b></td>
+            <td style="border: 1px solid grey;padding: 5px;text-align: right;"><b><?= number_format($sum_general, 2) ?></b></td>
+            <td style="border: 1px solid grey;padding: 5px;text-align: right;"><b><?= number_format($sum_special, 2) ?></b></td>
+            <td style="border: 1px solid grey;padding: 5px;text-align: right;"><b><?= number_format($sum_towing, 2) ?></b></td>
+            <td style="border: 1px solid grey;padding: 5px;text-align: right;"><b><?= number_format($sum_cover, 2) ?></b></td>
+            <td style="border: 1px solid grey;padding: 5px;text-align: right;"><b><?= number_format($sum_warehouse, 2) ?></b></td>
+            <td style="border: 1px solid grey;padding: 5px;text-align: right;"><b><?= number_format($sum_delivery2, 2) ?></b></td>
+            <td style="border: 1px solid grey;padding: 5px;text-align: right;"><b><?= number_format($sum_double, 2) ?></b></td>
+            <td style="border: 1px solid grey;padding: 5px;text-align: right;"><b><?= number_format($sum_sunday, 2) ?></b></td>
+            <td style="border: 1px solid grey;padding: 5px;text-align: right;"><b><?= number_format($sum_rangsit, 2) ?></b></td>
+            <td style="border: 1px solid grey;padding: 5px;text-align: right;"><b><?= number_format($sum_overnight, 2) ?></b></td>
+            <td style="border: 1px solid grey;padding: 5px;text-align: right;"><b><?= number_format($sum_diligence, 2) ?></b></td>
+            <td style="border: 1px solid grey;padding: 5px;text-align: right;"><b><?= number_format($sum_other, 2) ?></b></td>
+            <td style="border: 1px solid grey;padding: 5px;text-align: right;"><b><?= number_format($sum_total, 2) ?></b></td>
         </tr>
         </tfoot>
     </table>
@@ -360,7 +396,7 @@ if ($model_find_emp_id){
         </tr>
         <tr>
             <td></td>
-            <td style="padding-left: 10px;">ค่าครองชีพ</td>
+            <td style="padding-left: 10px;">เงินเดือน/ค่าครองชีพ</td>
             <td></td>
             <td style="text-align: right;padding: 5px;"><?=number_format($cost_living_price,2)?></td>
             <td style="text-align: center;padding: 5px;">บาท</td>
@@ -370,10 +406,9 @@ if ($model_find_emp_id){
         </tr>
         <tr>
             <td></td>
-
-            <td style="padding-left: 10px;">ค่าเที่ยว</td>
+            <td style="padding-left: 10px;">รายได้กลุ่ม 1</td>
             <td></td>
-            <td style="text-align: right;padding: 5px;"><?=number_format($sum_col_4,2)?></td>
+            <td style="text-align: right;padding: 5px;"><?=number_format($sum_group1,2)?></td>
             <td style="text-align: center;padding: 5px;">บาท</td>
             <td style="padding-left: 10px;">เงินยืมทดลอง</td>
             <td style="text-align: right;padding: 5px;">0</td>
@@ -381,10 +416,9 @@ if ($model_find_emp_id){
         </tr>
         <tr>
             <td></td>
-
-            <td style="padding-left: 10px;">ค่าคลุมผ้าใบ</td>
+            <td style="padding-left: 10px;">รายได้กลุ่ม 2</td>
             <td></td>
-            <td style="text-align: right;padding: 5px;"><?=number_format($sum_col_6,2)?></td>
+            <td style="text-align: right;padding: 5px;"><?=number_format($sum_group2,2)?></td>
             <td style="text-align: center;padding: 5px;">บาท</td>
             <td style="padding-left: 10px;">ค่าประกันสินค้า</td>
             <td style="text-align: right;padding: 5px;">0</td>
@@ -392,54 +426,42 @@ if ($model_find_emp_id){
         </tr>
         <tr>
             <td></td>
-            <td style="padding-left: 10px;">ค่าค้างคืน</td>
+            <td style="padding-left: 10px;">รายได้กลุ่ม 3</td>
             <td></td>
-            <td style="text-align: right;padding: 5px;"><?=number_format($sum_col_7,2)?></td>
+            <td style="text-align: right;padding: 5px;"><?=number_format($sum_group3,2)?></td>
             <td style="text-align: center;padding: 5px;">บาท</td>
-            <td></td>
-            <td style="text-align: right;padding: 5px;"></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td style="padding-left: 10px;">ค่าบวกคลัง</td>
-            <td></td>
-            <td style="text-align: right;padding: 5px;"><?=number_format($sum_col_8,2)?></td>
-            <td style="text-align: center;padding: 5px;">บาท</td>
-            <td></td>
-            <td style="text-align: right;padding: 5px;"></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td></td>
-        <tr>
-            <td></td>
-            <td style="padding-left: 10px;">พิเศษอื่นๆ/เบี้ยขยัน</td>
-            <td></td>
-            <td style="text-align: right;padding: 5px;"><?= number_format($sum_col_9 + $sum_incentive_all, 2) ?></td>
-            <td style="text-align: center;padding: 5px;">บาท</td>
-            <td style="padding-left: 10px">วังศาลา</td>
-            <td style="text-align: right;padding: 5px;"><?= number_format($sum_rangsit, 2) ?></td>
-            <td style="text-align: center;padding: 5px;">บาท</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td style="padding-left: 10px;"></td>
-            <td></td>
-            <td style="text-align: right;padding: 5px;"></td>
-            <td style="text-align: center;padding: 5px;"></td>
-            <td style="padding-left: 10px">หักค่าปรับจราจร</td>
+            <td style="padding-left: 10px;">หักค่าปรับจราจร</td>
             <td style="text-align: right;padding: 5px;"><?= number_format($sum_traffic_fine, 2) ?></td>
             <td style="text-align: center;padding: 5px;">บาท</td>
         </tr>
         <tr>
             <td></td>
+            <td style="padding-left: 10px;">รายได้กลุ่ม 4</td>
+            <td></td>
+            <td style="text-align: right;padding: 5px;"><?=number_format($sum_group4,2)?></td>
+            <td style="text-align: center;padding: 5px;">บาท</td>
+            <td></td>
+            <td style="text-align: right;padding: 5px;"></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td style="padding-left: 10px;">ค่าแบก</td>
+            <td></td>
+            <td style="text-align: right;padding: 5px;"><?=number_format($sum_towing,2)?></td>
+            <td style="text-align: center;padding: 5px;">บาท</td>
+            <td></td>
+            <td style="text-align: right;padding: 5px;"></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
             <td><b>รวมรายได้</b></td>
             <td></td>
-            <td style="text-align: right;padding: 5px;"><b><u><?= number_format(($sum_col_4 + $sum_col_5 + $sum_col_6 + $sum_col_7 + $sum_col_8 + $sum_col_9 + $sum_rangsit + $sum_incentive_all + $cost_living_price), 2) ?></u></b></td>
+            <td style="text-align: right;padding: 5px;"><b><u><?= number_format($grand_total_income, 2) ?></u></b></td>
             <td style="text-align: center;padding: 5px;">บาท</td>
             <td><b>คงเหลือสุทธิ</b></td>
-            <td style="text-align: right;padding: 5px;"><b><u><?= number_format(($sum_col_4 + $sum_col_5 + $sum_col_6 + $sum_col_7 + $sum_col_8 + $sum_col_9 + $sum_rangsit + $sum_incentive_all + $cost_living_price) - $deduct_total - $sum_traffic_fine, 2) ?></u></b></td>
+            <td style="text-align: right;padding: 5px;"><b><u><?= number_format($grand_total_net, 2) ?></u></b></td>
             <td style="text-align: center;padding: 5px;">บาท</td>
         </tr>
     </table>
