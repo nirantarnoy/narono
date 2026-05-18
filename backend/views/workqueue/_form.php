@@ -860,6 +860,7 @@ $(function(){
      $("#customer-selected-id").on('change',function(){
          var customer_id = $(this).val();
          getCustomerInvoiceName(customer_id);
+         getRouteplan();
      });
    
     if($("#is-page-new").val() == 0){
