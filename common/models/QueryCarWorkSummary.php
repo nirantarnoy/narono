@@ -108,6 +108,6 @@ class QueryCarWorkSummary extends \yii\db\ActiveRecord
 
     public function getWorkqueue()
     {
-        return $this->hasOne(Workqueue::className(), ['id' => 'id']);
+        return $this->hasOne(WorkQueue::className(), ['id' => 'id']);
     }
 }
