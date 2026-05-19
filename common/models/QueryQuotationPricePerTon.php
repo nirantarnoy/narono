@@ -15,12 +15,17 @@ use Yii;
  */
 class QueryQuotationPricePerTon extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName()
     {
         return 'query_quotation_price_per_ton';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function primaryKey()
+    {
+        return ['id'];
     }
 
     /**

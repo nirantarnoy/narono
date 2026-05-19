@@ -18,12 +18,17 @@ use Yii;
  */
 class QueryCashCompareReceipt extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName()
     {
         return 'query_cash_compare_receipt';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function primaryKey()
+    {
+        return ['id'];
     }
 
     /**

@@ -54,12 +54,17 @@ use Yii;
  */
 class QueryCarWorkSummary extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName()
     {
         return 'query_car_work_summary';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function primaryKey()
+    {
+        return ['id'];
     }
 
     /**

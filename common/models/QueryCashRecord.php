@@ -28,12 +28,17 @@ use Yii;
  */
 class QueryCashRecord extends \yii\db\ActiveRecord
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function tableName()
     {
         return 'query_cash_record';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function primaryKey()
+    {
+        return ['id'];
     }
 
     /**
