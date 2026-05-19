@@ -54,6 +54,15 @@ use Yii;
  */
 class QueryCarWorkSummary extends \yii\db\ActiveRecord
 {
+    public $labour_price_general;
+    public $labour_price_special;
+    public $delivery_2_cus_price;
+    public $sunday_price;
+    public $rangsit_price;
+    public $diligence_price;
+    public $traffic_fine_price;
+    public $incentive_price;
+
     public static function tableName()
     {
         return 'query_car_work_summary';
