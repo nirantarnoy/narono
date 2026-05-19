@@ -283,8 +283,7 @@ if($driver_id == null || $search_emp_id !=null){
                 <th rowspan="2" style="text-align: center;padding: 5px;border: 1px solid grey;"><b>สถานที่</b></th>
                 <th rowspan="2" style="text-align: center;padding: 5px;border: 1px solid grey;"><b>รายการ</b></th>
                 <th colspan="2" style="text-align: center;padding: 5px;border: 1px solid grey;"><b>กลุ่ม 1</b></th>
-                <th rowspan="2" style="text-align: center;padding: 5px;border: 1px solid grey;"><b>ค่าแบก</b></th>
-                <th colspan="4" style="text-align: center;padding: 5px;border: 1px solid grey;"><b>กลุ่ม 2</b></th>
+                <th colspan="5" style="text-align: center;padding: 5px;border: 1px solid grey;"><b>กลุ่ม 2</b></th>
                 <th colspan="4" style="text-align: center;padding: 5px;border: 1px solid grey;"><b>กลุ่ม 3</b></th>
                 <th colspan="1" style="text-align: center;padding: 5px;border: 1px solid grey;"><b>กลุ่ม 4</b></th>
                 <th rowspan="2" style="text-align: center;padding: 5px;border: 1px solid grey;"><b>รวม</b></th>
@@ -292,6 +291,7 @@ if($driver_id == null || $search_emp_id !=null){
             <tr>
                 <th style="text-align: right;padding: 5px;border: 1px solid grey;"><b>ค่าเที่ยว</b></th>
                 <th style="text-align: right;padding: 5px;border: 1px solid grey;"><b>ค่าพิเศษ</b></th>
+                <th style="text-align: right;padding: 5px;border: 1px solid grey;"><b>ค่าแบก</b></th>
                 <th style="text-align: right;padding: 5px;border: 1px solid grey;"><b>ค่าคลุมผ้าใบ</b></th>
                 <th style="text-align: right;padding: 5px;border: 1px solid grey;"><b>ค่าบวกคลัง</b></th>
                 <th style="text-align: right;padding: 5px;border: 1px solid grey;"><b>ค่าส่ง 2 ลูกค้า</b></th>
@@ -343,7 +343,7 @@ if($driver_id == null || $search_emp_id !=null){
             <?php if ($model_line != null): ?>
                 <?php foreach ($model_line as $value): ?>
                     <?php
-                    $val_general = $value->labour_price_general ?: 0;
+                    $val_general = $value->labour_price_general ?: ($value->work_labour_price ?: 0);
                     $val_special = $value->labour_price_special ?: 0;
                     $val_towing = $value->towing_price ?: 0;
                     $val_cover = $value->cover_sheet_price ?: 0;
@@ -408,7 +408,7 @@ if($driver_id == null || $search_emp_id !=null){
             }
 
             $sum_group1 = $sum_general + $sum_special;
-            $sum_group2 = $sum_cover + $sum_warehouse + $sum_delivery2 + $sum_double;
+            $sum_group2 = $sum_towing + $sum_cover + $sum_warehouse + $sum_delivery2 + $sum_double;
             $sum_group3 = $sum_sunday + $sum_rangsit + $sum_overnight + $sum_diligence;
             $sum_group4 = $sum_other;
             $grand_total_income = $sum_total + $cost_living_price;
@@ -498,10 +498,10 @@ if($driver_id == null || $search_emp_id !=null){
             </tr>
             <tr>
                 <td></td>
-                <td style="padding-left: 10px;">ค่าแบก</td>
+                <td style="padding-left: 10px;"></td>
                 <td></td>
-                <td style="text-align: right;padding: 5px;"><?= number_format($sum_towing, 2) ?></td>
-                <td style="text-align: center;padding: 5px;">บาท</td>
+                <td style="text-align: right;padding: 5px;"></td>
+                <td style="text-align: center;padding: 5px;"></td>
                 <td style="padding-left: 10px">อื่นๆ</td>
                 <td style="text-align: right;padding: 5px;"><?= number_format($other_amt_deduct, 2) ?></td>
                 <td style="text-align: center;padding: 5px;">บาท</td>
