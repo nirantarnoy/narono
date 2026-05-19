@@ -15,9 +15,9 @@ if ($from_date != '' && $to_date != '') {
     $date_year = date('Y', strtotime($to_date)) + 543;
 
     if ($search_car_id != null) {
-        $model_line = \common\models\QueryCarWorkSummary::find()->select(['query_car_work_summary.*','work_queue.sunday_price','work_queue.rangsit_price','work_queue.diligence_price','work_queue.delivery_2_cus_price','work_queue.traffic_fine_price','work_queue.labour_price_general','work_queue.labour_price_special','work_queue.incentive_price'])->joinWith('workqueue')->where(['query_car_work_summary.car_id' => $search_car_id])->andFilterWhere(['>=', 'date(query_car_work_summary.work_queue_date)', date('Y-m-d', strtotime($from_date))])->andFilterWhere(['<=', 'date(query_car_work_summary.work_queue_date)', date('Y-m-d', strtotime($to_date))])->orderBy(['query_car_work_summary.work_queue_date' => SORT_ASC])->all();
+        $model_line = \common\models\QueryCarWorkSummary::find()->select(['query_car_work_summary.*','work_queue.sunday_price','work_queue.rangsit_price','work_queue.diligence_price','work_queue.delivery_2_cus_price','work_queue.traffic_fine_price','work_queue.labour_price_general','work_queue.labour_price_special','work_queue.incentive_price','work_queue.towing_price','work_queue.work_double_price'])->joinWith('workqueue')->where(['query_car_work_summary.car_id' => $search_car_id])->andFilterWhere(['>=', 'date(query_car_work_summary.work_queue_date)', date('Y-m-d', strtotime($from_date))])->andFilterWhere(['<=', 'date(query_car_work_summary.work_queue_date)', date('Y-m-d', strtotime($to_date))])->orderBy(['query_car_work_summary.work_queue_date' => SORT_ASC])->all();
     } else {
-        $model_line = \common\models\QueryCarWorkSummary::find()->select(['query_car_work_summary.*','work_queue.sunday_price','work_queue.rangsit_price','work_queue.diligence_price','work_queue.delivery_2_cus_price','work_queue.traffic_fine_price','work_queue.labour_price_general','work_queue.labour_price_special','work_queue.incentive_price'])->joinWith('workqueue')->where(['>=', 'date(query_car_work_summary.work_queue_date)', date('Y-m-d', strtotime($from_date))])->andFilterWhere(['<=', 'date(query_car_work_summary.work_queue_date)', date('Y-m-d', strtotime($to_date))])->orderBy(['query_car_work_summary.work_queue_date' => SORT_ASC])->all();
+        $model_line = \common\models\QueryCarWorkSummary::find()->select(['query_car_work_summary.*','work_queue.sunday_price','work_queue.rangsit_price','work_queue.diligence_price','work_queue.delivery_2_cus_price','work_queue.traffic_fine_price','work_queue.labour_price_general','work_queue.labour_price_special','work_queue.incentive_price','work_queue.towing_price','work_queue.work_double_price'])->joinWith('workqueue')->where(['>=', 'date(query_car_work_summary.work_queue_date)', date('Y-m-d', strtotime($from_date))])->andFilterWhere(['<=', 'date(query_car_work_summary.work_queue_date)', date('Y-m-d', strtotime($to_date))])->orderBy(['query_car_work_summary.work_queue_date' => SORT_ASC])->all();
     }
 
     $from_date = date('d-m-Y', strtotime($from_date));
@@ -243,8 +243,8 @@ $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
                 <?php $i = 1; $total_amount = 0; $total_other_amount = 0; ?>
                 <?php foreach ($model_line as $value): ?>
                     <?php
-                    $line_amount = $value->work_labour_price;
-                    $other_amount = $line_amount + $value->trail_labour_price + $value->cover_sheet_price + $value->overnight_price + $value->warehouse_plus_price + $value->work_double_price + $value->towing_price + $value->sunday_price + $value->rangsit_price + $value->diligence_price + $value->delivery_2_cus_price + $value->incentive_price - $value->traffic_fine_price;
+                    $line_amount = $value->labour_price_general ?: ($value->work_labour_price ?: 0);
+                    $other_amount = ($value->labour_price_special ?: 0) + ($value->trail_labour_price ?: 0) + ($value->cover_sheet_price ?: 0) + ($value->overnight_price ?: 0) + ($value->warehouse_plus_price ?: 0) + ($value->work_double_price ?: 0) + ($value->towing_price ?: 0) + ($value->sunday_price ?: 0) + ($value->rangsit_price ?: 0) + ($value->diligence_price ?: 0) + ($value->delivery_2_cus_price ?: 0) + ($value->incentive_price ?: 0) + ($value->work_other_price ?: 0) - ($value->traffic_fine_price ?: 0);
 
                     $total_amount = $total_amount + $line_amount;
                     $total_other_amount = $total_other_amount + $other_amount;

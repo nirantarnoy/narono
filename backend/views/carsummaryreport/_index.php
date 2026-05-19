@@ -289,8 +289,8 @@ if($driver_id == null || $search_emp_id !=null){
                 <th rowspan="2" style="text-align: center;padding: 5px;border: 1px solid grey;"><b>รวม</b></th>
             </tr>
             <tr>
-                <th style="text-align: right;padding: 5px;border: 1px solid grey;"><b>ค่าเที่ยว</b></th>
-                <th style="text-align: right;padding: 5px;border: 1px solid grey;"><b>ค่าพิเศษ</b></th>
+                <th style="text-align: right;padding: 5px;border: 1px solid grey;"><b>ค่าเที่ยวทั่วไป</b></th>
+                <th style="text-align: right;padding: 5px;border: 1px solid grey;"><b>ค่าเที่ยวพิเศษ</b></th>
                 <th style="text-align: right;padding: 5px;border: 1px solid grey;"><b>ค่าแบก</b></th>
                 <th style="text-align: right;padding: 5px;border: 1px solid grey;"><b>ค่าคลุมผ้าใบ</b></th>
                 <th style="text-align: right;padding: 5px;border: 1px solid grey;"><b>ค่าบวกคลัง</b></th>

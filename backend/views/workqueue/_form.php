@@ -1247,7 +1247,7 @@ function getRouteplan(){
                     $('.total-qty').val(parseFloat(rate_qty) + parseFloat(dropoff_qty));
                     $('#labour-price').val(labour_price);
                     $('#labour-price-general').val(labour_price); // Default to Group 1 General
-                    $('#labour-price-special').val(other_price);
+                    $('#labour-price-special').val(trail_labour_price);
                     $('#labour-price-plan').val(labour_price);
                     $('#express-road-price-plan').val(express_road_price);
                     $('#cover-sheet-price-plan').val(cover_sheet_price);

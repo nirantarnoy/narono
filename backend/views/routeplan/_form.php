@@ -301,7 +301,7 @@ $car_trail_type_data = \common\models\Car::find()->where(['type_id'=>2])->all();
                     <th>ประเภทรถ</th>
                     <th>ค่าเที่ยว</th>
                     <th>ทะเบียนหาง</th>
-                    <th>ค่าเที่ยว</th>
+                    <th>ค่าเที่ยวพิเศษ</th>
                     <th>ค่าทางด่วน</th>
                     <th>คลุมผ้าใบ</th>
                     <th>ค้างคืน</th>
