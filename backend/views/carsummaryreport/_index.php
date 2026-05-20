@@ -412,7 +412,7 @@ if($driver_id == null || $search_emp_id !=null){
             $sum_group3 = $sum_sunday + $sum_rangsit + $sum_overnight + $sum_diligence;
             $sum_group4 = $sum_other;
             $grand_total_income = $sum_total + $cost_living_price;
-            $grand_total_net = $grand_total_income - $deduct_total - $test_price - $damage_price - ($fine_employee_amount + $sum_traffic_fine) - $deduct_other_price - $other_amt_deduct;
+            $grand_total_net = $grand_total_income - $deduct_total - $test_price - $damage_price - ($fine_employee_amount + $sum_traffic_fine) - $deduct_other_price;
             ?>
             </tbody>
             <tfoot>
@@ -502,9 +502,9 @@ if($driver_id == null || $search_emp_id !=null){
                 <td></td>
                 <td style="text-align: right;padding: 5px;"></td>
                 <td style="text-align: center;padding: 5px;"></td>
-                <td style="padding-left: 10px">อื่นๆ</td>
-                <td style="text-align: right;padding: 5px;"><?= number_format($other_amt_deduct, 2) ?></td>
-                <td style="text-align: center;padding: 5px;">บาท</td>
+                <td></td>
+                <td></td>
+                <td></td>
             </tr>
             <tr>
                 <td></td>
