@@ -11,10 +11,10 @@ $date_year = "";
 if ($from_date != '') {
     $x1 = explode('-', $from_date);
     $x2 = explode('-', $to_date);
-    $date_month = \backend\models\Month::findMonthName((int)$x1[1]);
+    $date_month = \backend\helpers\Thaimonth::getTypeById((int)$x1[1]);
     $date_year = $x1[0] + 543;
 } else {
-    $date_month = \backend\models\Month::findMonthName((int)date('m'));
+    $date_month = \backend\helpers\Thaimonth::getTypeById((int)date('m'));
     $date_year = date('Y') + 543;
 }
 
