@@ -1253,14 +1253,17 @@ function getRouteplan(){
                     $('.total-qty').val(parseFloat(rate_qty) + parseFloat(dropoff_qty));
                     $('#labour-price').val(labour_price);
                     $('#labour-price-general').val(labour_price); // Default to Group 1 General
-                    $('#labour-price-special').val(trail_labour_price);
+                    $('#labour-price-special').val(other_price); // Map other_price from Route Plan here
                     $('#labour-price-plan').val(labour_price);
-                    $('#labour-price-special-plan').val(trail_labour_price);
+                    $('#labour-price-special-plan').val(other_price);
                     $('#express-road-price-plan').val(express_road_price);
                     $('#cover-sheet-price-plan').val(cover_sheet_price);
                     $('#overnight-price-plan').val(overnight_price);
                     $('#warehouse-plus-price-plan').val(warehouse_plus_price);
-                    $('#other-price-plan').val(other_price);
+                    $('#other-price-plan').val(0); // Set other_price in Work Queue to 0
+                    if ($("#other-price-checked").val() == 1) {
+                        $('#other-price').val(0);
+                    }
                     
                     // Trigger calculation if toggles are ON
                     calculateGroups();
