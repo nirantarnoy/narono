@@ -546,6 +546,12 @@
                                 <p> รายงานค่าเที่ยว </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="index.php?r=carsummaryreport/driverwage" class="nav-link driverwage">
+                                <i class="far fa-circlez nav-icon"></i>
+                                <p> รายงานค่าแรงพขร. </p>
+                            </a>
+                        </li>
                         <?php //endif;?>
                         <?php //if (\Yii::$app->user->can('salecomreport/index')): ?>
                         <li class="nav-item">
