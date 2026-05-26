@@ -827,6 +827,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
     <input type="hidden" id="car-type-selected" value="<?= $current_car_type_id ?>">
     <input type="hidden" id="labour-price-checked" value="0">
     <input type="hidden" id="labour-price-plan" value="<?= $model->labour_price ?>">
+    <input type="hidden" id="labour-price-special-plan" value="<?= $model->labour_price_special ?>">
     <input type="hidden" id="express-road-price-checked" value="0">
     <input type="hidden" id="express-road-price-plan" value="<?= $model->express_road_price ?>">
     <input type="hidden" id="other-price-checked" value="0">
@@ -1011,8 +1012,10 @@ function enableLabour(e){
          loop +=1;
          if($("#labour-price-checked").val() == 1){
             var labour = $('#labour-price-plan').val();
+            var labour_special = $('#labour-price-special-plan').val();
             $("#labour-price").val(labour);
             $("#labour-price-general").val(labour);
+            $("#labour-price-special").val(labour_special);
             }else{
                  $("#labour-price").val(0);
                  $("#labour-price-general").val(0);
@@ -1033,8 +1036,10 @@ function enableLabour(e){
        if($("#labour-price-checked").val() == 1){
             getRouteplan();
             var labour = $('#labour-price-plan').val();
+            var labour_special = $('#labour-price-special-plan').val();
             $("#labour-price").val(labour);
             $("#labour-price-general").val(labour);
+            $("#labour-price-special").val(labour_special);
             }else{
                  $("#labour-price").val(0);
                  $("#labour-price-general").val(0);
@@ -1218,6 +1223,7 @@ function getRouteplan(){
     var customer_id = $("#customer-selected-id").val();
    // alert(route_plan_id);
    var car_type_id = $("#car-type-selected").val();
+   var trail_id = $("#workqueue-tail_id").val();
    
     if(customer_id > 0 && car_type_id > 0){
         
@@ -1227,7 +1233,7 @@ function getRouteplan(){
             'dataType': 'json',
             'async': false,
             'url': '$url_to_routeplan',
-            'data': {'route_plan_id': route_plan_id,'car_type_id': car_type_id,'customer_id': customer_id},
+            'data': {'route_plan_id': route_plan_id,'car_type_id': car_type_id,'customer_id': customer_id, 'trail_id': trail_id},
             'success': function(data){
                 // alert('has data');
                 if(data != null){
@@ -1249,6 +1255,7 @@ function getRouteplan(){
                     $('#labour-price-general').val(labour_price); // Default to Group 1 General
                     $('#labour-price-special').val(trail_labour_price);
                     $('#labour-price-plan').val(labour_price);
+                    $('#labour-price-special-plan').val(trail_labour_price);
                     $('#express-road-price-plan').val(express_road_price);
                     $('#cover-sheet-price-plan').val(cover_sheet_price);
                     $('#overnight-price-plan').val(overnight_price);
@@ -1279,6 +1286,7 @@ function getTailinfo(e){
                     // alert(data[0]['plate_no']);
                     var plat_no = data[0]['plate_no'];
                     $('.tail-plate-no').val(plat_no);
+                    getRouteplan();
                 }
             },
             'error': function(data){

@@ -382,6 +382,7 @@ class CarController extends Controller
         $id = \Yii::$app->request->post('route_plan_id');
         $customer_id = \Yii::$app->request->post('customer_id');
         $car_type_id = \Yii::$app->request->post('car_type_id');
+        $trail_id = \Yii::$app->request->post('trail_id');
         $data = [];
         if ( $customer_id && $car_type_id) {
             $distance = 10;
@@ -400,7 +401,11 @@ class CarController extends Controller
                 $total_rate_qty = $model->oil_rate_qty;
 
 
-                $model_plan_price = \common\models\RoutePlanPrice::find()->where(['route_plan_id' => $model->id, 'car_type_id' => $car_type_id])->all();
+                if ($trail_id > 0) {
+                    $model_plan_price = \common\models\RoutePlanPrice::find()->where(['route_plan_id' => $model->id, 'car_type_id' => $car_type_id, 'trail_id' => $trail_id])->all();
+                } else {
+                    $model_plan_price = \common\models\RoutePlanPrice::find()->where(['route_plan_id' => $model->id, 'car_type_id' => $car_type_id])->all();
+                }
                 if ($model_plan_price) {
                     foreach ($model_plan_price as $value) {
                         $labour_price = $value->labour_price;

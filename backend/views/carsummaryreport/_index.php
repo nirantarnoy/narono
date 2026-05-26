@@ -27,10 +27,10 @@ if ($from_date != '' && $to_date != '') {
 }
 $emp_company_id = 0;
 $driver_id = \backend\models\Car::getDriver($search_car_id);
-if($search_car_id != null) {
-    $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
-}else{
+if($search_emp_id != null) {
     $emp_company_id = \backend\models\Employee::findEmpcompanyid($search_emp_id);
+} else if ($search_car_id != null) {
+    $emp_company_id = \backend\models\Employee::findEmpcompanyid($driver_id);
 }
 
 
@@ -264,7 +264,7 @@ if($driver_id == null || $search_emp_id !=null){
         <table style="width: 100%">
             <tr>
                 <td style="width:30%;padding: 5px;">ชื่อพนักงานขับรถ
-                    <b><?= $search_car_id !=null? \backend\models\Car::findDrivername($search_car_id): \backend\models\Employee::findFullName($search_emp_id) ?>
+                    <b><?= $search_emp_id != null ? \backend\models\Employee::findFullName($search_emp_id) : ($search_car_id != null ? \backend\models\Car::findDrivername($search_car_id) : '') ?>
                     </b>
                 </td>
                 <!--            <td><input type="text" class="form-control"></td>-->
@@ -326,10 +326,10 @@ if($driver_id == null || $search_emp_id !=null){
             $other_amt_deduct = 0;
 
             $cost_living_price = 0;
-            if($search_car_id != null && $search_emp_id == null){
-                $cost_living_price = \backend\models\Employee::findCostLivingPrice($search_car_id);
-            }else if($search_car_id == null && $search_emp_id != null){
+            if ($search_emp_id != null) {
                 $cost_living_price = \backend\models\Employee::findCostLivingPriceByDriver($search_emp_id);
+            } else if ($search_car_id != null) {
+                $cost_living_price = \backend\models\Employee::findCostLivingPrice($search_car_id);
             }
 
             $social_price = \backend\models\Company::findCompanySocialPer($emp_company_id);
