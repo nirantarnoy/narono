@@ -403,8 +403,15 @@ class CarController extends Controller
 
                 if ($trail_id > 0) {
                     $model_plan_price = \common\models\RoutePlanPrice::find()->where(['route_plan_id' => $model->id, 'car_type_id' => $car_type_id, 'trail_id' => $trail_id])->all();
+                    if (!$model_plan_price) {
+                        $model_plan_price = \common\models\RoutePlanPrice::find()->where(['route_plan_id' => $model->id, 'car_type_id' => $car_type_id])
+                            ->andWhere(['or', ['trail_id' => 0], ['trail_id' => null]])
+                            ->all();
+                    }
                 } else {
-                    $model_plan_price = \common\models\RoutePlanPrice::find()->where(['route_plan_id' => $model->id, 'car_type_id' => $car_type_id])->all();
+                    $model_plan_price = \common\models\RoutePlanPrice::find()->where(['route_plan_id' => $model->id, 'car_type_id' => $car_type_id])
+                        ->andWhere(['or', ['trail_id' => 0], ['trail_id' => null]])
+                        ->all();
                 }
                 if ($model_plan_price) {
                     foreach ($model_plan_price as $value) {
