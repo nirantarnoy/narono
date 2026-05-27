@@ -1020,6 +1020,11 @@ function enableLabour(e){
                  $("#labour-price").val(0);
                  $("#labour-price-general").val(0);
                  $("#labour-price-special").val(0);
+                 $("#express-road-price").val(0);
+                 $("#cover-sheet-price").val(0);
+                 $("#overnight-price").val(0);
+                 $("#warehouse-plus-price").val(0);
+                 $("#other-price").val(0);
             }
           
           calculateGroups();
@@ -1035,15 +1040,15 @@ function enableLabour(e){
         loop +=1;
        if($("#labour-price-checked").val() == 1){
             getRouteplan();
-            var labour = $('#labour-price-plan').val();
-            var labour_special = $('#labour-price-special-plan').val();
-            $("#labour-price").val(labour);
-            $("#labour-price-general").val(labour);
-            $("#labour-price-special").val(labour_special);
             }else{
                  $("#labour-price").val(0);
                  $("#labour-price-general").val(0);
                  $("#labour-price-special").val(0);
+                 $("#express-road-price").val(0);
+                 $("#cover-sheet-price").val(0);
+                 $("#overnight-price").val(0);
+                 $("#warehouse-plus-price").val(0);
+                 $("#other-price").val(0);
             }
           
         calculateGroups();
@@ -1252,17 +1257,22 @@ function getRouteplan(){
                     $('.total-distance').val(distance);
                     $('.total-qty').val(parseFloat(rate_qty) + parseFloat(dropoff_qty));
                     $('#labour-price').val(labour_price);
-                    $('#labour-price-general').val(labour_price); // Default to Group 1 General
-                    $('#labour-price-special').val(other_price); // Map other_price from Route Plan here
                     $('#labour-price-plan').val(labour_price);
-                    $('#labour-price-special-plan').val(other_price);
+                    $('#labour-price-special-plan').val(trail_labour_price);
                     $('#express-road-price-plan').val(express_road_price);
                     $('#cover-sheet-price-plan').val(cover_sheet_price);
                     $('#overnight-price-plan').val(overnight_price);
                     $('#warehouse-plus-price-plan').val(warehouse_plus_price);
-                    $('#other-price-plan').val(0); // Set other_price in Work Queue to 0
-                    if ($("#other-price-checked").val() == 1) {
-                        $('#other-price').val(0);
+                    $('#other-price-plan').val(other_price);
+                    
+                    if ($("#labour-price-checked").val() == 1) {
+                        $('#labour-price-general').val(labour_price);
+                        $('#labour-price-special').val(trail_labour_price); 
+                        $('#express-road-price').val(express_road_price);
+                        $('#cover-sheet-price').val(cover_sheet_price);
+                        $('#overnight-price').val(overnight_price);
+                        $('#warehouse-plus-price').val(warehouse_plus_price);
+                        $('#other-price').val(other_price);
                     }
                     
                     // Trigger calculation if toggles are ON
