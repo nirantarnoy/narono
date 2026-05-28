@@ -18,8 +18,13 @@ if ($from_date != '') {
     $date_year = date('Y') + 543;
 }
 
+$search_company_id = isset($search_company_id) ? $search_company_id : null;
+
 // Fetch all drivers or selected driver
 $query = \backend\models\Employee::find()->where(['status' => 1]);
+if ($search_company_id) {
+    $query->andWhere(['company_id' => $search_company_id]);
+}
 if ($search_emp_id) {
     $query->andWhere(['id' => $search_emp_id]);
 }
@@ -31,7 +36,7 @@ $employees = $query->all();
     <div class="col-lg-12">
         <form action="<?= \yii\helpers\Url::to(['carsummaryreport/driverwage'], true) ?>" method="post">
             <div class="row">
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                     <label class="form-label">ตั้งแต่วันที่</label>
                     <?php
                     echo \kartik\date\DatePicker::widget([
@@ -46,7 +51,7 @@ $employees = $query->all();
                     ]);
                     ?>
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                     <label class="form-label">ถึงวันที่</label>
                     <?php
                     echo \kartik\date\DatePicker::widget([
@@ -61,12 +66,32 @@ $employees = $query->all();
                     ]);
                     ?>
                 </div>
+                <div class="col-lg-2">
+                    <label class="form-label">บริษัท</label>
+                    <?php
+                    echo \kartik\select2\Select2::widget([
+                        'name' => 'search_company_id',
+                        'data' => \yii\helpers\ArrayHelper::map(\backend\models\Company::find()->where(['status' => 1])->all(), 'id', 'name'),
+                        'value' => $search_company_id,
+                        'options' => [
+                            'placeholder' => '---เลือกทั้งหมด---'
+                        ],
+                        'pluginOptions' => [
+                            'allowClear' => true,
+                        ]
+                    ]);
+                    ?>
+                </div>
                 <div class="col-lg-3">
                     <label class="form-label">พขร.</label>
                     <?php
+                    $emp_dropdown_query = \backend\models\Employee::find()->where(['status' => 1]);
+                    if ($search_company_id) {
+                        $emp_dropdown_query->andWhere(['company_id' => $search_company_id]);
+                    }
                     echo \kartik\select2\Select2::widget([
                         'name' => 'search_emp_id',
-                        'data' => \yii\helpers\ArrayHelper::map(\backend\models\Employee::find()->where(['status' => 1])->all(), 'id', function($data){
+                        'data' => \yii\helpers\ArrayHelper::map($emp_dropdown_query->all(), 'id', function($data){
                             return $data->fname.' '.$data->lname;
                         }),
                         'value' => $search_emp_id,
@@ -94,6 +119,11 @@ $employees = $query->all();
 
 <div id="print-area">
     <table style="width: 100%">
+        <?php if ($search_company_id): ?>
+        <tr>
+            <td style="text-align: center;"><h4><b><?= Html::encode(\backend\models\Company::findCompanyName($search_company_id)) ?></b></h4></td>
+        </tr>
+        <?php endif; ?>
         <tr>
             <td style="text-align: center;"><h4><b>ค่าเที่ยว/ค่าแรงพนักงานขับรถ เดือน <?= $date_month . ' ' . $date_year ?></b></h4></td>
         </tr>
@@ -118,7 +148,6 @@ $employees = $query->all();
                 <th style="text-align: center; padding: 5px; border: 1px solid grey;">หักเงินประกันของเสียหาย<br>(6)</th>
                 <th style="text-align: center; padding: 5px; border: 1px solid grey;">หักค่าสินค้าเสียหาย</th>
                 <th style="text-align: center; padding: 5px; border: 1px solid grey;">หักอื่นๆ<br>(8)</th>
-                <th style="text-align: center; padding: 5px; border: 1px solid grey;">หักเก็บกู้</th>
                 <th style="text-align: center; padding: 5px; border: 1px solid grey;">ยอดสุทธิ</th>
             </tr>
         </thead>
@@ -137,15 +166,28 @@ $employees = $query->all();
             $g_damage = 0;
             $g_prod_damage = 0;
             $g_other = 0;
-            $g_recovery = 0;
             $g_net = 0;
 
             foreach ($employees as $emp): 
                 // Fetch works for this employee
                 // Note: company_id in QueryCarWorkSummary refers to Employee ID (from previous system logic)
                 $works = \common\models\QueryCarWorkSummary::find()
-                    ->where(['between', 'work_queue_date', $from_date . ' 00:00:00', $to_date . ' 23:59:59'])
-                    ->andWhere(['company_id' => $emp->id])
+                    ->select([
+                        'query_car_work_summary.*',
+                        'work_queue.sunday_price',
+                        'work_queue.rangsit_price',
+                        'work_queue.diligence_price',
+                        'work_queue.delivery_2_cus_price',
+                        'work_queue.traffic_fine_price',
+                        'work_queue.labour_price_general',
+                        'work_queue.labour_price_special',
+                        'work_queue.incentive_price',
+                        'work_queue.towing_price',
+                        'work_queue.work_double_price'
+                    ])
+                    ->joinWith('workqueue')
+                    ->where(['between', 'query_car_work_summary.work_queue_date', $from_date . ' 00:00:00', $to_date . ' 23:59:59'])
+                    ->andWhere(['query_car_work_summary.company_id' => $emp->id])
                     ->all();
                 
                 if (count($works) == 0 && !$search_emp_id) continue; // Skip employees with no work if not specifically searched
@@ -216,10 +258,9 @@ $employees = $query->all();
                 $ot = 0;
                 $tax = 0;
                 $prod_damage = 0;
-                $recovery = 0;
 
                 // Net Total Formula from Excel
-                $net = $total_1_2 + $ot + $allowance - $social_deduct - $tax - $advance - $fine - $damage - $prod_damage - $recovery - $other_deduct;
+                $net = $total_1_2 + $ot + $allowance - $social_deduct - $tax - $advance - $fine - $damage - $prod_damage - $other_deduct;
 
                 // Accumulate Grand Totals
                 $g_cost_living += $cost_living;
@@ -234,7 +275,6 @@ $employees = $query->all();
                 $g_damage += $damage;
                 $g_prod_damage += $prod_damage;
                 $g_other += $other_deduct;
-                $g_recovery += $recovery;
                 $g_net += $net;
             ?>
             <tr>
@@ -252,14 +292,13 @@ $employees = $query->all();
                 <td style="text-align: right; padding: 5px; border: 1px solid grey;"><?= number_format($damage, 2) ?></td>
                 <td style="text-align: right; padding: 5px; border: 1px solid grey;"><?= number_format($prod_damage, 2) ?></td>
                 <td style="text-align: right; padding: 5px; border: 1px solid grey;"><?= number_format($other_deduct, 2) ?></td>
-                <td style="text-align: right; padding: 5px; border: 1px solid grey;"><?= number_format($recovery, 2) ?></td>
                 <td style="text-align: right; padding: 5px; border: 1px solid grey; font-weight: bold;"><?= number_format($net, 2) ?></td>
             </tr>
             <?php endforeach; ?>
             
             <?php if ($i == 0): ?>
             <tr>
-                <td colspan="16" style="text-align: center; padding: 20px; border: 1px solid grey;">ไม่พบข้อมูล</td>
+                <td colspan="15" style="text-align: center; padding: 20px; border: 1px solid grey;">ไม่พบข้อมูล</td>
             </tr>
             <?php endif; ?>
         </tbody>
@@ -278,7 +317,6 @@ $employees = $query->all();
                 <td style="text-align: right; padding: 5px; border: 1px solid grey;"><?= number_format($g_damage, 2) ?></td>
                 <td style="text-align: right; padding: 5px; border: 1px solid grey;"><?= number_format($g_prod_damage, 2) ?></td>
                 <td style="text-align: right; padding: 5px; border: 1px solid grey;"><?= number_format($g_other, 2) ?></td>
-                <td style="text-align: right; padding: 5px; border: 1px solid grey;"><?= number_format($g_recovery, 2) ?></td>
                 <td style="text-align: right; padding: 5px; border: 1px solid grey;"><?= number_format($g_net, 2) ?></td>
             </tr>
         </tfoot>
@@ -288,7 +326,7 @@ $employees = $query->all();
     <br>
     <div style="font-size: 12px;">
         <p>ยอดรวม คือ ค่าครองชีพ + ค่าเที่ยว</p>
-        <p>ยอดคงเหลือสุทธิ คือ ยอดรวม บวกด้วย โอที เงินเบี้ยเลี้ยง ลบด้วย ภาษีเงิน ภงด./เงินยืมทดรอง/ค่าปรับจราจร/เงินประกันของเสียหาย/ค่าสินค้าเสียหาย/หักเก็บกู้/หักอื่นๆ/หักเงินประกันสังคม</p>
+        <p>ยอดคงเหลือสุทธิ คือ ยอดรวม บวกด้วย โอที เงินเบี้ยเลี้ยง ลบด้วย ภาษีเงิน ภงด./เงินยืมทดรอง/ค่าปรับจราจร/เงินประกันของเสียหาย/ค่าสินค้าเสียหาย/หักอื่นๆ/หักเงินประกันสังคม</p>
     </div>
 </div>
 
