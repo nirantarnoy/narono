@@ -19,6 +19,7 @@ if ($from_date != '') {
 }
 
 $search_company_id = isset($search_company_id) ? $search_company_id : null;
+$social_per = isset($social_per) ? $social_per : null;
 
 // Fetch all drivers or selected driver
 $query = \backend\models\Employee::find()->where(['status' => 1]);
@@ -82,7 +83,7 @@ $employees = $query->all();
                     ]);
                     ?>
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-2">
                     <label class="form-label">พขร.</label>
                     <?php
                     $emp_dropdown_query = \backend\models\Employee::find()->where(['status' => 1]);
@@ -103,6 +104,10 @@ $employees = $query->all();
                         ]
                     ]);
                     ?>
+                </div>
+                <div class="col-lg-1">
+                    <label class="form-label">% ประกันสังคม</label>
+                    <input type="number" class="form-control" name="social_per" min="0" value="<?= Html::encode($social_per) ?>">
                 </div>
                 <div class="col-lg-3">
                     <div style="height: 35px;"></div>
@@ -241,6 +246,9 @@ $employees = $query->all();
                 
                 // Calculate Social Security based on cost_living + sum_general_special (logic from trip report)
                 $social_price_per = \backend\models\Company::findCompanySocialPer($emp->company_id);
+                if ($social_per !== '' && $social_per !== null && $social_per != 0) {
+                    $social_price_per = $social_per;
+                }
                 $social_base_price = \backend\models\Company::findSocialbasePrice($emp->company_id);
                 $social_deduct = 0;
                 
