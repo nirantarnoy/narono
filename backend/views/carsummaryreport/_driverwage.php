@@ -22,14 +22,17 @@ $search_company_id = isset($search_company_id) ? $search_company_id : null;
 $social_per = isset($social_per) ? $social_per : null;
 
 // Fetch all drivers or selected driver
-$query = \backend\models\Employee::find()->where(['status' => 1]);
-if ($search_company_id) {
-    $query->andWhere(['company_id' => $search_company_id]);
+$employees = [];
+if (\Yii::$app->request->isPost) {
+    $query = \backend\models\Employee::find()->where(['status' => 1]);
+    if ($search_company_id) {
+        $query->andWhere(['company_id' => $search_company_id]);
+    }
+    if ($search_emp_id) {
+        $query->andWhere(['id' => $search_emp_id]);
+    }
+    $employees = $query->all();
 }
-if ($search_emp_id) {
-    $query->andWhere(['id' => $search_emp_id]);
-}
-$employees = $query->all();
 
 ?>
 
