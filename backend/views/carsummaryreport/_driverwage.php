@@ -170,7 +170,6 @@ $employees = $query->all();
 
             foreach ($employees as $emp): 
                 // Fetch works for this employee
-                // Note: company_id in QueryCarWorkSummary refers to Employee ID (from previous system logic)
                 $works = \common\models\QueryCarWorkSummary::find()
                     ->select([
                         'query_car_work_summary.*',
@@ -187,7 +186,7 @@ $employees = $query->all();
                     ])
                     ->joinWith('workqueue')
                     ->where(['between', 'query_car_work_summary.work_queue_date', $from_date . ' 00:00:00', $to_date . ' 23:59:59'])
-                    ->andWhere(['query_car_work_summary.company_id' => $emp->id])
+                    ->andWhere(['query_car_work_summary.emp_assign' => $emp->id])
                     ->all();
                 
                 if (count($works) == 0 && !$search_emp_id) continue; // Skip employees with no work if not specifically searched
@@ -201,18 +200,13 @@ $employees = $query->all();
                 $fine = 0;
                 $damage = 0;
                 $other_deduct = 0;
+                $sum_general_special = 0;
                 
                 // Fine from EmployeeFine table
-                $fine_employee_amount = 0;
-                $model_fine = \common\models\EmployeeFine::find()
+                $fine_employee_amount = \common\models\EmployeeFine::find()
                     ->where(['between', 'trans_date', $from_date . ' 00:00:00', $to_date . ' 23:59:59'])
                     ->andWhere(['emp_id' => $emp->id])
-                    ->all();
-                if ($model_fine) {
-                    foreach ($model_fine as $f) {
-                        $fine_employee_amount += $f->amount;
-                    }
-                }
+                    ->sum('fine_amount') ?: 0;
 
                 foreach ($works as $w) {
                     $val_general = $w->labour_price_general ?: ($w->work_labour_price ?: 0);
@@ -233,6 +227,8 @@ $employees = $query->all();
                     $trip_price += ($val_general + $val_special + $val_towing + $val_cover + $val_warehouse + $val_delivery2 + $val_double + $val_other);
                     $allowance += ($val_sunday + $val_rangsit + $val_overnight + $val_diligence);
                     
+                    $sum_general_special += ($val_general + $val_special);
+                    
                     $advance += $w->test_price ?: 0;
                     $fine += $w->traffic_fine_price ?: 0;
                     $damage += $w->damaged_price ?: 0;
@@ -243,15 +239,16 @@ $employees = $query->all();
                 
                 $total_1_2 = $cost_living + $trip_price;
                 
-                // Calculate Social Security
+                // Calculate Social Security based on cost_living + sum_general_special (logic from trip report)
                 $social_price_per = \backend\models\Company::findCompanySocialPer($emp->company_id);
                 $social_base_price = \backend\models\Company::findSocialbasePrice($emp->company_id);
                 $social_deduct = 0;
                 
-                if ($total_1_2 >= $social_base_price && $social_base_price > 0) {
+                $social_gross = $cost_living + $sum_general_special;
+                if ($social_gross >= $social_base_price && $social_base_price > 0) {
                     $social_deduct = (($social_base_price * $social_price_per) / 100);
                 } else if ($social_price_per > 0) {
-                    $social_deduct = ($total_1_2 * $social_price_per / 100);
+                    $social_deduct = ($social_gross * $social_price_per / 100);
                 }
                 
                 // Empty placeholders for new columns requested by excel design
