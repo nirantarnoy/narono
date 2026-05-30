@@ -10,9 +10,9 @@ use kartik\date\DatePicker;
 $model_line = null;
 
 if ($from_date != '' && $to_date != '') {
-    $date_day = date('d', strtotime($from_date));
-    $date_month = \backend\helpers\Thaimonth::getTypeById((int)(date('m', strtotime($from_date))));
-    $date_year = date('Y', strtotime($from_date)) + 543;
+    $date_day = date('d', strtotime($to_date));
+    $date_month = \backend\helpers\Thaimonth::getTypeById((int)(date('m', strtotime($to_date))));
+    $date_year = date('Y', strtotime($to_date)) + 543;
 
     if ($search_car_id != null) {
         $model_line = \common\models\QueryCarWorkSummary::find()->select(['query_car_work_summary.*','work_queue.sunday_price','work_queue.rangsit_price','work_queue.diligence_price','work_queue.delivery_2_cus_price','work_queue.traffic_fine_price','work_queue.labour_price_general','work_queue.labour_price_special','work_queue.incentive_price','work_queue.towing_price','work_queue.work_double_price'])->joinWith('workqueue')->where(['query_car_work_summary.car_id' => $search_car_id])->andFilterWhere(['>=', 'date(query_car_work_summary.work_queue_date)', $from_date])->andFilterWhere(['<=', 'date(query_car_work_summary.work_queue_date)', $to_date])->orderBy(['query_car_work_summary.work_queue_date' => SORT_ASC])->all();
