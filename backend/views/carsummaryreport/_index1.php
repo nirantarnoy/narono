@@ -347,19 +347,20 @@ if ($model_find_emp_id){
             <?php endforeach; ?>
         <?php endif; ?>
         <?php
+        $sum_group1 = $sum_general + $sum_special;
+        $sum_group2 = $sum_towing + $sum_cover + $sum_warehouse + $sum_delivery2 + $sum_double;
+        $sum_group3 = $sum_sunday + $sum_rangsit + $sum_overnight + $sum_diligence;
+        $sum_group4 = $sum_other;
+        $grand_total_income = $sum_total + $cost_living_price;
+
+        $total_for_social = $grand_total_income;
         $base_deduct = (($social_base_price * $social_price)/100);
-        $total_for_social = $sum_general + $sum_special + $cost_living_price;
         if($total_for_social >= $social_base_price){
             $deduct_total = $base_deduct;
         }else{
             $deduct_total = ($total_for_social * $social_price / 100);
         }
 
-        $sum_group1 = $sum_general + $sum_special;
-        $sum_group2 = $sum_towing + $sum_cover + $sum_warehouse + $sum_delivery2 + $sum_double;
-        $sum_group3 = $sum_sunday + $sum_rangsit + $sum_overnight + $sum_diligence;
-        $sum_group4 = $sum_other;
-        $grand_total_income = $sum_total + $cost_living_price;
         $grand_total_net = $grand_total_income - $deduct_total - $sum_traffic_fine;
         ?>
         </tbody>

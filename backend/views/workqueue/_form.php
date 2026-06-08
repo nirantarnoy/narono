@@ -997,170 +997,71 @@ function checkcharter(e){
 
 
 function enableLabour(e){
-    if(loop >= 1){
-        loop = 0;
-        return false;
+    var is_checked = e.prop("checked") ? 1 : 0;
+    $("#labour-price-checked").val(is_checked);
+    
+    if(is_checked == 1){
+        getRouteplan();
+    }else{
+        $("#labour-price").val(0);
+        $("#labour-price-general").val(0);
+        $("#labour-price-special").val(0);
+        $("#express-road-price").val(0);
+        $("#cover-sheet-price").val(0);
+        $("#overnight-price").val(0);
+        $("#warehouse-plus-price").val(0);
+        $("#other-price").val(0);
     }
-   // alert('loop is' + loop);
-  // alert($("#labour-price-checked").val());
-   if($("#labour-price-checked").val() == 1){
-      // alert("has 1");
-       $("#labour-price-checked").val(0);
-       if($("#labour-price-checked").val() == 0){
-           $("#labour-price-checked").val(0)
-       }
-         loop +=1;
-         if($("#labour-price-checked").val() == 1){
-            var labour = $('#labour-price-plan').val();
-            var labour_special = $('#labour-price-special-plan').val();
-            $("#labour-price").val(labour);
-            $("#labour-price-general").val(labour);
-            $("#labour-price-special").val(labour_special);
-            }else{
-                 $("#labour-price").val(0);
-                 $("#labour-price-general").val(0);
-                 $("#labour-price-special").val(0);
-                 $("#express-road-price").val(0);
-                 $("#cover-sheet-price").val(0);
-                 $("#overnight-price").val(0);
-                 $("#warehouse-plus-price").val(0);
-                 $("#other-price").val(0);
-            }
-          
-          calculateGroups();
-       return false;
-   }
- 
-   if($("#labour-price-checked").val() == 0){
-      // alert("has 0");
-       $("#labour-price-checked").val(1);
-       if($("#labour-price-checked").val() == 0){
-           $("#labour-price-checked").val(1)
-       }
-        loop +=1;
-       if($("#labour-price-checked").val() == 1){
-            getRouteplan();
-            }else{
-                 $("#labour-price").val(0);
-                 $("#labour-price-general").val(0);
-                 $("#labour-price-special").val(0);
-                 $("#express-road-price").val(0);
-                 $("#cover-sheet-price").val(0);
-                 $("#overnight-price").val(0);
-                 $("#warehouse-plus-price").val(0);
-                 $("#other-price").val(0);
-            }
-          
-        calculateGroups();
-      
-       // loop = 0;
-       return  false;
-   }
-  
- 
+    
+    calculateGroups();
 }
 function enableExpressroad(e){
-    if(loop2 >= 1){
-        loop2 = 0;
-        return false;
+    var is_checked = e.prop("checked") ? 1 : 0;
+    $("#express-road-price-checked").val(is_checked);
+    
+    if(is_checked == 1){
+        getRouteplan();
+        var labour = $('#express-road-price-plan').val();
+        $("#express-road-price").val(labour);
+    }else{
+        $("#express-road-price").val(0);
     }
-   if($("#express-road-price-checked").val() == 1){
-     //  alert("has 1");
-       $("#express-road-price-checked").val(0);
-       if($("#express-road-price-checked").val() == 0){
-           $("#express-road-price-checked").val(0)
-       }
-         loop2 +=1;
-         if($("#express-road-price-checked").val() == 1){
-          
-           var labour = $('#express-road-price-plan').val();
-           $("#express-road-price").val(labour);
-           }else{
-                $("#express-road-price").val(0);
-           }
-       return false;
-   }
- 
-   if($("#express-road-price-checked").val() == 0){
-      // alert("has 0");
-       $("#express-road-price-checked").val(1);
-       if($("#express-road-price-checked").val() == 0){
-           $("#express-road-price-checked").val(1)
-       }
-        loop2 +=1;
-       if($("#express-road-price-checked").val() == 1){
-           getRouteplan();
-            var labour = $('#express-road-price-plan').val();
-            $("#express-road-price").val(labour);
-            }else{
-                 $("#express-road-price").val(0);
-            }
-        
-        calculateGroups();
-        return false;
-   }
-  
- 
+    
+    calculateGroups();
 }
 
 
 function enableOther(e){
-   
-    if(loop3 >= 1){
-        loop3 = 0;
-        return false;
+    var is_checked = e.prop("checked") ? 1 : 0;
+    $("#other-price-checked").val(is_checked);
+    
+    if(is_checked == 1){
+        getRouteplan();
+        var labour = $('#other-price-plan').val();
+        $("#other-price").val(labour);
+      
+        var cover_sheet_price = $('#cover-sheet-price-plan').val();
+        $("#cover-sheet-price").val(cover_sheet_price);
+      
+        var overnight_price = $('#overnight-price-plan').val();
+        $("#overnight-price").val(overnight_price);
+      
+        var warehouse_plus_price = $('#warehouse-plus-price-plan').val();
+        $("#warehouse-plus-price").val(warehouse_plus_price);
+    }else{
+        $("#other-price").val(0);
+        $("#towing-price").val(0);
+        $("#cover-sheet-price").val(0);
+        $("#warehouse-plus-price").val(0);
+        $("#delivery-2-cus-price").val(0);
+        $("#work-double-price").val(0);
+        $("#sunday-price").val(0);
+        $("#rangsit-price").val(0);
+        $("#overnight-price").val(0);
+        $("#diligence-price").val(0);
     }
-  
-   if($("#other-price-checked").val() == 1){
-       $("#other-price-checked").val(0);
-       loop3 +=1;
-       $("#other-price").val(0);
-       $("#towing-price").val(0);
-       $("#cover-sheet-price").val(0);
-       $("#warehouse-plus-price").val(0);
-       $("#delivery-2-cus-price").val(0);
-       $("#work-double-price").val(0);
-       $("#sunday-price").val(0);
-       $("#rangsit-price").val(0);
-       $("#overnight-price").val(0);
-       $("#diligence-price").val(0);
-       calculateGroups();
-       return false;
-   }
- 
-   if($("#other-price-checked").val() == 0){
-       $("#other-price-checked").val(1);
-       if($("#other-price-checked").val() == 0){
-           $("#other-price-checked").val(1)
-       }
-        loop3 +=1;
-       if($("#other-price-checked").val() == 1){
-           getRouteplan();
-           var labour = $('#other-price-plan').val();
-           $("#other-price").val(labour);
-         
-       
-           var cover_sheet_price = $('#cover-sheet-price-plan').val();
-           $("#cover-sheet-price").val(cover_sheet_price);
-          
-           var overnight_price = $('#overnight-price-plan').val();
-           $("#overnight-price").val(overnight_price);
-          
-          
-           var warehouse_plus_price = $('#warehouse-plus-price-plan').val();
-           $("#warehouse-plus-price").val(warehouse_plus_price);
-          
-       }else{
-                $("#other-price").val(0);
-                $("#cover-sheet-price").val(0);
-                 $("#overnight-price").val(0);
-                  $("#warehouse-plus-price").val(0);
-           }
-       // loop = 0;
-       return  false;
-   }
-  
- 
+    
+    calculateGroups();
 }
 function getCarinfo(e){
     // alert(e.val());
