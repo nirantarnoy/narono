@@ -62,6 +62,7 @@ class QueryCarWorkSummary extends \yii\db\ActiveRecord
     public $diligence_price;
     public $traffic_fine_price;
     public $incentive_price;
+    public $group3_remark;
 
     public static function tableName()
     {
@@ -85,7 +86,7 @@ class QueryCarWorkSummary extends \yii\db\ActiveRecord
             [['id', 'des_province_id', 'status', 'created_at', 'created_by', 'updated_at', 'updated_by', 'customer_id', 'hp', 'item_back_id', 'company_id', 'dropoff_place_id', 'car_type_id'], 'integer'],
             [['total_distanct', 'oil_rate_qty', 'dropoff_qty', 'labour_price', 'express_road_price', 'other_price', 'work_labour_price', 'work_express_road_price', 'work_other_price', 'test_price', 'damaged_price', 'deduct_other_price', 'other_amt', 'cover_sheet_price', 'overnight_price', 'warehouse_plus_price', 'work_double_price', 'towing_price', 'trail_labour_price'], 'number'],
             [['labour_price_general', 'labour_price_special', 'delivery_2_cus_price', 'sunday_price', 'rangsit_price', 'diligence_price', 'traffic_fine_price', 'incentive_price'], 'number'],
-            [['des_name', 'dropoff_name', 'car_type_name', 'work_queue_date'], 'string', 'max' => 255],
+            [['des_name', 'dropoff_name', 'car_type_name', 'work_queue_date', 'group3_remark'], 'string', 'max' => 255],
         ];
     }
 

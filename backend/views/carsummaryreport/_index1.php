@@ -15,7 +15,7 @@ if ($from_date != '' && $to_date != '') {
     $date_year = date('Y', strtotime($to_date)) + 543;
 
     if ($search_car_id != null) {
-        $model_line = \common\models\QueryCarWorkSummary::find()->select(['query_car_work_summary.*','work_queue.sunday_price','work_queue.rangsit_price','work_queue.diligence_price','work_queue.delivery_2_cus_price','work_queue.traffic_fine_price','work_queue.labour_price_general','work_queue.labour_price_special','work_queue.incentive_price','work_queue.towing_price','work_queue.work_double_price'])->joinWith('workqueue')->where(['query_car_work_summary.car_id' => $search_car_id])->andFilterWhere(['>=', 'date(query_car_work_summary.work_queue_date)', $from_date])->andFilterWhere(['<=', 'date(query_car_work_summary.work_queue_date)', $to_date])->orderBy(['query_car_work_summary.work_queue_date' => SORT_ASC])->all();
+        $model_line = \common\models\QueryCarWorkSummary::find()->select(['query_car_work_summary.*','work_queue.sunday_price','work_queue.rangsit_price','work_queue.diligence_price','work_queue.delivery_2_cus_price','work_queue.traffic_fine_price','work_queue.labour_price_general','work_queue.labour_price_special','work_queue.incentive_price','work_queue.towing_price','work_queue.work_double_price','work_queue.group3_remark'])->joinWith('workqueue')->where(['query_car_work_summary.car_id' => $search_car_id])->andFilterWhere(['>=', 'date(query_car_work_summary.work_queue_date)', $from_date])->andFilterWhere(['<=', 'date(query_car_work_summary.work_queue_date)', $to_date])->orderBy(['query_car_work_summary.work_queue_date' => SORT_ASC])->all();
     }
 
     $from_date = date('d-m-Y', strtotime($from_date));
@@ -252,6 +252,7 @@ if ($model_find_emp_id){
             <th colspan="4" style="text-align: center;padding: 5px;border: 1px solid grey;"><b>กลุ่ม 3</b></th>
             <th colspan="1" style="text-align: center;padding: 5px;border: 1px solid grey;"><b>กลุ่ม 4</b></th>
             <th rowspan="2" style="text-align: center;padding: 5px;border: 1px solid grey;"><b>รวม</b></th>
+            <th rowspan="2" style="text-align: center;padding: 5px;border: 1px solid grey;"><b>หมายเหตุ</b></th>
         </tr>
         <tr>
             <th style="text-align: right;padding: 5px;border: 1px solid grey;"><b>ค่าเที่ยวทั่วไป</b></th>
@@ -343,6 +344,7 @@ if ($model_find_emp_id){
                     <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($val_diligence, 2) ?></td>
                     <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($val_other, 2) ?></td>
                     <td style="border: 1px solid grey;padding: 5px;text-align: right;"><?= number_format($line_total, 2) ?></td>
+                    <td style="border: 1px solid grey;padding: 5px;text-align: center;"><?= $value->group3_remark ?></td>
                 </tr>
             <?php endforeach; ?>
         <?php endif; ?>
@@ -380,6 +382,7 @@ if ($model_find_emp_id){
             <td style="border: 1px solid grey;padding: 5px;text-align: right;"><b><?= number_format($sum_diligence, 2) ?></b></td>
             <td style="border: 1px solid grey;padding: 5px;text-align: right;"><b><?= number_format($sum_other, 2) ?></b></td>
             <td style="border: 1px solid grey;padding: 5px;text-align: right;"><b><?= number_format($sum_total, 2) ?></b></td>
+            <td style="border: 1px solid grey;padding: 5px;text-align: center;"></td>
         </tr>
         </tfoot>
     </table>

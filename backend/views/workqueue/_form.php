@@ -412,7 +412,8 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                     <tr>
                         <td>ค่าเบี้ยขยัน</td>
                         <td><?= $form->field($model, 'diligence_price')->textInput(['class' => 'form-control cal-income group-3', 'id' => 'diligence-price'])->label(false) ?></td>
-                        <td colspan="2"></td>
+                        <td>หมายเหตุ</td>
+                        <td><?= $form->field($model, 'group3_remark')->textInput(['class' => 'form-control', 'id' => 'group3-remark'])->label(false) ?></td>
                         <td>รวม (บาท)</td>
                         <td><input type="text" class="form-control total-group-3" readonly value="0" style="background-color: #f2f2f2;"></td>
                     </tr>
