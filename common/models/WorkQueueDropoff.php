@@ -28,7 +28,7 @@ class WorkQueueDropoff extends \yii\db\ActiveRecord
     {
         return [
             [['work_queue_id', 'dropoff_id','is_charter'], 'integer'],
-            [['qty','weight','price_per_ton','price_line_total'], 'number'],
+            [['qty','weight','price_per_ton','price_line_total', 'warehouse_plus'], 'number'],
             [['dropoff_no'], 'string'],
         ];
     }
@@ -42,6 +42,7 @@ class WorkQueueDropoff extends \yii\db\ActiveRecord
             'id' => 'ID',
             'work_queue_id' => 'Work Queue ID',
             'dropoff_id' => 'Dropoff ID',
+            'warehouse_plus' => 'ค่าบวกคลัง',
         ];
     }
 }

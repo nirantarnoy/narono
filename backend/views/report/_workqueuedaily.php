@@ -370,6 +370,7 @@ $this->registerCss("
                 <th style="width: 8%;text-align: center;">ประเภทรถ</th>
                 <th style="width: 8%;text-align: center;">น้ำหนัก(ตัน)</th>
                 <th style="width: 8%;text-align: center;">ราคา</th>
+                <th style="width: 8%;text-align: center;">ค่าบวกคลัง</th>
                 <th style="width: 8%;text-align: center;">จำนวนเงิน</th>
                 <th>หมายเหตุ</th>
             </tr>
@@ -377,6 +378,7 @@ $this->registerCss("
             <tbody>
             <?php $line_num = 0;
             $total_weight = 0;
+            $total_warehouse_plus = 0;
             $total_line_amount = 0;
             $old_work_id = 0;
             ?>
@@ -399,11 +401,13 @@ $this->registerCss("
                         <?php foreach ($model_line_dp as $value_dp): ?>
                             <?php $line_weight_ton_new = getDropoffWeighttonNew($value_dp->id); ?>
                             <?php $line_price_per_ton = getDropoffPricepertonNew($value_dp->id); ?>
+                            <?php $line_warehouse_plus = getDropoffWarehousePlusNew($value_dp->id); ?>
                             <?php
                             if ($line_weight_ton_new != null) {
                                 //if($line_weight_ton[0]['is_charter'] == 0){
                                 $total_weight += $line_weight_ton_new[0]['is_charter'] == 1 ? 0 : ($line_weight_ton_new[0]['weight']);
-                                $total_line_amount += ($line_weight_ton_new[0]['weight'] * $line_price_per_ton);
+                                $total_warehouse_plus += $line_warehouse_plus;
+                                $total_line_amount += $line_weight_ton_new[0]['is_charter'] == 1 ? ($line_price_per_ton + $line_warehouse_plus) : (($line_weight_ton_new[0]['weight'] * $line_price_per_ton) + $line_warehouse_plus);
                                 //  $total_line_amount += ( $line_price_per_ton);
                                 // }
                             } else {
@@ -424,7 +428,8 @@ $this->registerCss("
                                 <td style="width: 8%;text-align: center;"><?= \backend\models\Car::getCartype($value->car_id) ?></td>
                                 <td style="width: 8%;text-align: center;"><?= $line_weight_ton_new[0]['is_charter'] == 1 ? 'เหมา' : number_format($line_weight_ton_new[0]['weight'], 3) ?></td>
                                 <td style="width: 8%;text-align: center;"><?= number_format($line_price_per_ton, 2) ?></td>
-                                <td style="width: 8%;text-align: center;"><?= $line_weight_ton_new[0]['is_charter'] == 1 ? number_format($line_price_per_ton, 2) : number_format(($line_weight_ton_new[0]['weight'] * $line_price_per_ton), 2) ?></td>
+                                <td style="width: 8%;text-align: center;"><?= number_format($line_warehouse_plus, 2) ?></td>
+                                <td style="width: 8%;text-align: center;"><?= $line_weight_ton_new[0]['is_charter'] == 1 ? number_format($line_price_per_ton + $line_warehouse_plus, 2) : number_format(($line_weight_ton_new[0]['weight'] * $line_price_per_ton) + $line_warehouse_plus, 2) ?></td>
                                 <td><?= $value->go_deduct_reason ?></td>
                             </tr>
                             <?php $old_work_id = $value->id; ?>
@@ -439,6 +444,7 @@ $this->registerCss("
                 <td colspan="10" style="width: 8%;text-align: right;"><b>รวม</b></td>
                 <td style="width: 8%;text-align: center;"><b><?= number_format($total_weight, 3) ?></b></td>
                 <td style="width: 8%;text-align: center;"><b></b></td>
+                <td style="width: 8%;text-align: center;"><b><?= number_format($total_warehouse_plus, 2) ?></b></td>
                 <td style="width: 8%;text-align: center;"><b><?= number_format($total_line_amount, 2) ?></b></td>
                 <td></td>
             </tr>
@@ -472,6 +478,16 @@ function getDropoffPricepertonNew($id)
         $price = $model->price_per_ton;
     }
     return $price;
+}
+
+function getDropoffWarehousePlusNew($id)
+{
+    $warehouse_plus = 0;
+    $model = \common\models\WorkQueueDropoff::find()->where(['id' => $id])->one();
+    if ($model) {
+        $warehouse_plus = $model->warehouse_plus;
+    }
+    return $warehouse_plus;
 }
 
 function getDropoffWeightton($workqueue_id)

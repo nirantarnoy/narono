@@ -473,6 +473,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                     <th>จำนวนม้วน</th>
                     <th>เหมา</th>
                     <th>น้ำหนัก</th>
+                    <th>ค่าบวกคลัง</th>
                     <th>ราคาบาท/ตัน</th>
                     <th>จำนวนเงิน</th>
                     <th></th>
@@ -519,6 +520,11 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                                 <input type="number" name="weight[]"
                                        step="any"
                                        class="form-control weight" id="" onchange="calpriceperton($(this))">
+                            </td>
+                            <td>
+                                <input type="number" name="warehouse_plus[]"
+                                       step="any"
+                                       class="form-control warehouse-plus" id="" onchange="calpriceperton($(this))" value="0">
                             </td>
                             <td>
                                 <input type="text" class="form-control price-per-ton" name="price_per_ton[]"
@@ -615,7 +621,13 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                                                value="<?= $key->weight ?>"
                                                onchange="calpriceperton($(this))" <?= $key->is_charter == 1 ? 'readonly' : '' ?>>
                                     </td>
-
+                                    <td>
+                                        <input type="number" name="warehouse_plus[]"
+                                               class="form-control warehouse-plus" id=""
+                                               step="any"
+                                               value="<?= $key->warehouse_plus ?>"
+                                               onchange="calpriceperton($(this))">
+                                    </td>
                                     <td>
                                         <input type="text" class="form-control price-per-ton" name="price_per_ton[]"
                                                value="<?= $key->price_per_ton ?>" onchange="calpriceperton($(this))">
@@ -671,6 +683,11 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                                            class="form-control weight" id="" onchange="calpriceperton($(this))">
                                 </td>
                                 <td>
+                                    <input type="number" name="warehouse_plus[]"
+                                           step="any"
+                                           class="form-control warehouse-plus" id="" onchange="calpriceperton($(this))" value="0">
+                                </td>
+                                <td>
                                     <input type="text" class="form-control price-per-ton" name="price_per_ton[]"
                                            onchange="calpriceperton($(this))">
                                 </td>
@@ -697,6 +714,7 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                         </td>
                         <td></td>
                         <td><b><span class="sum-total-weight"><?= number_format($sum_total_weight, 3) ?></span></b></td>
+                        <td></td>
                         <td></td>
                         <td><b><span class="sum-total-amount"><?= number_format($sum_total_amount, 2) ?></span></b></td>
                     </tr>
@@ -1324,6 +1342,7 @@ function addline1(e){
                     clone.find(".dropoff-no").val("");
                     clone.find(".qty").val(0);
                     clone.find(".weight").val(0);
+                    clone.find(".warehouse-plus").val(0);
                     clone.find(".price-per-ton").val(0);
                     clone.find(".price-line-total").val(0);
                   
@@ -1356,6 +1375,7 @@ function removeline1(e) {
                      $(this).find(".dropoff-no").val('');
                      $(this).find(".qty").val(0);
                     $(this).find(".weight").val(0);
+                    $(this).find(".warehouse-plus").val(0);
                     // cal_num();
                 });
             } else {
@@ -1369,13 +1389,18 @@ function removeline1(e) {
 function calpriceperton(e){
     var line_w = e.closest("tr").find(".weight").val();
     var line_p = e.closest("tr").find(".price-per-ton").val();
+    var line_wp = e.closest("tr").find(".warehouse-plus").val();
     var check_yesno = e.closest("tr").find(".is-charter").val();
     var line_total = 0;
     
+    if (line_wp == null || line_wp == '') {
+        line_wp = 0;
+    }
+    
     if(parseInt(check_yesno) == 0){
-        line_total = parseFloat(line_w) * parseFloat(line_p);
+        line_total = parseFloat(line_w) * parseFloat(line_p) + parseFloat(line_wp);
     }else{
-        line_total = parseFloat(line_p);
+        line_total = parseFloat(line_p) + parseFloat(line_wp);
     }
     
     

@@ -112,6 +112,7 @@ class WorkqueueController extends Controller
                 $price_per_ton = \Yii::$app->request->post('price_per_ton') ?? [];
                 $price_line_total = \Yii::$app->request->post('price_line_total') ?? [];
                 $is_charter = \Yii::$app->request->post('is_charter') ?? [];
+                $warehouse_plus = \Yii::$app->request->post('warehouse_plus') ?? [];
                 $route_no = \Yii::$app->request->post('line_route_no') ?? [];
 
                 // add new
@@ -180,6 +181,7 @@ class WorkqueueController extends Controller
                             $model_df->price_per_ton = (float)($price_per_ton[$a] ?? 0);
                             $model_df->price_line_total = (float)($price_line_total[$a] ?? 0);
                             $model_df->is_charter = $is_charter[$a] ?? 0;
+                            $model_df->warehouse_plus = (float)($warehouse_plus[$a] ?? 0);
                             $model_df->save(false);
                         }
                     }
@@ -248,6 +250,7 @@ class WorkqueueController extends Controller
             $weight = \Yii::$app->request->post('weight') ?? [];
             $price_per_ton = \Yii::$app->request->post('price_per_ton') ?? [];
             $price_line_total = \Yii::$app->request->post('price_line_total') ?? [];
+            $warehouse_plus = \Yii::$app->request->post('warehouse_plus') ?? [];
             $route_no = \Yii::$app->request->post('line_route_no') ?? [];
 
             $oil_daily_price = \Yii::$app->request->post('oil_daily_price');
@@ -328,6 +331,7 @@ class WorkqueueController extends Controller
                         $model_do->price_per_ton = (float)($price_per_ton[$a] ?? 0);
                         $model_do->price_line_total = (float)($price_line_total[$a] ?? 0);
                         $model_do->is_charter = $is_charter[$a] ?? 0;
+                        $model_do->warehouse_plus = (float)($warehouse_plus[$a] ?? 0);
                         $model_do->save(false);
                     }
                 }
