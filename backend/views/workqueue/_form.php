@@ -723,6 +723,26 @@ $charter_data = [['id' => 0, 'name' => 'No'], ['id' => 1, 'name' => 'Yes']];
                 </div>
             </div>
         </div>
+        
+        <div class="row" style="margin-top: 15px;">
+            <div class="col-lg-6"></div>
+            <div class="col-lg-6">
+                <table class="table table-bordered">
+                    <tr>
+                        <td style="background-color: #f2f2f2; font-weight: bold; width: 40%; vertical-align: middle;">น้ำหนักขั้นต่ำ ดูจากประเภทรถ</td>
+                        <td><input type="text" class="form-control" id="min-weight-val" name="Workqueue[min_weight_val]" readonly style="background-color: #e6f2ff;"></td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: #f2f2f2; font-weight: bold; vertical-align: middle;">สถานะ</td>
+                        <td><input type="text" class="form-control" id="weight-status" name="Workqueue[weight_status]" readonly style="background-color: #e6f2ff;"></td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: #f2f2f2; font-weight: bold; vertical-align: middle;">ส่วนต่างน้ำหนัก</td>
+                        <td><input type="text" class="form-control" id="weight-diff" name="Workqueue[weight_diff]" readonly style="background-color: #e6f2ff;"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
 
 
         <h6>แนบเอกสาร</h6>
@@ -1424,7 +1444,41 @@ function cal_all(){
     $(".sum-total-weight").text(parseFloat(total_weight).toFixed(3));
     $(".sum-total-amount").text(parseFloat(total_amount).toFixed(2));
    
+    calculateMinWeightStatus(total_weight);
 }
+
+function calculateMinWeightStatus(total_weight) {
+    var car_type_id = $("#car-type-selected").val();
+    var customer_id = $("#customer-selected-id").val(); // Assuming customer is mapped to company_id
+    
+    if (car_type_id && customer_id) {
+        $.ajax({
+            type: 'post',
+            dataType: 'html',
+            url: '/narono/backend/web/index.php?r=workqueue/getminweight',
+            data: { car_type_id: car_type_id, company_id: customer_id },
+            success: function(data) {
+                var min_weight = parseFloat(data) || 0;
+                $("#min-weight-val").val(min_weight.toFixed(3));
+                
+                if (min_weight > 0) {
+                    if (total_weight > min_weight) {
+                        $("#weight-status").val('ใช้น้ำหนักจริงในการวางบิล');
+                        $("#weight-diff").val('0.000');
+                    } else {
+                        $("#weight-status").val('ใช้น้ำหนักขั้นต่ำในการวางบิล');
+                        var diff = min_weight - total_weight;
+                        $("#weight-diff").val(diff.toFixed(3));
+                    }
+                } else {
+                    $("#weight-status").val('');
+                    $("#weight-diff").val('');
+                }
+            }
+        });
+    }
+}
+
 function getpricefromquotation(e){
     var dropoff_id = e.closest('tr').find(".dropoff-id").val();
     var route_no = e.closest('tr').find(".line-route-no").val();

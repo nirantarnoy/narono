@@ -227,6 +227,10 @@ $this->registerCss("
     {
         $conditions['c.work_type_id'] = $search_work_type_id;
     }
+    if ($search_dropoff_id != null) {
+        $query->innerJoin('work_queue_dropoff wqd', 'wqd.work_queue_id = w.id');
+        $conditions['wqd.dropoff_id'] = $search_dropoff_id;
+    }
 
 // Apply conditions และ date range
     $query->andFilterWhere($conditions)
@@ -317,6 +321,17 @@ $this->registerCss("
                         'value' => $search_work_type_id,
                         'options' => [
                             'placeholder' => '---ประเภทงาน---'
+                        ],
+                        'pluginOptions' => [
+                            'allowClear' => true,
+                        ]
+                    ]);
+                    echo \kartik\select2\Select2::widget([
+                        'name' => 'search_dropoff_id',
+                        'data' => \yii\helpers\ArrayHelper::map(\backend\models\DropoffPlace::find()->all(), 'id','name'),
+                        'value' => $search_dropoff_id,
+                        'options' => [
+                            'placeholder' => '---เลือกคลังทั้งหมด---'
                         ],
                         'pluginOptions' => [
                             'allowClear' => true,

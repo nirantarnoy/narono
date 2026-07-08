@@ -18,6 +18,27 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
  */
 class WorkqueueController extends Controller
 {
+    public function actionGetminweight()
+    {
+        $car_type_id = \Yii::$app->request->post('car_type_id');
+        $company_id = \Yii::$app->request->post('company_id');
+
+        if ($car_type_id && $company_id) {
+            $query = new \yii\db\Query();
+            $res = $query->select(['min_weight_line.min_weight'])
+                ->from('min_weight_line')
+                ->leftJoin('min_weight', 'min_weight.id = min_weight_line.min_weight_id')
+                ->where(['min_weight.company_id' => $company_id, 'min_weight_line.car_type_id' => $car_type_id])
+                ->orderBy(['min_weight_line.min_weight' => SORT_DESC])
+                ->one();
+
+            if ($res && isset($res['min_weight'])) {
+                return $res['min_weight'];
+            }
+        }
+        return 0;
+    }
+
     public $enableCsrfValidation = false;
 
     /**

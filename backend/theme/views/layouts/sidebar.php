@@ -305,6 +305,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="index.php?r=minweight/index" class="nav-link minweight">
+                                <i class="far fa-circlez nav-icon"></i>
+                                <p>จัดการน้ำหนักขั้นต่ำ</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="index.php?r=item/index" class="nav-link item">
                                 <i class="far fa-circlez nav-icon"></i>
                                 <p>ของนำกลับ</p>
