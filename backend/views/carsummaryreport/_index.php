@@ -221,6 +221,13 @@ if($driver_id == null || $search_emp_id !=null){
                         <input type="number" class="form-control" name="social_per" min="0" value="<?= $social_per ?>">
                     </div>
                     <div class="col-lg-2">
+                        <?php
+                        $welfare_per_val = ($welfare_per !== null && $welfare_per !== '') ? $welfare_per : '0.25';
+                        ?>
+                        <label class="form-label">% เงินกองทุนสงเคราะห์</label>
+                        <input type="number" step="any" class="form-control" name="welfare_per" min="0" value="<?= $welfare_per_val ?>">
+                    </div>
+                    <div class="col-lg-2">
                         <div style="height: 35px;"></div>
                         <button class="btn btn-sm btn-primary">ค้นหาและคำนวน</button>
                     </div>
@@ -415,7 +422,10 @@ if($driver_id == null || $search_emp_id !=null){
                 $deduct_total = ($total_gross_for_social * $social_price / 100);
             }
 
-            $grand_total_net = $grand_total_income - $deduct_total - $test_price - $damage_price - ($fine_employee_amount + $sum_traffic_fine) - $deduct_other_price;
+            $welfare_price = (float)$welfare_per_val;
+            $deduct_welfare_total = ($grand_total_income * $welfare_price) / 100;
+
+            $grand_total_net = $grand_total_income - $deduct_total - $deduct_welfare_total - $test_price - $damage_price - ($fine_employee_amount + $sum_traffic_fine) - $deduct_other_price;
             ?>
             </tbody>
             <tfoot>
@@ -466,8 +476,8 @@ if($driver_id == null || $search_emp_id !=null){
                 <td></td>
                 <td style="text-align: right;padding: 5px;"><?= number_format($sum_group1, 2) ?></td>
                 <td style="text-align: center;padding: 5px;">บาท</td>
-                <td style="padding-left: 10px;">เงินยืมทดรอง</td>
-                <td style="text-align: right;padding: 5px;"><?= number_format($test_price, 2) ?></td>
+                <td style="padding-left: 10px;">หักเงินกองทุนสงเคราะห์ <?= $welfare_price . ' %' ?></td>
+                <td style="text-align: right;padding: 5px;"><?= number_format($deduct_welfare_total, 2) ?></td>
                 <td style="text-align: center;padding: 5px;">บาท</td>
             </tr>
             <tr>
@@ -476,8 +486,8 @@ if($driver_id == null || $search_emp_id !=null){
                 <td></td>
                 <td style="text-align: right;padding: 5px;"><?= number_format($sum_group2, 2) ?></td>
                 <td style="text-align: center;padding: 5px;">บาท</td>
-                <td style="padding-left: 10px;">ค่าประกันสินค้าเสียหาย</td>
-                <td style="text-align: right;padding: 5px;"><?= number_format($damage_price, 2) ?></td>
+                <td style="padding-left: 10px;">เงินยืมทดรอง</td>
+                <td style="text-align: right;padding: 5px;"><?= number_format($test_price, 2) ?></td>
                 <td style="text-align: center;padding: 5px;">บาท</td>
             </tr>
             <tr>
@@ -486,8 +496,8 @@ if($driver_id == null || $search_emp_id !=null){
                 <td></td>
                 <td style="text-align: right;padding: 5px;"><?= number_format($sum_group3, 2) ?></td>
                 <td style="text-align: center;padding: 5px;">บาท</td>
-                <td style="padding-left: 10px">ค่าปรับจราจร</td>
-                <td style="text-align: right;padding: 5px;"><?= number_format($fine_employee_amount + $sum_traffic_fine, 2) ?></td>
+                <td style="padding-left: 10px;">ค่าประกันสินค้าเสียหาย</td>
+                <td style="text-align: right;padding: 5px;"><?= number_format($damage_price, 2) ?></td>
                 <td style="text-align: center;padding: 5px;">บาท</td>
             </tr>
             <tr>
@@ -496,6 +506,16 @@ if($driver_id == null || $search_emp_id !=null){
                 <td></td>
                 <td style="text-align: right;padding: 5px;"><?= number_format($sum_group4, 2) ?></td>
                 <td style="text-align: center;padding: 5px;">บาท</td>
+                <td style="padding-left: 10px">ค่าปรับจราจร</td>
+                <td style="text-align: right;padding: 5px;"><?= number_format($fine_employee_amount + $sum_traffic_fine, 2) ?></td>
+                <td style="text-align: center;padding: 5px;">บาท</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="padding-left: 10px;"></td>
+                <td></td>
+                <td style="text-align: right;padding: 5px;"></td>
+                <td style="text-align: center;padding: 5px;"></td>
                 <td style="padding-left: 10px">หักอื่นๆ</td>
                 <td style="text-align: right;padding: 5px;"><?= number_format($deduct_other_price, 2) ?></td>
                 <td style="text-align: center;padding: 5px;">บาท</td>
