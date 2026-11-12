@@ -61,14 +61,15 @@ class ReportController extends Controller
         ]);
     }
     public function actionWorkqueuedaily(){
-        $search_date = \Yii::$app->request->post('search_date');
-        $search_to_date = \Yii::$app->request->post('search_to_date');
-        $search_company_id = \Yii::$app->request->post('search_company_id');
-        $search_car_type = \Yii::$app->request->post('search_car_type');
-        $search_car_id = \Yii::$app->request->post('search_car_id');
-        $search_emp_id  = \Yii::$app->request->post('search_emp_id');
-        $search_work_type_id = \Yii::$app->request->post('search_work_type_id');
-        $search_dropoff_id = \Yii::$app->request->post('search_dropoff_id');
+        $request = \Yii::$app->request;
+        $search_date = $request->post('search_date', $request->get('search_date'));
+        $search_to_date = $request->post('search_to_date', $request->get('search_to_date'));
+        $search_company_id = $request->post('search_company_id', $request->get('search_company_id'));
+        $search_car_type = $request->post('search_car_type', $request->get('search_car_type'));
+        $search_car_id = $request->post('search_car_id', $request->get('search_car_id'));
+        $search_emp_id  = $request->post('search_emp_id', $request->get('search_emp_id'));
+        $search_work_type_id = $request->post('search_work_type_id', $request->get('search_work_type_id'));
+        $search_dropoff_id = $request->post('search_dropoff_id', $request->get('search_dropoff_id'));
         return $this->render('_workqueuedaily',[
             'search_date' => $search_date,
             'search_car_type' => $search_car_type,

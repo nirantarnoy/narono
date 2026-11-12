@@ -95,84 +95,6 @@ $this->registerCss("
 }
 ");
 
-//$display_date = date('d-m-Y');
-//$display_to_date = date('d-m-Y');
-//$find_date = date('Y-m-d');
-//$find_to_date = date('Y-m-d');
-//if ($search_date != null) {
-//    $find_date = date('Y-m-d', strtotime($search_date));
-//    $display_date = date('d-m-Y', strtotime($search_date));
-//}
-//if ($search_to_date != null) {
-//    $find_to_date = date('Y-m-d', strtotime($search_to_date));
-//    $display_to_date = date('d-m-Y', strtotime($search_to_date));
-//}
-//$model = null;
-//
-////$model = \backend\models\Workqueue::find()->where(['date(work_queue_date)' => $find_date,'work_option_type_id'=>[1,2]])->all();
-//if ($search_car_type != null) {
-//    $model_car = \backend\models\Car::find()->select(['id'])->where(['car_type_id' => $search_car_type])->all();
-//    $car_list = [];
-//    if ($model_car) {
-//        foreach ($model_car as $value) {
-//            array_push($car_list, $value->id);
-//        }
-//        //$model = \backend\models\Workqueue::find()->where(['date(work_queue_date)' => $find_date, 'car_id' => $car_list])->all();
-//        if ($search_company_id != null) {
-//            //$model = \backend\models\Workqueue::find()->where(['car_id' => $car_list, 'company_id' => $search_company_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
-//            if ($search_car_id != null && $search_emp_id != null) {
-//                $model = \backend\models\Workqueue::find()->where(['car_id' => $car_list, 'company_id' => $search_company_id, 'car_id' => $search_car_id, 'emp_assign' => $search_emp_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
-//            } else if ($search_car_id != null && $search_emp_id == null) {
-//                $model = \backend\models\Workqueue::find()->where(['car_id' => $car_list, 'company_id' => $search_company_id, 'car_id' => $search_car_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
-//            } else if ($search_car_id == null && $search_emp_id != null) {
-//                $model = \backend\models\Workqueue::find()->where(['car_id' => $car_list, 'company_id' => $search_company_id, 'emp_assign' => $search_emp_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
-//            } else {
-//                $model = \backend\models\Workqueue::find()->where(['car_id' => $car_list, 'company_id' => $search_company_id,])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
-//            }
-//        } else {
-//            //  $model = \backend\models\Workqueue::find()->where(['car_id' => $car_list])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
-//            if ($search_car_id != null && $search_emp_id != null) {
-//                $model = \backend\models\Workqueue::find()->where(['car_id' => $car_list, 'car_id' => $search_car_id, 'emp_assign' => $search_emp_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
-//            } else if ($search_car_id != null && $search_emp_id == null) {
-//                $model = \backend\models\Workqueue::find()->where(['car_id' => $car_list, 'car_id' => $search_car_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
-//            } else if ($search_car_id == null && $search_emp_id != null) {
-//                $model = \backend\models\Workqueue::find()->where(['car_id' => $car_list, 'emp_assign' => $search_emp_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
-//            } else {
-//                $model = \backend\models\Workqueue::find()->where(['car_id' => $car_list])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
-//            }
-//
-//        }
-//
-//    }
-//
-//} else {
-//    if ($search_company_id != null) {
-//        if ($search_car_id != null && $search_emp_id != null) {
-//            $model = \backend\models\Workqueue::find()->where(['company_id' => $search_company_id, 'car_id' => $search_car_id, 'emp_assign' => $search_emp_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
-//        } else if ($search_car_id != null && $search_emp_id == null) {
-//            $model = \backend\models\Workqueue::find()->where(['company_id' => $search_company_id, 'car_id' => $search_car_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
-//        } else if ($search_car_id == null && $search_emp_id != null) {
-//            $model = \backend\models\Workqueue::find()->where(['company_id' => $search_company_id, 'emp_assign' => $search_emp_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
-//        } else {
-//            $model = \backend\models\Workqueue::find()->where(['company_id' => $search_company_id,])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
-//        }
-//
-//    } else {
-//        //$model = \backend\models\Workqueue::find()->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
-//        if ($search_car_id != null && $search_emp_id != null) {
-//            $model = \backend\models\Workqueue::find()->where(['car_id' => $search_car_id, 'emp_assign' => $search_emp_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
-//        } else if ($search_car_id != null && $search_emp_id == null) {
-//            $model = \backend\models\Workqueue::find()->where(['car_id' => $search_car_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
-//        } else if ($search_car_id == null && $search_emp_id != null) {
-//            $model = \backend\models\Workqueue::find()->where(['emp_assign' => $search_emp_id])->andFilterWhere(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
-//        } else {
-//            $model = \backend\models\Workqueue::find()->where(['>=', 'date(work_queue_date)', $find_date])->andFilterWhere(['<=', 'date(work_queue_date)', $find_to_date])->all();
-//        }
-//    }
-//
-//}
-
-
 // จัดการ date format
     $display_date = date('d-m-Y');
     $display_to_date = date('d-m-Y');
@@ -188,56 +110,76 @@ $this->registerCss("
         $display_to_date = date('d-m-Y', strtotime($search_to_date));
     }
 
-    $model = null;
+    // ตรวจสอบคอลัมน์ warehouse_plus เผื่อกรณี database ยังไม่ได้รัน migration
+    $hasWarehousePlus = Yii::$app->db->getTableSchema('work_queue_dropoff')->getColumn('warehouse_plus') !== null;
+    $warehousePlusSelect = $hasWarehousePlus ? 'wqd.warehouse_plus' : '0 as warehouse_plus';
 
-// สร้าง query builder และเพิ่ม conditions
-    $query = \backend\models\Workqueue::find()
-        ->alias('w')
-        ->joinWith(['customer c']);
-    $conditions = [];
+    // ดึงข้อมูลแบบ Single Query พร้อม JOIN ตารางที่เกี่ยวข้องเพื่อขจัดปัญหา N+1
+    $query = (new \yii\db\Query())
+        ->select([
+            'w.id as work_queue_id',
+            'w.work_queue_no',
+            'w.work_queue_date',
+            'w.go_deduct_reason',
+            'car_head.name as car_head_name',
+            'car_tail.name as car_tail_name',
+            'emp.fname as emp_fname',
+            'emp.lname as emp_lname',
+            'wot.name as work_type_name',
+            'wqd.id as dropoff_id',
+            'wqd.dropoff_no',
+            'c.name as customer_name',
+            'ct.name as car_type_name',
+            'wqd.is_charter',
+            'wqd.weight',
+            'wqd.price_per_ton',
+            new \yii\db\Expression($warehousePlusSelect),
+        ])
+        ->from('work_queue w')
+        ->innerJoin('work_queue_dropoff wqd', 'wqd.work_queue_id = w.id')
+        ->leftJoin('car car_head', 'car_head.id = w.car_id')
+        ->leftJoin('cartype ct', 'ct.id = car_head.car_type_id')
+        ->leftJoin('car car_tail', 'car_tail.id = w.tail_id')
+        ->leftJoin('employee emp', 'emp.id = w.emp_assign')
+        ->leftJoin('customer c', 'c.id = w.customer_id')
+        ->leftJoin('work_option_type wot', 'wot.id = c.work_type_id');
 
-// จัดการ car_type filter
+    // Conditions
     if ($search_car_type != null) {
-        $car_list = \backend\models\Car::find()
-            ->select(['id'])
-            ->where(['car_type_id' => $search_car_type])
-            ->column();
-
-        if ($car_list) {
-            // ถ้ามี search_car_id ให้ตรวจสอบว่าอยู่ใน car_list หรือไม่
-            if ($search_car_id != null && in_array($search_car_id, $car_list)) {
-                $conditions['w.car_id'] = $search_car_id;
-            } else if ($search_car_id == null) {
-                $conditions['w.car_id'] = $car_list;
-            }else{
-                $conditions['w.car_id'] = -1;
-            }
-            // ถ้า search_car_id ไม่อยู่ใน car_list จะไม่เพิ่ม condition (ไม่มีผลลัพธ์)
-        }else{
-             $conditions['w.car_id'] = -1;
-        }
-    } else if ($search_car_id != null) {
-        $conditions['w.car_id'] = $search_car_id;
+        $query->andWhere(['car_head.car_type_id' => $search_car_type]);
     }
-
-// เพิ่ม company และ employee filters
-    if ($search_company_id != null) $conditions['w.company_id'] = $search_company_id;
-    if ($search_emp_id != null) $conditions['w.emp_assign'] = $search_emp_id;
-    if ($search_work_type_id != null)
-    {
-        $conditions['c.work_type_id'] = $search_work_type_id;
+    if ($search_car_id != null) {
+        $query->andWhere(['w.car_id' => $search_car_id]);
+    }
+    if ($search_company_id != null) {
+        $query->andWhere(['w.company_id' => $search_company_id]);
+    }
+    if ($search_emp_id != null) {
+        $query->andWhere(['w.emp_assign' => $search_emp_id]);
+    }
+    if ($search_work_type_id != null) {
+        $query->andWhere(['c.work_type_id' => $search_work_type_id]);
     }
     if ($search_dropoff_id != null) {
-        $query->innerJoin('work_queue_dropoff wqd', 'wqd.work_queue_id = w.id');
-        $conditions['wqd.dropoff_id'] = $search_dropoff_id;
+        $query->andWhere(['wqd.dropoff_id' => $search_dropoff_id]);
     }
 
-// Apply conditions และ date range
-    $query->andFilterWhere($conditions)
-        ->andFilterWhere(['>=', 'date(w.work_queue_date)', $find_date])
-        ->andFilterWhere(['<=', 'date(w.work_queue_date)', $find_to_date]);
-    $query->orderBy('w.work_queue_date ASC');
+    // ช่วงวันที่ใช้ range บนคอลัมน์โดยตรงเพื่อให้ MySQL ใช้ index ได้
+    $query->andWhere(['>=', 'w.work_queue_date', $find_date . ' 00:00:00'])
+        ->andWhere(['<=', 'w.work_queue_date', $find_to_date . ' 23:59:59'])
+        ->orderBy(['w.work_queue_date' => SORT_ASC, 'w.id' => SORT_ASC, 'wqd.id' => SORT_ASC]);
+
     $model = $query->all();
+
+    // ดึงข้อมูลสำหรับ dropdown แบบ asArray เพื่อประหยัด memory และโหลดเร็วขึ้น
+    $carTypeList = \yii\helpers\ArrayHelper::map(\backend\models\CarType::find()->select(['id', 'name'])->asArray()->all(), 'id', 'name');
+    $companyList = \yii\helpers\ArrayHelper::map(\backend\models\Company::find()->select(['id', 'name'])->asArray()->all(), 'id', 'name');
+    $carList = \yii\helpers\ArrayHelper::map(\backend\models\Car::find()->select(['id', 'plate_no'])->asArray()->all(), 'id', 'plate_no');
+    $empList = \yii\helpers\ArrayHelper::map(\backend\models\Employee::find()->select(['id', 'fname', 'lname'])->asArray()->all(), 'id', function ($data) {
+        return trim(($data['fname'] ?? '') . ' ' . ($data['lname'] ?? ''));
+    });
+    $workTypeList = \yii\helpers\ArrayHelper::map(\backend\models\WorkOptionType::find()->select(['id', 'name'])->asArray()->all(), 'id', 'name');
+    $dropoffList = \yii\helpers\ArrayHelper::map(\backend\models\DropoffPlace::find()->select(['id', 'name'])->asArray()->all(), 'id', 'name');
 
 
     ?>
@@ -269,7 +211,7 @@ $this->registerCss("
                     <?php
                     echo \kartik\select2\Select2::widget([
                         'name' => 'search_car_type',
-                        'data' => \yii\helpers\ArrayHelper::map(\backend\models\CarType::find()->all(), 'id', 'name'),
+                        'data' => $carTypeList,
                         'value' => $search_car_type,
                         'options' => [
                             'placeholder' => '---เลือกประเภทรถ---'
@@ -280,7 +222,7 @@ $this->registerCss("
                     ]);
                     echo \kartik\select2\Select2::widget([
                         'name' => 'search_company_id',
-                        'data' => \yii\helpers\ArrayHelper::map(\backend\models\Company::find()->all(), 'id', 'name'),
+                        'data' => $companyList,
                         'value' => $search_company_id,
                         'options' => [
                             'placeholder' => '---เลือกบริษัท---'
@@ -291,9 +233,7 @@ $this->registerCss("
                     ]);
                     echo \kartik\select2\Select2::widget([
                         'name' => 'search_car_id',
-                        'data' => \yii\helpers\ArrayHelper::map(\backend\models\Car::find()->all(), 'id', function ($data) {
-                            return $data->plate_no;
-                        }),
+                        'data' => $carList,
                         'value' => $search_car_id,
                         'options' => [
                             'placeholder' => '---เลือกทะเบียน---'
@@ -304,9 +244,7 @@ $this->registerCss("
                     ]);
                     echo \kartik\select2\Select2::widget([
                         'name' => 'search_emp_id',
-                        'data' => \yii\helpers\ArrayHelper::map(\backend\models\Employee::find()->all(), 'id', function ($data) {
-                            return $data->fname . ' ' . $data->lname;
-                        }),
+                        'data' => $empList,
                         'value' => $search_emp_id,
                         'options' => [
                             'placeholder' => '---พขร---'
@@ -317,7 +255,7 @@ $this->registerCss("
                     ]);
                     echo \kartik\select2\Select2::widget([
                         'name' => 'search_work_type_id',
-                        'data' => \yii\helpers\ArrayHelper::map(\backend\models\WorkOptionType::find()->all(), 'id','name'),
+                        'data' => $workTypeList,
                         'value' => $search_work_type_id,
                         'options' => [
                             'placeholder' => '---ประเภทงาน---'
@@ -328,7 +266,7 @@ $this->registerCss("
                     ]);
                     echo \kartik\select2\Select2::widget([
                         'name' => 'search_dropoff_id',
-                        'data' => \yii\helpers\ArrayHelper::map(\backend\models\DropoffPlace::find()->all(), 'id','name'),
+                        'data' => $dropoffList,
                         'value' => $search_dropoff_id,
                         'options' => [
                             'placeholder' => '---เลือกคลังทั้งหมด---'
@@ -354,17 +292,17 @@ $this->registerCss("
             <!-- แสดงเงื่อนไขการค้นหา -->
             <?php if($search_car_type || $search_company_id || $search_car_id || $search_emp_id): ?>
                 <div style="font-size: 12px; margin-top: 5px;">
-                    <?php if($search_car_type): ?>
-                        <span>ประเภทรถ: <?= \backend\models\CarType::findOne($search_car_type)->name ?> | </span>
+                    <?php if($search_car_type && isset($carTypeList[$search_car_type])): ?>
+                        <span>ประเภทรถ: <?= $carTypeList[$search_car_type] ?> | </span>
                     <?php endif; ?>
-                    <?php if($search_company_id): ?>
-                        <span>บริษัท: <?= \backend\models\Company::findOne($search_company_id)->name ?> | </span>
+                    <?php if($search_company_id && isset($companyList[$search_company_id])): ?>
+                        <span>บริษัท: <?= $companyList[$search_company_id] ?> | </span>
                     <?php endif; ?>
-                    <?php if($search_car_id): ?>
-                        <span>ทะเบียน: <?= \backend\models\Car::findOne($search_car_id)->plate_no ?> | </span>
+                    <?php if($search_car_id && isset($carList[$search_car_id])): ?>
+                        <span>ทะเบียน: <?= $carList[$search_car_id] ?> | </span>
                     <?php endif; ?>
-                    <?php if($search_emp_id): ?>
-                        <span>พขร: <?= \backend\models\Employee::findOne($search_emp_id)->fname . ' ' . \backend\models\Employee::findOne($search_emp_id)->lname ?></span>
+                    <?php if($search_emp_id && isset($empList[$search_emp_id])): ?>
+                        <span>พขร: <?= $empList[$search_emp_id] ?></span>
                     <?php endif; ?>
                 </div>
             <?php endif; ?>
@@ -391,66 +329,59 @@ $this->registerCss("
             </tr>
             </thead>
             <tbody>
-            <?php $line_num = 0;
+            <?php 
+            $line_num = 0;
             $total_weight = 0;
             $total_warehouse_plus = 0;
             $total_line_amount = 0;
             $old_work_id = 0;
             ?>
-            <?php if ($model): ?>
-                <?php foreach ($model as $value): ?>
+            <?php if (!empty($model)): ?>
+                <?php foreach ($model as $row): ?>
                     <?php
-                    if($old_work_id != $value->id || $old_work_id == 0){
-                        $line_num += 1;
+                    $is_new_trip = ($old_work_id != $row['work_queue_id']);
+                    if ($is_new_trip) {
+                        $line_num++;
                     }
 
-                    // $line_price_per_ton = getDropoffPriceperton($value->id);
-                    //    $line_weight_ton = getDropoffWeightton($value->id);
-                    //    $line_dp = getDropoffDP($value->id);
+                    $is_charter = ((int)($row['is_charter'] ?? 0) === 1);
+                    $weight = (float)($row['weight'] ?? 0);
+                    $price_per_ton = (float)($row['price_per_ton'] ?? 0);
+                    $warehouse_plus = (float)($row['warehouse_plus'] ?? 0);
 
+                    if ($is_charter) {
+                        $weight_display = 'เหมา';
+                        $line_amount = $price_per_ton + $warehouse_plus;
+                    } else {
+                        $weight_display = number_format($weight, 3);
+                        $line_amount = ($weight * $price_per_ton) + $warehouse_plus;
+                        $total_weight += $weight;
+                    }
+
+                    $total_warehouse_plus += $warehouse_plus;
+                    $total_line_amount += $line_amount;
+
+                    $emp_name = trim(($row['emp_fname'] ?? '') . ' ' . ($row['emp_lname'] ?? ''));
+                    $work_date = !empty($row['work_queue_date']) ? date('d/m/Y', strtotime($row['work_queue_date'])) : '';
                     ?>
-                    <?php
-                    $model_line_dp = \common\models\WorkQueueDropoff::find()->where(['work_queue_id' => $value->id])->all();
-                    ?>
-                    <?php if ($model_line_dp != null): ?>
-                        <?php foreach ($model_line_dp as $value_dp): ?>
-                            <?php $line_weight_ton_new = getDropoffWeighttonNew($value_dp->id); ?>
-                            <?php $line_price_per_ton = getDropoffPricepertonNew($value_dp->id); ?>
-                            <?php $line_warehouse_plus = getDropoffWarehousePlusNew($value_dp->id); ?>
-                            <?php
-                            if ($line_weight_ton_new != null) {
-                                //if($line_weight_ton[0]['is_charter'] == 0){
-                                $total_weight += $line_weight_ton_new[0]['is_charter'] == 1 ? 0 : ($line_weight_ton_new[0]['weight']);
-                                $total_warehouse_plus += $line_warehouse_plus;
-                                $total_line_amount += $line_weight_ton_new[0]['is_charter'] == 1 ? ($line_price_per_ton + $line_warehouse_plus) : (($line_weight_ton_new[0]['weight'] * $line_price_per_ton) + $line_warehouse_plus);
-                                //  $total_line_amount += ( $line_price_per_ton);
-                                // }
-                            } else {
-                                $total_weight += 0;
-                                $total_line_amount += 10;
-                            }
-                            ?>
-                            <tr>
-                                <td style="width: 5%;text-align: center;"><?= $old_work_id != $value->id ? $line_num : '' ?></td>
-                                <td style="width: 8%;text-align: center;"><?= $value->work_queue_no ?></td>
-                                <td style="width: 8%;text-align: center;"><?= date('d/m/Y', strtotime($value->work_queue_date)) ?></td>
-                                <td style="width: 8%;text-align: center;"><?= \backend\models\Car::findName($value->car_id) ?></td>
-                                <td style="width: 8%;text-align: center;"><?= \backend\models\Car::findName($value->tail_id) ?></td>
-                                <td style="width: 8%;text-align: center;"><?= \backend\models\Employee::findFullName($value->emp_assign) ?></td>
-                                <td style="width: 8%;text-align: center;"><?= \backend\models\Customer::findWorkTypeByCustomerid($value->customer_id) ?></td>
-                                <td style="width: 8%;text-align: center;"><?= $value_dp->dropoff_no ?></td>
-                                <td style="width: 10%;text-align: center;"><?= \backend\models\Customer::findCusName($value->customer_id) ?></td>
-                                <td style="width: 8%;text-align: center;"><?= \backend\models\Car::getCartype($value->car_id) ?></td>
-                                <td style="width: 8%;text-align: center;"><?= $line_weight_ton_new[0]['is_charter'] == 1 ? 'เหมา' : number_format($line_weight_ton_new[0]['weight'], 3) ?></td>
-                                <td style="width: 8%;text-align: center;"><?= number_format($line_price_per_ton, 2) ?></td>
-                                <td style="width: 8%;text-align: center;"><?= number_format($line_warehouse_plus, 2) ?></td>
-                                <td style="width: 8%;text-align: center;"><?= $line_weight_ton_new[0]['is_charter'] == 1 ? number_format($line_price_per_ton + $line_warehouse_plus, 2) : number_format(($line_weight_ton_new[0]['weight'] * $line_price_per_ton) + $line_warehouse_plus, 2) ?></td>
-                                <td><?= $value->go_deduct_reason ?></td>
-                            </tr>
-                            <?php $old_work_id = $value->id; ?>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                    <?php $old_work_id = $value->id; ?>
+                    <tr>
+                        <td style="width: 5%;text-align: center;"><?= $is_new_trip ? $line_num : '' ?></td>
+                        <td style="width: 8%;text-align: center;"><?= $row['work_queue_no'] ?? '' ?></td>
+                        <td style="width: 8%;text-align: center;"><?= $work_date ?></td>
+                        <td style="width: 8%;text-align: center;"><?= $row['car_head_name'] ?? '' ?></td>
+                        <td style="width: 8%;text-align: center;"><?= $row['car_tail_name'] ?? '' ?></td>
+                        <td style="width: 8%;text-align: center;"><?= $emp_name ?></td>
+                        <td style="width: 8%;text-align: center;"><?= $row['work_type_name'] ?? '' ?></td>
+                        <td style="width: 8%;text-align: center;"><?= $row['dropoff_no'] ?? '' ?></td>
+                        <td style="width: 10%;text-align: center;"><?= $row['customer_name'] ?? '' ?></td>
+                        <td style="width: 8%;text-align: center;"><?= $row['car_type_name'] ?? '' ?></td>
+                        <td style="width: 8%;text-align: center;"><?= $weight_display ?></td>
+                        <td style="width: 8%;text-align: center;"><?= number_format($price_per_ton, 2) ?></td>
+                        <td style="width: 8%;text-align: center;"><?= number_format($warehouse_plus, 2) ?></td>
+                        <td style="width: 8%;text-align: center;"><?= number_format($line_amount, 2) ?></td>
+                        <td><?= $row['go_deduct_reason'] ?? '' ?></td>
+                    </tr>
+                    <?php $old_work_id = $row['work_queue_id']; ?>
                 <?php endforeach; ?>
             <?php endif; ?>
             </tbody>
