@@ -66,10 +66,17 @@ class ActionLogSearch extends ActionLog
             'action' => $this->action,
         ]);
 
+        if (!empty($this->username)) {
+            $query->andWhere([
+                'or',
+                ['like', 'username', $this->username],
+                ['like', 'user_id', $this->username],
+            ]);
+        }
+
         $query->andFilterWhere(['like', 'table_name', $this->table_name])
             ->andFilterWhere(['like', 'record_id', $this->record_id])
             ->andFilterWhere(['like', 'record_name', $this->record_name])
-            ->andFilterWhere(['like', 'username', $this->username])
             ->andFilterWhere(['like', 'ip_address', $this->ip_address])
             ->andFilterWhere(['like', 'description', $this->description]);
 
@@ -84,6 +91,7 @@ class ActionLogSearch extends ActionLog
             $query->andWhere([
                 'or',
                 ['like', 'username', $this->globalSearch],
+                ['like', 'user_id', $this->globalSearch],
                 ['like', 'table_name', $this->globalSearch],
                 ['like', 'record_id', $this->globalSearch],
                 ['like', 'record_name', $this->globalSearch],

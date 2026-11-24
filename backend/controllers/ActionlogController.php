@@ -37,15 +37,16 @@ class ActionlogController extends Controller
      */
     public function actionIndex()
     {
-        $pageSize = Yii::$app->request->post('perpage', 50);
+        $pageSize = Yii::$app->request->get('perpage', Yii::$app->request->post('perpage', 50));
         $searchModel = new ActionLogSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->pagination->pageSize = $pageSize;
+        $dataProvider->pagination->pageSize = (int)$pageSize;
+        $dataProvider->pagination->params = array_merge(Yii::$app->request->queryParams, ['perpage' => $pageSize]);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'perpage' => $pageSize,
+            'perpage' => (int)$pageSize,
         ]);
     }
 

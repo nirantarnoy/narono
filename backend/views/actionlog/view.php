@@ -45,7 +45,12 @@ if ($model->action === ActionLog::ACTION_DELETE) {
                         <th style="width: 20%;">วัน-เวลาที่ดำเนินการ</th>
                         <td style="width: 30%; font-weight: bold;"><?= date('d/m/Y H:i:s', $model->created_at) ?></td>
                         <th style="width: 20%;">ผู้ดำเนินการ</th>
-                        <td style="width: 30%;"><?= Html::encode($model->username ?: '-') ?> (User ID: <?= Html::encode($model->user_id ?: '-') ?>)</td>
+                        <td style="width: 30%;">
+                            <strong><i class="fas fa-user-circle text-primary mr-1"></i><?= Html::encode($model->getOperatorName()) ?></strong>
+                            <?php if (!empty($model->user_id)): ?>
+                                <span class="badge badge-light border ml-1 font-weight-normal">(User ID: <?= Html::encode($model->user_id) ?>)</span>
+                            <?php endif; ?>
+                        </td>
                     </tr>
                     <tr>
                         <th>ตาราง (Table Name)</th>

@@ -94,6 +94,38 @@ class ActionLog extends ActiveRecord
     }
 
     /**
+     * Get display name for the operator / user.
+     * Guaranteed to never be empty or blank.
+     * If username is not available, falls back to User ID.
+     * 
+     * @return string
+     */
+    public function getOperatorName()
+    {
+        if (!empty($this->username) && trim($this->username) !== '' && trim($this->username) !== '-') {
+            return $this->username;
+        }
+
+        if (!empty($this->user_id)) {
+            $user = (new \yii\db\Query())
+                ->select(['username'])
+                ->from('{{%user}}')
+                ->where(['id' => $this->user_id])
+                ->scalar();
+            if ($user) {
+                return $user;
+            }
+            return 'User ID: ' . $this->user_id;
+        }
+
+        if ($this->method === 'CLI') {
+            return 'console';
+        }
+
+        return 'System';
+    }
+
+    /**
      * Resolve a human-readable display name for the model instance
      * 
      * @param ActiveRecord $model
