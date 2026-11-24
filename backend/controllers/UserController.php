@@ -174,7 +174,7 @@ class UserController extends Controller
     }
 
     /**
-     * Check if target user is admin
+     * Check if target user is admin (only admin/iceadmin accounts cannot be reset)
      * @param User $user
      * @return bool
      */
@@ -183,7 +183,8 @@ class UserController extends Controller
         if (!$user) {
             return false;
         }
-        return $user->username === 'admin' || $user->username === 'iceadmin' || $user->group_id == 1;
+        $username = strtolower(trim($user->username));
+        return $username === 'admin' || $username === 'iceadmin';
     }
 
     /**
@@ -260,8 +261,7 @@ class UserController extends Controller
         }
 
         $users = User::find()
-            ->where(['not in', 'username', ['admin', 'iceadmin']])
-            ->andWhere(['or', ['!=', 'group_id', 1], ['group_id' => null]])
+            ->where(['not in', 'username', ['admin', 'iceadmin', 'Admin', 'ADMIN']])
             ->all();
 
         $count = 0;

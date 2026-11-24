@@ -23,7 +23,7 @@ if ($isAdmin) {
         'headerOptions' => ['style' => 'text-align: center; width: 40px;'],
         'contentOptions' => ['style' => 'text-align: center'],
         'checkboxOptions' => function ($model) {
-            $isTargetAdmin = ($model->username === 'admin' || $model->username === 'iceadmin' || $model->group_id == 1);
+            $isTargetAdmin = (strtolower(trim($model->username)) === 'admin' || strtolower(trim($model->username)) === 'iceadmin');
             if ($isTargetAdmin) {
                 return ['disabled' => true, 'style' => 'display:none;'];
             }
@@ -105,7 +105,7 @@ $actionColumn = [
             if (!$isAdmin) {
                 return '';
             }
-            $isTargetAdmin = ($data->username === 'admin' || $data->username === 'iceadmin' || $data->group_id == 1);
+            $isTargetAdmin = (strtolower(trim($data->username)) === 'admin' || strtolower(trim($data->username)) === 'iceadmin');
             if ($isTargetAdmin) {
                 return '';
             }
