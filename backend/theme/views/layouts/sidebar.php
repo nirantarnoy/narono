@@ -652,6 +652,12 @@
                                     </a>
                                 </li>
                             <?php //endif;?>
+                                <li class="nav-item">
+                                    <a href="index.php?r=actionlog" class="nav-link actionlog">
+                                        <i class="far fa-circlez nav-icon"></i>
+                                        <p>ประวัติการใช้งาน (Action Log)</p>
+                                    </a>
+                                </li>
 
                         </ul>
                     </li>

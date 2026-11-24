@@ -123,8 +123,7 @@
                                 </p>
                             </a>
                         </li>
-                        <?php if (isset($_SESSION['user_group_id'])): ?>
-                            <?php if ($_SESSION['user_group_id'] == 1): ?>
+                        <?php if (!\Yii::$app->user->isGuest && (\Yii::$app->user->identity->group_id == 1 || \Yii::$app->user->identity->username == 'admin' || \Yii::$app->user->identity->username == 'iceadmin')): ?>
                                 <li class="nav-item">
                                     <a href="index.php?r=branchtransfer" class="nav-link branchtransfer">
                                         <i class="far fa-circlez nav-icon"></i>
@@ -134,7 +133,6 @@
                                         </p>
                                     </a>
                                 </li>
-                            <?php endif; ?>
                         <?php endif; ?>
                         <li class="nav-item">
                             <a href="index.php?r=transform" class="nav-link transform">
@@ -584,7 +582,7 @@
                 </li>
                 <?php // if (isset($_SESSION['user_group_id'])): ?>
                 <?php //if ($_SESSION['user_group_id'] == 1 || $_SESSION['user_group_id'] == 3): ?>
-                <?php if (\Yii::$app->user->identity->username == 'iceadmin'): ?>
+                <?php if (!\Yii::$app->user->isGuest && (\Yii::$app->user->identity->username == 'iceadmin' || \Yii::$app->user->identity->username == 'admin' || \Yii::$app->user->identity->group_id == 1)): ?>
                     <li class="nav-item has-treeview has-sub">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fas fa-user"></i>
@@ -613,12 +611,18 @@
                                     <p>สิทธิ์การใช้งาน</p>
                                 </a>
                             </li>
-                                <li class="nav-item">
-                                    <a href="index.php?r=admintools" class="nav-link admintools">
-                                        <i class="far fa-circlez nav-icon"></i>
-                                        <p>Admin tools</p>
-                                    </a>
-                                </li>
+                            <li class="nav-item">
+                                <a href="index.php?r=actionlog" class="nav-link actionlog">
+                                    <i class="far fa-circlez nav-icon"></i>
+                                    <p>ประวัติการใช้งาน (Action Log)</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="index.php?r=admintools" class="nav-link admintools">
+                                    <i class="far fa-circlez nav-icon"></i>
+                                    <p>Admin tools</p>
+                                </a>
+                            </li>
                         </ul>
                     </li>
 
