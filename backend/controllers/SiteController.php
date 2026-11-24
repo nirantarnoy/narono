@@ -218,12 +218,15 @@ class SiteController extends Controller
                     $session = Yii::$app->session;
                     $session->setFlash('msg_err', 'รหัสยืนยันไม่ตรงกับรหัสใหม่');
                 } else {
-                    if ($model_user->validatePassword($model->oldpw)) {
+                    if ($model_user && $model_user->validatePassword($model->oldpw)) {
                         $model_user->setPassword($model->confirmpw);
-                        if ($model_user->save()) {
+                        $model_user->generateAuthKey();
+                        if ($model_user->save(false)) {
+                            \Yii::$app->user->logout();
                             $session = Yii::$app->session;
-                            $session->setFlash('msg_success', 'ทำการเปลี่ยนรหัสผ่านเรียบร้อยแล้ว');
-                            return $this->redirect(['site_/logout']);
+                            $session->open();
+                            $session->setFlash('msg_success', 'ทำการเปลี่ยนรหัสผ่านเรียบร้อยแล้ว กรุณาเข้าสู่ระบบด้วยรหัสผ่านใหม่');
+                            return $this->redirect(['site/login']);
                         }
                     } else {
                         $session = Yii::$app->session;

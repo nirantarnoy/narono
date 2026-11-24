@@ -51,6 +51,22 @@ use yii\helpers\Html;
 <!--                    <h1 style="color: dodgerblue">BP</h1>-->
                 </div>
                 <p class="login-box-msg">ลงชื่อเข้าเพื่อเข้าใช้งานระบบของคุณ</p>
+                <?php if (Yii::$app->session->hasFlash('msg_success')): ?>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <?= Yii::$app->session->getFlash('msg_success') ?>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                <?php endif; ?>
+                <?php if (Yii::$app->session->hasFlash('msg_err')): ?>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <?= Yii::$app->session->getFlash('msg_err') ?>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                <?php endif; ?>
                 <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
                 <div class="row">
                     <div class="col-lg-12">
