@@ -26,7 +26,7 @@ class ProductgroupController extends Controller
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
-                        'delete' => ['POST','GET'],
+                        'delete' => ['POST'],
                     ],
                 ],
             ]

@@ -22,6 +22,29 @@ return [
 //        ],
     ],
     'timeZone' => 'Asia/Bangkok',
+    'as access' => [
+        'class' => \yii\filters\AccessControl::class,
+        'except' => [
+            'site/login',
+            'site/error',
+            'site/driverlogin',
+            'site/logindriver',
+            'site/logoutdriver',
+            'site/captcha',
+        ],
+        'rules' => [
+            [
+                'allow' => true,
+                'roles' => ['@'],
+            ],
+        ],
+        'denyCallback' => function ($rule, $action) {
+            if (Yii::$app->request->isAjax) {
+                throw new \yii\web\ForbiddenHttpException('กรุณาเข้าสู่ระบบก่อนทำรายการ');
+            }
+            return Yii::$app->response->redirect(['site/login']);
+        },
+    ],
 //    'aliases'=>[
 //        '@adminlte3' => '@backend/theme/AdminLTE-3.0.1',
 //    ],

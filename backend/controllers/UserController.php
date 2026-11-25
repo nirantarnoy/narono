@@ -25,7 +25,7 @@ class UserController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST','GET'],
+                    'delete' => ['POST'],
                     'resetpassword' => ['POST','GET'],
                     'resetpassword-selected' => ['POST'],
                     'resetpassword-all' => ['POST'],

@@ -43,6 +43,16 @@ class ActionLogBehavior extends Component
             return;
         }
 
+        // CRITICAL SECURITY FAILSAFE: Never allow unauthenticated guests to delete database records!
+        if (Yii::$app instanceof \yii\web\Application && Yii::$app->user->isGuest) {
+            if ($event instanceof \yii\base\ModelEvent) {
+                $event->isValid = false; // Cancels ActiveRecord delete completely!
+            }
+            $ip = Yii::$app->request ? Yii::$app->request->getUserIP() : 'unknown';
+            Yii::warning("SECURITY ALERT: Blocked unauthenticated delete attempt on " . get_class($model) . " from IP: " . $ip, __METHOD__);
+            return;
+        }
+
         try {
             $tableName = self::getCleanTableName($model);
             $pk = $model->getPrimaryKey();
@@ -214,8 +224,10 @@ class ActionLogBehavior extends Component
             $username = 'console';
         }
 
-        // Fallback: If userId is still empty, check model's audit attributes
-        if (empty($userId) && $model instanceof BaseActiveRecord) {
+        $isWeb = Yii::$app instanceof \yii\web\Application;
+
+        // Fallback: If userId is still empty and this is CLI/console, check model's audit attributes
+        if (empty($userId) && !$isWeb && $model instanceof BaseActiveRecord) {
             if ($model->hasAttribute('updated_by') && !empty($model->updated_by)) {
                 $userId = $model->updated_by;
             } elseif ($model->hasAttribute('created_by') && !empty($model->created_by)) {
