@@ -62,34 +62,50 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $car_qty = 0;
-        $work_queue_qty = 0;
-        $work_queue_not_complete_qty = 0;
-        $work_queue_complete_qty = 0;
+        $f_date = null;
+        $t_date = null;
 
-        $model_car_qty = \backend\models\Car::find()->count();
-        if($model_car_qty){
-            $car_qty = $model_car_qty;
-        }
-        $model_work_qty = \backend\models\Workqueue::find()->all();
-        if($model_work_qty){
-            $work_queue_qty = count($model_work_qty);
-            foreach($model_work_qty as $value){
-                if($value->status == 1){
-                    $work_queue_complete_qty +=1;
-                }else{
-                    $work_queue_not_complete_qty +=1;
-                }
+        $dashboard_date = Yii::$app->request->post('dashboard_date');
+        if (!empty($dashboard_date)) {
+            $dates = explode(' - ', $dashboard_date);
+            if (count($dates) == 2) {
+                $f_date = date('Y-m-d', strtotime(str_replace('/', '-', trim($dates[0]))));
+                $t_date = date('Y-m-d', strtotime(str_replace('/', '-', trim($dates[1]))));
             }
         }
 
+        // Count cars directly in SQL
+        $car_qty = (int)(new \yii\db\Query())
+            ->from('{{%car}}')
+            ->count();
+
+        // Count work_queue totals and status breakdown in a single fast SQL aggregate query
+        $query = (new \yii\db\Query())
+            ->from('{{%work_queue}}')
+            ->select([
+                'total' => 'COUNT(*)',
+                'complete' => 'COALESCE(SUM(CASE WHEN status = 1 THEN 1 ELSE 0 END), 0)',
+                'not_complete' => 'COALESCE(SUM(CASE WHEN status != 1 OR status IS NULL THEN 1 ELSE 0 END), 0)',
+            ]);
+
+        if (!empty($f_date) && !empty($t_date)) {
+            $query->andWhere(['>=', 'work_queue_date', $f_date])
+                  ->andWhere(['<=', 'work_queue_date', $t_date]);
+        }
+
+        $stats = $query->one();
+
+        $work_queue_qty = (int)($stats['total'] ?? 0);
+        $work_queue_complete_qty = (int)($stats['complete'] ?? 0);
+        $work_queue_not_complete_qty = (int)($stats['not_complete'] ?? 0);
+
         return $this->render('index', [
-            'f_date' => null,
-            't_date' => null,
-            'car_qty'=>$car_qty,
-            'work_queue_qty'=> $work_queue_qty,
+            'f_date' => $f_date,
+            't_date' => $t_date,
+            'car_qty' => $car_qty,
+            'work_queue_qty' => $work_queue_qty,
             'work_queue_complete_qty' => $work_queue_complete_qty,
-            'work_queue_not_complete_qty'=>$work_queue_not_complete_qty,
+            'work_queue_not_complete_qty' => $work_queue_not_complete_qty,
         ]);
     }
 
